@@ -1,0 +1,8 @@
+com\sat\StepDefinitions\OSSComplaintStepdefs.class
+com\sat\AppHooks\ApplicationHooks.class
+com\sat\StepDefinitions\HWComplaintStepdefs.class
+com\sat\StepDefinitions\LoginStepdefs.class
+com\sat\StepDefinitions\OSIComplaintStepdefs.class
+com\sat\StepDefinitions\GWComplaintStepdefs.class
+com\sat\TestRunner\TestRunner.class
+com\sat\StepDefinitions\BaseStepDefs.class

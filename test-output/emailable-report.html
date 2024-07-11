@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>TestNG Report</title>
+<style type="text/css">table {margin-bottom:10px;border-collapse:collapse;empty-cells:show}th,td {border:1px solid #009;padding:.25em .5em}th {vertical-align:bottom}td {vertical-align:top}table a {font-weight:bold}.stripe td {background-color: #E6EBF9}.num {text-align:right}.passedodd td {background-color: #3F3}.passedeven td {background-color: #0A0}.skippedodd td {background-color: #DDD}.skippedeven td {background-color: #CCC}.failedodd td,.attn {background-color: #F33}.failedeven td,.stripe .attn {background-color: #D00}.stacktrace {white-space:pre;font-family:monospace}.totop {font-size:85%;text-align:center;border-bottom:2px solid #000}.invisible {display:none}</style>
+</head>
+<body>
+<table>
+<tr><th>Test</th><th># Passed</th><th># Skipped</th><th># Retried</th><th># Failed</th><th>Time (ms)</th><th>Included Groups</th><th>Excluded Groups</th></tr>
+<tr><th colspan="8">Default suite</th></tr>
+<tr><td><a href="#t0">Default test</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">214,818</td><td></td><td></td></tr>
+</table>
+<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Default suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Default test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">com.sat.TestRunner.TestRunner</td><td><a href="#m0">runScenario</a></td><td rowspan="1">1709555397464</td><td rowspan="1">208973</td></tr></tbody>
+</table>
+<h2>Default test</h2><h3 id="m0">com.sat.TestRunner.TestRunner#runScenario</h3><table class="result"><tr class="param"><th>Parameter #1</th><th>Parameter #2</th></tr><tr class="param stripe"><td>&quot;Test to create NEA list record&quot;</td><td>&quot;Optional[Testing Login Functionality]&quot;</td></tr><tr><th colspan="2">Exception</th></tr><tr><td colspan="2"><div class="stacktrace">org.openqa.selenium.ElementClickInterceptedException: element click intercepted: Element &lt;button id=&quot;msdyn_workorder|NoRelationship|Form|Mscrm.SaveAndClosePrimary116-button&quot; aria-label=&quot;Save &amp;amp; Close&quot; aria-describedby=&quot;id-8647&quot; role=&quot;menuitem&quot; title=&quot;Save &amp;amp; Close
+
+Save and close this Work Order.&quot; tabindex=&quot;-1&quot; data-id=&quot;msdyn_workorder|NoRelationship|Form|Mscrm.Form.msdyn_workorder.SaveAndClose&quot; data-lp-id=&quot;Form:msdyn_workorder-msdyn_workorder|NoRelationship|Form|Mscrm.Form.msdyn_workorder.SaveAndClose&quot; type=&quot;button&quot; class=&quot;pa-aw pa-ie pa-if pa-hy pa-cp pa-bo pa-il pa-p pa-iq pa-ir flexbox&quot;&gt;...&lt;/button&gt; is not clickable at point (424, 68). Other element would receive the click: &lt;img src=&quot;https://content.powerapps.com/resource/uci-infra/resources/images/PageBlock.a0c742e10064ee8c30d58c111947f54f.svg&quot; alt=&quot;Deactivate&quot; title=&quot;Deactivate&quot; class=&quot;pa-im pa-cy pa-ds pa-cz pa-is &quot;&gt;
+  (Session info: chrome=122.0.6261.95)
+Build info: version: &apos;4.15.0&apos;, revision: &apos;1d14b5521b&apos;
+System info: os.name: &apos;Windows Server 2022&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;11.0.20&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [e7d499a8f8e97217355ed1b75c5598fd, clickElement {id=f.1CAB82C78B22548EF79B71A1D9A17845.d.F8F5C1B20A3B8935545A6A2AF4AE8E12.e.2988}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 122.0.6261.95, chrome: {chromedriverVersion: 122.0.6261.94 (880dbf29479c..., userDataDir: C:\Users\SRISWA~1.NUL\AppDa...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:53260}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:53260/devtoo..., se:cdpVersion: 122.0.6261.95, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Element: [[ChromeDriver: chrome on windows (e7d499a8f8e97217355ed1b75c5598fd)] -&gt; xpath: //button[@aria-label=&apos;Save &amp; Close&apos;]]
+Session ID: e7d499a8f8e97217355ed1b75c5598fd
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:52)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:191)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:200)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:607)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:224)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:77)
+	at com.sat.testUtil.ElementUtil.doClick(ElementUtil.java:94)
+	at com.sat.Pages.CasecreationPage.workOrderValidation(CasecreationPage.java:636)
+	at com.sat.StepDefinitions.GWComplaintStepdefs.fill_the_details_in_Bookings_section(GWComplaintStepdefs.java:81)
+	at ✽.fill the details in Bookings section(file:///C:/Users/sriswathianusha.nulu/newworkspace/AutomationFramework-main/src/test/resources/com.sat.Features/GWComplaint.feature:25)
+</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+</body>
+</html>
