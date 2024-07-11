@@ -1,5 +1,7 @@
 package com.sat.testUtil;
 
+import java.util.ArrayList;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -144,5 +146,28 @@ public class JavaScriptUtil {
 		js.executeScript("document.getElementById('" + id + "').value='" + value + "'");
 		// document.getElementById('input-email').value ='tom@gmail.com'
 	}
+	
+	public void switchTab() {
+		// driver.get("http://yahoo.com");
+	//	JavascriptExecutor we = ((JavascriptExecutor) driver);
+		js.executeScript("window.open()");
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(1));
+		// driver.close();
+		// driver.get("http://google.com");
+		// System.out.println("in new tab method");
+
+	}
+	public void switchToActiveTab() {
+		// driver.get("http://yahoo.com");
+		//JavascriptExecutor we = ((JavascriptExecutor) driver);
+		js.executeScript("window.open()");
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		System.out.println(tabs.size());
+		System.out.println(tabs.size() - 1);
+		//driver.switchTo().window(tabs.get(tabs.size() - 1));
+		driver.switchTo().window(tabs.get(0));
+	}
+	
 
 }

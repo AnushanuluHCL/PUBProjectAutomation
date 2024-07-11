@@ -11,9 +11,9 @@ public static final String LOGIN_PAGE_TITLE = "Apps - Dynamics 365";
 	public static final String LOGIN_PAGE_URL_FRACTION = "automate.browserstack.com";
 	public static final String ACC_PAGE_URL_FRACTION = "route=account/account";
 	
-	public static final int SHORT_DEFAUTT_WAIT = 5;
-	public static final int MEDIUM_DEFAUTT_WAIT = 10;
-	public static final int LONG_DEFAUTT_WAIT = 20;
+	public static final int SHORT_DEFAULT_WAIT = 5;
+	public static final int MEDIUM_DEFAULT_WAIT = 10;
+	public static final int LONG_DEFAULT_WAIT = 20;
 	
 	public static final int POLLING_DEFAUTT_WAIT = 2;
 

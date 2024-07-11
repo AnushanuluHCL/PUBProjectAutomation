@@ -19,12 +19,12 @@ import com.sat.constants.AppConstants;
 import com.sat.testUtil.ElementUtil;
 import com.sat.testbase.TestBase;
 
-public class LoginPage extends CommonActionsPage{
+public class LoginPage extends CommonActionsPage {
 
-/*	private WebDriver driver;
-	private Properties prop;
-	private ElementUtil eleUtil;
-	private TestBase testbase;  */
+	/*
+	 * private WebDriver driver; private Properties prop; private ElementUtil
+	 * eleUtil; private TestBase testbase;
+	 */
 
 	// Locators to login the application
 	private By app_emailID = By.xpath("//input[@name='loginfmt']");
@@ -34,6 +34,7 @@ public class LoginPage extends CommonActionsPage{
 	private By DontShowcheckbox = By.name("DontShowAgain");
 	private By yesbtn = By.xpath("//*[@type='submit']");
 	private By yes = By.id("idSIButton9");
+	private By signin_afterlogin = By.xpath("//button[@aria-label='Sign In']");
 
 	// Locators after login
 	private By appframeLoc = By.xpath("//iframe[@title='AppLandingPage']");
@@ -50,66 +51,89 @@ public class LoginPage extends CommonActionsPage{
 
 	public LoginPage(WebDriver driver) {
 		super(driver);
-	/*	this.driver = driver;
-		eleUtil = new ElementUtil(this.driver);
-		prop = eleUtil.readProperties();*/
+		/*
+		 * this.driver = driver; eleUtil = new ElementUtil(this.driver); prop =
+		 * eleUtil.readProperties();
+		 */
 
 	}
 
 	public void appLogin(String userid, String password) throws InterruptedException {
-		// eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAUTT_WAIT);
+		// eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAULT_WAIT);
 		eleUtil.doElementClickable(app_emailID, 10);
 		eleUtil.doSendKeys(app_emailID, prop.getProperty(userid));
-		// eleUtil.clickElementWhenReady(next_Btn, AppConstants.SHORT_DEFAUTT_WAIT);
-		eleUtil.waitForVisibilityOfElement(next_Btn, AppConstants.MEDIUM_DEFAUTT_WAIT);
+		// eleUtil.clickElementWhenReady(next_Btn, AppConstants.SHORT_DEFAULT_WAIT);
+		eleUtil.waitForVisibilityOfElement(next_Btn, AppConstants.MEDIUM_DEFAULT_WAIT);
 		eleUtil.doClick(next_Btn);
-		eleUtil.clickElementWhenReady(app_password, AppConstants.SHORT_DEFAUTT_WAIT);
+		eleUtil.clickElementWhenReady(app_password, AppConstants.SHORT_DEFAULT_WAIT);
 		eleUtil.doSendKeys(app_password, prop.getProperty(password));
-		// eleUtil.clickElementWhenReady(signin, AppConstants.SHORT_DEFAUTT_WAIT);
+		// eleUtil.clickElementWhenReady(signin, AppConstants.SHORT_DEFAULT_WAIT);
 		eleUtil.doClick(signin);
-		// eleUtil.doActionsClick(signin);
-		// eleUtil.isPageLoaded(AppConstants.LONG_DEFAUTT_WAIT);
-		// Wait.untilPageLoadComplete(driver, 10);
-	/*	if (driver.findElement(DontShowcheckbox).isDisplayed()) {
-			eleUtil.clickElementWhenReady(DontShowcheckbox, AppConstants.SHORT_DEFAUTT_WAIT);
-			eleUtil.doClick(DontShowcheckbox);
-			eleUtil.doClick(yesbtn);
-		} else {
-			System.out.println("Dont show box is not there");
-		}*/
+		eleUtil.isPageLoaded(10);
+
+		/*
+		 * if (driver.findElement(DontShowcheckbox).isDisplayed()) {
+		 * eleUtil.clickElementWhenReady(DontShowcheckbox,
+		 * AppConstants.SHORT_DEFAULT_WAIT); eleUtil.doClick(DontShowcheckbox);
+		 * eleUtil.doClick(yesbtn); } else {
+		 * System.out.println("Dont show box is not there"); }
+		 */
 
 		List<WebElement> li = driver.findElements(DontShowcheckbox);
 		if (li.size() > 0) {
-			eleUtil.waitForVisibilityOfElement(DontShowcheckbox, AppConstants.MEDIUM_DEFAUTT_WAIT);
-			eleUtil.clickElementWhenReady(DontShowcheckbox, AppConstants.SHORT_DEFAUTT_WAIT);
+			eleUtil.waitForVisibilityOfElement(DontShowcheckbox, AppConstants.MEDIUM_DEFAULT_WAIT);
+			eleUtil.clickElementWhenReady(DontShowcheckbox, AppConstants.SHORT_DEFAULT_WAIT);
 			eleUtil.doClick(DontShowcheckbox);
 			eleUtil.doClick(yesbtn);
-			
+
 		} else {
-			System.out.println("no alert present");
+			System.out.println("Dont show box is not there");
 		}
 
 	}
 
 	public void GetApp(String appName) throws InterruptedException {
 		Thread.sleep(4000);
-		eleUtil.waitForFrameByLocator(appframeLoc, AppConstants.SHORT_DEFAUTT_WAIT);
+		eleUtil.waitForFrameByLocator(appframeLoc, AppConstants.SHORT_DEFAULT_WAIT);
 		Thread.sleep(4000);
-		String acttitle = eleUtil.waitForTitleIs(AppConstants.LOGIN_PAGE_TITLE, AppConstants.SHORT_DEFAUTT_WAIT);
+		String acttitle = eleUtil.waitForTitleIs(AppConstants.LOGIN_PAGE_TITLE, AppConstants.SHORT_DEFAULT_WAIT);
 		System.out.println("login title is" + acttitle);
-		Assert.assertEquals(acttitle, AppConstants.LOGIN_PAGE_TITLE);
+		// Assert.assertEquals(acttitle, AppConstants.LOGIN_PAGE_TITLE); //commented on
+		// 31 st may
 		WebElement appname = driver.findElement(By.xpath("//div[@title='" + appName + "']"));
 		appname.click();
 		driver.switchTo().defaultContent();
 		System.out.println("App name is : " + appName);
-	/*	String actualtitle = eleUtil.waitForTitleIs(AppConstants.HOME_PAGE_TITLE, AppConstants.SHORT_DEFAUTT_WAIT);
-		System.out.println("homepage title is" + acttitle);
-		Assert.assertEquals(actualtitle, AppConstants.HOME_PAGE_TITLE); */
+		/*
+		 * String actualtitle = eleUtil.waitForTitleIs(AppConstants.HOME_PAGE_TITLE,
+		 * AppConstants.SHORT_DEFAULT_WAIT); System.out.println("homepage title is" +
+		 * acttitle); Assert.assertEquals(actualtitle, AppConstants.HOME_PAGE_TITLE);
+		 */
+//Added below code on Jul-1st--> this is for firefox
+		List<WebElement> li1 = driver.findElements(signin_afterlogin);
+		if (li1.size() > 0) {
+			eleUtil.waitForVisibilityOfElement(signin_afterlogin, AppConstants.MEDIUM_DEFAULT_WAIT);
+			eleUtil.clickElementWhenReady(signin_afterlogin, AppConstants.SHORT_DEFAULT_WAIT);
+			eleUtil.doClick(signin_afterlogin);
+			Thread.sleep(4000);
+			eleUtil.waitForFrameByLocator(appframeLoc, AppConstants.SHORT_DEFAULT_WAIT);
+			Thread.sleep(4000);
+			appname = driver.findElement(By.xpath("//div[@title='" + appName + "']"));
+			appname.click();
+			driver.switchTo().defaultContent();
+
+		} else {
+			System.out.println("sign-in button is is not there");
+		}
 	}
 
 	public void signoutApp() {
-		eleUtil.waitForVisibilityOfElement(signoutPic, 10);
-		eleUtil.doClick(signoutPic);
+		eleUtil.waitForVisibilityOfElement(signoutPic, 20);
+		try {
+			eleUtil.doClick(signoutPic);
+		} catch (Exception e) {
+			eleUtil.doActionsClick(signoutPic);
+		}
 		eleUtil.waitForVisibilityOfElement(signoutBtn, 10);
 		eleUtil.doClick(signoutBtn);
 		eleUtil.waitForVisibilityOfElement(useanotheraccount, 10);

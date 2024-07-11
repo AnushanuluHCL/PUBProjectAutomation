@@ -77,27 +77,27 @@ public class NEAListPage extends CommonActionsPage {
 	}
 
 	public void clcikOnNewButton() {
-		eleUtil.doElementClickable(newBtn, AppConstants.SHORT_DEFAUTT_WAIT);
-		eleUtil.clickElementWhenReady(newBtn, AppConstants.SHORT_DEFAUTT_WAIT);
+		eleUtil.doElementClickable(newBtn, AppConstants.SHORT_DEFAULT_WAIT);
+		eleUtil.clickElementWhenReady(newBtn, AppConstants.SHORT_DEFAULT_WAIT);
 	}
 
 	public void creationOfNEAListRecord(String companyname, String VehicleNum, String Vehicletype, String Capacity,
 			String RegOrDereg) throws InterruptedException {
-		// eleUtil.clickElementWhenReady(newBtn, AppConstants.SHORT_DEFAUTT_WAIT);
-		eleUtil.doClickWithWait(companyName, AppConstants.LONG_DEFAUTT_WAIT);
-		eleUtil.doClearUsingKeys(companyName);
-		eleUtil.doSendKeysWithWait(companyName, getRandomTankercompanmyName(), AppConstants.LONG_DEFAUTT_WAIT);
-		eleUtil.doClearUsingKeys(vehicleNo);
-		eleUtil.doSendKeysWithWait(vehicleNo, getRandomTankerName(), AppConstants.LONG_DEFAUTT_WAIT);
+		// eleUtil.clickElementWhenReady(newBtn, AppConstants.SHORT_DEFAULT_WAIT);
+		eleUtil.doClickWithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
+		eleUtil.doClearUsingKeyswithWait(companyName,AppConstants.LONG_DEFAULT_WAIT );
+		eleUtil.doSendKeysWithWait(companyName, getRandomTankercompanmyName(), AppConstants.LONG_DEFAULT_WAIT);
+		eleUtil.doClearUsingKeyswithWait(vehicleNo,AppConstants.LONG_DEFAULT_WAIT );
+		eleUtil.doSendKeysWithWait(vehicleNo, getRandomTankerName(), AppConstants.LONG_DEFAULT_WAIT);
 		eleUtil.doClearUsingKeys(vehicleType);
 		eleUtil.doSendKeys(vehicleType, Vehicletype);
 		eleUtil.doClearUsingKeys(TankerCapacity);
 		eleUtil.doSendKeys(TankerCapacity, Capacity);
 		eleUtil.doClearUsingKeys(RegOrDeregfield);
 		eleUtil.doSendKeys(RegOrDeregfield, RegOrDereg);
-		// eleUtil.doClearUsingKeys(IUNumField);
-		// eleUtil.doSendKeys(IUNumField, "1212314");
-		// eleUtil.doClick(saveBtn);
+		eleUtil.doClearUsingKeys(IUNumField);
+		eleUtil.doSendKeys(IUNumField, "1212314");
+		eleUtil.doClick(saveBtn);
 		clickOnSaveBtn();
 
 		String SIESGWCCompanyfieldval = eleUtil.doElementGetText(SIESGWCCompanyfield);
@@ -109,8 +109,8 @@ public class NEAListPage extends CommonActionsPage {
 			// c++;
 			try {
 				Thread.sleep(3000);
-				eleUtil.doClickWithWait(refreshBtn, AppConstants.SHORT_DEFAUTT_WAIT);
-				eleUtil.waitForVisibilityOfElement(SIESGWCCompanyfield, AppConstants.SHORT_DEFAUTT_WAIT);
+				eleUtil.doClickWithWait(refreshBtn, AppConstants.SHORT_DEFAULT_WAIT);
+				eleUtil.waitForVisibilityOfElement(SIESGWCCompanyfield, AppConstants.SHORT_DEFAULT_WAIT);
 				SIESGWCCompanyfieldval = eleUtil.doElementGetText(SIESGWCCompanyfield);
 				System.out.println("element clicked");
 				if (!SIESGWCCompanyfieldval.isEmpty()) {
@@ -121,12 +121,12 @@ public class NEAListPage extends CommonActionsPage {
 			}
 
 			catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("Tanker company value is not updating in SIES GWC Company field");
 			}
 		}
 		/*
 		 * Thread.sleep(10000); eleUtil.clickElementWhenReady(refreshBtn,
-		 * AppConstants.LONG_DEFAUTT_WAIT); Thread.sleep(10000); String
+		 * AppConstants.LONG_DEFAULT_WAIT); Thread.sleep(10000); String
 		 * SIESGWCCompanyfieldval = eleUtil.doElementGetText(SIESGWCCompanyfield);
 		 * System.out.println("value is :" + SIESGWCCompanyfieldval);
 		 */
@@ -138,8 +138,8 @@ public class NEAListPage extends CommonActionsPage {
 	}
 
 	public void newrecord() throws InterruptedException {
-		sortTheRecords(createdonCol, NewToOldCol, AppConstants.LONG_DEFAUTT_WAIT);
-		// common.getFirstRecord(firstRecord, AppConstants.LONG_DEFAUTT_WAIT);
+		sortTheRecords(createdonCol, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
+		// common.getFirstRecord(firstRecord, AppConstants.LONG_DEFAULT_WAIT);
 		CommonActionsPage.Tankercompanyname = getTankercompName();
 		System.out.println("Tankercompany  - " + CommonActionsPage.Tankercompanyname);
 		CommonActionsPage.TankerName = getTankerName();
@@ -151,7 +151,7 @@ public class NEAListPage extends CommonActionsPage {
 	public String getTankercompName() {
 		/*
 		 * eleUtil.waitForVisibilityOfElement(SIESGWCCompanyfield,
-		 * AppConstants.MEDIUM_DEFAUTT_WAIT); String SIESGWCCompanyfieldval =
+		 * AppConstants.MEDIUM_DEFAULT_WAIT); String SIESGWCCompanyfieldval =
 		 * eleUtil.doElementGetText(SIESGWCCompanyfield); System.out.println("value=" +
 		 * SIESGWCCompanyfieldval); return SIESGWCCompanyfieldval;
 		 */

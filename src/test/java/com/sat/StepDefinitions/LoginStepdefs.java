@@ -1,5 +1,6 @@
 package com.sat.StepDefinitions;
 
+import java.awt.AWTException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -91,6 +92,23 @@ public class LoginStepdefs extends BaseStepDefs{
 	@And("create a tanker by filling the details")
 	public void create_a_tanker_by_filling_the_details_as(DataTable typeOfTankersdata) {
 		apppage.creationOfTankers(typeOfTankersdata);
+	}
+
+	
+	@And("Open the FormSG URL to create an application")
+	public void open_the_form_sg_url_to_create_an_application() throws AWTException, IOException {
+		apppage.fillTheDetailsByFormSG();
+
+	}
+	
+	@And("create an NEA record through interface")
+	public void create_an_NEA_record_through_interface() {
+		apppage.neaInterface();
+	}
+	
+	@And("logout from the admin credentials")
+	public void logout_from_the_admin_credentials() {
+		loginpage.signoutApp();
 	}
 
 }
