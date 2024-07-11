@@ -4,14 +4,14 @@ Feature: Testing Login Functionality
 Background: Test CRM Login with valid credentials
  		Given User navigates to CRM login page
     When Login to app with "FIO_userid" and "FIO_pwd"
-    And user selects App "DQB - Case Management" 
+    And user selects App "DQB Case Management" 
 
  Scenario Outline: Test to create NEA list record
   When user change the changearea to "GWC Tanker"
   And user selects entity as "NEA List"
   And fill the details "Company_name","Vehicle_Number","<Vehicle_Type>","<Tankers_Capacity>","<Registration_Deregistration>" in the NEA list record form
  	And user selects entity as "Applications"
-	And fill the details in application form for General details "<AddOfCompany>","<AddrOfTanker>","<PhoneNum>","<Email>"
+	And fill the details in application form for General details "<AddrOfTanker>","<PhoneNum>","<Email>"
   And fill the details in application form for Human waste type details "<HW>","<HWType>","<HWPerMonth>"
   And create a tanker by filling the details
     |CapacityOfTanker|WasteType|
@@ -48,5 +48,5 @@ Background: Test CRM Login with valid credentials
   And validate the system triggered email "Permit WRP email" to WRP FD to update the status of Tankers
   And navigate to Close stage and fill the respective details and navigate to next stage 
     Examples:
-   |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfCompany|AddrOfTanker|PhoneNum|Email|HW|HWType|HWPerMonth|
-  	|Tanker|1000|Registration|addr1|addr1|+6512345678|test@gmail.com|Yes|Domestic STPs|100|
+   |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddrOfTanker|PhoneNum|Email|HW|HWType|HWPerMonth|
+  	|Tanker|1000|Registration|addr1|+6512345678|test@gmail.com|Yes|Domestic STPs|100|

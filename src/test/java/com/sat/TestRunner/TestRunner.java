@@ -10,7 +10,7 @@ import io.cucumber.testng.CucumberOptions;
 	publish = true, 
 	strict = true, 
 	plugin = { "pretty","com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" },
-	tags = ("@GWComplaint"))
+	tags = ("@NonComplaince"))
 	// tags = ("@OSIComplaint or @OSSComplaint"))
 
 public class TestRunner extends AbstractTestNGCucumberTests {

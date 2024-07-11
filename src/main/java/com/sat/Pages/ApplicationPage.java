@@ -2,17 +2,22 @@ package com.sat.Pages;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -66,6 +71,7 @@ public class ApplicationPage extends CommonActionsPage {
 			.xpath("//div[@aria-label='Source of Greasy Waste']//button[@aria-label='Toggle menu']");
 	private By TyepeOfGWWaste = By.xpath("//div[text()='Food establishments']");
 	private By GWWastePerMonthField = By.xpath("//input[@aria-label='Greasy Waste Per Month (m3 /mth)']");
+	private By humanwasteTypeHeading = By.xpath("//h2[@title='Human Waste Water']");
 	private By HumanWasteBox = By.xpath("//Select[@aria-label='Human Wastewater']");// visible Text - Yes
 	private By HumanwasteTypeToggleBtn = By
 			.xpath("//div[@aria-label='Human Waste Type']//button[@aria-label='Toggle menu']");
@@ -89,6 +95,43 @@ public class ApplicationPage extends CommonActionsPage {
 	// Locators from case form
 	private By entitynameOnCaseForm = By.xpath("(//div[@col-id='customerid'])[2]");
 	private By caseidOnCaseForm = By.xpath("(//div[@col-id='title'])[2]");
+
+	// Locators for FormSG
+	private By newAppselection = By.xpath(
+			"//div[contains(text(),'Please upload your General Waste')]/ancestor::div[contains(@class,'chakra-form-control')]//a");
+	private By companyname = By.xpath("//input[contains(@aria-label,'Company Name (for new applications)')]");
+	private By telephoneNum = By.xpath("(//input[contains(@autocomplete,'tel')])[1]");
+	private By addrYard1 = By.xpath("//input[contains(@aria-label,'Address of tanker yard #1')]");
+	private By addrYard2 = By.xpath("//input[contains(@aria-label,'Address of tanker yard #2')]");
+	private By houseNo = By.xpath("//input[contains(@aria-label,'Block / House Number')]");
+	private By roadNo = By.xpath("//input[contains(@aria-label,'Road Name')]");
+	private By unitNo = By.xpath("//input[contains(@aria-label,'Unit Number')]");
+	private By postalcode = By.xpath("//input[contains(@aria-label,'Postal Code')]");
+	private By salutationCR = By.xpath("(//input[contains(@placeholder,'Select an option')])[1]");
+	private By nameOfCR = By.xpath("//input[contains(@aria-label,'Name of Company Representative')]");
+	private By designationOfCR = By.xpath("//input[contains(@aria-label,'Designation')]");
+	private By emailOfCR = By
+			.xpath("//span[contains(@id,'verifiable')]//following-sibling::input[contains(@autocomplete,'email')]");
+	private By mobileNo = By.xpath("(//input[contains(@autocomplete,'tel')])[2]");
+	private By salutationMD = By.xpath("(//input[contains(@placeholder,'Select an option')])[2]");
+	private By nameOfMD = By.xpath("//input[contains(@aria-label,'Name of company')]");
+	private By designationOfMD = By.xpath("//input[contains(@aria-label,'Designation')]");
+	private By emailOfMD = By
+			.xpath("//span[contains(@id,'verifiable')]//following-sibling::input[contains(@autocomplete,'email')]");
+
+	// "10.Salutation"
+	// input[contains(@placeholder,'Select an
+	// option')]/ancestor::div[text()='Salutation']
+	// input[@placeholder="Select an
+	// option"]/ancestor::div[@class='css-79elbk']/preceding-sibling::div//span[text()='10.']
+	// input[@placeholder="Select an
+	// option"]/ancestor::div[@class='css-79elbk']/parent::div/preceding-sibling::div//h2
+
+	// Locators for WRMS
+	private By siesImportEntity = By.xpath("//span[text()='SIES Import']");
+	private By TemplateField = By.xpath("//select[@class='search-text-input']");
+	private By chooseFileOption = By.xpath("//input[@id='file_uploadedfile']");
+	private By uploadBtn = By.xpath("//button[text()='Upload']");
 
 	public ApplicationPage(WebDriver driver) {
 		super(driver);
@@ -114,14 +157,18 @@ public class ApplicationPage extends CommonActionsPage {
 		eleUtil.doClick(NameOfCompanyField);
 		eleUtil.doClearUsingKeys(NameOfCompanyField);
 		eleUtil.doSendKeysWithWait(NameOfCompanyField, CommonActionsPage.Tankercompanyname,
-				AppConstants.SHORT_DEFAUTT_WAIT);
+				AppConstants.SHORT_DEFAULT_WAIT);
 
-		/* eleUtil.doClearUsingKeys(addressField);
-		 eleUtil.doSendKeysWithWait(addressField, addrval, AppConstants.SHORT_DEFAUTT_WAIT);*/
+		/*
+		 * eleUtil.doClearUsingKeys(addressField);
+		 * eleUtil.doSendKeysWithWait(addressField, addrval,
+		 * AppConstants.SHORT_DEFAULT_WAIT);
+		 */
 		eleUtil.doClearUsingKeys(addressOfTankerYardField);
 		eleUtil.doSendKeys(addressOfTankerYardField, addryard);
 		eleUtil.doClearUsingKeys(phonenumField);
 		eleUtil.doSendKeys(phonenumField, phonenumval);
+		//eleUtil.scrollUsingRobotClass();
 		eleUtil.doClearUsingKeys(emailField);
 		eleUtil.doSendKeys(emailField, emailval);
 		/*
@@ -183,8 +230,20 @@ public class ApplicationPage extends CommonActionsPage {
 	}
 
 	public void amountOfHWWastetypeTanker(String HWSelected, String HWType, String HWPerMonth) {
-		eleUtil.scrollUsingRobotClass();
-		eleUtil.waitForVisibilityOfElement(HumanWasteBox, 10);
+		// eleUtil.scrollUsingRobotClass();
+		// eleUtil.waitForVisibilityOfElement(HumanWasteBox, 30);
+		// jsutil.scrollIntoView(driver.findElement(HumanWasteBox));
+		// eleUtil.waitForVisibilityOfElement(humanwasteTypeHeading, 60);
+		// eleUtil.scrollUsingRobotClass();
+		// jsutil.scrollPageDown();
+		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		try {
+			eleUtil.waitForVisibilityOfElement(HumanWasteBox, 10);
+		} catch (NoSuchElementException e) {
+			System.out.println("HumanWasteBox not found even after scrolling.");
+			return; // Exit the method or handle the error gracefully
+		}
+		eleUtil.doElementClickable(HumanWasteBox, 30);
 		eleUtil.createSelect(HumanWasteBox);
 		eleUtil.doSelectDropDownByVisibleText(HumanWasteBox, HWSelected);
 		jsutil.clickElementByJS(driver.findElement(HumanwasteTypeToggleBtn));
@@ -195,8 +254,15 @@ public class ApplicationPage extends CommonActionsPage {
 	}
 
 	public void amountOfOSSWastetypeTanker(String OSSSelected, String OSSPerMonth) {
-		eleUtil.scrollUsingRobotClass();
-		eleUtil.waitForVisibilityOfElement(OSShipsBox, 50);
+		//eleUtil.scrollUsingRobotClass();
+		//eleUtil.waitForVisibilityOfElement(OSShipsBox, 50);
+		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		try {
+			eleUtil.waitForVisibilityOfElement(OSShipsBox, 10);
+		} catch (NoSuchElementException e) {
+			System.out.println("OSShipsBox not found even after scrolling.");
+			return; // Exit the method or handle the error gracefully
+		}
 		eleUtil.createSelect(OSShipsBox);
 		eleUtil.doSelectDropDownByVisibleText(OSShipsBox, OSSSelected);
 		eleUtil.doClearUsingKeys(OSShipsPerMonthField);
@@ -206,7 +272,15 @@ public class ApplicationPage extends CommonActionsPage {
 
 	public void amountOfOSIWastetypeTanker(String OSISelected, String OSIPerMonth) {
 		eleUtil.scrollUsingRobotClass();
-		eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 50);
+		eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 20);
+		/*eleUtil.waitForPresenceOfElement(By.tagName("body"), 20);
+		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		try {
+			eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 10);
+		} catch (NoSuchElementException e) {
+			System.out.println("OSIndustriesBox not found even after scrolling.");
+			return; // Exit the method or handle the error gracefully
+		}*/
 		eleUtil.createSelect(OSIndustriesBox);
 		eleUtil.doSelectDropDownByVisibleText(OSIndustriesBox, OSISelected);
 		eleUtil.doClearUsingKeys(OSIndustriesPerMonthField);
@@ -268,8 +342,8 @@ public class ApplicationPage extends CommonActionsPage {
 		for (Map<String, String> form : data) {
 			// String capacity = form.get("CapacityOfTanker");
 			String wastetype = form.get("WasteType");
-			// eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAUTT_WAIT);
-			eleUtil.doClickWithWait(newAppTankerBtn, AppConstants.MEDIUM_DEFAUTT_WAIT);
+			// eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAULT_WAIT);
+			eleUtil.doClickWithWait(newAppTankerBtn, AppConstants.MEDIUM_DEFAULT_WAIT);
 			try {// need to remove this code
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -287,9 +361,13 @@ public class ApplicationPage extends CommonActionsPage {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("tanker number from Applicationtanker - " + CommonActionsPage.TankerName);
+			// System.out.println("tanker number from Applicationtanker - " +
+			// CommonActionsPage.TankerName);
 			eleUtil.doClearUsingKeys(capacityField);
-			eleUtil.doSendKeys(capacityField, CommonActionsPage.TankerCapacity);
+			String stringWithCommas = CommonActionsPage.TankerCapacity;
+			String stringWithoutCommas = stringWithCommas.replaceAll(",", "");
+			// eleUtil.doSendKeys(capacityField, CommonActionsPage.TankerCapacity);
+			eleUtil.doSendKeys(capacityField, stringWithoutCommas);
 			eleUtil.doClick(typeOfWastedropdown);
 			WebElement ele = driver.findElement(By.xpath("//option[text()='" + wastetype + "']"));
 			ele.click();
@@ -313,7 +391,7 @@ public class ApplicationPage extends CommonActionsPage {
 
 	public void approveApp() throws InterruptedException {
 		// selectFirstRecord(firstRecord, 20);
-		//eleUtil.doClick(refreshBtn);
+		// eleUtil.doClick(refreshBtn);
 		eleUtil.isPageLoaded(50);
 		eleUtil.waitForVisibilityOfElement(createdApp, 50);
 		eleUtil.doElementClickable(gwccomnpanydropdpwn, 50);
@@ -328,18 +406,22 @@ public class ApplicationPage extends CommonActionsPage {
 		long startTime = System.currentTimeMillis();
 		while (!flag && (System.currentTimeMillis() - startTime) < 60000) {
 			try {
-				eleUtil.doClickWithWait(refreshBtn, AppConstants.SHORT_DEFAUTT_WAIT);
+				eleUtil.doClickWithWait(refreshBtn, AppConstants.SHORT_DEFAULT_WAIT);
 				eleUtil.waitForVisibilityOfElement(createdApp, 30);
 				if (driver.findElement(createdApp).isDisplayed()) {
-					// flag = true;
+					flag = true;
 					break;
 				}
-			} catch (Exception e) {
+			} catch (TimeoutException e) {
+				System.out.println("Timeoutexception occured" + e.getMessage());
+			}
+
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		selectFirstRecord(firstRecord, 20);
-		eleUtil.doClickWithWait(cretecaseBtn, AppConstants.LONG_DEFAUTT_WAIT);
+		eleUtil.doClickWithWait(cretecaseBtn, AppConstants.LONG_DEFAULT_WAIT);
 		// eleUtil.doActionsClick(cretecaseBtn);
 		eleUtil.isPageLoaded(100);
 		eleUtil.acceptJSAlert(50);
@@ -348,8 +430,8 @@ public class ApplicationPage extends CommonActionsPage {
 
 	/*
 	 * public void creationOfTankers(String capacity, String wastetype) {
-	 * eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAUTT_WAIT);
-	 * eleUtil.doClickWithWait(newAppTankerBtn, AppConstants.MEDIUM_DEFAUTT_WAIT);
+	 * eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAULT_WAIT);
+	 * eleUtil.doClickWithWait(newAppTankerBtn, AppConstants.MEDIUM_DEFAULT_WAIT);
 	 * eleUtil.doSendKeys(regNoFiled, getRandomTankerName());
 	 * eleUtil.doSendKeys(capacityFiled, capacity);
 	 * eleUtil.createSelect(typeOfWastedropdown);
@@ -384,6 +466,95 @@ public class ApplicationPage extends CommonActionsPage {
 			break;
 		}
 		return itemXpath;
+
+	}
+
+	public void fillTheDetailsByFormSG() throws AWTException, IOException {
+
+		jsutil.switchTab();
+		driver.get("https://uat.form.gov.sg/65799f2bc23adc00122846f9");
+		eleUtil.scrollUsingRobotClass();
+		eleUtil.isPageLoaded(30);
+		eleUtil.doElementClickable(By.xpath("//input[@value='Application for new permit']//parent::label"), 20);
+
+		driver.findElement(By.xpath("//input[@value='Application for new permit']//parent::label")).click();
+		// eleUtil.waitForVisibilityOfElement(By.xpath("//span[text()='Application for
+		// new permit']/preceding-sibling::span"), 20);
+		// ele.click();
+		// eleUtil.doActionsClick(By.xpath("//input[@value='Application for new
+		// permit']//parent::label"));
+		jsutil.scrollIntoView(driver.findElement(By.xpath(
+				"//div[contains(text(),'Please upload your General Waste Collector')]/ancestor::div[contains(@class,'chakra-form-control')]//div//a[text()='Choose file']")));
+		eleUtil.doElementClickable(By.xpath(
+				"//div[contains(text(),'Please upload your General Waste Collector')]/ancestor::div[contains(@class,'chakra-form-control')]//div//a[text()='Choose file']"),
+				20);
+
+		// driver.findElement(By.xpath("//div[contains(text(),'Please upload your
+		// General Waste
+		// Collector')]/ancestor::div[contains(@class,'chakra-form-control')]//div//a[text()='Choose
+		// file']")).sendKeys("C:\\Users\\sriswathianusha.nulu\\Documents\\Test.txt");
+		// driver.findElement(By.xpath("//div[contains(text(),'Please upload your
+		// General
+		// Waste')]/ancestor::div[contains(@class,'chakra-form-control')]//a")).click();
+		// Actions a=new Actions(driver);
+		// a.moveToElement(driver.findElement(By.xpath("(//a[contains(text(),'Choose
+		// file')])[1]"))).click().build().perform();
+		// div[contains(text(),'Please upload yoGeneral Waste
+		// Collector')]/ancestor::div[contains(@class,'chakra-form-control')]//div//a[text()='Choosefile']
+		// div[contains(text(),'Please upload your General
+		// Waste')]/ancestor::div[contains(@class,'chakra-form-control')]//a
+		jsutil.clickElementByJS(driver.findElement(By.xpath(
+				"//div[contains(text(),'Please upload your General Waste')]/ancestor::div[contains(@class,'chakra-form-control')]//a")));
+
+		// Runtime.getRuntime().exec("C:\\Users\\sriswathianusha.nulu\\Desktop\\autoscript\\fileupload.exe");
+
+		// eleUtil.doActionsClick(By.xpath("//div[contains(text(),'Please upload your
+		// General Waste
+		// Collector')]/ancestor::div[contains(@class,'chakra-form-control')]//div//a[text()='Choose
+		// file']"));
+		// driver.findElement(By.xpath("//div[contains(text(),'Please upload your
+		// General Waste
+		// Collector')]/ancestor::div[contains(@class,'chakra-form-control')]//div//a[text()='Choose
+		// file']"));
+		/*
+		 * String filePath = "C:\\Users\\sriswathianusha.nulu\\Documents\\Test.txt";
+		 * JavascriptExecutor jsx = (JavascriptExecutor) driver; jsx.executeScript(
+		 * "document.evaluate('//div[contains(text(),'Please upload your General Waste Collector')]/ancestor::div[contains(@class,'chakra-form-control')]//div//a[text()='Choose file']').value='"
+		 * + filePath + "';");
+		 */
+
+		System.out.println("Open choose file option");
+		String filePath = "C:\\Users\\sriswathianusha.nulu\\Documents\\Test.txt";
+		Robot robot = new Robot();
+		robot.delay(2000);
+		StringSelection stringselection = new StringSelection(filePath);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, null);
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		jsutil.switchToActiveTab();
+
+	}
+
+	public void neaInterface() {
+		eleUtil.isPageLoaded(30);
+		eleUtil.waitForVisibilityOfElement(siesImportEntity, 30);
+		eleUtil.doClick(siesImportEntity);
+		// driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@id='FullPageWebResource']")));
+		eleUtil.waitForFrameByIDOrName("FullPageWebResource", 30);
+		// eleUtil.waitForVisibilityOfElement(TemplateField, 30);
+		eleUtil.createSelect(TemplateField);
+		eleUtil.doSelectDropDownByVisibleText(TemplateField, "WRMS (NEA)");
+		eleUtil.doSendKeys(chooseFileOption,
+				"C:\\Users\\sriswathianusha.nulu\\newworkspace\\AutomationFramework-main\\src\\test\\resources\\testdata\\WRMS_VehicleRegistrationDetails_20240426_1130.csv");
+	//	C:\\Users\\sriswathianusha.nulu\\Desktop\\NEA_WRMS_Tanker_Registration_DERegistration_List.xlsx
+		
+		eleUtil.doClick(uploadBtn);
+
+		// a[text()='SIES Uploads']
 
 	}
 

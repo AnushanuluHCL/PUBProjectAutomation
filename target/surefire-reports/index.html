@@ -103,7 +103,7 @@
                     <div class="method-list-content passed suite-Suite">
                       <span>
                         <img src="passed.png" width="3%"/>
-                        <a href="#" panel-name="suite-Suite" title="com.sat.TestRunner.TestRunner" class="method navigator-link" hash-for-method="runScenario(&quot;Test to create NEA list record&quot;, &quot;Optional[Testing Login Functionality]&quot;)">runScenario("Test to create NEA list record", "Optional[Testing Login Functionality]")</a> <!-- method navigator-link -->
+                        <a href="#" panel-name="suite-Suite" title="com.sat.TestRunner.TestRunner" class="method navigator-link" hash-for-method="runScenario(&quot;Generating a permit by rework on the case after SO reject the Non-Compliance case&quot;, &quot;Optional[Testi...)">runScenario("Generating a permit by rework on the case after SO reject the Non-Compliance case", "Optional[Testi...)</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                     </div> <!-- method-list-content passed suite-Suite -->
@@ -126,10 +126,10 @@
             <div class="main-panel-content rounded-window-bottom">
               <div class="method">
                 <div class="method-content">
-                  <a name="runScenario(&quot;Test to create NEA list record&quot;, &quot;Optional[Testing Login Functionality]&quot;)">
-                  </a> <!-- runScenario("Test to create NEA list record", "Optional[Testing Login Functionality]") -->
+                  <a name="runScenario(&quot;Generating a permit by rework on the case after SO reject the Non-Compliance case&quot;, &quot;Optional[Testi...)">
+                  </a> <!-- runScenario("Generating a permit by rework on the case after SO reject the Non-Compliance case", "Optional[Testi...) -->
                   <span class="method-name">runScenario</span>
-                  <span class="parameters">("Test to create NEA list record","Optional[Testing Login Functionality]")</span>
+                  <span class="parameters">("Generating a permit by rework on the case after SO reject the Non-Compliance case","Optional[Testing Non-Compalince end to end flow]")</span>
                   <em>
 (Runs Cucumber Scenarios)                  </em>
                 </div> <!-- method-content -->
@@ -146,6 +146,9 @@
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!DOCTYPE suite SYSTEM &quot;https://testng.org/testng-1.0.dtd&quot;&gt;
 &lt;suite name=&quot;Suite&quot; guice-stage=&quot;DEVELOPMENT&quot; verbose=&quot;0&quot;&gt;
+  &lt;listeners&gt;
+    &lt;listener class-name=&quot;com.sat.listeners.ExtentReportListener&quot;/&gt;
+  &lt;/listeners&gt;
   &lt;test thread-count=&quot;5&quot; name=&quot;Test&quot; verbose=&quot;0&quot;&gt;
     &lt;classes&gt;
       &lt;class name=&quot;com.sat.TestRunner.TestRunner&quot;/&gt;
@@ -200,12 +203,12 @@ data.addRows(1);
 data.setCell(0, 0, 0)
 data.setCell(0, 1, 'runScenario')
 data.setCell(0, 2, 'com.sat.TestRunner.TestRunner')
-data.setCell(0, 3, 409435);
+data.setCell(0, 3, 496543);
 window.suiteTableData['Suite']= { tableData: data, tableDiv: 'times-div-Suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 6 minutes</span>
+              <span class="suite-total-time">Total running time: 8 minutes</span>
               <div id="times-div-Suite">
               </div> <!-- times-div-Suite -->
             </div> <!-- times-div -->
@@ -237,12 +240,12 @@ return data;
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-class before -->
               <div class="test-method">
-                <span class="method-name">runScenario("Test to create NEA list record", "Optional[Testing Login Functionality]")</span>
-                <span class="method-start">1148 ms</span>
+                <span class="method-name">runScenario("Generating a permit by rework on the case after SO reject the Non-Compliance case", "Optional[Testi...)</span>
+                <span class="method-start">842 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-class after">
                 <span class="method-name">tearDownClass</span>
-                <span class="method-start">410590 ms</span>
+                <span class="method-start">497393 ms</span>
               </div> <!-- configuration-class after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

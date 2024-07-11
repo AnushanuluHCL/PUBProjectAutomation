@@ -667,6 +667,13 @@ public class ElementUtil {
 	public void doClearUsingKeys(By locator) {
 		getElement(locator).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 	}
+	
+	public void doClearUsingKeyswithWait(By locator,int timeOut ) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+		wait.until(ExpectedConditions.elementToBeClickable(locator));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		getElement(locator).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+	}
 
 	public Properties readProperties() {
 		try {
@@ -716,10 +723,15 @@ public class ElementUtil {
 		try {
 			robot = new Robot();
 			robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+			robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+			
 		} catch (AWTException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("scroll is not working "+e.getStackTrace());
 		}
 	}
+	
+	
 
 }
