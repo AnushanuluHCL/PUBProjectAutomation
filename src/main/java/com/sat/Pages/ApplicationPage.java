@@ -32,6 +32,7 @@ import com.sat.testbase.TestBase;
 import io.cucumber.datatable.DataTable;
 
 public class ApplicationPage extends CommonActionsPage {
+	int x = 0;
 	/*
 	 * private WebDriver driver; private Properties prop; private ElementUtil
 	 * eleUtil; private TestBase testbase; private JavaScriptUtil jsutil; private
@@ -168,7 +169,8 @@ public class ApplicationPage extends CommonActionsPage {
 		eleUtil.doSendKeys(addressOfTankerYardField, addryard);
 		eleUtil.doClearUsingKeys(phonenumField);
 		eleUtil.doSendKeys(phonenumField, phonenumval);
-		//eleUtil.scrollUsingRobotClass();
+		// eleUtil.scrollUsingRobotClass();
+		eleUtil.waitForVisibilityOfElement(emailField, 20);
 		eleUtil.doClearUsingKeys(emailField);
 		eleUtil.doSendKeys(emailField, emailval);
 		/*
@@ -254,8 +256,8 @@ public class ApplicationPage extends CommonActionsPage {
 	}
 
 	public void amountOfOSSWastetypeTanker(String OSSSelected, String OSSPerMonth) {
-		//eleUtil.scrollUsingRobotClass();
-		//eleUtil.waitForVisibilityOfElement(OSShipsBox, 50);
+		// eleUtil.scrollUsingRobotClass();
+		// eleUtil.waitForVisibilityOfElement(OSShipsBox, 50);
 		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
 		try {
 			eleUtil.waitForVisibilityOfElement(OSShipsBox, 10);
@@ -273,14 +275,14 @@ public class ApplicationPage extends CommonActionsPage {
 	public void amountOfOSIWastetypeTanker(String OSISelected, String OSIPerMonth) {
 		eleUtil.scrollUsingRobotClass();
 		eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 20);
-		/*eleUtil.waitForPresenceOfElement(By.tagName("body"), 20);
-		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
-		try {
-			eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 10);
-		} catch (NoSuchElementException e) {
-			System.out.println("OSIndustriesBox not found even after scrolling.");
-			return; // Exit the method or handle the error gracefully
-		}*/
+		/*
+		 * eleUtil.waitForPresenceOfElement(By.tagName("body"), 20);
+		 * driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN); try {
+		 * eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 10); } catch
+		 * (NoSuchElementException e) {
+		 * System.out.println("OSIndustriesBox not found even after scrolling.");
+		 * return; // Exit the method or handle the error gracefully }
+		 */
 		eleUtil.createSelect(OSIndustriesBox);
 		eleUtil.doSelectDropDownByVisibleText(OSIndustriesBox, OSISelected);
 		eleUtil.doClearUsingKeys(OSIndustriesPerMonthField);
@@ -389,12 +391,51 @@ public class ApplicationPage extends CommonActionsPage {
 		System.out.println("saving the application");
 	}
 
+	public void creationOfMultipleTankers(DataTable diftypeOfTankersdata) throws InterruptedException {
+		List<Map<String, String>> data = diftypeOfTankersdata.asMaps(String.class, String.class);
+		System.out.println("data size is"+data.size());
+		for (Map<String, String> form : data) {
+			x = x + 1;
+			// String tankernmae = form.get("Tanker_Name");
+			// String capacity = form.get("CapacityOfTanker");
+			String wastetype = form.get("WasteType");
+			// eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAULT_WAIT);
+			eleUtil.doClickWithWait(newAppTankerBtn, AppConstants.MEDIUM_DEFAULT_WAIT);
+			Thread.sleep(3000);
+			eleUtil.doElementClickable(regNoFiled, 10);
+			eleUtil.doActionsClick(regNoFiled);
+			eleUtil.doClearUsingKeys(regNoFiled);
+			// eleUtil.doSendKeys(regNoFiled, tankernmae);
+			eleUtil.doSendKeys(regNoFiled, CommonActionsPage.tankerNumber.get(x));
+			Thread.sleep(3000);
+			eleUtil.doClearUsingKeys(capacityField);
+			// eleUtil.doSendKeys(capacityField, capacity);
+			eleUtil.doSendKeys(capacityField, CommonActionsPage.tankcapacity.get(x));
+			eleUtil.doClick(typeOfWastedropdown);
+			WebElement ele = driver.findElement(By.xpath("//option[text()='" + wastetype + "']"));
+			ele.click();
+			eleUtil.doElementClickable(saveCloseBtn, 10);
+			eleUtil.doClick(saveCloseBtn);
+		}
+		System.out.println("All tankers are created");
+		eleUtil.doElementClickable(saveCloseBtn, 10);
+		eleUtil.isPageLoaded(30);
+		try {
+			Thread.sleep(2000);
+			clickonSaveAndCloseBtn();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("saving the application");
+	}
+
 	public void approveApp() throws InterruptedException {
 		// selectFirstRecord(firstRecord, 20);
 		// eleUtil.doClick(refreshBtn);
 		eleUtil.isPageLoaded(50);
 		eleUtil.waitForVisibilityOfElement(createdApp, 50);
-		eleUtil.doElementClickable(gwccomnpanydropdpwn, 50);
+		eleUtil.doElementClickable(gwccomnpanydropdpwn, 100);
 		eleUtil.doClick(gwccomnpanydropdpwn);
 		eleUtil.doClick(filterBy);
 
@@ -550,8 +591,8 @@ public class ApplicationPage extends CommonActionsPage {
 		eleUtil.doSelectDropDownByVisibleText(TemplateField, "WRMS (NEA)");
 		eleUtil.doSendKeys(chooseFileOption,
 				"C:\\Users\\sriswathianusha.nulu\\newworkspace\\AutomationFramework-main\\src\\test\\resources\\testdata\\WRMS_VehicleRegistrationDetails_20240426_1130.csv");
-	//	C:\\Users\\sriswathianusha.nulu\\Desktop\\NEA_WRMS_Tanker_Registration_DERegistration_List.xlsx
-		
+		// C:\\Users\\sriswathianusha.nulu\\Desktop\\NEA_WRMS_Tanker_Registration_DERegistration_List.xlsx
+
 		eleUtil.doClick(uploadBtn);
 
 		// a[text()='SIES Uploads']

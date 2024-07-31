@@ -13,6 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
 import com.sat.constants.AppConstants;
@@ -83,7 +84,9 @@ public class LoginPage extends CommonActionsPage {
 		if (li.size() > 0) {
 			eleUtil.waitForVisibilityOfElement(DontShowcheckbox, AppConstants.MEDIUM_DEFAULT_WAIT);
 			eleUtil.clickElementWhenReady(DontShowcheckbox, AppConstants.SHORT_DEFAULT_WAIT);
-			eleUtil.doClick(DontShowcheckbox);
+			Actions action=new Actions(driver);
+			action.moveToElement(driver.findElement(DontShowcheckbox)).click().build().perform();
+			//eleUtil.doClick(DontShowcheckbox);
 			eleUtil.doClick(yesbtn);
 
 		} else {
@@ -93,9 +96,9 @@ public class LoginPage extends CommonActionsPage {
 	}
 
 	public void GetApp(String appName) throws InterruptedException {
-		Thread.sleep(4000);
-		eleUtil.waitForFrameByLocator(appframeLoc, AppConstants.SHORT_DEFAULT_WAIT);
-		Thread.sleep(4000);
+		Thread.sleep(6000);
+		eleUtil.waitForFrameByLocator(appframeLoc, AppConstants.MEDIUM_DEFAULT_WAIT);
+		Thread.sleep(6000);
 		String acttitle = eleUtil.waitForTitleIs(AppConstants.LOGIN_PAGE_TITLE, AppConstants.SHORT_DEFAULT_WAIT);
 		System.out.println("login title is" + acttitle);
 		// Assert.assertEquals(acttitle, AppConstants.LOGIN_PAGE_TITLE); //commented on
