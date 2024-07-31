@@ -59,13 +59,18 @@ public class LoginStepdefs extends BaseStepDefs{
 		common.selectEntity(entityname);
 	}
 
-	@And("fill the details {string},{string},{string},{string},{string} in the NEA list record form")
+	@And("fill the details {string},{string},{string},{string},{string},{string} in the NEA list record form")
 	public void fill_the_details_in_the_NEA_list_record_form(String companyname, String VehicleNum, String Vehicletype,
-			String Capacity, String RegOrDereg) throws InterruptedException {
+			String Capacity, String RegOrDereg, String iteration) throws InterruptedException {
 		neapage.clcikOnNewButton();
-		neapage.creationOfNEAListRecord(companyname, VehicleNum, Vehicletype, Capacity, RegOrDereg);
+		neapage.creationOfNEAListRecord(companyname, VehicleNum, Vehicletype, Capacity, RegOrDereg, iteration);
 		//neapage.newrecord();
 		
+	}
+	
+	@And("fill the details in the NEA list record form")
+	public void fill_the_details_in_the_NEA_list_record_form(DataTable Tankerdetails) throws InterruptedException {
+		neapage.creationOfNEARecordmultiple(Tankerdetails);
 	}
 
 	@And("fill the details in application form for General details {string},{string},{string}")
@@ -93,6 +98,13 @@ public class LoginStepdefs extends BaseStepDefs{
 	public void create_a_tanker_by_filling_the_details_as(DataTable typeOfTankersdata) {
 		apppage.creationOfTankers(typeOfTankersdata);
 	}
+	
+	@And("create tankers by filling the details")
+	public void create_tankers_by_filling_the_details(DataTable typeOfTankersdata) throws InterruptedException {
+		apppage.creationOfMultipleTankers(typeOfTankersdata);
+	}
+	
+	
 
 	
 	@And("Open the FormSG URL to create an application")

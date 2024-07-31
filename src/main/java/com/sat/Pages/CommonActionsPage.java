@@ -3,7 +3,9 @@ package com.sat.Pages;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,9 +30,13 @@ public class CommonActionsPage {
 
 	public static List<String> WOnumber;
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
-			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO,case_SO, case_AO;
-	private static HashMap<String, String> sharedValues = new HashMap<>();
-	private static HashMap<String, List<String>> sharedValuesList = new HashMap<>();
+			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO;
+	private static Map<String, String> sharedValues = new HashMap<>();
+	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
+	protected static Map<Integer, String> tankerNumber = new HashMap<>();
+	protected static Map<Integer, String> tankcapacity = new HashMap<>();
+	protected static Map<String, Integer> tankerNumberSize = new HashMap<>();
+	protected static Map<String, String> permitnums = new TreeMap<>();
 
 	private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
 	private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
@@ -61,9 +67,24 @@ public class CommonActionsPage {
 	public static String getSharedValue(String key) {
 		return sharedValues.get(key);
 	}
-	
+
+	public static void tankerNumber(Integer key, String value) {
+		tankerNumber.put(key, value);
+	}
+
+	public static String tankerNumber(String key) {
+		return tankerNumber.get(key);
+	}
+
+	public static Integer tankerNumberSize(String key, Integer value) {
+		return tankerNumberSize.put(key, value);
+	}
+	public static String permitnums(String key, String value) {
+		return permitnums.put(key, value);
+	}
+
 	public static void setSharedValuesList(String key, List<String> value) {
-		List<String> vals=new ArrayList<>();
+		List<String> vals = new ArrayList<>();
 		sharedValuesList.put(key, vals);
 	}
 
@@ -161,6 +182,5 @@ public class CommonActionsPage {
 		nameoftheentity.click();
 		// span[text()='" + entityname + "']
 	}
-
 
 }

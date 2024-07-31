@@ -66,6 +66,7 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 
 	@And("search and open the case")
 	public void search_and_open_the_case() throws InterruptedException {
+		// casepage.openACase();//later point this is not required
 		casepage.searchACase();
 		casepage.caseFIOSOAONames();
 	}
@@ -92,7 +93,8 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 	}
 
 	@And("go to Service tasks tab and fill and complete the checklist as {string}")
-	public void go_to_Service_tasks_tab_and_fill_and_complet_the_checklist_as(String outcome) {
+	public void go_to_Service_tasks_tab_and_fill_and_complet_the_checklist_as(String outcome)
+			throws InterruptedException {
 		// casepage.fillTheChecklistquestions(Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10,
 		// Q11, Q12, Q13, Q14, Q15, Q16, Q17,Ack);
 		casepage.fillTheChecklistquestions(outcome);
@@ -107,7 +109,7 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 	@And("verify the WO status field is {string} and verify tanker Iscomplaint? field value as {string} in work order form")
 	public void verify_the_wo_status_field_is_and_verify_tanker_iscomplaint_field_value_as_in_work_order_form(
 			String status, String iscomplaint) {
-		casepage.complaincecheckInWorkorder(status, iscomplaint);
+		casepage.complaincecheckInWorkorderAnusha(status, iscomplaint);
 	}
 
 	@And("verify whether case outcome is complaince by checking Is complaint? field value as {string} in case form")
@@ -152,19 +154,21 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 		casepage.completeInspectionStage();
 		loginpage.signoutApp();
 	}
-	
+
 	@And("verify that {string} mail is generated once Iscomplaint? field value updated to No")
-	public void verify_that_mail_is_generated_once_Iscomplaint_field_value_updated_to_No(String mailType) throws InterruptedException, ParseException {
-		casepage.mailGeneratedOrNot(mailType);	
+	public void verify_that_mail_is_generated_once_Iscomplaint_field_value_updated_to_No(String mailType)
+			throws InterruptedException, ParseException {
+		casepage.mailGeneratedOrNot(mailType);
 	}
 
 	@And("verify that inspection report is generated")
 	public void verify_that_inspection_report_is_generated() {
 		casepage.inspectionReportCheck();
 	}
-	
+
 	@And("create a new manual WO to create reinspection of the tanker again")
-	public void create_a_new_manual_WO_to_create_reinspection_of_the_tanker_again() throws ParseException, InterruptedException {
+	public void create_a_new_manual_WO_to_create_reinspection_of_the_tanker_again()
+			throws ParseException, InterruptedException {
 		casepage.manualWOCreation();
 		casepage.manualBookableResource();
 	}
@@ -190,12 +194,17 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 
 	@And("Validate that SO get notified by case\\/WO complaint notification")
 	public void validate_that_so_get_notified_by_case_wo_complaint_notification() throws InterruptedException {
-		casepage.validateSOReviewNotification();
+		casepage.validateCaseComplaintNotification();
 	}
 
 	@And("Validate that SO get notified to approve the case")
 	public void validate_that_so_get_notified_to_approve_the_case() throws InterruptedException {
-		casepage.validateCaseComplaintNotification();
+		casepage.validateSOReviewNotification();
+	}
+
+	@And("Validate that SO get notified by WO complaint notification")
+	public void Validate_that_SO_get_notified_by_WO_complaint_notification() throws InterruptedException {
+		casepage.validateWOComplaintNotification();
 	}
 
 	@And("navigate to SO Review stage and fill the respective details and navigate to next stage")
@@ -206,12 +215,18 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 
 	@And("Validate that AO get notified by case\\/WO complaint notification")
 	public void validate_that_AO_get_notified_by_case_wo_complaint_notification() throws InterruptedException {
-		casepage.validateSOReviewNotification();
+		casepage.validateCaseComplaintNotification();
 	}
 
 	@And("Validate that AO get notified to approve the case")
 	public void validate_that_AO_get_notified_to_approve_the_case() throws InterruptedException {
-		casepage.validateCaseComplaintNotification();
+		casepage.validateSOReviewNotification();
+		;
+	}
+
+	@And("Validate that AO get notified by WO complaint notification")
+	public void Validate_that_AO_get_notified_by_WO_complaint_notification() throws InterruptedException {
+		casepage.validateWOComplaintNotification();
 	}
 
 	@And("navigate to AO Review stage and fill the respective details and navigate to next stage")
@@ -270,5 +285,10 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 	@And("open the checklist and perform the amendments")
 	public void open_the_checklist_and_perform_the_amendments() {
 		casepage.amendChecklist();
+	}
+
+	@And("verify the payment record validaton for {string}")
+	public void verify_the_payment_record_validaton_for(String OSSPerMonth,String OSIPerMonth, String GWPerMonth, String wastetype) throws InterruptedException {
+		casepage.paymentRecordValidation(OSSPerMonth, OSIPerMonth, GWPerMonth, wastetype);	
 	}
 }

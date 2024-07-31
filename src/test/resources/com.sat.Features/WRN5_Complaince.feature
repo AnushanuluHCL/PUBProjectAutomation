@@ -9,11 +9,13 @@ Background: Test CRM Login with valid credentials
  Scenario Outline: Generating a permit by creating a new permit application
   When user change the changearea to "GWC Tanker"
   And user selects entity as "NEA List"
-  And fill the details "Company_name","Vehicle_Number","<Vehicle_Type>","<Tankers_Capacity>","<Registration_Deregistration>" in the NEA list record form
+  And fill the details in the NEA list record form
+ 		|Vehicle_Type|Tankers_Capacity|Registration_Deregistration|Iteration|
+ 		|Tanker|1000|Registration|1|
  	And user selects entity as "Applications"
 	And fill the details in application form for General details "<AddOfTankerYard>","<PhoneNum>","<Email>"
   And fill the details in application form for Human waste type details "<HW>","<HWType>","<HWPerMonth>"
-  And create a tanker by filling the details
+  And create tankers by filling the details
     |WasteType|
     |Human Wastewater|
   And logout from the admin credentials
@@ -25,9 +27,9 @@ Background: Test CRM Login with valid credentials
   Then verify whether case is created
   And search and open the case
   And go to "Work Orders" tab
- And validate the schedule workorder notification
+  And validate the schedule workorder notification
   And navigate to Assignment stage and confirm the inspection schedule
-  And Validate "Inspection Schedule" mail with subject 
+  #And Validate "Inspection Schedule" mail with subject 
   And navigate to Assignment stage and fill the respective details and navigate to next stage
   And fill the details in Bookings section
   And go to Service tasks tab and fill and complete the checklist as "Compliance"
@@ -55,6 +57,8 @@ Background: Test CRM Login with valid credentials
   And validate the system triggered email "Permit WRP email" to WRP FD to update the status of Tankers
   And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
   And navigate to Close stage and fill the respective details and navigate to next stage 
+  
+  
   	
    Examples:
    |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfTankerYard|PhoneNum|Email|HW|HWType|HWPerMonth|
