@@ -48,5 +48,9 @@ public class TankerDeregisterStepdefs extends BaseStepDefs {
 	public void validate_the_system_triggered_email_to_tankercompany_about_deregistered_tankers(String mailType) throws InterruptedException, ParseException {
 		casepage.mailGeneratedOrNot(mailType);
 	}
+	@And("validate the tankerpermitstatus")
+	public void validate_the_tankerpermitstatus() {
+		casepage.verifyDeregisteredTankers();
+	}
 
 }

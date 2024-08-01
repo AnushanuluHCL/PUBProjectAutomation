@@ -283,6 +283,11 @@ public class CasecreationPage extends CommonActionsPage {
 	private By tankerLookupField = By.xpath("//input[@aria-label='Tanker, Lookup']");
 	private By moreCommandsForDereg = By.xpath("//button[@aria-label='More commands for Case Tanker']");
 	private By newCaseTanker = By.xpath("//button[contains(@aria-label,'New Case Tanker')]");
+	private By entityLink = By.xpath("//ul[@title='Entity']//div[contains(@data-id,'customerid_selected_tag_text')]");
+	private By tankerStatusOnCompanyLvl = By.xpath("//div[@col-id='pub_tankerpermitstatus']//label[contains(@class,'optionSetRootStyle')]/div");
+	private By tankerLink = By.xpath("//div[@col-id='msdyn_name']//a");
+	private By tankerStatusOnTankerLvl = By.xpath("//select[@aria-label='Tanker Permit Status']");
+	private By permitGridAtCompanyLvl = By.xpath("//div[@class='ag-center-cols-container' and @role='presentation']/..");
 
 	// Locators for Deposit amount calculations
 	private By customerName = By.xpath("//div[@data-testid='pub_customer']");
@@ -2452,11 +2457,20 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 	
 	public void verifyDeregisteredTankers() {
-		/*private By entityLink = By.xpath("//ul[@title='Entity']//div[contains(@data-id,'customerid_selected_tag_text')]");
-		private By tankerStatusOnCompanyLvl = By.xpath("//div[@col-id='pub_tankerpermitstatus']//label[contains(@class,'optionSetRootStyle')]");
-		private By tankerLink = By.xpath("//div[@col-id='msdyn_name']//a");)
-		private By tankerStatusOnTankerLvl = By.xpath("//select[@aria-label='Tanker Permit Status']");
-		private By permitGridAtCompanyLvl = By.xpath("//div[@class='ag-center-cols-container' and @role='presentation']/..");*/
+		navigatingtotab("Inspection Case Information");
+		eleUtil.waitForVisibilityOfElement(entityLink, 20);
+		eleUtil.doClick(entityLink);
+		String permitstatusAtCompanyLevel = eleUtil.doElementGetText(tankerStatusOnCompanyLvl);
+		assertEquals(permitstatusAtCompanyLevel, "Deregistered", "Tanker permit sttaus is not showing as Deregistered");
+		
+		eleUtil.waitForVisibilityOfElement(tankerLink, 20);
+		eleUtil.doClick(tankerLink);
+		String permitstatusAtTankerLevel = eleUtil.doElementGetText(tankerStatusOnTankerLvl);
+		assertEquals(permitstatusAtTankerLevel, "Deregistered", "Tanker permit sttaus is not showing as Deregistered");
+		
+	
+		
+	
 		
 	}
 
