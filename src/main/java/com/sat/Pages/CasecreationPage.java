@@ -322,6 +322,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doElementClickable(entitydropdown, 20);
 		eleUtil.doClick(entitydropdown);
 		eleUtil.doClick(filterBy);
+		Thread.sleep(6000);
 		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
 		Thread.sleep(6000);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
@@ -355,6 +356,7 @@ public class CasecreationPage extends CommonActionsPage {
 		 * System.out.
 		 * println("Max retries reached. Suggestion or apply button not found."); }
 		 */
+		Thread.sleep(3000);
 
 		eleUtil.doElementClickable(applyBtn, 30);// Added on July 9th
 		eleUtil.doClick(applyBtn);
@@ -569,7 +571,7 @@ public class CasecreationPage extends CommonActionsPage {
 		Thread.sleep(2000);
 		eleUtil.doSendKeys(searchbox, CommonActionsPage.casenumber);
 
-		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24191");
+		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24244");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 
@@ -2076,8 +2078,8 @@ public class CasecreationPage extends CommonActionsPage {
 					System.out.println("actualAlertcontent" + actualAlertcontent);
 					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 					wait.until(ExpectedConditions.elementToBeClickable(WOalert));
-					//String ExpectedAlertContent = "' Case is compliant'. ''Tap to Open''.";
-					String ExpectedAlertContent = "A tanker has been Deregistered and required your approval. ''Click here''.";
+					// String ExpectedAlertContent = "' Case is compliant'. ''Tap to Open''.";
+					String ExpectedAlertContent = "A tanker has been Deregistered and required your approval. \"Click here\".";
 					System.out.println("ExpectedAlertContent is :" + ExpectedAlertContent);
 					assertTrue(actualAlertcontent.contains(ExpectedAlertContent), "Alert content is not same");
 					WebElement taptoopenBtn = driver.findElement(By.xpath(
@@ -2407,27 +2409,23 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClear(entityLookupField);
 		System.out.println(CommonActionsPage.Tankercompanyname);
 		eleUtil.doSendKeys(entityLookupField, CommonActionsPage.Tankercompanyname);
-		// eleUtil.doSendKeys(entityLookupField, "Tankcompany29072024104016");
+		// eleUtil.doSendKeys(entityLookupField, "Tankcompany31072024070710");
 		Thread.sleep(25000);
 		By tankercompanyxpath = By.xpath("//li[contains(@data-id,'customerid')]");
 		Actions a = new Actions(driver);
 		a.moveToElement(driver.findElement(tankercompanyxpath)).click().build().perform();
-		
+
 		eleUtil.doClick(saveBtn);
-		Thread.sleep(2000);
-		System.out.println("Text :" + eleUtil.doElementGetText(caseid));
-		System.out.println("Attribute :" + eleUtil.doGetElementAttribute(caseid, "value"));
-		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
-		CommonActionsPage.casenumber = eleUtil.doElementGetText(caseid);
-		System.out.println("updated case number : " + CommonActionsPage.casenumber);
-		
+
 		eleUtil.isPageLoaded(30);
-		
-		
-		
+
 	}
 
 	public void tankerToDeregister() throws InterruptedException {
+		Thread.sleep(4000);
+		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
+		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
+		// System.out.println("updated case number : " + CommonActionsPage.casenumber);
 		eleUtil.waitForVisibilityOfElement(moreCommandsForDereg, 30);
 		eleUtil.doElementClickable(moreCommandsForDereg, 20);
 		jsutil.clickElementByJS(driver.findElement(moreCommandsForDereg));
@@ -2441,7 +2439,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClear(tankerLookupField);
 		System.out.println(CommonActionsPage.tankerNumber.get(1));
 		eleUtil.doSendKeys(tankerLookupField, CommonActionsPage.tankerNumber.get(1));
-		// eleUtil.doSendKeys(tankerLookupField, "T_290724104010");
+		// eleUtil.doSendKeys(tankerLookupField, "T_310724070705");
 		Thread.sleep(25000);
 		By tankerxpath = By.xpath("//li[contains(@data-id,'pub_tanker')]");
 		Actions a = new Actions(driver);
@@ -2451,6 +2449,15 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doElementClickable(saveCloseBtn, 20);
 		eleUtil.doClick(saveCloseBtn);
 
+	}
+	
+	public void verifyDeregisteredTankers() {
+		/*private By entityLink = By.xpath("//ul[@title='Entity']//div[contains(@data-id,'customerid_selected_tag_text')]");
+		private By tankerStatusOnCompanyLvl = By.xpath("//div[@col-id='pub_tankerpermitstatus']//label[contains(@class,'optionSetRootStyle')]");
+		private By tankerLink = By.xpath("//div[@col-id='msdyn_name']//a");)
+		private By tankerStatusOnTankerLvl = By.xpath("//select[@aria-label='Tanker Permit Status']");
+		private By permitGridAtCompanyLvl = By.xpath("//div[@class='ag-center-cols-container' and @role='presentation']/..");*/
+		
 	}
 
 	public void GWEstQuan(String GWPerMonth) {
@@ -2732,6 +2739,17 @@ public class CasecreationPage extends CommonActionsPage {
 			}
 
 			break;
+			
+		case "Tanker Deregistration":
+			ele = By.xpath("(//label[contains(text(),'Deregistration of')])[1]");
+			 mailTrigger = eleUtil.doElementGetText(ele);
+			 assertTrue(mailTrigger.contains("Deregistration of"), "Mail is not generated");
+
+			
+			
+
+			break;
+
 
 		}
 	}

@@ -3,6 +3,7 @@ package com.sat.StepDefinitions;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Properties;
 
@@ -42,6 +43,10 @@ public class TankerDeregisterStepdefs extends BaseStepDefs {
 	@And("validate that SO get notified by tanker deregister notification")
 	public void validate_that_SO_get_notified_by_tanker_deregister_notification() throws InterruptedException {
 		casepage.validateDeregisterNotification();
+	}
+	@And("validate the system triggered {string} email to tankercompany about deregistered tankers")
+	public void validate_the_system_triggered_email_to_tankercompany_about_deregistered_tankers(String mailType) throws InterruptedException, ParseException {
+		casepage.mailGeneratedOrNot(mailType);
 	}
 
 }
