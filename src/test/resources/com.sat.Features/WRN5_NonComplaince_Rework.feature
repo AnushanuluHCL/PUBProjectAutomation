@@ -9,11 +9,13 @@ Background: Test Non-Compalince end to end flow using Rework
  Scenario Outline: Generating a permit by rework on the case after SO reject the Non-Compliance case
  When user change the changearea to "GWC Tanker"
  And user selects entity as "NEA List"
- And fill the details "Company_name","Vehicle_Number","<Vehicle_Type>","<Tankers_Capacity>","<Registration_Deregistration>" in the NEA list record form
+ And fill the details in the NEA list record form
+ 		|Vehicle_Type|Tankers_Capacity|Registration_Deregistration|Iteration|
+ 		|Tanker|1000|Registration|1|
  And user selects entity as "Applications"
  And fill the details in application form for General details "<AddOfTankerYard>","<PhoneNum>","<Email>"
  And fill the details in application form for organic ships waste type details "<OSS>","<OSSPerMonth>"
- And create a tanker by filling the details
+ And create tankers by filling the details
     |WasteType|
     |OS - Ship|
   And logout from the admin credentials

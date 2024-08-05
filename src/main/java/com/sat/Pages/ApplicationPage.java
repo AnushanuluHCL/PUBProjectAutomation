@@ -273,16 +273,17 @@ public class ApplicationPage extends CommonActionsPage {
 	}
 
 	public void amountOfOSIWastetypeTanker(String OSISelected, String OSIPerMonth) {
-		eleUtil.scrollUsingRobotClass();
-		eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 20);
-		/*
-		 * eleUtil.waitForPresenceOfElement(By.tagName("body"), 20);
-		 * driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN); try {
-		 * eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 10); } catch
-		 * (NoSuchElementException e) {
-		 * System.out.println("OSIndustriesBox not found even after scrolling.");
-		 * return; // Exit the method or handle the error gracefully }
-		 */
+		 eleUtil.scrollUsingRobotClass();
+		 eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 50);
+
+	/*	eleUtil.waitForPresenceOfElement(By.tagName("body"), 20);
+		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		try {
+			eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 10);
+		} catch (NoSuchElementException e) {
+			System.out.println("OSIndustriesBox not found even after scrolling.");
+			return; // Exit the method or handle the error gracefully }
+		}*/
 		eleUtil.createSelect(OSIndustriesBox);
 		eleUtil.doSelectDropDownByVisibleText(OSIndustriesBox, OSISelected);
 		eleUtil.doClearUsingKeys(OSIndustriesPerMonthField);
@@ -393,7 +394,7 @@ public class ApplicationPage extends CommonActionsPage {
 
 	public void creationOfMultipleTankers(DataTable diftypeOfTankersdata) throws InterruptedException {
 		List<Map<String, String>> data = diftypeOfTankersdata.asMaps(String.class, String.class);
-		System.out.println("data size is"+data.size());
+		System.out.println("data size is" + data.size());
 		for (Map<String, String> form : data) {
 			x = x + 1;
 			// String tankernmae = form.get("Tanker_Name");

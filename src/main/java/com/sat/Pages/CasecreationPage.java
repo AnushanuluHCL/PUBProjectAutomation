@@ -283,6 +283,17 @@ public class CasecreationPage extends CommonActionsPage {
 	private By tankerLookupField = By.xpath("//input[@aria-label='Tanker, Lookup']");
 	private By moreCommandsForDereg = By.xpath("//button[@aria-label='More commands for Case Tanker']");
 	private By newCaseTanker = By.xpath("//button[contains(@aria-label,'New Case Tanker')]");
+	private By entityLink = By.xpath("//ul[@title='Entity']//div[contains(@data-id,'customerid_selected_tag_text')]");
+	private By tankerStatusOnCompanyLvl = By
+			.xpath("//div[@col-id='pub_tankerpermitstatus']//label[contains(@class,'optionSetRootStyle')]/div");
+	private By tankerLink = By.xpath("//div[@col-id='msdyn_name']//a");
+	private By tankerStatusOnTankerLvl = By
+			.xpath("//select[@data-id=\"pub_tankerpermitstatus.fieldControl-option-set-select\"]");// select[@aria-label='Tanker
+																									// Permit Status']
+	private By permitGridAtCompanyLvl = By.xpath(
+			"//div[contains(@data-id,'Permits_List-pcf_grid_control_container')]//span[text()='No data available']");
+	// By.xpath("//div[@class='ag-center-cols-container' and
+	// @role='presentation']/..");
 
 	// Locators for Deposit amount calculations
 	private By customerName = By.xpath("//div[@data-testid='pub_customer']");
@@ -298,6 +309,16 @@ public class CasecreationPage extends CommonActionsPage {
 	private By Topup = By.xpath("//input[contains(@aria-label,'Refund')]");
 	private By year = By.xpath("//input[@aria-label='Year']");
 	private By wasteType = By.xpath("//ul[@aria-label='Selected values for Waste Type']/parent::div");
+	
+	// Locators for permitstatus at Tanker level
+	private By editFilterBtn=By.xpath("//button[@aria-label='Edit filters']");
+	private By selectedItem = By.xpath("//span[contains(@aria-labelledby,'selected-items-id')]");
+	private By listbox =By.xpath("//input[@aria-haspopup='listbox']");
+	private By selectInactiveOption = By.xpath("//label[text()='Inactive']");
+	
+	
+	private By colHeader = By.xpath("//div[@col-id='msdyn_account']");
+	private By permitstatus = By.xpath("(//div[@col-id='pub_tankerpermitstatus'])[2]//label");
 
 	public CasecreationPage(WebDriver driver) {
 		super(driver);
@@ -322,6 +343,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doElementClickable(entitydropdown, 20);
 		eleUtil.doClick(entitydropdown);
 		eleUtil.doClick(filterBy);
+		Thread.sleep(6000);
 		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
 		Thread.sleep(6000);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
@@ -355,6 +377,7 @@ public class CasecreationPage extends CommonActionsPage {
 		 * System.out.
 		 * println("Max retries reached. Suggestion or apply button not found."); }
 		 */
+		Thread.sleep(3000);
 
 		eleUtil.doElementClickable(applyBtn, 30);// Added on July 9th
 		eleUtil.doClick(applyBtn);
@@ -569,7 +592,7 @@ public class CasecreationPage extends CommonActionsPage {
 		Thread.sleep(2000);
 		eleUtil.doSendKeys(searchbox, CommonActionsPage.casenumber);
 
-		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24191");
+		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24244");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 
@@ -596,16 +619,31 @@ public class CasecreationPage extends CommonActionsPage {
 		// CommonActionsPage.TankerName = getTankername();
 	}
 
-	public void navigatingtoStage(String stageName) {
-		By clickOnStage = By.xpath("//div[@title='" + stageName + "']");
-		eleUtil.doElementClickable(clickOnStage, 30);
-		try {
-			eleUtil.doClick(clickOnStage);
-		} catch (Exception e) {
-			eleUtil.doActionsClick(clickOnStage);
+	public void navigatingToStage(String stageName) {
+		   By clickOnStage = By.xpath("//div[@title='" + stageName + "']");
+		   eleUtil.doElementClickable(clickOnStage, 30);
+		   try {
+		       // Perform a standard click
+		       eleUtil.doClick(clickOnStage);
+		       System.out.println("Standard click succeeded");
+		   } catch (Exception e) {
+		       System.out.println("Standard click failed: " + e.getMessage());
+		       try {
+		           // Perform an Actions click
+		           eleUtil.doActionsClick(clickOnStage);
+		           System.out.println("Actions click succeeded");
+		       } catch (Exception ex) {
+		           System.out.println("Actions click failed: " + ex.getMessage());
+		           try {
+		               // Perform a JavaScript click as a last resort
+		               jsutil.clickElementByJS(driver.findElement(clickOnStage));
+		               System.out.println("JavaScript click succeeded");
+		           } catch (Exception jsEx) {
+		               System.out.println("JavaScript click failed: " + jsEx.getMessage());
+		           }
+		       }
+		   }
 		}
-
-	}
 
 	public void validateWOScheduleNotification() throws InterruptedException {
 
@@ -1364,13 +1402,13 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void completeIdentifyStage() {
-		navigatingtoStage("Identify");
+		navigatingToStage("Identify");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
 	}
 
 	public void confirmInspectionSchedule() {
-		navigatingtoStage("Assignment");
+		navigatingToStage("Assignment");
 		eleUtil.waitForVisibilityOfElement(confirmInspectionScheduleOption, 10);
 		eleUtil.createSelect(confirmInspectionScheduleOption);
 		eleUtil.doSelectDropDownByVisibleText(confirmInspectionScheduleOption, "Yes");
@@ -1378,7 +1416,7 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void completeAssignmnetStage() throws InterruptedException {
-		navigatingtoStage("Assignment");
+		navigatingToStage("Assignment");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
 		/*
@@ -1390,13 +1428,13 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void completeInspection() {
-		navigatingtoStage("Inspection"); // This step need to be removed once
+		navigatingToStage("Inspection"); // This step need to be removed once
 		// everything is merged
 		eleUtil.waitForVisibilityOfElement(inspectionCompletedOption, 10);
 		eleUtil.createSelect(inspectionCompletedOption);
 		eleUtil.doSelectDropDownByVisibleText(inspectionCompletedOption, "Yes");
 		eleUtil.doClick(saveBtn);
-		navigatingtoStage("Inspection");
+		navigatingToStage("Inspection");
 		eleUtil.waitForVisibilityOfElement(generateInspectionReportOption, 10);
 		eleUtil.createSelect(generateInspectionReportOption);
 		eleUtil.doSelectDropDownByVisibleText(generateInspectionReportOption, "Yes");
@@ -1411,7 +1449,7 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void SORejectForRework() {
-		navigatingtoStage("SO Review");
+		navigatingToStage("SO Review");
 		eleUtil.waitForVisibilityOfElement(reworkOption, 10);
 		eleUtil.createSelect(reworkOption);
 		eleUtil.doSelectDropDownByVisibleText(reworkOption, "Yes");
@@ -1423,7 +1461,7 @@ public class CasecreationPage extends CommonActionsPage {
 
 	public void movedBackToInspection() {
 
-		navigatingtoStage("Inspection");
+		navigatingToStage("Inspection");
 		eleUtil.waitForVisibilityOfElement(Inspectioncompletedselectedoption, 10);
 		String inspectioncompletedval = eleUtil.doElementGetText(Inspectioncompletedselectedoption);
 		assertEquals(inspectioncompletedval, "No", "Inspection completed value not changed to default value");
@@ -1639,14 +1677,14 @@ public class CasecreationPage extends CommonActionsPage {
 
 	public void completeInspectionStage() {
 
-		navigatingtoStage("Inspection");
+		navigatingToStage("Inspection");
 		eleUtil.waitForVisibilityOfElement(submitSOreviewBtn, 10);
 		eleUtil.createSelect(submitSOreviewBtn);
 		eleUtil.doSelectDropDownByVisibleText(submitSOreviewBtn, "Yes");
 		eleUtil.doClick(saveBtn);
 		// eleUtil.doClick(closeBtnOnBPF);
 		eleUtil.isPageLoaded(10);
-		navigatingtoStage("Inspection");
+		navigatingToStage("Inspection");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
 	}
@@ -2076,8 +2114,8 @@ public class CasecreationPage extends CommonActionsPage {
 					System.out.println("actualAlertcontent" + actualAlertcontent);
 					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 					wait.until(ExpectedConditions.elementToBeClickable(WOalert));
-					//String ExpectedAlertContent = "' Case is compliant'. ''Tap to Open''.";
-					String ExpectedAlertContent = "A tanker has been Deregistered and required your approval. ''Click here''.";
+					// String ExpectedAlertContent = "' Case is compliant'. ''Tap to Open''.";
+					String ExpectedAlertContent = "A tanker has been Deregistered and required your approval. \"Click here\".";
 					System.out.println("ExpectedAlertContent is :" + ExpectedAlertContent);
 					assertTrue(actualAlertcontent.contains(ExpectedAlertContent), "Alert content is not same");
 					WebElement taptoopenBtn = driver.findElement(By.xpath(
@@ -2113,9 +2151,67 @@ public class CasecreationPage extends CommonActionsPage {
 
 		}
 	}
+	
+	public void validateRevocationNotification() throws InterruptedException {
+
+		eleUtil.isPageLoaded(100);
+		eleUtil.waitForVisibilityOfElement(notificationIcon, 100);
+		eleUtil.doClick(notificationIcon);
+		Boolean flag = false;
+		long startTime = System.currentTimeMillis();
+		while (!flag && (System.currentTimeMillis() - startTime) < 300000) {
+			try {
+				Thread.sleep(3000);
+
+				WebElement WOalert = driver.findElement(
+						By.xpath("//p[contains(text(),'A tanker Permit has requested to be  Revoked and requires your review')]"));
+				// JavascriptExecutor js = (JavascriptExecutor) driver;
+				// js.executeScript("arguments[0].scrollIntoView(true);", WOalert);
+				if (eleUtil.isClickable(WOalert, 10)) {
+					String actualAlertcontent = WOalert.getText();
+					// eleUtil.waitForVisibilityOfElement(SIESGWCCompanyfield,AppConstants.SHORT_DEFAULT_WAIT);
+					System.out.println("actualAlertcontent" + actualAlertcontent);
+					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+					wait.until(ExpectedConditions.elementToBeClickable(WOalert));
+					String ExpectedAlertContent = "A tanker Permit has requested to be Revoked and requires your review /approval. \"Click here\".";
+					System.out.println("ExpectedAlertContent is :" + ExpectedAlertContent);
+					assertTrue(actualAlertcontent.contains(ExpectedAlertContent), "Alert content is not same");
+					WebElement taptoopenBtn = driver.findElement(By.xpath(
+							"//p[contains(text(),'A tanker Permit has requested to be  Revoked and requires your review')]/a"));
+					taptoopenBtn.click();
+					flag = true;
+					ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+					System.out.println("open tabs" + tabs.size());
+					driver.switchTo().window(tabs.get(1));
+					// Thread.sleep(10000);
+					eleUtil.waitForVisibilityOfElement(caseid, 100);
+					String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");
+
+					System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
+					assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
+							"case is not same after clicking on tap to open button");
+					System.out.println(tabs.size() - 1);
+					// driver.switchTo().window(tabs.get(tabs.size() - 2));
+					eleUtil.doElementClickable(saveCloseBtn, 20);
+					eleUtil.doClick(saveCloseBtn);
+					driver.switchTo().window(tabs.get(0));
+					try {
+						eleUtil.doClick(cancelBtn);
+					} catch (Exception e) {
+						eleUtil.doActionsClick(cancelBtn);
+					}
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
 
 	public void completeSOReviewStage() {
-		navigatingtoStage("SO Review");
+		navigatingToStage("SO Review");
 
 		/*
 		 * eleUtil.waitForVisibilityOfElement(systemassesmentOption, 10);
@@ -2128,26 +2224,26 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.createSelect(submitAOreviewBtn);
 		eleUtil.doSelectDropDownByVisibleText(submitAOreviewBtn, "Yes");
 		eleUtil.doClick(saveBtn);
-		navigatingtoStage("SO Review");
+		navigatingToStage("SO Review");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
 	}
 
 	public void completeAOReviewStage() {
-		navigatingtoStage("AO Review");
+		navigatingToStage("AO Review");
 		eleUtil.waitForVisibilityOfElement(AOresponseOption, 10);
 		eleUtil.createSelect(AOresponseOption);
 		// eleUtil.doClick(AOresponseOption);
 		eleUtil.doSelectDropDownByVisibleText(AOresponseOption, "Approve");
 		eleUtil.doElementClickable(saveBtn, 10);
 		eleUtil.doActionsClick(saveBtn);
-		navigatingtoStage("AO Review");
+		navigatingToStage("AO Review");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
 	}
 
 	public void completeGenerateEmailStage() {
-		navigatingtoStage("Generate Email");
+		navigatingToStage("Generate Email");
 		/*
 		 * eleUtil.waitForVisibilityOfElement(generateemailOption, 10);
 		 * eleUtil.createSelect(generateemailOption); eleUtil.isPageLoaded(40);
@@ -2172,7 +2268,7 @@ public class CasecreationPage extends CommonActionsPage {
 
 	public void completeResolveStage() {
 		eleUtil.doElementClickable(generateemailStage, 10);
-		navigatingtoStage("Generate Email");
+		navigatingToStage("Generate Email");
 		eleUtil.doElementClickable(nextstageBtn, 50);
 		eleUtil.doActionsClick(nextstageBtn);
 		while (true) {
@@ -2184,15 +2280,17 @@ public class CasecreationPage extends CommonActionsPage {
 			}
 		}
 
-		navigatingtoStage("Close");
-		eleUtil.waitForVisibilityOfElement(endoresementreceivedOption, 10);
-		eleUtil.createSelect(endoresementreceivedOption);
-		eleUtil.doSelectDropDownByVisibleText(endoresementreceivedOption, "Yes");
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		navigatingToStage("Close");
+		if (driver.findElement(endoresementreceivedOption).isDisplayed()) {
+			eleUtil.waitForVisibilityOfElement(endoresementreceivedOption, 10);
+			eleUtil.createSelect(endoresementreceivedOption);
+			eleUtil.doSelectDropDownByVisibleText(endoresementreceivedOption, "Yes");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		eleUtil.waitForVisibilityOfElement(resolvecaseOption, 10);
 		eleUtil.createSelect(resolvecaseOption);
@@ -2203,15 +2301,22 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void processingStage() {
-		navigatingtoStage("Processing");
+		/*eleUtil.isPageLoaded(30);
+		By clickOnStage = By.xpath("//div[@title='Processing']");
+		eleUtil.doElementClickable(clickOnStage, 20);
+		jsutil.clickElementByJS(driver.findElement(clickOnStage));*/
+		navigatingToStage("Processing");
+		
+
 		eleUtil.waitForVisibilityOfElement(processingOption, 10);
-		eleUtil.createSelect(processingOption);
 		eleUtil.doSelectDropDownByVisibleText(processingOption, "Yes");
 		eleUtil.doElementClickable(saveBtn, 10);
 		eleUtil.doActionsClick(saveBtn);
-		navigatingtoStage("Processing");
+
+		navigatingToStage("Processing");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
+
 	}
 
 	public void uploadDocInCase() throws AWTException {
@@ -2394,40 +2499,41 @@ public class CasecreationPage extends CommonActionsPage {
 		}
 	}
 
-	public void manualCaseCreation() throws InterruptedException {
+	public void manualCaseCreation(String caseSubType) throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(newBtn, 50);
 		eleUtil.doElementClickable(newBtn, 20);
 		jsutil.clickElementByJS(driver.findElement(newBtn));
 		eleUtil.doElementClickable(caseSubtypeField, 30);
 		eleUtil.createSelect(caseSubtypeField);
-		eleUtil.doSelectDropDownByVisibleText(caseSubtypeField, "Tanker Deregistration");
+		eleUtil.doSelectDropDownByVisibleText(caseSubtypeField, caseSubType);
 
 		eleUtil.waitForVisibilityOfElement(entityLookupField, 50);
 		eleUtil.doClick(entityLookupField);
 		eleUtil.doClear(entityLookupField);
 		System.out.println(CommonActionsPage.Tankercompanyname);
 		eleUtil.doSendKeys(entityLookupField, CommonActionsPage.Tankercompanyname);
-		// eleUtil.doSendKeys(entityLookupField, "Tankcompany29072024104016");
+		// eleUtil.doSendKeys(entityLookupField, "Tankcompany31072024070710");
 		Thread.sleep(25000);
 		By tankercompanyxpath = By.xpath("//li[contains(@data-id,'customerid')]");
 		Actions a = new Actions(driver);
 		a.moveToElement(driver.findElement(tankercompanyxpath)).click().build().perform();
-		
+
 		eleUtil.doClick(saveBtn);
-		Thread.sleep(2000);
-		System.out.println("Text :" + eleUtil.doElementGetText(caseid));
-		System.out.println("Attribute :" + eleUtil.doGetElementAttribute(caseid, "value"));
-		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
-		CommonActionsPage.casenumber = eleUtil.doElementGetText(caseid);
-		System.out.println("updated case number : " + CommonActionsPage.casenumber);
-		
+
 		eleUtil.isPageLoaded(30);
 		
-		
-		
+		Thread.sleep(4000);
+		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
+		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
+		 System.out.println("updated case number : " + CommonActionsPage.casenumber);
+
 	}
 
 	public void tankerToDeregister() throws InterruptedException {
+		/*Thread.sleep(4000);
+		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
+		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");*/
+		
 		eleUtil.waitForVisibilityOfElement(moreCommandsForDereg, 30);
 		eleUtil.doElementClickable(moreCommandsForDereg, 20);
 		jsutil.clickElementByJS(driver.findElement(moreCommandsForDereg));
@@ -2441,7 +2547,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClear(tankerLookupField);
 		System.out.println(CommonActionsPage.tankerNumber.get(1));
 		eleUtil.doSendKeys(tankerLookupField, CommonActionsPage.tankerNumber.get(1));
-		// eleUtil.doSendKeys(tankerLookupField, "T_290724104010");
+		// eleUtil.doSendKeys(tankerLookupField, "T_310724070705");
 		Thread.sleep(25000);
 		By tankerxpath = By.xpath("//li[contains(@data-id,'pub_tanker')]");
 		Actions a = new Actions(driver);
@@ -2451,6 +2557,67 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doElementClickable(saveCloseBtn, 20);
 		eleUtil.doClick(saveCloseBtn);
 
+	}
+
+	public void verifyDeregisteredTankers() {
+		navigatingtotab("Inspection Case Information");
+		eleUtil.waitForVisibilityOfElement(entityLink, 20);
+		eleUtil.doClick(entityLink);
+		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		String permitstatusAtCompanyLevel = eleUtil.doElementGetText(tankerStatusOnCompanyLvl);
+		System.out.println("permitstatusAtCompanyLevel" + permitstatusAtCompanyLevel);
+		assertEquals(permitstatusAtCompanyLevel, "Deregistered", "Tanker permit sttaus is not showing as Deregistered");
+
+		jsutil.scrollIntoView(driver.findElement(permitGridAtCompanyLvl));
+		String str = eleUtil.doElementGetText(permitGridAtCompanyLvl);
+		assertEquals(str, "No data available", "Permits are not removed from the company");
+
+		jsutil.scrollPageUp();
+		// driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_UP);
+
+		/*
+		 * eleUtil.waitForVisibilityOfElement(tankerLink, 20);
+		 * eleUtil.doClick(tankerLink);
+		 * eleUtil.waitForVisibilityOfElement(tankerStatusOnTankerLvl, 20); String
+		 * permitstatusAtTankerLevel =
+		 * eleUtil.doElementGetText(tankerStatusOnTankerLvl);
+		 * assertEquals(permitstatusAtTankerLevel, "Deregistered",
+		 * "Tanker permit sttaus is not showing as Deregistered");
+		 * 
+		 * eleUtil.waitForVisibilityOfElement(backBtn, 10); eleUtil.doClick(backBtn);
+		 */
+
+		eleUtil.waitForVisibilityOfElement(backBtn, 10);
+		eleUtil.doClick(backBtn);
+
+	}
+	
+	public void tankerPermitStatusAtTankercompLvl() throws InterruptedException {
+
+		eleUtil.waitForVisibilityOfElement(editFilterBtn, 30);
+		eleUtil.doClick(editFilterBtn);
+		eleUtil.waitForVisibilityOfElement(selectedItem, 30);
+		eleUtil.doClick(selectedItem);
+		eleUtil.waitForVisibilityOfElement(listbox, 30);
+		eleUtil.doClear(listbox);
+		eleUtil.waitForVisibilityOfElement(selectInactiveOption, 30);
+		eleUtil.doClick(selectInactiveOption);
+		eleUtil.waitForVisibilityOfElement(applyBtn, 30);
+		eleUtil.doClick(applyBtn);
+		
+		eleUtil.waitForVisibilityOfElement(colHeader, 50);
+		eleUtil.doElementClickable(colHeader, 20);
+		eleUtil.doClick(colHeader);
+		eleUtil.doClick(filterBy);
+		Thread.sleep(6000);
+		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
+		Thread.sleep(6000);
+		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+		
+		eleUtil.waitForVisibilityOfElement(permitstatus, 50);
+		eleUtil.doGetElementAttribute(permitstatus, "aria-label");
+		
+		
 	}
 
 	public void GWEstQuan(String GWPerMonth) {
@@ -2730,6 +2897,13 @@ public class CasecreationPage extends CommonActionsPage {
 					System.out.println("Non-Complaince email is not displayed");
 				}
 			}
+
+			break;
+
+		case "Tanker Deregistration":
+			ele = By.xpath("(//label[contains(text(),'Deregistration of')])[1]");
+			mailTrigger = eleUtil.doElementGetText(ele);
+			assertTrue(mailTrigger.contains("Deregistration of"), "Mail is not generated");
 
 			break;
 

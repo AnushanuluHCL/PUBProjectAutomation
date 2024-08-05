@@ -1,12 +1,12 @@
-@WRN5_DeregisteringATanker
-Feature: Testing WRN5-Deregistering a tanker Functionality
+@WRN5_PermitRevocation
+Feature: Testing WRN5-Permit Revocation a tanker Functionality
 
 Background: Test CRM Login with valid credentials
  		Given User navigates to CRM login page
     When Login to app with "Admin_userid" and "Admin_pwd"
     And user selects App "DQB Case Management" 
 
- Scenario Outline: Deregestering a tanker from the tanker company
+ Scenario Outline: Revocking permit for the tankercompany
    When user change the changearea to "GWC Tanker"
    And user selects entity as "NEA List"
    And fill the details in the NEA list record form
@@ -14,10 +14,10 @@ Background: Test CRM Login with valid credentials
  		|Tanker|1000|Registration|1|
  	 And user selects entity as "Applications"
 	 And fill the details in application form for General details "<AddOfTankerYard>","<PhoneNum>","<Email>"
-   And fill the details in application form for Human waste type details "<HW>","<HWType>","<HWPerMonth>"
+   And fill the details in application form for organic industries waste type details "<OSI>","<OSIPerMonth>"
    And create tankers by filling the details
     |WasteType|
-    |Human Wastewater|
+    |OS - Industrial|
    And logout from the admin credentials
    When Login to app with "FIO_userid" and "FIO_pwd"
    And user selects App "DQB Case Management" 
@@ -50,28 +50,26 @@ Background: Test CRM Login with valid credentials
    And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
    And navigate to Close stage and fill the respective details and navigate to next stage
    
-   Then create a manual case to with case subtype as "Tanker Deregistration"
-   And select a tnaker to deregister it
+   Then create a manual case to with case subtype as "Permit Revocation"
    And navigate to Processing stage and fill the respective details and navigate to next stage
    When Login to app with "SO_userid" and "SO_pwd"
    And user selects App "DQB Case Management" 
    And search for the case to open it
-   And validate that SO get notified by tanker deregister notification
+   And validate that SO/AO get notified by permit revocation notification
    And navigate to SO Review stage and fill the respective details and navigate to next stage
 	 When Login to app with "AO_userid" and "AO_pwd"
    And user selects App "DQB Case Management" 
    And search for the case to open it
-   And validate that SO get notified by tanker deregister notification
+   And validate that SO/AO get notified by permit revocation notification
    And navigate to AO Review stage and fill the respective details and navigate to next stage
    When Login to app with "FIO_userid" and "FIO_pwd"
    And user selects App "DQB Case Management"  
    And search for the case to open it
-   And validate the system triggered "Tanker Deregistration" email to tankercompany about deregistered tankers
+   #And validate the system triggered "Tanker Deregistration" email to tankercompany about deregistered tankers
    And validate the tankerpermitstatus
-   
    And navigate to Close stage and fill the respective details and navigate to next stage
    
   
    Examples:
-   |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfTankerYard|PhoneNum|Email|HW|HWType|HWPerMonth|
-   |Tanker|1000|Registration|addr1|+6512345678|test@gmail.com|Yes|Domestic STPs|100|
+     |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfTankerYard|PhoneNum|Email|OSI|OSIPerMonth|
+     |Tanker|1000|Registration|addr1|+6512345678|test@gmail.com|Yes|100|
