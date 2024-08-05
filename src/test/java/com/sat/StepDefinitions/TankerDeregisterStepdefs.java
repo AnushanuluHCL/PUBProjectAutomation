@@ -30,9 +30,12 @@ public class TankerDeregisterStepdefs extends BaseStepDefs {
 	private Properties prop;
 	private TestBase testbase = new TestBase();
 
-	@Then("create a manual case to deregister a tanker")
-	public void create_a_manual_case_to_deregister_a_tanker() throws InterruptedException {
-		casepage.manualCaseCreation();
+	@Then("create a manual case to with case subtype as {string}")
+	public void create_a_manual_case_to_with_case_subtype_as(String caseSubType) throws InterruptedException {
+		casepage.manualCaseCreation(caseSubType);	
+	}
+	@And("select a tnaker to deregister it")
+	public void select_a_tnaker_to_deregister_it() throws InterruptedException {
 		casepage.tankerToDeregister();
 	}
 	@And("navigate to Processing stage and fill the respective details and navigate to next stage")

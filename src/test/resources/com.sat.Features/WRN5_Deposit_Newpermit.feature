@@ -11,7 +11,7 @@ Background: Test CRM Login with valid credentials
     And user selects entity as "NEA List"    
     And fill the details in the NEA list record form
  		|Vehicle_Type|Tankers_Capacity|Registration_Deregistration|Iteration|
- 		|Tanker|1000|Registration|1|
+ 		|Tanker|1000|Registration|1|			
  		|Tanker|900|Registration|2|
  		|Tanker|800|Registration|3|
  		|Tanker|700|Registration|4|
