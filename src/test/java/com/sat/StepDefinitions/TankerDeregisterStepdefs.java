@@ -23,16 +23,16 @@ import io.cucumber.java.en.*;
 
 public class TankerDeregisterStepdefs extends BaseStepDefs {
 
-	private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
-	private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
-	private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
+    private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
+    private LoginPage loginpage = new LoginPage(TestBase.getDriver());
 
-	private Properties prop;
-	private TestBase testbase = new TestBase();
+    private Properties prop;
+    private TestBase testbase = new TestBase();
 
 	@Then("create a manual case to with case subtype as {string}")
 	public void create_a_manual_case_to_with_case_subtype_as(String caseSubType) throws InterruptedException {
-		casepage.manualCaseCreation(caseSubType);	
+		casepage.manualCaseCreation(caseSubType);
 	}
 	@And("select a tnaker to deregister it")
 	public void select_a_tnaker_to_deregister_it() throws InterruptedException {

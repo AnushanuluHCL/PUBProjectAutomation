@@ -1876,7 +1876,7 @@ public class CasecreationPage extends CommonActionsPage {
 												+ CommonActionsPage.case_FIO + " and waiting for your review')]/a"));
 								// jsutil.scrollIntoView(scrollDown);
 								JavascriptExecutor js = (JavascriptExecutor) driver;
-								js.executeScript("window.scrollBy(0,10000)");
+								js.executeScript("window.scrollIntoView(0,10000)");
 
 								System.out.println("element clicked  : " + scrollDown);
 								if (scrollDown.isDisplayed()) {

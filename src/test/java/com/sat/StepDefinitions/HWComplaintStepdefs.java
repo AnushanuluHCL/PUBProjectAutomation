@@ -20,21 +20,20 @@ import com.sat.testbase.TestBase;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 
-public class HWComplaintStepdefs extends BaseStepDefs{
+public class HWComplaintStepdefs extends BaseStepDefs {
 
-	//private LoginPage loginpage = new LoginPage(TestBase.getDriver());
-	//private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
-	private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
-	//private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
-	//public static String tankercompanyname;
+    //private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    //private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
+    private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
+    //private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
+    //public static String tankercompanyname;
 
-	private Properties prop;
-	private TestBase testbase = new TestBase();
+    private Properties prop;
+    private TestBase testbase = new TestBase();
 
-	@And("fill the details in application form for Human waste type details {string},{string},{string}")
-	public void fill_the_details_in_application_form_for_Human_waste_type_details(String HWSelected, String HWType,
-			String HWPerMonth) {
-		apppage.amountOfHWWastetypeTanker(HWSelected, HWType, HWPerMonth);
-	}
+    @And("fill the details in application form for Human waste type details {string},{string},{string}")
+    public void fill_the_details_in_application_form_for_Human_waste_type_details(String HWSelected, String HWType, String HWPerMonth) {
+        apppage.amountOfHWWastetypeTanker(HWSelected, HWType, HWPerMonth);
+    }
 
 }
