@@ -33,6 +33,10 @@ public class PermitRevocationStepdefs extends BaseStepDefs {
 		casepage.validateRevocationNotification();	
 	}
 	
-	
+	@And("validate the tankerpermitstatus after revocation")
+	public void validate_the_tankerpermitstatus_after_revocation() throws InterruptedException {
+		casepage.tankerPermitStatusAtTankerLvl();
+		casepage.tankerPermitStatusAtPermitLvl();
+	}
 
 }

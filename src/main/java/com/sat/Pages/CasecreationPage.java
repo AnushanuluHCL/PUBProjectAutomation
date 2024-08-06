@@ -309,16 +309,20 @@ public class CasecreationPage extends CommonActionsPage {
 	private By Topup = By.xpath("//input[contains(@aria-label,'Refund')]");
 	private By year = By.xpath("//input[@aria-label='Year']");
 	private By wasteType = By.xpath("//ul[@aria-label='Selected values for Waste Type']/parent::div");
-	
+
 	// Locators for permitstatus at Tanker level
-	private By editFilterBtn=By.xpath("//button[@aria-label='Edit filters']");
+	private By editFilterBtn = By.xpath("//button[@aria-label='Edit filters']");
 	private By selectedItem = By.xpath("//span[contains(@aria-labelledby,'selected-items-id')]");
-	private By listbox =By.xpath("//input[@aria-haspopup='listbox']");
+	private By listbox = By.xpath("//input[@aria-haspopup='listbox']");
 	private By selectInactiveOption = By.xpath("//label[text()='Inactive']");
-	
-	
-	private By colHeader = By.xpath("//div[@col-id='msdyn_account']");
+
+	private By colHeader = By.xpath("(//div[@col-id='msdyn_account'])[1]");
 	private By permitstatus = By.xpath("(//div[@col-id='pub_tankerpermitstatus'])[2]//label");
+
+	private By custHeader = By.xpath("(//div[@col-id='pub_customer'])[1]");
+	private By inactivePermit = By.xpath("//label[text()='Inactive Permits']");
+	private By dropdownIcon = By.xpath("//i[@data-icon-name='ChevronDownSmall']");
+	private By permitnumrowval = By.xpath("//div[@col-id='pub_name' and not(@role='columnheader')]//span");
 
 	public CasecreationPage(WebDriver driver) {
 		super(driver);
@@ -620,30 +624,30 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void navigatingToStage(String stageName) {
-		   By clickOnStage = By.xpath("//div[@title='" + stageName + "']");
-		   eleUtil.doElementClickable(clickOnStage, 30);
-		   try {
-		       // Perform a standard click
-		       eleUtil.doClick(clickOnStage);
-		       System.out.println("Standard click succeeded");
-		   } catch (Exception e) {
-		       System.out.println("Standard click failed: " + e.getMessage());
-		       try {
-		           // Perform an Actions click
-		           eleUtil.doActionsClick(clickOnStage);
-		           System.out.println("Actions click succeeded");
-		       } catch (Exception ex) {
-		           System.out.println("Actions click failed: " + ex.getMessage());
-		           try {
-		               // Perform a JavaScript click as a last resort
-		               jsutil.clickElementByJS(driver.findElement(clickOnStage));
-		               System.out.println("JavaScript click succeeded");
-		           } catch (Exception jsEx) {
-		               System.out.println("JavaScript click failed: " + jsEx.getMessage());
-		           }
-		       }
-		   }
+		By clickOnStage = By.xpath("//div[@title='" + stageName + "']");
+		eleUtil.doElementClickable(clickOnStage, 30);
+		try {
+			// Perform a standard click
+			eleUtil.doClick(clickOnStage);
+			System.out.println("Standard click succeeded");
+		} catch (Exception e) {
+			System.out.println("Standard click failed: " + e.getMessage());
+			try {
+				// Perform an Actions click
+				eleUtil.doActionsClick(clickOnStage);
+				System.out.println("Actions click succeeded");
+			} catch (Exception ex) {
+				System.out.println("Actions click failed: " + ex.getMessage());
+				try {
+					// Perform a JavaScript click as a last resort
+					jsutil.clickElementByJS(driver.findElement(clickOnStage));
+					System.out.println("JavaScript click succeeded");
+				} catch (Exception jsEx) {
+					System.out.println("JavaScript click failed: " + jsEx.getMessage());
+				}
+			}
 		}
+	}
 
 	public void validateWOScheduleNotification() throws InterruptedException {
 
@@ -2151,7 +2155,7 @@ public class CasecreationPage extends CommonActionsPage {
 
 		}
 	}
-	
+
 	public void validateRevocationNotification() throws InterruptedException {
 
 		eleUtil.isPageLoaded(100);
@@ -2163,8 +2167,8 @@ public class CasecreationPage extends CommonActionsPage {
 			try {
 				Thread.sleep(3000);
 
-				WebElement WOalert = driver.findElement(
-						By.xpath("//p[contains(text(),'A tanker Permit has requested to be  Revoked and requires your review')]"));
+				WebElement WOalert = driver.findElement(By.xpath(
+						"//p[contains(text(),'A tanker Permit has requested to be  Revoked and requires your review')]"));
 				// JavascriptExecutor js = (JavascriptExecutor) driver;
 				// js.executeScript("arguments[0].scrollIntoView(true);", WOalert);
 				if (eleUtil.isClickable(WOalert, 10)) {
@@ -2208,7 +2212,6 @@ public class CasecreationPage extends CommonActionsPage {
 
 		}
 	}
-
 
 	public void completeSOReviewStage() {
 		navigatingToStage("SO Review");
@@ -2301,12 +2304,13 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void processingStage() {
-		/*eleUtil.isPageLoaded(30);
-		By clickOnStage = By.xpath("//div[@title='Processing']");
-		eleUtil.doElementClickable(clickOnStage, 20);
-		jsutil.clickElementByJS(driver.findElement(clickOnStage));*/
+		/*
+		 * eleUtil.isPageLoaded(30); By clickOnStage =
+		 * By.xpath("//div[@title='Processing']");
+		 * eleUtil.doElementClickable(clickOnStage, 20);
+		 * jsutil.clickElementByJS(driver.findElement(clickOnStage));
+		 */
 		navigatingToStage("Processing");
-		
 
 		eleUtil.waitForVisibilityOfElement(processingOption, 10);
 		eleUtil.doSelectDropDownByVisibleText(processingOption, "Yes");
@@ -2521,19 +2525,21 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClick(saveBtn);
 
 		eleUtil.isPageLoaded(30);
-		
+
 		Thread.sleep(4000);
 		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
 		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
-		 System.out.println("updated case number : " + CommonActionsPage.casenumber);
+		System.out.println("updated case number : " + CommonActionsPage.casenumber);
 
 	}
 
 	public void tankerToDeregister() throws InterruptedException {
-		/*Thread.sleep(4000);
-		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
-		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");*/
-		
+		/*
+		 * Thread.sleep(4000); System.out.println("title :" +
+		 * eleUtil.doGetElementAttribute(caseid, "title")); CommonActionsPage.casenumber
+		 * = eleUtil.doGetElementAttribute(caseid, "title");
+		 */
+
 		eleUtil.waitForVisibilityOfElement(moreCommandsForDereg, 30);
 		eleUtil.doElementClickable(moreCommandsForDereg, 20);
 		jsutil.clickElementByJS(driver.findElement(moreCommandsForDereg));
@@ -2591,9 +2597,12 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClick(backBtn);
 
 	}
-	
-	public void tankerPermitStatusAtTankercompLvl() throws InterruptedException {
 
+	public void tankerPermitStatusAtTankerLvl() throws InterruptedException {
+		changeAreaSelection("GWC Tanker");
+
+		selectEntity("GWC Tankers");
+		
 		eleUtil.waitForVisibilityOfElement(editFilterBtn, 30);
 		eleUtil.doClick(editFilterBtn);
 		eleUtil.waitForVisibilityOfElement(selectedItem, 30);
@@ -2604,7 +2613,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClick(selectInactiveOption);
 		eleUtil.waitForVisibilityOfElement(applyBtn, 30);
 		eleUtil.doClick(applyBtn);
-		
+
 		eleUtil.waitForVisibilityOfElement(colHeader, 50);
 		eleUtil.doElementClickable(colHeader, 20);
 		eleUtil.doClick(colHeader);
@@ -2613,11 +2622,37 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
 		Thread.sleep(6000);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
-		
+		eleUtil.waitForVisibilityOfElement(applyBtn, 30);
+		eleUtil.doClick(applyBtn);
+
 		eleUtil.waitForVisibilityOfElement(permitstatus, 50);
 		eleUtil.doGetElementAttribute(permitstatus, "aria-label");
+
+	}
+
+	public void tankerPermitStatusAtPermitLvl() throws InterruptedException {
 		
+		changeAreaSelection("GWC Tanker");
+
+		selectEntity("Permits");
 		
+		eleUtil.doClick(changeViewIcon);
+		eleUtil.doClick(inactivePermit);
+
+		for (Map.Entry<String, String> entry : CommonActionsPage.permitnums.entrySet()) {
+			eleUtil.doClick(dropdownIcon);
+			eleUtil.doClick(filterBy);
+			Thread.sleep(6000);
+			eleUtil.doSendKeys(filterbyinputbox, entry.getValue());
+			Thread.sleep(6000);
+			driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+			eleUtil.waitForVisibilityOfElement(applyBtn, 30);
+			eleUtil.doClick(applyBtn);
+
+			assertEquals(eleUtil.doElementGetText(permitnumrowval), entry.getValue(), "permit number is not matching");
+
+		}
+
 	}
 
 	public void GWEstQuan(String GWPerMonth) {

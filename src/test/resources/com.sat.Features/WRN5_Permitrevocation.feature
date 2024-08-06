@@ -66,7 +66,7 @@ Background: Test CRM Login with valid credentials
    And user selects App "DQB Case Management"  
    And search for the case to open it
    #And validate the system triggered "Tanker Deregistration" email to tankercompany about deregistered tankers
-   And validate the tankerpermitstatus
+   And validate the tankerpermitstatus after revocation
    And navigate to Close stage and fill the respective details and navigate to next stage
    
   
