@@ -1,7 +1,9 @@
 package com.sat.AppHooks;
 
+import java.awt.*;
 import java.util.Properties;
 
+import com.sat.testUtil.Log;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -26,6 +28,12 @@ public class ApplicationHooks {
      * @Before(order=0) public void getproperty() { configReader = new
      * ConfigReader(); prop = configReader.int_prop(); }
      */
+
+    @Before(order = -1)
+    public void beforeScenario(Scenario scenario) {
+        String featureUri = scenario.getName();
+        Log.startLog(featureUri);
+    }
 
     @Before(order = 0)
     public void launchbrowser() {

@@ -1,12 +1,12 @@
 @GWComplaint
 Feature: Testing Login Functionality
 
-Background: Test CRM Login with valid credentials
- 	Given User navigates to CRM login page
+  Background: Test CRM Login with valid credentials
+	Given User navigates to CRM login page
 #  When Login to app with "FIO_userid" and "FIO_pwd"
-#  And user selects App "DQB - Case Management" 
+#  And user selects App "DQB - Case Management"
 
- Scenario Outline: Test to create NEA list record
+  Scenario Outline: Test to create NEA list record
 #  When user change the changearea to "GWC Tanker"
 #  And user selects entity as "NEA List"
 #  And fill the details "Company_name","Vehicle_Number","<Vehicle_Type>","<Tankers_Capacity>","<Registration_Deregistration>" in the NEA list record form
@@ -37,8 +37,8 @@ Background: Test CRM Login with valid credentials
 #  And search for the case to open it
 #	And navigate to SO Review stage and fill the respective details and navigate to next stage
 	When Login to app with "AO_userid" and "AO_pwd"
-  And user selects App "DQB - Case Management" 
-  And search for the case to open it
+	And user selects App "DQB - Case Management"
+	And search for the case to open it
 #  And navigate to AO Review stage and fill the respective details and navigate to next stage
 #	When Login to app with "FIO_userid" and "FIO_pwd"
 #  And user selects App "DQB - Case Management"  
@@ -47,11 +47,11 @@ Background: Test CRM Login with valid credentials
   #And validate the system triggered email "Permit generation" to tankercompany once tanker is approved for disposing waste
   #And validate the system triggered email "Permit WRP email" to WRP FD to update the status of Tankers
 #  And navigate to Close stage and fill the respective details and navigate to next stage
-    Examples:
+	Examples:
   # |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfCompany|AddrOfTanker|PhoneNum|Email|GW|GWPerMonth|Q1|Q2|Q3|Q4|Q5|Q6|Q7|Q8|Q9|Q10|Q11|Q12|Q13|Q14|Q15|Q16|Q17|Acknowledement|
    #|Tanker|1000|Registration|addr1|addr1|+6512345678|test@gmail.com|Yes|100|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|Yes|
-  |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfCompany|AddrOfTanker|PhoneNum|Email|GW|GWPerMonth|
-   |Tanker|1000|Registration|addr1|addr1|+6512345678|test@gmail.com|Yes|100|
+	  | Vehicle_Type | Tankers_Capacity | Registration_Deregistration | AddOfCompany | AddrOfTanker | PhoneNum    | Email          | GW  | GWPerMonth |
+	  | Tanker       | 1000             | Registration                | addr1        | addr1        | +6512345678 | test@gmail.com | Yes | 100        |
   	
   	
   

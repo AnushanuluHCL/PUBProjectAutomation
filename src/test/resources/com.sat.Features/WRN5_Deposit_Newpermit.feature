@@ -1,12 +1,12 @@
 @WRN5_DepositAmountCalculations
-Feature: Testing deposit amount calculatons for the tanker
+Feature: Testing deposit amount calculations for the tanker
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
 	When Login to app with "Admin_userid" and "Admin_pwd"
 	And user selects App "DQB Case Management"
 
-  Scenario Outline: Test to create NEA list record
+  Scenario Outline: Validate the Deposit amount calculation process for the Tanker
 	When user change the changearea to "GWC Tanker"
 	And user selects entity as "NEA List"
 	And fill the details in the NEA list record form
