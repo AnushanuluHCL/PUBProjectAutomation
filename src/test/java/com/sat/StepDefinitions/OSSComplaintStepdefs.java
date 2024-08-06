@@ -20,20 +20,20 @@ import com.sat.testbase.TestBase;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 
-public class OSSComplaintStepdefs extends BaseStepDefs{
+public class OSSComplaintStepdefs extends BaseStepDefs {
 
-	//private LoginPage loginpage = new LoginPage(TestBase.getDriver());
-	//private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
-	private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
-	//private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
-	//public static String tankercompanyname;
+    //private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    //private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
+    private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
+    //private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
+    //public static String tankercompanyname;
 
-	private Properties prop;
-	private TestBase testbase = new TestBase();
+    private Properties prop;
+    private TestBase testbase = new TestBase();
 
-	@And("fill the details in application form for organic ships waste type details {string},{string}")
-	public void fill_the_details_in_application_form_for_organic_ships_waste_type_details(String OSSSelected, String OSSPerMonth) {
-		apppage.amountOfOSSWastetypeTanker(OSSSelected, OSSPerMonth);
-	}
+    @And("fill the details in application form for organic ships waste type details {string},{string}")
+    public void fill_the_details_in_application_form_for_organic_ships_waste_type_details(String OSSSelected, String OSSPerMonth) {
+        apppage.amountOfOSSWastetypeTanker(OSSSelected, OSSPerMonth);
+    }
 
 }

@@ -23,13 +23,14 @@ import io.cucumber.java.en.*;
 
 public class TankerDeregisterStepdefs extends BaseStepDefs {
 
-	private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
-	private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
-	private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
+    private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
+    private LoginPage loginpage = new LoginPage(TestBase.getDriver());
 
-	private Properties prop;
-	private TestBase testbase = new TestBase();
+    private Properties prop;
+    private TestBase testbase = new TestBase();
 
+<<<<<<< HEAD
 	@Then("create a manual case to with case subtype as {string}")
 	public void create_a_manual_case_to_with_case_subtype_as(String caseSubType) throws InterruptedException {
 		casepage.manualCaseCreation(caseSubType);	
@@ -55,5 +56,23 @@ public class TankerDeregisterStepdefs extends BaseStepDefs {
 	public void validate_the_tankerpermitstatus() {
 		casepage.verifyDeregisteredTankers();
 	}
+=======
+    @Then("create a manual case to deregister a tanker")
+    public void create_a_manual_case_to_deregister_a_tanker() throws InterruptedException {
+        casepage.manualCaseCreation();
+        casepage.tankerToDeregister();
+    }
+
+    @And("navigate to Processing stage and fill the respective details and navigate to next stage")
+    public void navigate_to_Processing_stage_and_fill_the_respective_details_and_navigate_to_next_stage() {
+        casepage.processingStage();
+        loginpage.signoutApp();
+    }
+
+    @And("validate that SO get notified by tanker deregister notification")
+    public void validate_that_SO_get_notified_by_tanker_deregister_notification() throws InterruptedException {
+        casepage.validateDeregisterNotification();
+    }
+>>>>>>> 48883c6 (Indentation changes in the project)
 
 }
