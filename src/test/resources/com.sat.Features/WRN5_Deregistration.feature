@@ -18,7 +18,7 @@ Feature: Testing WRN5-Deregistering a tanker Functionality
    And create tankers by filling the details
     |WasteType|
     |Human Wastewater|
-   And logout from the admin credentials
+   And logout from the application
    When Login to app with "FIO_userid" and "FIO_pwd"
    And user selects App "DQB Case Management"
    And user change the changearea to "GWC Tanker"

@@ -686,6 +686,8 @@ public class ElementUtil {
 
         }
     }
+    
+  
 
     public boolean isClickable(WebElement ele, int timeOut) {
         boolean flag = true;
