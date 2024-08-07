@@ -14,7 +14,7 @@ public class Log {
 
     public static void endLog(String featureName) {
         Log.info("---------------------------------------------------------------");
-        Log.info("          Feature Execution Started For " + featureName);
+        Log.info("          Feature Execution end For " + featureName);
         Log.info("---------------------------------------------------------------");
     }
 

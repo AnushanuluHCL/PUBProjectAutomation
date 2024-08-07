@@ -110,8 +110,8 @@ public class LoginStepdefs extends BaseStepDefs {
         apppage.neaInterface();
     }
 
-    @And("logout from the admin credentials")
-    public void logout_from_the_admin_credentials() {
+    @And("logout from the application")
+    public void logout_from_the_application() {
         loginpage.signoutApp();
     }
 
