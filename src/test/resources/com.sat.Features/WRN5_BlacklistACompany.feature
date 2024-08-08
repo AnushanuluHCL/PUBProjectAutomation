@@ -42,7 +42,7 @@ Background: Test CRM Login with valid credentials
    And navigate to SO Review stage and fill the respective details and navigate to next stage
    When Login to app with "AO_userid" and "AO_pwd"
    And user selects App "DQB Case Management" 
- 	 And search for the case to open it
+   And search for the case to open it
    And navigate to AO Review stage and fill the respective details and navigate to next stage
    When Login to app with "FIO_userid" and "FIO_pwd"
    And user selects App "DQB Case Management"  
@@ -53,7 +53,7 @@ Background: Test CRM Login with valid credentials
    When Login to app with "SO_userid" and "SO_pwd"
    And user selects App "DQB Case Management" 
    And search for the case to open it
-   And update the blacklist field value as yes with date and "Period Of Blacklisting" in months
+   And update the blacklist field value as yes with date and "<Period Of Blacklisting>" in months
 	 
    
   

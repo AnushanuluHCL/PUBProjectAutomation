@@ -1,4 +1,4 @@
-@NonComplaince
+@WRN5_NonComplaince_Rework
 Feature: Testing Non-Compalince Rework end to end flow
 
   Background: Test Non-Compalince end to end flow using Rework
@@ -18,7 +18,7 @@ Feature: Testing Non-Compalince Rework end to end flow
  And create tankers by filling the details
     |WasteType|
     |OS - Ship|
-  And logout from the admin credentials
+  And logout from the application
   When Login to app with "FIO_userid" and "FIO_pwd"
   And user selects App "DQB Case Management" 
   And user change the changearea to "GWC Tanker"
