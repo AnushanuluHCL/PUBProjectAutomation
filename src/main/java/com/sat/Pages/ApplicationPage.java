@@ -86,6 +86,9 @@ public class ApplicationPage extends CommonActionsPage {
 	private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
 	private By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
 	private By createdApp = By.xpath("(//div[@col-id='pub_gwccompany'])[2]");
+	private By managingdirectorfield = By.xpath("//h2[@title='Managing Director Details']");
+	private By OSgrid = By.xpath("//h2[@title='Organic Sludge']");
+	private By HWgrid = By.xpath("//h2[@title='Human Waste Water']");
 
 	// Locators for creating tankers
 	private By newAppTankerBtn = By.xpath("//span[text()='New Application Tankers']");
@@ -234,17 +237,16 @@ public class ApplicationPage extends CommonActionsPage {
 	public void amountOfHWWastetypeTanker(String HWSelected, String HWType, String HWPerMonth) {
 		// eleUtil.scrollUsingRobotClass();
 		// eleUtil.waitForVisibilityOfElement(HumanWasteBox, 30);
-		// jsutil.scrollIntoView(driver.findElement(HumanWasteBox));
-		// eleUtil.waitForVisibilityOfElement(humanwasteTypeHeading, 60);
-		// eleUtil.scrollUsingRobotClass();
-		// jsutil.scrollPageDown();
-		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		/*driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
 		try {
 			eleUtil.waitForVisibilityOfElement(HumanWasteBox, 10);
 		} catch (NoSuchElementException e) {
 			System.out.println("HumanWasteBox not found even after scrolling.");
 			return; // Exit the method or handle the error gracefully
-		}
+		}*/
+		eleUtil.waitForVisibilityOfElement(managingdirectorfield, 10);
+		jsutil.scrollIntoView(driver.findElement(HWgrid));
+		eleUtil.waitForVisibilityOfElement(OSShipsBox, 20);
 		eleUtil.doElementClickable(HumanWasteBox, 30);
 		eleUtil.createSelect(HumanWasteBox);
 		eleUtil.doSelectDropDownByVisibleText(HumanWasteBox, HWSelected);
@@ -258,13 +260,16 @@ public class ApplicationPage extends CommonActionsPage {
 	public void amountOfOSSWastetypeTanker(String OSSSelected, String OSSPerMonth) {
 		// eleUtil.scrollUsingRobotClass();
 		// eleUtil.waitForVisibilityOfElement(OSShipsBox, 50);
-		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		/*driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
 		try {
 			eleUtil.waitForVisibilityOfElement(OSShipsBox, 10);
 		} catch (NoSuchElementException e) {
 			System.out.println("OSShipsBox not found even after scrolling.");
 			return; // Exit the method or handle the error gracefully
-		}
+		}*/
+		eleUtil.waitForVisibilityOfElement(managingdirectorfield, 10);
+		jsutil.scrollIntoView(driver.findElement(OSgrid));
+		eleUtil.waitForVisibilityOfElement(OSShipsBox, 20);
 		eleUtil.createSelect(OSShipsBox);
 		eleUtil.doSelectDropDownByVisibleText(OSShipsBox, OSSSelected);
 		eleUtil.doClearUsingKeys(OSShipsPerMonthField);
@@ -273,17 +278,9 @@ public class ApplicationPage extends CommonActionsPage {
 	}
 
 	public void amountOfOSIWastetypeTanker(String OSISelected, String OSIPerMonth) {
-		 eleUtil.scrollUsingRobotClass();
-		 eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 50);
-
-	/*	eleUtil.waitForPresenceOfElement(By.tagName("body"), 20);
-		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
-		try {
-			eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 10);
-		} catch (NoSuchElementException e) {
-			System.out.println("OSIndustriesBox not found even after scrolling.");
-			return; // Exit the method or handle the error gracefully }
-		}*/
+		eleUtil.waitForVisibilityOfElement(managingdirectorfield, 10);
+		jsutil.scrollIntoView(driver.findElement(OSgrid));
+		eleUtil.waitForVisibilityOfElement(OSIndustriesBox, 20);
 		eleUtil.createSelect(OSIndustriesBox);
 		eleUtil.doSelectDropDownByVisibleText(OSIndustriesBox, OSISelected);
 		eleUtil.doClearUsingKeys(OSIndustriesPerMonthField);

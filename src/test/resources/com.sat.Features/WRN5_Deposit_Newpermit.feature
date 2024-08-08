@@ -25,7 +25,7 @@ Feature: Testing deposit amount calculations for the tanker
 	  | Human Wastewater |
 	  | OS - Ship        |
 	  | OS - Industrial  |
-	And logout from the admin credentials
+	And logout from the application
 	When Login to app with "FIO_userid" and "FIO_pwd"
 	And user selects App "DQB Case Management"
 	And user change the changearea to "GWC Tanker"

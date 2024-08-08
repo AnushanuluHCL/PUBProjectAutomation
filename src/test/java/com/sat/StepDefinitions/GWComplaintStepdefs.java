@@ -93,20 +93,12 @@ public class GWComplaintStepdefs extends BaseStepDefs {
 
     @And("go to Service tasks tab and fill and complete the checklist as {string}")
     public void go_to_Service_tasks_tab_and_fill_and_complet_the_checklist_as(String outcome) throws InterruptedException {
-        // casepage.fillTheChecklistquestions(Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10,
-        // Q11, Q12, Q13, Q14, Q15, Q16, Q17,Ack);
         casepage.fillTheChecklistquestions(outcome);
-        /*
-         * If("gwcompalint"){ String str="Yes"; //
-         * casepage.fillTheChecklistquestions(str); } else {
-         * casepage.fillTheChecklistquestions(Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10,
-         * Q11, Q12, Q13, Q14, Q15, Q16, Q17, Ack); }
-         */
     }
 
     @And("verify the WO status field is {string} and verify tanker Iscomplaint? field value as {string} in work order form")
     public void verify_the_wo_status_field_is_and_verify_tanker_iscomplaint_field_value_as_in_work_order_form(String status, String iscomplaint) {
-        casepage.complaincecheckInWorkorderAnusha(status, iscomplaint);
+        casepage.complaincecheckInWorkorder(status, iscomplaint);
     }
 
     @And("verify whether case outcome is complaince by checking Is complaint? field value as {string} in case form")

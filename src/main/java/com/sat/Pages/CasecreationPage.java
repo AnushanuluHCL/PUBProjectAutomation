@@ -325,12 +325,16 @@ public class CasecreationPage extends CommonActionsPage {
 	private By permitNumcol = By.xpath("(//div[@col-id='pub_name'])[1]");
 	private By dropdownIcon = By.xpath("//i[@data-icon-name='ChevronDownSmall']");
 	private By permitnumrowval = By.xpath("//div[@col-id='pub_name' and not(@role='columnheader')]//span");
-	
+
 	// Locators for blacklist a company
 	private By blacklistSelect = By.xpath("//select[@aria-label='Blacklist']");
-	private By blacklistedOnCalendar = By.xpath("//input[@aria-label='Date of Blacklisted On']/following-sibling::i[@data-icon-name='Calendar']");
+	private By blacklistedOnCalendar = By
+			.xpath("//input[@aria-label='Date of Blacklisted On']/following-sibling::i[@data-icon-name='Calendar']");
 	private By selectCurrentDate = By.xpath("//td[contains(@class,'ms-CalendarDay-daySelected')]");
 	private By blacklistPeriod = By.xpath("//input[contains(@aria-label,'Period of Blacklisting')]");
+	private By NEAlistgridAtCompanylvl = By.xpath("//h2[text()='NEA List']");
+	private By BalcklistgridAtCompanylvl = By.xpath("//section[@aria-label='Blacklist Details']");
+	private By TankerdetailsGridAtCompanylvl = By.xpath("//section[@aria-label='Tanker Details']");
 
 	public CasecreationPage(WebDriver driver) {
 		super(driver);
@@ -602,9 +606,9 @@ public class CasecreationPage extends CommonActionsPage {
 	public void searchACase() throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(searchbox, 20);
 		Thread.sleep(2000);
-		 eleUtil.doSendKeys(searchbox, CommonActionsPage.casenumber);
+		eleUtil.doSendKeys(searchbox, CommonActionsPage.casenumber);
 
-		//eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24454");
+		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24454");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 
@@ -632,7 +636,7 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void navigatingToStage(String stageName) {
-		By clickOnStage = By.xpath("//div[@title='" + stageName + "']");
+		By clickOnStage = By.xpath("//div[contains(@id,'stageNameContainer') and @title='" + stageName + "']");
 		try {
 
 			// Attempt standard click
@@ -640,13 +644,13 @@ public class CasecreationPage extends CommonActionsPage {
 				return; // Exit if standard click is successful
 			}
 
-			// Attempt Actions click
-			if (attemptActionsClick(clickOnStage)) {
+			// Attempt JavaScript click
+			if (attemptJavaScriptClick(clickOnStage)) {
 				return; // Exit if Actions click is successful
 			}
 
-			// Attempt JavaScript click
-			attemptJavaScriptClick(clickOnStage);
+			// Attempt Actions click
+			attemptActionsClick(clickOnStage);
 
 		} catch (NoSuchElementException e) {
 			System.out.println("Element not found: " + e.getMessage());
@@ -667,23 +671,25 @@ public class CasecreationPage extends CommonActionsPage {
 		}
 	}
 
-	private boolean attemptActionsClick(By locator) {
+	private void attemptActionsClick(By locator) {
 		try {
 			eleUtil.doActionsClick(locator);
 			System.out.println("Actions click succeeded");
-			return true; // Click was successful
+
 		} catch (Exception e) {
 			System.out.println("Actions click failed: " + e.getMessage());
-			return false; // Click failed
+
 		}
 	}
 
-	private void attemptJavaScriptClick(By locator) {
+	private boolean attemptJavaScriptClick(By locator) {
 		try {
 			jsutil.clickElementByJS(driver.findElement(locator));
 			System.out.println("JavaScript click succeeded");
+			return true; // Click was successful
 		} catch (Exception e) {
 			System.out.println("JavaScript click failed: " + e.getMessage());
+			return false; // Click failed
 		}
 	}
 
@@ -1023,10 +1029,8 @@ public class CasecreationPage extends CommonActionsPage {
 		String yesval = "Yes";
 		String noval = "No";
 		Thread.sleep(2000);
-		// section[@id="id-2076"]//div[@aria-rowindex="2"]//div[@aria-colindex="5"]
 		List<WebElement> elements = driver.findElements(By.xpath("//label[@aria-label='In Progress']"));
 		System.out.println("checklist size is" + elements.size());
-		// for (WebElement element : elements) {
 		// for (int i = 2; i <= CommonActionsPage.tankerNumberSize.get("tankersize") +
 		// 1; i++) {
 		for (int i = 2; i <= elements.size() + 1; i++) {
@@ -1148,7 +1152,12 @@ public class CasecreationPage extends CommonActionsPage {
 						eleUtil.doActionsClick(markcompleteBtn);
 					}
 					Thread.sleep(2000);
-					eleUtil.doClick(saveNCloseBtnInChklsit);
+					eleUtil.waitForVisibilityOfElement(saveBtnInChklsit, 20);
+					try {
+						eleUtil.doClick(saveNCloseBtnInChklsit);
+					} catch (Exception e) {
+						eleUtil.doActionsClick(saveNCloseBtnInChklsit);
+					}
 
 					boolean tankerRegNoDisplayed = false;
 					long startTime = System.currentTimeMillis();
@@ -1182,64 +1191,6 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void complaincecheckInWorkorder(String status, String iscomplaint) {
-
-		navigatingtotab("Work Orders");
-
-		// eleUtil.doClick(summaryTab);
-		// clickOnRefrehBtn();
-
-		List<String> wonum = CommonActionsPage.WOnumber;
-		System.out.println("Size of wonum list is: " + wonum.size());
-
-		for (int i = 0; i < wonum.size(); i++) {
-			long startTime = System.currentTimeMillis();
-			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + wonum.get(i) + "']");
-			eleUtil.doActionsClick(woele);
-
-			if (iscomplaint.equalsIgnoreCase("No")) {
-				System.out.println("Tanker is Non-Compliance");
-				// continue;
-			} else {
-				boolean tankerRegNoDisplayed = false;
-				while (!tankerRegNoDisplayed && (System.currentTimeMillis() - startTime) < 180000) {
-					try {
-						eleUtil.doClick(refreshBtn);
-						eleUtil.waitForVisibilityOfElement(tankerregno, AppConstants.SHORT_DEFAULT_WAIT);
-						// If tankerregno is displayed, set the flag to true to exit the loop
-						if (driver.findElement(tankerregno).isDisplayed()) {
-							tankerRegNoDisplayed = true;
-						}
-					} catch (StaleElementReferenceException e) {
-						System.out.println("catching the exception");
-					} catch (Exception e) {
-						System.out.println("Button is not present");
-					}
-				}
-			}
-
-			if (iscomplaint.equalsIgnoreCase("No")) {
-				System.out.println("Tanker is Non-Compliance");
-			} else {
-				By isComplaintchkInWOfrom = By
-						.xpath("//select[@aria-label='Is Compliant?']/option[text()='" + iscomplaint + "']");
-				eleUtil.waitForVisibilityOfElement(isComplaintchkInWOfrom, 100);
-				String isComplaintVal = eleUtil.doElementGetText(isComplaintchkInWOfrom);
-				System.out.println("complaince check - " + isComplaintVal);
-				if (isComplaintVal.equals(iscomplaint)) {
-					System.out.println("Tanker is Complaince");
-				} else {
-					System.out.println("Tanker is Non-Complaince");
-				}
-				assertEquals(eleUtil.doGetElementAttribute(WOstatusInWOform, "title"), status,
-						"WO status not matching");
-				// eleUtil.doClick(saveCloseBtn);
-			}
-			eleUtil.waitForVisibilityOfElement(saveCloseBtn, 30);
-			eleUtil.doClick(saveCloseBtn);
-		}
-	}
-
-	public void complaincecheckInWorkorderAnusha(String status, String iscomplaint) {
 
 		navigatingtotab("Work Orders");
 		List<String> wonum = CommonActionsPage.WOnumber;
@@ -1289,157 +1240,6 @@ public class CasecreationPage extends CommonActionsPage {
 			eleUtil.doClick(saveCloseBtn);
 			eleUtil.isPageLoaded(30);
 			navigatingtotab("Work Orders");
-		}
-	}
-
-	public void complaincecheckInWorkorderRemove(String status, String iscomplaint) {
-
-		navigatingtotab("Work Orders");
-
-		// eleUtil.doClick(summaryTab);
-		// clickOnRefrehBtn();
-
-		List<String> wonum = CommonActionsPage.WOnumber;
-		System.out.println("Size of wonum list is: " + wonum.size());
-		System.out.println("wonum list is" + wonum);
-
-		for (int i = 0; i < wonum.size(); i++) {
-
-			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + wonum.get(i) + "']");
-			eleUtil.doActionsClick(woele);
-
-			if (iscomplaint.equalsIgnoreCase("No")) {
-				System.out.println("Work order " + wonum.get(i) + " is Noncompliance. Skipping further actions.");
-				// continue;
-			} else {
-				boolean tankerRegNoDisplayed = false;
-				long startTime = System.currentTimeMillis();
-				while (!tankerRegNoDisplayed && (System.currentTimeMillis() - startTime) < 120000) {
-					try {
-						eleUtil.doClick(refreshBtn);
-						eleUtil.waitForVisibilityOfElement(tankerregno, AppConstants.SHORT_DEFAULT_WAIT);
-						// If tankerregno is displayed, set the flag to true to exit the loop
-						if (driver.findElement(tankerregno).isDisplayed()) {
-							tankerRegNoDisplayed = true;
-						}
-					} catch (StaleElementReferenceException e) {
-						System.out.println("StaleElementReferenceException caught");
-					} catch (Exception e) {
-						System.out.println("Button is not present");
-					}
-				}
-
-				if (!tankerRegNoDisplayed) {
-					System.out.println("Tanker registration number not displayed within timeout.");
-					continue;
-				}
-
-				By isComplaintchkInWOfrom = By
-						.xpath("//select[@aria-label='Is Compliant?']/option[text()='" + iscomplaint + "']");
-				eleUtil.waitForVisibilityOfElement(isComplaintchkInWOfrom, 100);
-				String isComplaintVal = eleUtil.doElementGetText(isComplaintchkInWOfrom);
-				System.out.println("complaince check - " + isComplaintVal);
-				if (isComplaintVal.equals(iscomplaint)) {
-					System.out.println("Tanker is Complaince");
-				} else {
-					System.out.println("Tanker is Non-Complaince");
-				}
-
-				// eleUtil.doClick(saveCloseBtn);
-			}
-			try {
-				eleUtil.doClick(refreshBtn);
-			} catch (StaleElementReferenceException e) {
-				System.out.println("catching the exception");
-			} catch (Exception e) {
-				System.out.println("Button is not present");
-			}
-			eleUtil.waitForVisibilityOfElement(WOstatusInWOform, 30);
-			assertEquals(eleUtil.doGetElementAttribute(WOstatusInWOform, "title"), status, "WO status not matching");
-			eleUtil.waitForVisibilityOfElement(saveCloseBtn, 30);
-			eleUtil.doElementClickable(saveCloseBtn, 30);
-			eleUtil.doClick(saveCloseBtn);
-
-		}
-
-	}
-
-	public void complaincecheckInWorkorderRemove2(String status, String iscomplaint) {
-		navigatingtotab("Work Orders");
-
-		List<String> wonum = CommonActionsPage.WOnumber;
-		System.out.println("Size of wonum list is: " + wonum.size());
-		System.out.println("wonum list is: " + wonum);
-
-		for (String workOrderNumber : wonum) {
-			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + workOrderNumber + "']");
-			eleUtil.doActionsClick(woele);
-
-			try {
-				if (iscomplaint.equalsIgnoreCase("No")) {
-					System.out
-							.println("Work order " + workOrderNumber + " is Noncompliance. Skipping further actions.");
-					// Skip further actions for non-compliant work orders
-					eleUtil.doClick(saveCloseBtn); // Close the work order
-					continue;
-				}
-
-				// Perform actions for compliant work orders
-				boolean tankerRegNoDisplayed = false;
-				long startTime = System.currentTimeMillis();
-				while (!tankerRegNoDisplayed && (System.currentTimeMillis() - startTime) < 120000) {
-					try {
-						eleUtil.doClick(refreshBtn);
-						eleUtil.waitForVisibilityOfElement(tankerregno, AppConstants.SHORT_DEFAULT_WAIT);
-						// If tankerregno is displayed, set the flag to true to exit the loop
-						if (driver.findElement(tankerregno).isDisplayed()) {
-							tankerRegNoDisplayed = true;
-						}
-					} catch (StaleElementReferenceException e) {
-						System.out.println("StaleElementReferenceException caught");
-					} catch (Exception e) {
-						System.out.println("Exception caught: " + e.getMessage());
-					}
-				}
-
-				if (!tankerRegNoDisplayed) {
-					System.out.println("Tanker registration number not displayed within timeout for work order "
-							+ workOrderNumber);
-					// Handle the scenario where tanker registration number is not displayed
-					// Continue to the next work order
-					eleUtil.doClick(saveCloseBtn); // Close the work order
-					continue;
-				}
-
-				// Proceed with checking compliance
-				By isComplaintchkInWOfrom = By
-						.xpath("//select[@aria-label='Is Compliant?']/option[text()='" + iscomplaint + "']");
-				eleUtil.waitForVisibilityOfElement(isComplaintchkInWOfrom, 100);
-				String isComplaintVal = eleUtil.doElementGetText(isComplaintchkInWOfrom);
-				System.out.println("Compliance check - " + isComplaintVal);
-
-				if (isComplaintVal.equals(iscomplaint)) {
-					System.out.println("Work order " + workOrderNumber + " is Compliant");
-					// Additional steps for compliant work orders if needed
-				} else {
-					System.out.println("Work order " + workOrderNumber + " is Non-Compliant");
-					// Additional steps for non-compliant work orders if needed
-				}
-
-				// Validate WO status
-				eleUtil.waitForVisibilityOfElement(WOstatusInWOform, 30);
-				assertEquals(eleUtil.doGetElementAttribute(WOstatusInWOform, "title"), status,
-						"WO status not matching");
-
-				// Click Save/Close button to close the current work order
-				eleUtil.waitForVisibilityOfElement(saveCloseBtn, 30);
-				eleUtil.doClick(saveCloseBtn);
-
-			} catch (Exception e) {
-				System.out.println(
-						"Exception occurred while processing work order " + workOrderNumber + ": " + e.getMessage());
-				// Handle exceptions as needed
-			}
 		}
 	}
 
@@ -2273,11 +2073,9 @@ public class CasecreationPage extends CommonActionsPage {
 		navigatingToStage("AO Review");
 		eleUtil.waitForVisibilityOfElement(AOresponseOption, 10);
 		eleUtil.createSelect(AOresponseOption);
-		// eleUtil.doClick(AOresponseOption);
 		eleUtil.doSelectDropDownByVisibleText(AOresponseOption, "Approve");
 		eleUtil.doElementClickable(saveBtn, 10);
 		eleUtil.doActionsClick(saveBtn);
-		eleUtil.doElementClickable(AOreviewStage, 20);
 		navigatingToStage("AO Review");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
@@ -2322,8 +2120,8 @@ public class CasecreationPage extends CommonActionsPage {
 		}
 
 		navigatingToStage("Close");
+		eleUtil.waitForVisibilityOfElement(endoresementreceivedOption, 10);
 		if (driver.findElement(endoresementreceivedOption).isDisplayed()) {
-			eleUtil.waitForVisibilityOfElement(endoresementreceivedOption, 10);
 			eleUtil.createSelect(endoresementreceivedOption);
 			eleUtil.doSelectDropDownByVisibleText(endoresementreceivedOption, "Yes");
 			try {
@@ -2602,7 +2400,12 @@ public class CasecreationPage extends CommonActionsPage {
 		navigatingtotab("Inspection Case Information");
 		eleUtil.waitForVisibilityOfElement(entityLink, 20);
 		eleUtil.doClick(entityLink);
-		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+
+		eleUtil.waitForVisibilityOfElement(NEAlistgridAtCompanylvl, 10);
+		jsutil.scrollIntoView(driver.findElement(TankerdetailsGridAtCompanylvl));
+
+		eleUtil.waitForVisibilityOfElement(tankerStatusOnCompanyLvl, 20);
+
 		String permitstatusAtCompanyLevel = eleUtil.doElementGetText(tankerStatusOnCompanyLvl);
 		System.out.println("permitstatusAtCompanyLevel" + permitstatusAtCompanyLevel);
 		assertEquals(permitstatusAtCompanyLevel, "Deregistered", "Tanker permit sttaus is not showing as Deregistered");
@@ -2612,19 +2415,17 @@ public class CasecreationPage extends CommonActionsPage {
 		assertEquals(str, "No data available", "Permits are not removed from the company");
 
 		jsutil.scrollPageUp();
-		// driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_UP);
 
-		/*
-		 * eleUtil.waitForVisibilityOfElement(tankerLink, 20);
-		 * eleUtil.doClick(tankerLink);
-		 * eleUtil.waitForVisibilityOfElement(tankerStatusOnTankerLvl, 20); String
-		 * permitstatusAtTankerLevel =
-		 * eleUtil.doElementGetText(tankerStatusOnTankerLvl);
-		 * assertEquals(permitstatusAtTankerLevel, "Deregistered",
-		 * "Tanker permit sttaus is not showing as Deregistered");
-		 * 
-		 * eleUtil.waitForVisibilityOfElement(backBtn, 10); eleUtil.doClick(backBtn);
-		 */
+		jsutil.scrollIntoView(driver.findElement(TankerdetailsGridAtCompanylvl));
+
+		eleUtil.waitForVisibilityOfElement(tankerLink, 20);
+		eleUtil.doClick(tankerLink);
+		eleUtil.waitForVisibilityOfElement(tankerStatusOnTankerLvl, 20);
+		String permitstatusAtTankerLevel = eleUtil.doElementGetText(tankerStatusOnTankerLvl);
+		assertEquals(permitstatusAtTankerLevel, "Deregistered", "Tanker permit sttaus is not showing as Deregistered");
+
+		eleUtil.waitForVisibilityOfElement(backBtn, 10);
+		eleUtil.doClick(backBtn);
 
 		eleUtil.waitForVisibilityOfElement(backBtn, 10);
 		eleUtil.doClick(backBtn);
@@ -2653,8 +2454,9 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClick(colHeader);
 		eleUtil.doClick(filterBy);
 		Thread.sleep(6000);
-		 eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.tankerNumber.get(1));
-		//eleUtil.doSendKeys(filterbyinputbox, "T_070824065645");// WRN/DQB/GWC/1/2024/1821OSI-20240807
+		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.tankerNumber.get(1));
+		// eleUtil.doSendKeys(filterbyinputbox, "T_070824065645");//
+		// WRN/DQB/GWC/1/2024/1821OSI-20240807
 		Thread.sleep(6000);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
 
@@ -2682,34 +2484,25 @@ public class CasecreationPage extends CommonActionsPage {
 			eleUtil.doSendKeys(filterbyinputbox, entry.getValue());
 			Thread.sleep(6000);
 			driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
-			
-			
+
 			eleUtil.waitForVisibilityOfElement(permitnumrowval, 20);
-			System.out.println("permit number is"+eleUtil.doElementGetText(permitnumrowval));
-			
+			System.out.println("permit number is" + eleUtil.doElementGetText(permitnumrowval));
+
 			assertEquals(eleUtil.doElementGetText(permitnumrowval), entry.getValue(), "permit number is not matching");
 
 		}
 
 	}
-	
+
 	public void balcklistACompany(String period) {
-		
-		
+
 		eleUtil.waitForVisibilityOfElement(entityLink, 20);
 		eleUtil.doClick(entityLink);
-		
-		
-		
-		WebElement ele=driver.findElement(By.xpath("//div[@id='mainContent']"));
-		//WebElement ele = driver.findElement(By.tagName("body"));
-		//ele.sendKeys(Keys.chord(Keys.CONTROL,"END"));
-		
-		Actions a=new Actions(driver);
-		a.moveToElement(ele).click().keyDown(Keys.CONTROL).sendKeys(Keys.END).keyUp(Keys.CONTROL).build().perform();
-		
-		//driver.findElement(By.tagName("body")).sendKeys(Keys.chord(Keys.CONTROL,Keys.END));
-		
+
+		eleUtil.waitForVisibilityOfElement(NEAlistgridAtCompanylvl, 10);
+
+		jsutil.scrollIntoView(driver.findElement(BalcklistgridAtCompanylvl));
+		eleUtil.waitForVisibilityOfElement(blacklistSelect, 20);
 		eleUtil.createSelect(blacklistSelect);
 		eleUtil.doSelectDropDownByVisibleText(blacklistSelect, "Yes");
 		eleUtil.waitForVisibilityOfElement(blacklistedOnCalendar, 20);
@@ -2718,7 +2511,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClick(selectCurrentDate);
 		eleUtil.waitForVisibilityOfElement(blacklistPeriod, 20);
 		eleUtil.doSendKeys(blacklistPeriod, period);
-		
+
 		eleUtil.waitForVisibilityOfElement(saveCloseBtn, 20);
 		eleUtil.doClick(saveCloseBtn);
 	}
@@ -3005,6 +2798,7 @@ public class CasecreationPage extends CommonActionsPage {
 
 		case "Tanker Deregistration":
 			ele = By.xpath("(//label[contains(text(),'Deregistration of')])[1]");
+			eleUtil.waitForVisibilityOfElement(ele, 20);
 			mailTrigger = eleUtil.doElementGetText(ele);
 			assertTrue(mailTrigger.contains("Deregistration of"), "Mail is not generated");
 
