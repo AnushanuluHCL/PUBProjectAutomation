@@ -21,7 +21,7 @@ import com.sat.testbase.TestBase;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 
-public class TankerDeregisterStepdefs extends BaseStepDefs {
+public class TankerDeregisterStepdefs {
 
     private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
     private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());

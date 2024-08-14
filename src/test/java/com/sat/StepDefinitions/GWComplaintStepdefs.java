@@ -23,10 +23,8 @@ import com.sat.testbase.TestBase;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 
-public class GWComplaintStepdefs extends BaseStepDefs {
+public class GWComplaintStepdefs {
 
-    // private LoginPage loginpage = new LoginPage(TestBase.getDriver());
-    // private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
     private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
     private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
@@ -152,8 +150,8 @@ public class GWComplaintStepdefs extends BaseStepDefs {
         casepage.inspectionReportCheck();
     }
 
-    @And("create a new manual WO to create reinspection of the tanker again")
-    public void create_a_new_manual_WO_to_create_reinspection_of_the_tanker_again() throws ParseException, InterruptedException {
+    @And("create a new manual WO to create the tanker again")
+    public void create_a_new_manual_WO_to_create_the_tanker_again() throws ParseException, InterruptedException {
         casepage.manualWOCreation();
         casepage.manualBookableResource();
     }
@@ -168,7 +166,7 @@ public class GWComplaintStepdefs extends BaseStepDefs {
     @And("change the view and search a case")
     public void change_the_view_and_search_a_case() throws InterruptedException {
         casepage.openACase();
-        casepage.changeView();
+        casepage.changeView("Tanker Inspection Cases");
         casepage.searchACase();
     }
 

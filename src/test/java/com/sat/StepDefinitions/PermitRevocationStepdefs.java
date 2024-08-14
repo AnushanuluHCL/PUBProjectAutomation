@@ -21,7 +21,7 @@ import com.sat.testbase.TestBase;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 
-public class PermitRevocationStepdefs extends BaseStepDefs {
+public class PermitRevocationStepdefs {
 
 	private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
 
@@ -41,6 +41,10 @@ public class PermitRevocationStepdefs extends BaseStepDefs {
 	@And("update the blacklist field value as yes with date and {string} in months")
 	public void update_the_blacklist_field_value_as_yes_with_date_and_in_months(String blacklistperiod) {
 		casepage.balcklistACompany(blacklistperiod);
+	}
+	@And("navigate to email messages and verify the cancellation email and blacklist emails are generated")
+	public void navigate_to_email_messages_and_verify_the_cancellation_email_and_blacklist_emails_are_generated() {
+		casepage.emailsFromEmailmessages();
 	}
 	
 
