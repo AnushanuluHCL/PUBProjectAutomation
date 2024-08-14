@@ -61,7 +61,7 @@ public class LoginStepdefs{
 
     @And("fill the details in the NEA list record form")
     public void fill_the_details_in_the_NEA_list_record_form(DataTable Tankerdetails) throws InterruptedException {
-        neapage.creationOfNEARecordmultiple(Tankerdetails);
+        neapage.creationOfNEARecordMultiple(Tankerdetails);
     }
 
     @And("fill the details in application form for General details {string},{string},{string}")
