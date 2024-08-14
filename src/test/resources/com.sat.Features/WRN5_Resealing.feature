@@ -1,12 +1,12 @@
-@WRN5_BlacklistingACompany
-Feature: Testing WRN5-Permit Revocation process by blacklisting a company
+@WRN5_Resealing
+Feature: Testing WRN5-Tanker Resealing Functionality
 
 Background: Test CRM Login with valid credentials
  		Given User navigates to CRM login page
     When Login to app with "Admin_userid" and "Admin_pwd"
     And user selects App "DQB Case Management" 
 
- Scenario Outline: Revocking permit for the tankercompany by blacklisting it
+ Scenario Outline: Resealing of the tanker
    When user change the changearea to "GWC Tanker"
    And user selects entity as "NEA List"
    And fill the details in the NEA list record form
@@ -14,10 +14,10 @@ Background: Test CRM Login with valid credentials
  		|Tanker|1000|Registration|1|
  	 And user selects entity as "Applications"
 	 And fill the details in application form for General details "<AddOfTankerYard>","<PhoneNum>","<Email>"
-   And fill the details in application form for organic ships waste type details "<OSS>","<OSSPerMonth>"
+   And fill the details in application form for organic industries waste type details "<OSI>","<OSIPerMonth>"
    And create tankers by filling the details
     |WasteType|
-    |OS - Ship|
+    |OS - Industrial|
    And logout from the application
    When Login to app with "FIO_userid" and "FIO_pwd"
    And user selects App "DQB Case Management" 
@@ -42,23 +42,42 @@ Background: Test CRM Login with valid credentials
    And navigate to SO Review stage and fill the respective details and navigate to next stage
    When Login to app with "AO_userid" and "AO_pwd"
    And user selects App "DQB Case Management" 
-   And search for the case to open it
+ 	 And search for the case to open it
    And navigate to AO Review stage and fill the respective details and navigate to next stage
    When Login to app with "FIO_userid" and "FIO_pwd"
    And user selects App "DQB Case Management"  
    And search for the case to open it
    And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
-   And logout from the application
+   And navigate to Close stage and fill the respective details and navigate to next stage
    
+   Then create a manual case to with case subtype as "Tanker Resealing"
+   And go to "Work Orders" tab
+	 And create a new manual WO to create the tanker again
+	 And go to Service tasks tab and fill and complete the checklist as "Resealing"
+	 
+	 And navigate to Processing stage and navigate to next stage
+	 And navigate to Assignment stage and confirm the inspection schedule 
+   And navigate to Assignment stage and fill the respective details and navigate to next stage
+   And navigate to Inspection stage and select the Inspection completed value as yes
+   And navigate to Inspection stage and fill the respective details and navigate to next stage
    When Login to app with "SO_userid" and "SO_pwd"
    And user selects App "DQB Case Management" 
    And search for the case to open it
-   And update the blacklist field value as yes with date and "<Period Of Blacklisting>" in months
-   And validate the tankerpermitstatus after revocation
-   And navigate to email messages and verify the cancellation email and blacklist emails are generated
-	 
+   #And validate that SO/AO get notified by resealing notification
+   And navigate to SO Review stage and fill the respective details and navigate to next stage
+	 When Login to app with "AO_userid" and "AO_pwd"
+   And user selects App "DQB Case Management" 
+   And search for the case to open it
+   And validate that SO/AO get notified by resealing notification
+   And navigate to AO Review stage and fill the respective details and navigate to next stage
+   When Login to app with "FIO_userid" and "FIO_pwd"
+   And user selects App "DQB Case Management"  
+   And search for the case to open it
+   And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
+   And validate the system triggered "Tanker Resealing" email to tankercompany about resealed tankers
+   And validate the resealing tanker information
+   And navigate to Close stage and fill the respective details and navigate to next stage
    
-  
    Examples:
-     |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfTankerYard|PhoneNum|Email|OSS|OSSPerMonth|Period Of Blacklisting|
-     |Tanker|1000|Registration|addr1|+6512345678|test@gmail.com|Yes|100|2|
+     |Vehicle_Type|Tankers_Capacity|Registration_Deregistration|AddOfTankerYard|PhoneNum|Email|OSI|OSIPerMonth|
+     |Tanker|1000|Registration|addr1|+6512345678|test@gmail.com|Yes|100|

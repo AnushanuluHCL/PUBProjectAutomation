@@ -34,6 +34,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.sat.constants.AppConstants;
+import com.sat.testUtil.Log;
 
 public class CasecreationPage extends CommonActionsPage {
 	/*
@@ -131,6 +132,8 @@ public class CasecreationPage extends CommonActionsPage {
 																					// Response']
 	private By generateemailStage = By.xpath("//div[@title='Generate Email']");
 	private By generateemailOption = By.xpath("//select[@aria-label='Generate Email']"); // visible text Yes/No
+	private By selectedGeneratedEmailValue = By
+			.xpath("//select[@aria-label='Generate Email']//option[@data-selected='true']");
 	private By emailtocustomerOption = By.xpath("//select[@aria-label='Email Sent to Customer?']"); // visible text
 																									// Yes/No
 	private By endoresementreceivedOption = By.xpath("//select[@aria-label='Endorsement Received']"); // visible text
@@ -213,7 +216,7 @@ public class CasecreationPage extends CommonActionsPage {
 	private By checklistNameField = By.xpath("//div[@col-id='msdyn_name']/descendant::a");
 
 	// Locators on checklist questions home page
-	private By oldSealnumField = By.xpath("//td[@title='Old Seal Number']");
+	private By oldSealnumField = By.xpath("//input[@aria-label='Old Seal Number']");
 	private By newSealnumField = By.xpath("//input[@aria-label='New Seal Number']");
 	private By photosTakendropdownField = By.xpath("//select[@aria-label='Photos taken']"); // visible text Yes/No
 	private By markcompleteBtn = By.xpath("//button[contains(@title,'Set Task as fully completed')]");// button[contains(@title,'Set
@@ -263,7 +266,7 @@ public class CasecreationPage extends CommonActionsPage {
 
 	// Locators for Manual WO
 	private By newWOBtn = By.xpath("//span[text()='New Work Order']");
-	private By applicationTanker = By.xpath("//input[@aria-label='Application Tanker, Lookup']");
+	private By applicationTanker = By.xpath("//input[contains(@aria-label,'Tanker, Lookup')]");
 	private By quickcreateSaveNCloseBtn = By.xpath("//button[@data-id='quickCreateSaveAndCloseBtn']");
 
 	// Locators for Manual Bookable resource
@@ -287,9 +290,7 @@ public class CasecreationPage extends CommonActionsPage {
 	private By tankerStatusOnCompanyLvl = By
 			.xpath("//div[@col-id='pub_tankerpermitstatus']//label[contains(@class,'optionSetRootStyle')]/div");
 	private By tankerLink = By.xpath("//div[@col-id='msdyn_name']//a");
-	private By tankerStatusOnTankerLvl = By
-			.xpath("//select[@data-id=\"pub_tankerpermitstatus.fieldControl-option-set-select\"]");// select[@aria-label='Tanker
-																									// Permit Status']
+	private By tankerStatusOnTankerLvl = By.xpath("//select[@aria-label='Tanker Permit Status']");
 	private By permitGridAtCompanyLvl = By.xpath(
 			"//div[contains(@data-id,'Permits_List-pcf_grid_control_container')]//span[text()='No data available']");
 	// By.xpath("//div[@class='ag-center-cols-container' and
@@ -335,6 +336,24 @@ public class CasecreationPage extends CommonActionsPage {
 	private By NEAlistgridAtCompanylvl = By.xpath("//h2[text()='NEA List']");
 	private By BalcklistgridAtCompanylvl = By.xpath("//section[@aria-label='Blacklist Details']");
 	private By TankerdetailsGridAtCompanylvl = By.xpath("//section[@aria-label='Tanker Details']");
+	private By allemails = By.xpath("//label[text()='All Emails']");
+	private By regardingFilterIcon = By.xpath("//div[@data-testid='regardingobjectid']");
+
+	// Locators for Resealing
+	private By SIESgrisAtTankerLvl = By.xpath("//h2[text()='SIES']");
+	private By SealingdetailsAtTankerLvl = By.xpath("//h2[text()='Seal Number']");
+	private By oldsealnumField = By.xpath("//input[@aria-label='Old Seal Number']");
+	private By newsealnumField = By.xpath("//input[@aria-label='New Seal Number']");
+	private By resealReaonField = By.xpath("//input[@aria-label='Reason for resealing']");
+	private By dateOfResealField = By.xpath("//input[@aria-label='Date of Date of resealing']");
+
+	// Locators for Audit
+	private By tpConfigurationsField = By.xpath("//span[text()='TP Configurations']");
+	private By noOfCasesForAudit = By.xpath("//span[text()='Number of Tanker Audit Cases to be scheduled']");
+	private By configDate = By.xpath("//textarea[@aria-label='Config']");
+	private By calendorIconFromFilter = By.xpath("//i[@aria-label='Filter by value']");
+	private By rowsCount = By.xpath("//span[contains(@class,'statusTextContainer')]");
+	
 
 	public CasecreationPage(WebDriver driver) {
 		super(driver);
@@ -363,39 +382,8 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
 		Thread.sleep(6000);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
-		// added this while loop on 07/26 to resolve suggestionbox issue
-		/*
-		 * WebElement suggestionElement = null; final int MAX_RETRIES = 10; int retries
-		 * = 0;
-		 * 
-		 * while (retries < MAX_RETRIES) { try {// div[@class='ms-SelectionZone'] //
-		 * Wait until the suggestion text is visible By suggestionTextLocator =
-		 * By.xpath("//div[contains(@class,'suggestionTextOver')]");
-		 * eleUtil.waitForVisibilityOfElement(suggestionTextLocator,
-		 * AppConstants.SHORT_DEFAULT_WAIT); suggestionElement =
-		 * driver.findElement(suggestionTextLocator); // String suggestionTextfieldval =
-		 * // eleUtil.doElementGetText(suggestionTextLocator);
-		 * 
-		 * if (suggestionElement.isDisplayed()) { // Click on the apply button if needed
-		 * driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
-		 * System.out.println("Suggestion found and action taken."); break; // Exit the
-		 * loop if the suggestion is successfully found and acted upon } else { throw
-		 * new TimeoutException("Suggestion is not visible."); }
-		 * 
-		 * } catch (TimeoutException e) { // Log retry attempt and wait before retrying
-		 * System.out.println("Suggestion not found yet, retrying... Attempt: " +
-		 * (retries + 1)); try { Thread.sleep(1000); // Sleep for 1 second before
-		 * retrying } catch (InterruptedException ie) {
-		 * Thread.currentThread().interrupt(); // Restore interrupted status } } catch
-		 * (NoSuchElementException e) { // Handle case where elements are not found
-		 * System.out.println("Element not found: " + e.getMessage()); break; // Exit
-		 * loop if elements are not found } retries++; } if (retries == MAX_RETRIES) {
-		 * System.out.
-		 * println("Max retries reached. Suggestion or apply button not found."); }
-		 */
 		Thread.sleep(3000);
-
-		eleUtil.doElementClickable(applyBtn, 30);// Added on July 9th
+		eleUtil.doElementClickable(applyBtn, 30);
 		eleUtil.doClick(applyBtn);
 
 		eleUtil.waitForVisibilityOfElement(entitynameOnCaseForm, 30);
@@ -555,11 +543,14 @@ public class CasecreationPage extends CommonActionsPage {
 		CommonActionsPage.case_AO = CaseAO;
 	}
 
-	public void changeView() {
+	public void changeView(String typeOfCases) {
 		eleUtil.waitForVisibilityOfElement(changeViewIcon, 20);
 		eleUtil.doElementClickable(changeViewIcon, 30);
 		eleUtil.doClick(changeViewIcon);
-		eleUtil.doClick(ActiveCases);
+		By viewXpath = By.xpath("//label[contains(text(),'" + typeOfCases + "')]");
+		eleUtil.waitForVisibilityOfElement(viewXpath, 20);
+		eleUtil.doClick(viewXpath);
+
 	}
 
 	public void rolesUpdate() {
@@ -608,7 +599,7 @@ public class CasecreationPage extends CommonActionsPage {
 		Thread.sleep(2000);
 		eleUtil.doSendKeys(searchbox, CommonActionsPage.casenumber);
 
-		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24454");
+		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24596");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 
@@ -716,13 +707,6 @@ public class CasecreationPage extends CommonActionsPage {
 						System.out.println("actualAlertcontent" + actualAlertcontent);
 						WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 						wait.until(ExpectedConditions.elementToBeClickable(WOalert));
-
-						/*
-						 * if (!actualAlertcontent.isEmpty()) { // flag = true; actualAlertcontent =
-						 * WOalert.getText(); // break;
-						 * 
-						 * }
-						 */
 						String ExpectedAlertContent = "You Have been scheduled for Work Order " + wonum.get(i)
 								+ ". \"Tap to open\".";
 						System.out.println("ExpectedAlertContent is :" + ExpectedAlertContent);
@@ -753,7 +737,10 @@ public class CasecreationPage extends CommonActionsPage {
 				}
 
 			}
-
+			if (!flag) {
+				System.out.println("Notification not found within 5 minutes, canceling.");
+				eleUtil.doClick(cancelBtn);
+			}
 		}
 	}
 
@@ -1013,6 +1000,7 @@ public class CasecreationPage extends CommonActionsPage {
 		// Below 2 steps need to be included once signature box is moved to checklist
 		// selectFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
 		// getFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
+		eleUtil.waitForVisibilityOfElement(notestab, 20);
 		eleUtil.doElementClickable(notestab, 100);
 		eleUtil.doActionsClick(notestab);
 		eleUtil.doElementClickable(signature_box, 20);
@@ -1091,8 +1079,14 @@ public class CasecreationPage extends CommonActionsPage {
 						eleUtil.doClick(chklistQ15);
 						eleUtil.doClick(chklistQ16);
 						eleUtil.doClick(chklistQ17);
-
-					} else {
+						int number = ThreadLocalRandom.current().nextInt();
+						System.out.println("random  number before absolute:" + number);
+						int randomNumber = Math.abs(number);
+						String strform = String.valueOf(randomNumber);
+						System.out.println("random number is:" + strform);
+						jsutil.scrollIntoView(driver.findElement(newSealnumField));
+						eleUtil.doSendKeys(newSealnumField, strform);
+					} else if (outcome.equalsIgnoreCase("Non-Complaince")) {
 						By chklistQ1 = By.xpath("//input[contains(@name,'Q1_sq_') and @value='" + yesval + "']");
 						By chklistQ2 = By.xpath("//input[contains(@name,'Q2_sq_') and @value='" + yesval + "']");
 						By chklistQ3 = By.xpath("//input[contains(@name,'Q3_sq_') and @value='" + yesval + "']");
@@ -1129,16 +1123,69 @@ public class CasecreationPage extends CommonActionsPage {
 						eleUtil.doClick(chklistQ15);
 						eleUtil.doClick(chklistQ16);
 						eleUtil.doClick(chklistQ17);
+						int number = ThreadLocalRandom.current().nextInt();
+						System.out.println("random  number before absolute:" + number);
+						int randomNumber = Math.abs(number);
+						String strform = String.valueOf(randomNumber);
+						System.out.println("random number is:" + strform);
+						jsutil.scrollIntoView(driver.findElement(newSealnumField));
+						eleUtil.doSendKeys(newSealnumField, strform);
+					} else {
+						By chklistQ1 = By.xpath("//input[contains(@name,'Q1_sq_') and @value='" + yesval + "']");
+						By chklistQ2 = By.xpath("//input[contains(@name,'Q2_sq_') and @value='" + yesval + "']");
+						By chklistQ3 = By.xpath("//input[contains(@name,'Q3_sq_') and @value='" + yesval + "']");
+						By chklistQ4 = By.xpath("//input[contains(@name,'Q4_sq_') and @value='" + yesval + "']");
+						By chklistQ5 = By.xpath("//input[contains(@name,'Q5_sq_') and @value='" + yesval + "']");
+						By chklistQ6 = By.xpath("//input[contains(@name,'Q6_sq_') and @value='" + yesval + "']");
+						By chklistQ7 = By.xpath("//input[contains(@name,'Q7_sq_') and @value='" + yesval + "']");
+						By chklistQ8 = By.xpath("//input[contains(@name,'Q8_sq_') and @value='" + yesval + "']");
+						By chklistQ9 = By.xpath("//input[contains(@name,'Q9_sq_') and @value='" + yesval + "']");
+						By chklistQ10 = By.xpath("//input[contains(@name,'Q10_sq_') and @value='" + yesval + "']");
+						By chklistQ11 = By.xpath("//input[contains(@name,'Q11_sq_') and @value='" + yesval + "']");
+						By chklistQ12 = By.xpath("//input[contains(@name,'Q12_sq_') and @value='" + yesval + "']");
+						By chklistQ13 = By.xpath("//input[contains(@name,'Q13_sq_') and @value='" + yesval + "']");
+						By chklistQ14 = By.xpath("//input[contains(@name,'Q14_sq_') and @value='" + yesval + "']");
+						By chklistQ15 = By.xpath("//input[contains(@name,'Q15_sq_') and @value='" + yesval + "']");
+						By chklistQ16 = By.xpath("//input[contains(@name,'Q16_sq_') and @value='" + yesval + "']");
+						By chklistQ17 = By.xpath("//input[contains(@name,'Q17_sq_') and @value='" + yesval + "']");
+
+						eleUtil.waitForVisibilityOfElement(chklistQ1, 20);
+						eleUtil.doClick(chklistQ1);
+						eleUtil.doClick(chklistQ2);
+						eleUtil.doClick(chklistQ3);
+						eleUtil.doClick(chklistQ4);
+						eleUtil.doClick(chklistQ5);
+						eleUtil.doClick(chklistQ6);
+						eleUtil.doClick(chklistQ7);
+						eleUtil.doClick(chklistQ8);
+						eleUtil.doClick(chklistQ9);
+						eleUtil.doClick(chklistQ10);
+						eleUtil.doClick(chklistQ11);
+						eleUtil.doClick(chklistQ12);
+						eleUtil.doClick(chklistQ13);
+						eleUtil.doClick(chklistQ14);
+						eleUtil.doClick(chklistQ15);
+						eleUtil.doClick(chklistQ16);
+						eleUtil.doClick(chklistQ17);
+						int oldnumber = ThreadLocalRandom.current().nextInt();
+						System.out.println("random  number before absolute:" + oldnumber);
+						int randomNumber = Math.abs(oldnumber);
+						String stroldform = String.valueOf(randomNumber);
+						System.out.println("random number is:" + stroldform);
+						jsutil.scrollIntoView(driver.findElement(oldSealnumField));
+						eleUtil.doSendKeys(oldSealnumField, stroldform);
+						CommonActionsPage.oldSealNumber = stroldform;
+
+						int newnumber = ThreadLocalRandom.current().nextInt();
+						int randomNumber1 = Math.abs(newnumber);
+						String strnewform = String.valueOf(randomNumber1);
+						System.out.println("random number is:" + strnewform);
+						jsutil.scrollIntoView(driver.findElement(newSealnumField));
+						eleUtil.doSendKeys(newSealnumField, strnewform);
+						CommonActionsPage.newSealNumber = strnewform;
 
 					}
 
-					int number = ThreadLocalRandom.current().nextInt();
-					System.out.println("random  number before absolute:" + number);
-					int randomNumber = Math.abs(number);
-					String strform = String.valueOf(randomNumber);
-					System.out.println("random number is:" + strform);
-					jsutil.scrollIntoView(driver.findElement(newSealnumField));
-					eleUtil.doSendKeys(newSealnumField, strform);
 					By acknowledmentOption = By
 							.xpath("//input[contains(@name,'Question2_sq_') and @value='" + yesval + "']");
 					eleUtil.doClick(acknowledmentOption);
@@ -1347,7 +1394,7 @@ public class CasecreationPage extends CommonActionsPage {
 			Date date = timeFormat.parse(StartTimeval);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
-			cal.add(Calendar.MINUTE, 10);
+			cal.add(Calendar.MINUTE, 30);
 			String result = timeFormat.format(cal.getTime());
 			System.out.println(result);
 			eleUtil.doElementClickable(endTimeonBooking, 30);
@@ -1808,32 +1855,38 @@ public class CasecreationPage extends CommonActionsPage {
 							.findElement(By.xpath("//p[contains(text(),'Case is compliant')]/a"));
 					taptoopenBtn.click();
 					flag = true;
+					ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+					System.out.println("open tabs" + tabs.size());
+					driver.switchTo().window(tabs.get(1));
+					// Thread.sleep(10000);
+					eleUtil.waitForVisibilityOfElement(caseid, 100);
+					String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");// need to update code
+																								// here
+
+					System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
+					assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
+							"case is not same after clicking on tap to open button");
+					System.out.println(tabs.size() - 1);
+					// driver.switchTo().window(tabs.get(tabs.size() - 2));
+					eleUtil.doElementClickable(saveCloseBtn, 20);
+					eleUtil.doClick(saveCloseBtn);
+					driver.switchTo().window(tabs.get(0));
+					try {
+						eleUtil.doClick(cancelBtn);
+					} catch (Exception e) {
+						eleUtil.doActionsClick(cancelBtn);
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			if (!flag) {
+				System.out.println("Notification not found within 5 minutes, canceling.");
+				eleUtil.doClick(cancelBtn);
+			}
 
 		}
-		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-		System.out.println("open tabs" + tabs.size());
-		driver.switchTo().window(tabs.get(1));
-		// Thread.sleep(10000);
-		eleUtil.waitForVisibilityOfElement(caseid, 100);
-		String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");// need to update code here
 
-		System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
-		assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
-				"case is not same after clicking on tap to open button");
-		System.out.println(tabs.size() - 1);
-		// driver.switchTo().window(tabs.get(tabs.size() - 2));
-		eleUtil.doElementClickable(saveCloseBtn, 20);
-		eleUtil.doClick(saveCloseBtn);
-		driver.switchTo().window(tabs.get(0));
-		try {
-			eleUtil.doClick(cancelBtn);
-		} catch (Exception e) {
-			eleUtil.doActionsClick(cancelBtn);
-		}
 	}
 
 	public void validateReworkNotification() throws InterruptedException {
@@ -1860,28 +1913,34 @@ public class CasecreationPage extends CommonActionsPage {
 					WebElement taptoopenBtn = driver.findElement(By.xpath("//p[contains(text(),'Case Alert')]/a"));
 					taptoopenBtn.click();
 					flag = true;
+					ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+					System.out.println("open tabs" + tabs.size());
+					driver.switchTo().window(tabs.get(1));
+					// Thread.sleep(10000);
+					eleUtil.waitForVisibilityOfElement(caseid, 100);
+					String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");// need to update code
+																								// here
+
+					System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
+					assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
+							"case is not same after clicking on tap to open button");
+					System.out.println(tabs.size() - 1);
+					// driver.switchTo().window(tabs.get(tabs.size() - 2));
+					eleUtil.doElementClickable(saveCloseBtn, 20);
+					eleUtil.doClick(saveCloseBtn);
+					driver.switchTo().window(tabs.get(0));
+					eleUtil.doClick(cancelBtn);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			if (!flag) {
+				System.out.println("Notification not found within 5 minutes, canceling.");
+				eleUtil.doClick(cancelBtn);
+			}
 
 		}
-		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-		System.out.println("open tabs" + tabs.size());
-		driver.switchTo().window(tabs.get(1));
-		// Thread.sleep(10000);
-		eleUtil.waitForVisibilityOfElement(caseid, 100);
-		String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");// need to update code here
 
-		System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
-		assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
-				"case is not same after clicking on tap to open button");
-		System.out.println(tabs.size() - 1);
-		// driver.switchTo().window(tabs.get(tabs.size() - 2));
-		eleUtil.doElementClickable(saveCloseBtn, 20);
-		eleUtil.doClick(saveCloseBtn);
-		driver.switchTo().window(tabs.get(0));
-		eleUtil.doClick(cancelBtn);
 	}
 
 	public void validateWOComplaintNotification() throws InterruptedException {
@@ -1907,32 +1966,38 @@ public class CasecreationPage extends CommonActionsPage {
 							By.xpath("//p[contains(text(),'Compliant WO')]/../following-sibling::div/p/a"));
 					taptoopenBtn.click();
 					flag = true;
+					ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+					System.out.println("open tabs" + tabs.size());
+					driver.switchTo().window(tabs.get(1));
+					// Thread.sleep(10000);
+					eleUtil.waitForVisibilityOfElement(caseid, 100);
+					String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");// need to update code
+																								// here
+
+					System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
+					assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
+							"case is not same after clicking on tap to open button");
+					System.out.println(tabs.size() - 1);
+					// driver.switchTo().window(tabs.get(tabs.size() - 2));
+					eleUtil.doElementClickable(saveCloseBtn, 20);
+					eleUtil.doClick(saveCloseBtn);
+					driver.switchTo().window(tabs.get(0));
+					try {
+						eleUtil.doClick(cancelBtn);
+					} catch (Exception e) {
+						eleUtil.doActionsClick(cancelBtn);
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			if (!flag) {
+				System.out.println("Notification not found within 5 minutes, canceling.");
+				eleUtil.doClick(cancelBtn);
+			}
 
 		}
-		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-		System.out.println("open tabs" + tabs.size());
-		driver.switchTo().window(tabs.get(1));
-		// Thread.sleep(10000);
-		eleUtil.waitForVisibilityOfElement(caseid, 100);
-		String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");// need to update code here
 
-		System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
-		assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
-				"case is not same after clicking on tap to open button");
-		System.out.println(tabs.size() - 1);
-		// driver.switchTo().window(tabs.get(tabs.size() - 2));
-		eleUtil.doElementClickable(saveCloseBtn, 20);
-		eleUtil.doClick(saveCloseBtn);
-		driver.switchTo().window(tabs.get(0));
-		try {
-			eleUtil.doClick(cancelBtn);
-		} catch (Exception e) {
-			eleUtil.doActionsClick(cancelBtn);
-		}
 	}
 
 	public void validateDeregisterNotification() throws InterruptedException {
@@ -1990,6 +2055,10 @@ public class CasecreationPage extends CommonActionsPage {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			if (!flag) {
+				System.out.println("Notification not found within 5 minutes, canceling.");
+				eleUtil.doClick(cancelBtn);
+			}
 
 		}
 	}
@@ -2046,7 +2115,69 @@ public class CasecreationPage extends CommonActionsPage {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			if (!flag) {
+				System.out.println("Notification not found within 5 minutes, canceling.");
+				eleUtil.doClick(cancelBtn);
+			}
+		}
+	}
 
+	public void validateResealingNotification() throws InterruptedException {
+
+		eleUtil.isPageLoaded(100);
+		eleUtil.waitForVisibilityOfElement(notificationIcon, 100);
+		eleUtil.doClick(notificationIcon);
+		Boolean flag = false;
+		long startTime = System.currentTimeMillis();
+		while (!flag && (System.currentTimeMillis() - startTime) < 300000) {
+			try {
+				Thread.sleep(3000);
+				WebElement WOalert = driver.findElement(
+						By.xpath("//p[contains(text(),'A tanker has requested to be  resealed and requires your')]"));
+				// JavascriptExecutor js = (JavascriptExecutor) driver;
+				// js.executeScript("arguments[0].scrollIntoView(true);", WOalert);
+				if (eleUtil.isClickable(WOalert, 10)) {
+					String actualAlertcontent = WOalert.getText();
+					// eleUtil.waitForVisibilityOfElement(SIESGWCCompanyfield,AppConstants.SHORT_DEFAULT_WAIT);
+					System.out.println("actualAlertcontent" + actualAlertcontent);
+					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+					wait.until(ExpectedConditions.elementToBeClickable(WOalert));
+					String ExpectedAlertContent = "A tanker has requested to be resealed and requires your approval. \"Click here\".";
+					System.out.println("ExpectedAlertContent is :" + ExpectedAlertContent);
+					assertTrue(actualAlertcontent.contains(ExpectedAlertContent), "Alert content is not same");
+					WebElement taptoopenBtn = driver.findElement(By.xpath(
+							"//p[contains(text(),'A tanker has requested to be  resealed and requires your approval')]/a"));
+					taptoopenBtn.click();
+					flag = true;
+					ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+					System.out.println("open tabs" + tabs.size());
+					driver.switchTo().window(tabs.get(1));
+					// Thread.sleep(10000);
+					eleUtil.waitForVisibilityOfElement(caseid, 100);
+					String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");
+
+					System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
+					assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
+							"case is not same after clicking on tap to open button");
+					System.out.println(tabs.size() - 1);
+					// driver.switchTo().window(tabs.get(tabs.size() - 2));
+					eleUtil.doElementClickable(saveCloseBtn, 20);
+					eleUtil.doClick(saveCloseBtn);
+					driver.switchTo().window(tabs.get(0));
+					try {
+						eleUtil.doClick(cancelBtn);
+					} catch (Exception e) {
+						eleUtil.doActionsClick(cancelBtn);
+					}
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (!flag) {
+				System.out.println("Notification not found within 5 minutes, canceling.");
+				eleUtil.doClick(cancelBtn);
+			}
 		}
 	}
 
@@ -2083,11 +2214,16 @@ public class CasecreationPage extends CommonActionsPage {
 
 	public void completeGenerateEmailStage() {
 		navigatingToStage("Generate Email");
-		/*
-		 * eleUtil.waitForVisibilityOfElement(generateemailOption, 10);
-		 * eleUtil.createSelect(generateemailOption); eleUtil.isPageLoaded(40);
-		 * eleUtil.doSelectDropDownByVisibleText(generateemailOption, "Yes");
-		 */
+
+		eleUtil.waitForVisibilityOfElement(generateemailOption, 10);
+		eleUtil.createSelect(generateemailOption);
+		eleUtil.isPageLoaded(40);
+		if (eleUtil.doElementGetText(selectedGeneratedEmailValue).equals("No")) {
+			eleUtil.doSelectDropDownByVisibleText(generateemailOption, "Yes");
+		} else {
+			Log.info("alaredy value selecetd as Yes");
+		}
+
 		eleUtil.waitForVisibilityOfElement(emailtocustomerOption, 10);
 		eleUtil.createSelect(emailtocustomerOption);
 		eleUtil.doSelectDropDownByVisibleText(emailtocustomerOption, "Yes");
@@ -2098,14 +2234,6 @@ public class CasecreationPage extends CommonActionsPage {
 		 */
 		eleUtil.doElementClickable(saveBtn, 30);
 		eleUtil.doActionsClick(saveBtn);
-		// eleUtil.isPageLoaded(10);
-		// below 2 steps need to be removed once mails code is removed
-		/*
-		 * eleUtil.doElementClickable(okBtn, 10); eleUtil.doClick(okBtn);
-		 */
-	}
-
-	public void completeResolveStage() {
 		eleUtil.doElementClickable(generateemailStage, 10);
 		navigatingToStage("Generate Email");
 		eleUtil.doElementClickable(nextstageBtn, 50);
@@ -2118,6 +2246,9 @@ public class CasecreationPage extends CommonActionsPage {
 				break;
 			}
 		}
+	}
+
+	public void completeResolveStage() {
 
 		navigatingToStage("Close");
 		eleUtil.waitForVisibilityOfElement(endoresementreceivedOption, 10);
@@ -2154,6 +2285,14 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doActionsClick(saveBtn);
 
 		navigatingToStage("Processing");
+		eleUtil.doElementClickable(nextstageBtn, 10);
+		eleUtil.doClick(nextstageBtn);
+
+	}
+
+	public void processingStageResealing() {
+		navigatingToStage("Processing");
+		eleUtil.waitForVisibilityOfElement(nextstageBtn, 20);
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
 
@@ -2220,15 +2359,27 @@ public class CasecreationPage extends CommonActionsPage {
 
 		eleUtil.waitForVisibilityOfElement(applicationTanker, 50);
 		eleUtil.doClick(applicationTanker);
-		// driver.findElement(applicationTanker).sendKeys(CommonActionsPage.TankerName,
-		// Keys.ARROW_DOWN, Keys.ENTER);
+
 		eleUtil.doClear(applicationTanker);
 		System.out.println(CommonActionsPage.tankerNumber.get(1));
 		eleUtil.doSendKeys(applicationTanker, CommonActionsPage.tankerNumber.get(1));
+		// eleUtil.doSendKeys(applicationTanker, "T_090824182233");
 		Thread.sleep(30000);
-		By tankernumxpath = By.xpath("//li[contains(@data-id,'pub_applicationtankerid')]");
+		By tankernumxpath = By.xpath("//li[contains(@data-id,'tankerid')]");
 		Actions a = new Actions(driver);
 		a.moveToElement(driver.findElement(tankernumxpath)).click().build().perform();
+
+		// adding code for reason for resealing
+		By ele = By.xpath("//input[@aria-label='Reason for Resealing']");
+
+		if (!driver.findElements(ele).isEmpty()) {
+			eleUtil.waitForVisibilityOfElement(ele, 20);
+			eleUtil.doClear(ele);
+			eleUtil.doSendKeys(ele, "Tanker Damaged");
+			CommonActionsPage.resealReason = eleUtil.doGetElementAttribute(ele, "value");
+		} else {
+			Log.info("Field is NA");
+		}
 
 		eleUtil.doClick(quickcreateSaveNCloseBtn);
 		eleUtil.isPageLoaded(30);
@@ -2261,7 +2412,8 @@ public class CasecreationPage extends CommonActionsPage {
 
 		eleUtil.waitForVisibilityOfElement(newBookableresourceBtn, 100);
 		eleUtil.doClick(newBookableresourceBtn);
-		eleUtil.doElementClickable(bookingStatusManualWO, 50);
+		eleUtil.waitForVisibilityOfElement(bookingStatusManualWO, 50);
+		eleUtil.doElementClickable(bookingStatusManualWO, 100);
 		eleUtil.doClick(bookingStatusManualWO);
 		By selectAnOption = By.xpath("//button[@title='In Progress']");
 		eleUtil.waitForVisibilityOfElement(selectAnOption, 100);
@@ -2284,32 +2436,41 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doSendKeys(endDateManualWO, StartDateval);
 		driver.findElement(endDateManualWO).sendKeys(Keys.ENTER);
 
-		SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-		Date date = timeFormat.parse(StartTimeval);
+		String dateTimeStr = StartDateval + " " + StartTimeval;
+
+		SimpleDateFormat timeFormat = new SimpleDateFormat("M/d/yyyy h:mm a");
+
+		// Parse the combined date-time string
+		Date dateTime = null;
+		try {
+			dateTime = timeFormat.parse(dateTimeStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return; // Exit if parsing fails
+		}
+
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.add(Calendar.MINUTE, 10);
-		String result = timeFormat.format(cal.getTime());
+		cal.setTime(dateTime);
+		cal.add(Calendar.MINUTE, 30);
+		Date newDateTime = cal.getTime();
+		String result = timeFormat.format(newDateTime);
 		System.out.println(result);
 		eleUtil.doElementClickable(endTimeManualWO, 30);
 		eleUtil.doClick(endTimeManualWO);
 		eleUtil.doClearUsingKeys(endTimeManualWO);
 		eleUtil.doSendKeys(endTimeManualWO, result);
 
+		jsutil.scrollIntoView(driver.findElement(resource));
 		eleUtil.waitForVisibilityOfElement(resource, 50);
 		eleUtil.doClick(resource);
 		eleUtil.doClear(resource);
 		eleUtil.doSendKeys(resource, CommonActionsPage.case_FIO);
-		Thread.sleep(30000);
+		// Thread.sleep(50000);
 		By resourcexpath = By.xpath("//li[contains(@data-id,'resource.field')]");
+		eleUtil.waitForVisibilityOfElement(resourcexpath, 50);
 		Actions a = new Actions(driver);
 		a.moveToElement(driver.findElement(resourcexpath)).click().build().perform();
-		// eleUtil.doActionsClick(fioxpath);
-		/*
-		 * driver.findElement(resource).sendKeys(Keys.ARROW_DOWN); Thread.sleep(10000);
-		 * driver.findElement(resource).sendKeys(Keys.ENTER);
-		 */
-		// eleUtil.isPageLoaded(10);
+
 		eleUtil.doElementClickable(saveOnBooking, 10);
 		eleUtil.doClick(saveOnBooking);
 
@@ -2352,7 +2513,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClear(entityLookupField);
 		System.out.println(CommonActionsPage.Tankercompanyname);
 		eleUtil.doSendKeys(entityLookupField, CommonActionsPage.Tankercompanyname);
-		// eleUtil.doSendKeys(entityLookupField, "Tankcompany31072024070710");
+		// eleUtil.doSendKeys(entityLookupField, "Tankcompany09082024182238");
 		Thread.sleep(25000);
 		By tankercompanyxpath = By.xpath("//li[contains(@data-id,'customerid')]");
 		Actions a = new Actions(driver);
@@ -2421,7 +2582,7 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.waitForVisibilityOfElement(tankerLink, 20);
 		eleUtil.doClick(tankerLink);
 		eleUtil.waitForVisibilityOfElement(tankerStatusOnTankerLvl, 20);
-		String permitstatusAtTankerLevel = eleUtil.doElementGetText(tankerStatusOnTankerLvl);
+		String permitstatusAtTankerLevel = eleUtil.doGetElementAttribute(tankerStatusOnTankerLvl, "title");
 		assertEquals(permitstatusAtTankerLevel, "Deregistered", "Tanker permit sttaus is not showing as Deregistered");
 
 		eleUtil.waitForVisibilityOfElement(backBtn, 10);
@@ -2455,8 +2616,6 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.doClick(filterBy);
 		Thread.sleep(6000);
 		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.tankerNumber.get(1));
-		// eleUtil.doSendKeys(filterbyinputbox, "T_070824065645");//
-		// WRN/DQB/GWC/1/2024/1821OSI-20240807
 		Thread.sleep(6000);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
 
@@ -2510,10 +2669,133 @@ public class CasecreationPage extends CommonActionsPage {
 		eleUtil.waitForVisibilityOfElement(selectCurrentDate, 20);
 		eleUtil.doClick(selectCurrentDate);
 		eleUtil.waitForVisibilityOfElement(blacklistPeriod, 20);
+		eleUtil.doClick(blacklistPeriod);
 		eleUtil.doSendKeys(blacklistPeriod, period);
+
+		eleUtil.waitForVisibilityOfElement(saveBtn, 10);
+		eleUtil.doClick(saveBtn);
 
 		eleUtil.waitForVisibilityOfElement(saveCloseBtn, 20);
 		eleUtil.doClick(saveCloseBtn);
+		eleUtil.isPageLoaded(30);
+	}
+
+	public void emailsFromEmailmessages() {
+		changeAreaSelection("Inspection");
+
+		selectEntity("Email Messages");
+		eleUtil.waitForVisibilityOfElement(changeViewIcon, 20);
+		eleUtil.doClick(changeViewIcon);
+
+		eleUtil.waitForVisibilityOfElement(allemails, 20);
+		eleUtil.doClick(allemails);
+
+		eleUtil.waitForVisibilityOfElement(regardingFilterIcon, 50);
+		eleUtil.doElementClickable(regardingFilterIcon, 20);
+		eleUtil.doClick(regardingFilterIcon);
+		eleUtil.doClick(filterBy);
+		eleUtil.waitForVisibilityOfElement(filterBy, 60);
+		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
+		eleUtil.waitForVisibilityOfElement(filterBy, 60);
+		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+		eleUtil.waitForVisibilityOfElement(applyBtn, 30);
+		eleUtil.doClick(applyBtn);
+
+		String ExpectedBlacklistEmail = "Account " + CommonActionsPage.Tankercompanyname + " has been Blacklisted";
+		By ele = By.xpath("//a[contains(@aria-label,'has been Blacklisted')]");
+		String actualBlacklistEmail = eleUtil.doGetElementAttribute(ele, "aria-label");
+		assertEquals(actualBlacklistEmail, ExpectedBlacklistEmail, "Blacklist email is not generated");
+
+		/*
+		 * String ExpectedCanPermitEmail = "Cancellation of permit"; By
+		 * ele1=By.xpath("//a[contains(@aria-label,'Cancellation of permit')]"); String
+		 * actualCanPermitEmail = eleUtil.doGetElementAttribute(ele1, "aria-label");
+		 * assertEquals(actualBlacklistEmail, ExpectedBlacklistEmail,
+		 * "permit Cancellation email is not generated");
+		 */
+	}
+
+	public void resealingTankersInfoCheck() {
+		navigatingtotab("Inspection Case Information");
+
+		eleUtil.waitForVisibilityOfElement(entityLink, 20);
+		eleUtil.doClick(entityLink);
+
+		eleUtil.waitForVisibilityOfElement(NEAlistgridAtCompanylvl, 10);
+
+		jsutil.scrollIntoView(driver.findElement(TankerdetailsGridAtCompanylvl));
+		eleUtil.waitForVisibilityOfElement(tankerLink, 20);
+		eleUtil.doClick(tankerLink);
+
+		eleUtil.waitForVisibilityOfElement(SIESgrisAtTankerLvl, 20);
+		jsutil.scrollIntoView(driver.findElement(SealingdetailsAtTankerLvl));
+
+		String oldsealnumFieldVal = eleUtil.doGetElementAttribute(oldsealnumField, "title");
+		assertEquals(oldsealnumFieldVal, CommonActionsPage.oldSealNumber,
+				"Old Seal Number field value is not matching");
+
+		String newsealnumFieldVal = eleUtil.doGetElementAttribute(newsealnumField, "title");
+		assertEquals(newsealnumFieldVal, CommonActionsPage.newSealNumber,
+				"New Seal Number field value is not matching");
+
+		String resealReaonFieldVal = eleUtil.doGetElementAttribute(resealReaonField, "title");
+		assertEquals(resealReaonFieldVal, CommonActionsPage.resealReason, "Reseal reason field value is not matching");
+
+		/*
+		 * String dateOfResealFieldVal =
+		 * eleUtil.doGetElementAttribute(dateOfResealField,"title");
+		 * assertEquals(dateOfResealFieldVal, "",
+		 * "Reseal date field value is not matching");
+		 */
+
+		eleUtil.waitForVisibilityOfElement(backBtn, 10);
+		eleUtil.doClick(backBtn);
+
+		eleUtil.waitForVisibilityOfElement(backBtn, 10);
+		eleUtil.doClick(backBtn);
+
+	}
+
+	public void tpConfigChangeForAudit() {
+		changeAreaSelection("Settings");
+
+		selectEntity("TP Configurations");
+
+		eleUtil.waitForVisibilityOfElement(noOfCasesForAudit, 20);
+		eleUtil.doClick(noOfCasesForAudit);
+		eleUtil.waitForVisibilityOfElement(configDate, 20);
+		eleUtil.doClear(configDate);
+
+		LocalDate today = LocalDate.now();
+
+		// Define the desired format
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String formattedDate = today.format(formatter);
+		eleUtil.doClearUsingKeys(configDate);
+		eleUtil.doSendKeys(configDate, formattedDate);
+		eleUtil.waitForVisibilityOfElement(saveBtn, 30);
+		eleUtil.doClick(saveBtn);
+		eleUtil.waitForVisibilityOfElement(saveCloseBtn, 30);
+		eleUtil.doClick(saveCloseBtn);
+	}
+
+	public void verifyingCreatedCases() {
+		selectEntity("Cases");
+		changeView("Tanker Audit Inspection Cases");
+		eleUtil.isPageLoaded(30);
+		By createdonCol = By.xpath("//div[@col-id='createdon']");
+		eleUtil.waitForVisibilityOfElement(createdonCol, 20);
+		eleUtil.doElementClickable(createdonCol, 20);
+		eleUtil.doClick(createdonCol);
+		eleUtil.doClick(filterBy);
+		eleUtil.doClick(calendorIconFromFilter);
+		eleUtil.doClick(selectCurrentDate);
+		eleUtil.doClick(applyBtn);
+		eleUtil.waitForVisibilityOfElement(rowsCount, 20);
+		String rowsText=eleUtil.doElementGetText(rowsCount);
+		String rowsCountVal=rowsText.substring(6);
+		Log.info("Rows count : "+rowsCountVal);
+		assertEquals(rowsCountVal, "10", "Created cases are not equal to 10");
 	}
 
 	public void GWEstQuan(String GWPerMonth) {
@@ -2803,8 +3085,16 @@ public class CasecreationPage extends CommonActionsPage {
 			assertTrue(mailTrigger.contains("Deregistration of"), "Mail is not generated");
 
 			break;
+		case "Tanker Resealing":
+			ele = By.xpath("//label[contains(text(),'Tanker Resealing Email')]");
+			eleUtil.waitForVisibilityOfElement(ele, 20);
+			mailTrigger = eleUtil.doElementGetText(ele);
+			assertTrue(mailTrigger.contains("Tanker Resealing Email"), "Mail is not generated");
+
+			break;
 
 		}
+
 	}
 
 	public void mailValidation(String mailType) throws InterruptedException, ParseException {

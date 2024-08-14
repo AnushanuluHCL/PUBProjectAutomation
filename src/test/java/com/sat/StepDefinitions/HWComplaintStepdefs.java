@@ -20,13 +20,11 @@ import com.sat.testbase.TestBase;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 
-public class HWComplaintStepdefs extends BaseStepDefs {
+public class HWComplaintStepdefs{
 
-    //private LoginPage loginpage = new LoginPage(TestBase.getDriver());
-    //private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
+
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
-    //private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
-    //public static String tankercompanyname;
+
 
     private Properties prop;
     private TestBase testbase = new TestBase();

@@ -99,10 +99,19 @@ public class TestBase {
             Thread.sleep(6000);
             System.out.println("Environment is : " + prop.getProperty("url"));
             getDriver().get(prop.getProperty("url"));
-            // Wait.untilPageLoadComplete(getDriver());
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+    public void powerappsURLLaunch() {
+        try {
+            Thread.sleep(6000);
+            System.out.println("Environment is : " + prop.getProperty("url"));
+            System.out.println("PowerApps URL is : " + prop.getProperty("powerapps_URL"));
+            getDriver().get(prop.getProperty("powerapps_URL"));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }
