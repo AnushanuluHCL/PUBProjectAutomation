@@ -2,14 +2,14 @@ package com.sat.StepDefinitions;
 
 import java.util.Properties;
 
-import com.sat.Pages.caseCreationPage;
+import com.sat.Pages.CasecreationPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.java.en.*;
 
 public class PermitRevocationStepdefs {
 
-	private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
+	private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
 
 	private Properties prop;
 	private TestBase testbase = new TestBase();

@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.util.Properties;
 
 import com.sat.Pages.ApplicationPage;
-import com.sat.Pages.caseCreationPage;
+import com.sat.Pages.CasecreationPage;
 import com.sat.Pages.LoginPage;
 import com.sat.Pages.CommonActionsPage;
 import com.sat.testbase.TestBase;
@@ -17,7 +17,7 @@ public class GWComplaintStepdefs {
 
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
     private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
-    private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
+    private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
     private LoginPage loginpage = new LoginPage(TestBase.getDriver());
     // public static String tankercompanyname;
 

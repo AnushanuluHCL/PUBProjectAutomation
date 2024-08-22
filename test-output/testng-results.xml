@@ -67,7 +67,7 @@ at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:607)
 at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:224)
 at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:77)
 at com.sat.testUtil.ElementUtil.doClick(ElementUtil.java:94)
-at com.sat.Pages.caseCreationPage.workOrderValidation(CasecreationPage.java:636)
+at com.sat.Pages.CasecreationPage.workOrderValidation(CasecreationPage.java:636)
 at com.sat.StepDefinitions.GWComplaintStepdefs.fill_the_details_in_Bookings_section(GWComplaintStepdefs.java:81)
 at ✽.fill the details in Bookings section(file:///C:/Users/sriswathianusha.nulu/newworkspace/AutomationFramework-main/src/test/resources/com.sat.Features/GWComplaint.feature:25)
 ]]>
