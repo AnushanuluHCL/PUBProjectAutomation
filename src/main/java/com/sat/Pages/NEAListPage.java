@@ -20,6 +20,7 @@ import org.openqa.selenium.interactions.Actions;
 import com.sat.constants.AppConstants;
 import com.sat.testUtil.ElementUtil;
 import com.sat.testUtil.JavaScriptUtil;
+import com.sat.testUtil.Log;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;
@@ -27,6 +28,7 @@ import io.cucumber.datatable.DataTable;
 public class NEAListPage extends CommonActionsPage {
 
     String tankercompanyname = null;
+    static String storedTankerName = null;
     HashMap<Integer, String> tanker = new HashMap<Integer, String>();
     HashMap<Integer, String> capacity = new HashMap<Integer, String>();
 
@@ -87,7 +89,7 @@ public class NEAListPage extends CommonActionsPage {
             return tankercompanyname;
         } else {
             return tankercompanyname;
-        }
+        }	
     }
 
     public String getRandomTankerName() {
@@ -158,17 +160,31 @@ public class NEAListPage extends CommonActionsPage {
 
     }
 
-    public void creationOfNEARecordmultiple(DataTable diftypeOfTankersdata) throws InterruptedException {
-        List<Map<String, String>> data = diftypeOfTankersdata.asMaps(String.class, String.class);
+    public void creationOfNEARecordMultiple(DataTable difTypeOfTankersData) throws InterruptedException {
+        List<Map<String, String>> data = difTypeOfTankersData.asMaps(String.class, String.class);
         int x = 0;
         for (Map<String, String> form : data) {
             x = x + 1;
-            tanker.put(x, getRandomTankerName());
+
+            //TEST CODE STARTED//
+            String vehicle_type = form.get("Vehicle_Type");
+            // Check if vehicle_type is "oldTanker", if yes use the stored name, else generate a new name
+            String tankerName = "oldTanker".equals(vehicle_type) ? storedTankerName : getRandomTankerName();
+            Log.info("old Tanker "+ tankerName);
+            tanker.put(x, tankerName);
+            // Store the generated name for the next run
+            storedTankerName = tankerName;
             capacity.put(x, form.get("Tankers_Capacity"));
+            // tanker.put(x, getRandomTankerName());  //UNCOMMENT THESE LINES//
+            // capacity.put(x, form.get("Tankers_Capacity")); //UNCOMMENT THESE LINES//
+            //TEST CODE ENDED//
+
             // System.out.println("x value is"+tanker.get(x));
             // String company_Name = form.get("Company_name");
             String vehicle_Num = form.get("Vehicle_Number");
-            String vehicle_type = form.get("Vehicle_Type");
+
+            // String vehicle_type = form.get("Vehicle_Type"); //UNCOMMENT THESE LINES//
+
             //String capacity = form.get("Tankers_Capacity");
             String Reg_Dereg = form.get("Registration_Deregistration");
             String iteration = form.get("Iteration");

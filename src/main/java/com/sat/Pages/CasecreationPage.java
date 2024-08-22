@@ -685,63 +685,52 @@ public class CasecreationPage extends CommonActionsPage {
 	}
 
 	public void validateWOScheduleNotification() throws InterruptedException {
-
-		CommonActionsPage.WOnumber = getWONumber();// This is place we need to declare wonumber once alerts code is
-													// included
-		List<String> wonum = CommonActionsPage.WOnumber;
-		// List<String> wonum = CommonActionsPage.getSharedValueList("WOLIST");
-		for (int i = 0; i < wonum.size(); i++) {
-			eleUtil.isPageLoaded(100);
-			eleUtil.waitForVisibilityOfElement(notificationIcon, 100);
-			eleUtil.doClick(notificationIcon);
-			Boolean flag = false;
-			long startTime = System.currentTimeMillis();
-			while (!flag && (System.currentTimeMillis() - startTime) < 300000) {
-				try {
-					Thread.sleep(3000);
-					WebElement WOalert = driver.findElement(
-							By.xpath("//p[text()='You Have been scheduled for  Work Order " + wonum.get(i) + ". ']"));
-					if (eleUtil.isClickable(WOalert, 10)) {
-						String actualAlertcontent = WOalert.getText();
-						// eleUtil.waitForVisibilityOfElement(SIESGWCCompanyfield,AppConstants.SHORT_DEFAULT_WAIT);
-						System.out.println("actualAlertcontent" + actualAlertcontent);
-						WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-						wait.until(ExpectedConditions.elementToBeClickable(WOalert));
-						String ExpectedAlertContent = "You Have been scheduled for Work Order " + wonum.get(i)
-								+ ". \"Tap to open\".";
-						System.out.println("ExpectedAlertContent is :" + ExpectedAlertContent);
-						assertTrue(actualAlertcontent.contains(ExpectedAlertContent), "Alert content is not same");
-						WebElement taptoopenBtn = driver.findElement(By.xpath(
-								"//p[text()='You Have been scheduled for  Work Order " + wonum.get(i) + ". ']/a"));
-						taptoopenBtn.click();
-						flag = true;
-						ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-						System.out.println("open tabs" + tabs.size());
-						driver.switchTo().window(tabs.get(1));
-						// Thread.sleep(10000);
-						eleUtil.waitForVisibilityOfElement(workordertext, 100);
-						String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(workordertext, "Value");
-						System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
-						assertTrue(afterTaptoOpenBtn.contains(wonum.get(i)),
-								"WO is not same after clicking on tap to open button");
-						System.out.println(tabs.size() - 1);
-						// driver.switchTo().window(tabs.get(tabs.size() - 2));
-						eleUtil.doElementClickable(saveCloseBtn, 20);
-						eleUtil.doClick(saveCloseBtn);
-						driver.switchTo().window(tabs.get(0));
-						eleUtil.doClick(cancelBtn);
-					}
-				} catch (Exception e) {
-					// e.printStackTrace();
-					System.out.println("No such element");
-				}
-
-			}
-			if (!flag) {
-				System.out.println("Notification not found within 5 minutes, canceling.");
-				eleUtil.doClick(cancelBtn);
-			}
-		}
+	    CommonActionsPage.WOnumber = getWONumber();
+	    List<String> woNum = CommonActionsPage.WOnumber;
+	    for (String wo : woNum) {
+	        long endTime = System.currentTimeMillis() + 60000;
+	        while (System.currentTimeMillis() < endTime) {
+	            eleUtil.isPageLoaded(100);
+	            eleUtil.waitForVisibilityOfElement(notificationIcon, 100);
+	            eleUtil.doClick(notificationIcon);
+	            Thread.sleep(3000);
+	            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+	            WebElement WOalert = null;
+	            try {
+	                WOalert = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[contains(text(),'You Have been scheduled for  Work Order " + wo + ". ')]")));
+	            } catch (TimeoutException e) {
+	                System.out.println("Work Order alert is not present on the page.");
+	            }
+	            if (WOalert != null && WOalert.isDisplayed()) {
+	                String actualAlertcontent = WOalert.getText();
+	                Log.info("actualAlertcontent " + actualAlertcontent);
+	                wait.until(ExpectedConditions.elementToBeClickable(WOalert));
+	                String ExpectedAlertContent = "You Have been scheduled for Work Order " + wo + ". \"Tap to open\".";
+	                Log.info("ExpectedAlertContent is :" + ExpectedAlertContent);
+	                assertTrue(actualAlertcontent.contains(ExpectedAlertContent), "Alert content is not same");
+	                WebElement taptoopenBtn = driver.findElement(By.xpath("//p[contains(text(),'You Have been scheduled for  Work Order " + wo + ". ')]/a"));
+	                taptoopenBtn.click();
+	                ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+	                Log.info("open tabs" + tabs.size());
+	                driver.switchTo().window(tabs.get(1));
+	                eleUtil.waitForVisibilityOfElement(workordertext, 100);
+	                String afterTapToOpenBtn = eleUtil.doGetElementAttribute(workordertext, "Value");
+	                Log.info("afterTaptoOpenBtn:" + afterTapToOpenBtn);
+	                assertTrue(afterTapToOpenBtn.contains(wo), "WO is not same after clicking on tap to open button");
+	                Log.info(String.valueOf(tabs.size() - 1));
+	                eleUtil.doElementClickable(saveCloseBtn, 20);
+	                eleUtil.doClick(saveCloseBtn);
+	                driver.switchTo().window(tabs.get(0));
+	                eleUtil.doClick(cancelBtn);
+	                break;
+	            } else {
+	                eleUtil.doClickWithWait(cancelBtn, 30);
+	                eleUtil.doClickWithWait(refreshBtn, 30);
+	                eleUtil.doClickWithWait(workorderTab, 30);
+	                Log.error("In the notification Work Order is not visible");
+	            }
+	        }
+	    }
 	}
 
 	public void switchTab() {
@@ -1370,6 +1359,7 @@ public class CasecreationPage extends CommonActionsPage {
 		for (int i = 0; i < wonum.size(); i++) {
 			Thread.sleep(2000);
 			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + wonum.get(i) + "']");
+			eleUtil.waitForVisibilityOfElement(woele, 20);
 			eleUtil.doActionsClick(woele);
 
 			// Validation on Booking tab
