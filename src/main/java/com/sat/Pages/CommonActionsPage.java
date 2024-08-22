@@ -181,5 +181,9 @@ public class CommonActionsPage {
 		nameoftheentity.click();
 		// span[text()='" + entityname + "']
 	}
+	public void clickonNewBtn() {
+		eleUtil.doElementClickable(newBtn, 30);
+		eleUtil.doClickLog(newBtn,"Clicked on new button");
+	}
 
 }

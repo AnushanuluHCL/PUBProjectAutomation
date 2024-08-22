@@ -89,9 +89,17 @@ public class ElementUtil {
     public void doSendKeys(By locator, String value) {
         getElement(locator).sendKeys(value);
     }
+    public void doSendKeysLog(By locator, String value, String printConsoleVAl) {
+    	getElement(locator).sendKeys(value);
+    	Log.info(value);
+    }
 
     public void doClick(By locator) {
         getElement(locator).click();
+    }
+    public void doClickLog(By locator, String printConsoleVAl) {
+        getElement(locator).click();
+        Log.info("printConsoleVAl ");
     }
 
     public void doClick(String locatorType, String locatorValue) {
@@ -204,11 +212,20 @@ public class ElementUtil {
         Select select = new Select(getElement(locator));
         return select;
     }
+    public Select createSelectLog(By locator,String printConsoleVAl) {
+        Select select = new Select(getElement(locator));
+    	Log.info(printConsoleVAl);
+        return select;
+    }
 
     public void doSelectDropDownByIndex(By locator, int index) {
         createSelect(locator).selectByIndex(index);
     }
 
+    public void doSelectDropDownByVisibleTextLog(By locator, String visibleText,String printConsoleVAl ) {
+        createSelect(locator).selectByVisibleText(visibleText);
+        Log.info(visibleText);
+    }
     public void doSelectDropDownByVisibleText(By locator, String visibleText) {
         createSelect(locator).selectByVisibleText(visibleText);
     }
@@ -300,6 +317,11 @@ public class ElementUtil {
     public void doActionsClick(By locator) {
         Actions act = new Actions(driver);
         act.click(getElement(locator)).build().perform();
+    }
+    public void doActionsClickLog(By locator, String printConsoleVAl) {
+        Actions act = new Actions(driver);
+        act.click(getElement(locator)).build().perform();
+        Log.info("printConsoleVAl ");
     }
 
     public void twoLevelMenuHandle(By parentMenuLocator, By childMenuLocator) throws InterruptedException {
@@ -655,6 +677,10 @@ public class ElementUtil {
 
     public void doClearUsingKeys(By locator) {
         getElement(locator).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+    }
+    public void doClearUsingKeysLog(By locator, String printConsoleVAl) {
+        getElement(locator).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        Log.info("printConsoleVAl ");
     }
 
     public void doClearUsingKeyswithWait(By locator, int timeOut) {

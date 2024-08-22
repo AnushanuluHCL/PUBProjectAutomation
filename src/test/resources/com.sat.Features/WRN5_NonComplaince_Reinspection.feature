@@ -29,13 +29,13 @@ Feature: Testing Non-Compalince end to end flow
 	And go to "Work Orders" tab
 	And validate the schedule workorder notification
 	And navigate to Assignment stage and confirm the inspection schedule
-#	And Validate "Inspection Schedule" mail with subject
+	And Validate "Inspection Schedule" mail with subject
 	And navigate to Assignment stage and fill the respective details and navigate to next stage
 	And fill the details in Bookings section
 	And go to Service tasks tab and fill and complete the checklist as "Non-Complaince"
-#	And verify the WO status field is "Completed" and verify tanker Iscomplaint? field value as "No" in work order form
+	And verify the WO status field is "Completed" and verify tanker Iscomplaint? field value as "No" in work order form
 	And navigate to Inspection stage and select the Inspection completed value as yes
-#	And verify that "Tanker non-complaince" mail is generated once Iscomplaint? field value updated to No
+	And verify that "Tanker non-complaince" mail is generated once Iscomplaint? field value updated to No
 	And verify that inspection report is generated
 	And go to "Work Orders" tab
 	And create a new manual WO to create the tanker again

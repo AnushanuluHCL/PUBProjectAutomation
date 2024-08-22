@@ -1359,6 +1359,7 @@ public class CasecreationPage extends CommonActionsPage {
 		for (int i = 0; i < wonum.size(); i++) {
 			Thread.sleep(2000);
 			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + wonum.get(i) + "']");
+			eleUtil.waitForVisibilityOfElement(woele, 20);
 			eleUtil.doActionsClick(woele);
 
 			// Validation on Booking tab
