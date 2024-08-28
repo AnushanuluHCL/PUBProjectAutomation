@@ -20,7 +20,7 @@ public class WRN1FactoryLocatorsPage extends CommonActionsPage {
 	private By WAStatusField = By.xpath("//select[@aria-label='WA status']");
 	// private By WANumberField = By.xpath("//input[@aria-label='WA Number']");
 	// private By tradeGroupField = By.xpath("//select[@aria-label='Trade Group']");
-	// private By fpeField = By.xpath("//select[@aria-label='FPE/Non FPE']");
+	 private By fpeField = By.xpath("//select[@aria-label='FPE/Non FPE']");
 
 	// Locators for Factory entity view
 	private By entitySelection = By.xpath("//div[@col-id='name' and @role='columnheader']");
@@ -52,10 +52,9 @@ public class WRN1FactoryLocatorsPage extends CommonActionsPage {
 	}
 
 	public String fpeVal(String fpeVal) {
-		By fpeField = By.xpath("//select[@title='" + fpeVal + "']");
 		eleUtil.waitForVisibilityOfElement(fpeField, 10);
 		eleUtil.createSelectLog(fpeField, "Click on the FPE/Non FPE dropdown ");
-		eleUtil.doSelectDropDownByVisibleTextLog(fpeField, "FPE", "Selected FPE/Non FPE dropdown value is : ");
+		eleUtil.doSelectDropDownByVisibleTextLog(fpeField, fpeVal, "Selected FPE/Non FPE dropdown value is : ");
 		return eleUtil.doGetElementAttributeLog(fpeField, "title","FPE value is : ");
 
 	}

@@ -29,8 +29,8 @@ public class WRN1FactoryPage extends CommonActionsPage {
 
 	public void verifyWANumberStatus(String tradeGrp, String fpeVal, String WAnumVal) {
 		factory.entitySelectionInFactoryView();
-		//filterView(CommonActionsPage.WRN1_factoryname);
-		filterView("Testcomp270824081515");
+		filterView(CommonActionsPage.WRN1_factoryname);
+		//filterView("Testcomp270824081515");
 		selectFirstRecord();
 		getFirstRecord();
 		String actualTradeGroupValue=factory.tradeGrpVal(tradeGrp);
@@ -39,6 +39,7 @@ public class WRN1FactoryPage extends CommonActionsPage {
 		assertEquals(actualFPEValue, fpeVal, "WAApplication status is not same");
 		String actualWANumberValue=factory.WANumberVal(WAnumVal);
 		assertTrue(actualWANumberValue.contains("TER"), "WA Number is empty field");
+		clickonSaveAndCloseBtn();
 	}
 
 }

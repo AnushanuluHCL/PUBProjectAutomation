@@ -744,7 +744,10 @@ public class ElementUtil {
 	public void doClear(By locator) {
 		getElement(locator).clear();
 	}
-
+	public void doClearLog(By locator,String printConsoleVal) {
+		getElement(locator).clear();
+		Log.error(printConsoleVal);
+	}
 	public void doClearUsingKeys(By locator) {
 		getElement(locator).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 	}

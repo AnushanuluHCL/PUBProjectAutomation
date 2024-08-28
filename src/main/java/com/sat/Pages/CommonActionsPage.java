@@ -474,7 +474,7 @@ public class CommonActionsPage {
 	public void manualCaseCreation(String caseSubType) throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(newBtn, 50);
 		eleUtil.doElementClickable(newBtn, 20);
-		jsutil.clickElementByJS(driver.findElement(newBtn));
+		jsutil.clickElementByJSLog(driver.findElement(newBtn),"Clicked on New button");
 		eleUtil.waitForVisibilityOfElement(caseSubtypeField, 30);
 		eleUtil.doElementClickableLog(caseSubtypeField, 30,"Element is clickable");
 		eleUtil.createSelectLog(caseSubtypeField,"Clicked on Case Sub Type field");
@@ -482,28 +482,25 @@ public class CommonActionsPage {
 
 		eleUtil.waitForVisibilityOfElement(entityLookupField, 50);
 		eleUtil.doClickLog(entityLookupField, "Clicked on entity lookup field");
-		eleUtil.doClear(entityLookupField);
+		eleUtil.doClearLog(entityLookupField,"Clear the field");
 
 		if (BusinessFunctionField.equals("TP")) {
 			System.out.println(CommonActionsPage.Tankercompanyname);
-			eleUtil.doSendKeys(entityLookupField, CommonActionsPage.Tankercompanyname);
+			eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.Tankercompanyname,"Entered text is : ");
 		} else {
-			System.out.println(CommonActionsPage.Tankercompanyname);
-			eleUtil.doSendKeys(entityLookupField, CommonActionsPage.WRN1_factoryname);
+			System.out.println(CommonActionsPage.WRN1_factoryname);
+			eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.WRN1_factoryname,"Entered text is : ");
 		}
 		Thread.sleep(25000);
 		By tankercompanyxpath = By.xpath("//li[contains(@data-id,'customerid')]");
-		Actions a = new Actions(driver);
-		a.moveToElement(driver.findElement(tankercompanyxpath)).click().build().perform();
-
-		eleUtil.doClick(saveBtn);
+		eleUtil.doActionsMoveToElement(tankercompanyxpath,"Selected the value from lookup");
+		clickOnSaveBtn();
 
 		eleUtil.isPageLoaded(30);
 
 		Thread.sleep(4000);
-		System.out.println("title :" + eleUtil.doGetElementAttribute(caseid, "title"));
 		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
-		System.out.println("updated case number : " + CommonActionsPage.casenumber);
+		Log.info("updated case number : " + CommonActionsPage.casenumber);
 	}
 
 }
