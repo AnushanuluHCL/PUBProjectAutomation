@@ -15,7 +15,7 @@ import com.sat.testUtil.ElementUtil;
 import com.sat.testUtil.Log;
 import com.sat.testbase.TestBase;
 
-public class WAApplicationPage extends CommonActionsPage {
+public class WAApplicationLocatorsPage extends CommonActionsPage {
 
 	// Locators for Company Details
 
@@ -49,23 +49,28 @@ public class WAApplicationPage extends CommonActionsPage {
 	private By buildNameAtCompRepDetailsField = By
 			.xpath("//h2[contains(@title,'Company Rep')]/../..//descendant::input[@aria-label='Building Name']");
 
+	private By peakDischargeRateField = By.xpath("//input[contains(@aria-label,'Peak Discharge Rate')]");
+	private By noOfWorkingDaysField = By.xpath("//select[contains(@aria-label,'Number of working days per month')]");
+	private By operatingHoursField = By.xpath("//select[contains(@aria-label,'Operating Hours per Day')]");
+
 	// Locators for WA Application details
 	private By WAAppDate = By.xpath("//input[@aria-label='Date of WA Application Date']/following-sibling::i");
 	private By selectCurrentDate = By.xpath("//td[contains(@class,'ms-CalendarDay-daySelected')]");
 	private By SSICCode = By.xpath("//input[@aria-label='SSIC Code, Lookup']");
-	private By SSICCodelookup = By.xpath("//button[@aria-label='Search records for SSIC Code, Lookup field']");// Frame
-	private By ssicLookupValue = By.xpath("//li[contains(@data-id,'pub_factoryssiccode')]");																											// is
-																												// there
-																												// to
-																												// select
-																												// the
-																												// value
+	private By SSICCodelookup = By.xpath("//button[@aria-label='Search records for SSIC Code, Lookup field']");
+	private By ssicLookupValue = By.xpath("//li[contains(@data-id,'pub_factoryssiccode')]");
 
-	public WAApplicationPage(WebDriver driver) {
+	// Locators for created case once application is created
+	private By relatedTab = By.xpath("//div[text()='Related']");
+	private By selectCases = By.xpath("//div[@aria-label='Cases Related - Common']");
+	private By refreshBtnSubgrid = By.xpath("//button[@aria-label='Refresh' and contains(@id,'SubGrid')]");
+	private By caseIdField = By.xpath("//div[@col-id='title']//a");
+
+	public WAApplicationLocatorsPage(WebDriver driver) {
 		super(driver);
 	}
 
-	public void companyName() {
+	public String companyName() {
 
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
@@ -77,6 +82,7 @@ public class WAApplicationPage extends CommonActionsPage {
 		eleUtil.doClickLog(companyName, "Clicked on company Name field");
 		eleUtil.doClearUsingKeysLog(companyName, "Clear the company name field");
 		eleUtil.doSendKeysLog(companyName, companyname, "Companyname is :");
+		return companyname;
 	}
 
 	public void houseNumber(String blkno) {
@@ -233,6 +239,27 @@ public class WAApplicationPage extends CommonActionsPage {
 				"Building name field at Company Rep Details section is :");
 	}
 
+	public void peakDischargeRate(String discahrgeInLit) {
+		eleUtil.waitForVisibilityOfElement(peakDischargeRateField, 10);
+		eleUtil.doClickLog(peakDischargeRateField, "Clicked on Peak Discharge Rate field");
+		eleUtil.doClearUsingKeysLog(peakDischargeRateField, "Clear the Peak Discharge Rate field");
+		eleUtil.doSendKeysLog(peakDischargeRateField, discahrgeInLit, "Peak Discharge Rate in litres is :");
+	}
+
+	public void noOfWorkingDays(String daysVal) {
+		eleUtil.waitForVisibilityOfElement(noOfWorkingDaysField, 30);
+		eleUtil.createSelectLog(noOfWorkingDaysField, "Selected the Working Days dropdown ");
+		eleUtil.doSelectDropDownByVisibleTextLog(noOfWorkingDaysField, daysVal,
+				"Selected Working Days dropdown value is ");
+	}
+
+	public void operatingHours(String hoursVal) {
+		eleUtil.waitForVisibilityOfElement(operatingHoursField, 30);
+		eleUtil.createSelectLog(operatingHoursField, "Selected the Operating Hours dropdown ");
+		eleUtil.doSelectDropDownByVisibleTextLog(operatingHoursField, hoursVal,
+				"Selected Operating Hours dropdown value is ");
+	}
+
 	public void selectWAAppDate() {
 		eleUtil.waitForVisibilityOfElement(WAAppDate, 10);
 		eleUtil.doClickLog(WAAppDate, "Clicked on calendar icon for WA Application Date field");
@@ -240,13 +267,37 @@ public class WAApplicationPage extends CommonActionsPage {
 				"Clicked on current date from calendar present in WA Application Date field");
 	}
 
-	public void selectSSICcode(String ssicval) {
+	public void selectSSICcode(String ssicval) throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(SSICCode, 10);
 		eleUtil.doClickLog(SSICCode, "Clicked on SSIC field");
+		eleUtil.doClearUsingKeysLog(SSICCode, "Clear the SSIC field");
 		eleUtil.doSendKeysLog(SSICCode, ssicval, "SSIC field value is :");
-		//eleUtil.waitForFrameByLocator(By.xpath("//iframe[@title='PowerAppsSharedAppHostIframe']"), AppConstants.MEDIUM_DEFAULT_WAIT);
-		Actions a = new Actions(driver);
-		a.moveToElement(driver.findElement(ssicLookupValue)).click().build().perform();
-		//eleUtil.doActionsClickLog(ssicLookupValue,"Clicked the lookup value");
+		eleUtil.waitForVisibilityOfElement(ssicLookupValue, 10);
+		//eleUtil.twoLevelMenuHandle(ssicLookupValue, ssicLookupValue, "clicked on the value");
+		eleUtil.doActionsMoveToElement(ssicLookupValue, "clicked on the value");
+	}
+
+	public void caseIdExtract() {
+		eleUtil.waitForVisibilityOfElement(relatedTab, 10);
+		eleUtil.doClickLog(relatedTab, "Clicked on Related tab");
+		eleUtil.waitForVisibilityOfElement(selectCases, 10);
+		eleUtil.doClickLog(selectCases, "Clicked on Cases");
+
+		boolean flag = false;
+		long startTime = System.currentTimeMillis();
+		while (!flag && (System.currentTimeMillis() - startTime) < 150000) {
+			try {
+				// eleUtil.doClickWithWait(refreshBtnSubgrid, AppConstants.SHORT_DEFAULT_WAIT);
+				eleUtil.waitForVisibilityOfElement(refreshBtnSubgrid, 10);
+				eleUtil.doClickLog(refreshBtnSubgrid, "clicked on refresh button");
+				eleUtil.waitForVisibilityOfElement(caseIdField, AppConstants.SHORT_DEFAULT_WAIT);
+				if (driver.findElement(caseIdField).isDisplayed()) {
+					flag = true;
+				}
+			} catch (Exception e) {
+				Log.error("Case is not created. So clicking on refresh button again");
+			}
+		}
+		CommonActionsPage.casenumber=eleUtil.doElementGetTextLog(caseIdField, "Case id is ");
 	}
 }

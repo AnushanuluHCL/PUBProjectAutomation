@@ -13,18 +13,17 @@ import org.openqa.selenium.WebDriver;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sat.locators.WAApplicationPage;
+import com.sat.locators.WAApplicationLocatorsPage;
 
-public class WAPage extends CommonActionsPage {
+public class WAApplicationPage extends CommonActionsPage {
 
-	public WAPage(WebDriver driver) {
+	public WAApplicationPage(WebDriver driver) {
 		super(driver);
 	}
 
-	WAApplicationPage waapp = new WAApplicationPage(driver);
+	WAApplicationLocatorsPage waapp = new WAApplicationLocatorsPage(driver);
 
-	public void fillCompanyDetails(String json)  {
-		//String blkno, String unitval, String buildingname, String strname,String postalcode, String Accountnum, String activityval, String tradeval, String catchmentval
+	public void fillCompanyDetails(String json) throws InterruptedException  {
 		    clickonNewBtn();
 		    
 		 /*   Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
@@ -83,6 +82,9 @@ public class WAPage extends CommonActionsPage {
 				String streetNameAtCompRep = row.get("Street Name at CompRep");
 				String buildingNameCompRep = row.get("Building Name at CompRep");
 				String SSICValue = row.get("SSIC");
+				String DischareInLit=row.get("Peak Discharge Rate (litre / second)");
+				String WorkingDays =row.get("Number of working days per month");
+				String Hours=row.get("Operating Hours per Day");
 
 				waapp.companyName();
 				waapp.houseNumber(blkno);
@@ -104,8 +106,14 @@ public class WAPage extends CommonActionsPage {
 				waapp.houseNoAtCompRepDetails(housenoAtCompRep);
 				waapp.strNameAtCompRepDetails(streetNameAtCompRep);
 				waapp.buildNameAtCompRepDetails(buildingNameCompRep);
+				waapp.peakDischargeRate(DischareInLit);
+				waapp.noOfWorkingDays(WorkingDays);
+				waapp.operatingHours(Hours);
 				waapp.selectWAAppDate();
 				waapp.selectSSICcode(SSICValue);
+				
+				clickOnSaveBtn();
+				waapp.caseIdExtract();
 				
 		}
 

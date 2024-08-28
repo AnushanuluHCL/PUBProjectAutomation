@@ -50,7 +50,7 @@ Background: Test CRM Login with valid credentials
    And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
    And navigate to Close stage and fill the respective details and navigate to next stage
    
-   Then create a manual case to with case subtype as "Tanker Resealing"
+   Then create a manual case with case subtype as "Tanker Resealing"
    And go to "Work Orders" tab
 	 And create a new manual WO to create the tanker again
 	 And go to Service tasks tab and fill and complete the checklist as "Resealing"
@@ -63,7 +63,7 @@ Background: Test CRM Login with valid credentials
    When Login to app with "SO_userid" and "SO_pwd"
    And user selects App "DQB Case Management" 
    And search for the case to open it
-   #And validate that SO/AO get notified by resealing notification
+   And validate that SO/AO get notified by resealing notification
    And navigate to SO Review stage and fill the respective details and navigate to next stage
 	 When Login to app with "AO_userid" and "AO_pwd"
    And user selects App "DQB Case Management" 

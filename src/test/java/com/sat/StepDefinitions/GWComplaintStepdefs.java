@@ -158,8 +158,8 @@ public class GWComplaintStepdefs {
 
     @And("search for the case to open it")
     public void search_for_the_case_to_open_it() throws InterruptedException {
-        casepage.openACase();
-        casepage.searchACase();
+        common.openACase();
+        common.searchACase();
         // casepage.rolesUpdate();//need to remove once everything is merged
     }
 
