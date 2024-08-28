@@ -50,7 +50,7 @@ Feature: Testing WRN5-Deregistering a tanker Functionality
      And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
      And navigate to Close stage and fill the respective details and navigate to next stage
 
-    Then create a manual case to with case subtype as "Tanker Deregistration"
+    Then create a manual case with case subtype as "Tanker Deregistration"
      And select a tnaker to deregister it
      And navigate to Processing stage and fill the respective details and navigate to next stage
     When Login to app with "SO_userid" and "SO_pwd"

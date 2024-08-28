@@ -231,7 +231,7 @@ public class ApplicationPage extends CommonActionsPage {
 		eleUtil.doSendKeys(GWWastePerMonthField, GWPerMonth);
 		eleUtil.doElementClickable(saveBtn, 10);
 		clickOnSaveBtn();
-		clickOnRefrehBtn();
+		clickOnRefreshBtn();
 	}
 
 	public void amountOfHWWastetypeTanker(String HWSelected, String HWType, String HWPerMonth) {
@@ -459,7 +459,7 @@ public class ApplicationPage extends CommonActionsPage {
 				e.printStackTrace();
 			}
 		}
-		selectFirstRecord(firstRecord, 20);
+		selectFirstRecord();
 		eleUtil.doClickWithWait(cretecaseBtn, AppConstants.LONG_DEFAULT_WAIT);
 		// eleUtil.doActionsClick(cretecaseBtn);
 		eleUtil.isPageLoaded(100);

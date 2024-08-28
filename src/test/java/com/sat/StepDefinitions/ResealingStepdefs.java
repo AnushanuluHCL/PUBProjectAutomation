@@ -30,7 +30,7 @@ public class ResealingStepdefs {
 
 	@And("navigate to Processing stage and navigate to next stage")
 	public void navigate_to_Processing_stage_and_navigate_to_next_stage() {
-		casepage.processingStageResealing();
+		casepage.processingStageToNextSatge();
 	}
 	@And("validate that SO\\/AO get notified by resealing notification")
 	public void validate_that_SO_AO_get_notified_by_resealing_notification() throws InterruptedException {

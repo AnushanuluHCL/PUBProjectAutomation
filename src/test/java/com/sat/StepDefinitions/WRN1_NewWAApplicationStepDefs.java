@@ -3,57 +3,94 @@ package com.sat.StepDefinitions;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sat.Pages.WAPage;
+import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.WAApplicationPage;
+import com.sat.Pages.WRN1CasePage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.java.en.And;
 
-
 public class WRN1_NewWAApplicationStepDefs {
 
-	private WAPage wapage = new WAPage(TestBase.getDriver());
+	private WAApplicationPage wapage = new WAApplicationPage(TestBase.getDriver());
+	private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
+	private WRN1CasePage wrn1casepage = new WRN1CasePage(TestBase.getDriver());
 
 	@And("fill the details in the WA application form")
-	public void fill_the_details_in_the_WA_application_form(String blkno, String unitval,
-			String buildingname, String strname, String postalcode, String Accountnum, String activityval,
-			String tradeval, String catchmentval) {
-		//wapage.fillCompanyDetails(blkno, unitval, buildingname, strname, postalcode, Accountnum, activityval,
-			//	tradeval, catchmentval);
+	public void fill_the_details_in_the_WA_application_form(String blkno, String unitval, String buildingname,
+			String strname, String postalcode, String Accountnum, String activityval, String tradeval,
+			String catchmentval) {
+		// wapage.fillCompanyDetails(blkno, unitval, buildingname, strname, postalcode,
+		// Accountnum, activityval,
+		// tradeval, catchmentval);
 	}
 
 	@And("fill the details in the WA application form with the following JSON:")
-	public void fillTheDetailsInWAApplicationFormWithJson(String json) {
-	/*	Gson gson = new Gson();
-		Type type = new TypeToken<List<Map<String, String>>>() {
-		}.getType();
-		List<Map<String, String>> data = gson.fromJson(json, type);
-
-		if (!data.isEmpty()) {
-			Map<String, String> row = data.get(0);
-
-			String blkno = row.get("Block/House No");
-			String unitval = row.get("Unit");
-			String buildingName = row.get("Building Name");
-			String streetName = row.get("Street Name");
-			String postalCode = row.get("Postal Code");
-			String accountName = row.get("SP Services Account No.1");
-			String activityValue = row.get("Describe Manufacturing or Service Activities Conducted in the Factory");
-			String tradeValue = row.get("Describe Activities/Processes in which Trade Effluent is Generated");
-			String catchmentValue = row.get("Catchment");*/
-			//wapage.fillCompanyDetails(blkno, unitval, buildingName, streetName, postalCode, accountName,
-				//	activityValue, tradeValue, catchmentValue);
+	public void fillTheDetailsInWAApplicationFormWithJson(String json) throws InterruptedException {
 		wapage.fillCompanyDetails(json);
-		}
-
-	
+	}
 
 	@And("fill the details in the WA application form using data from {string}")
-	public void fill_the_details_in_the_WA_application_form_using_data_from(String fileName) throws IOException, URISyntaxException {
-		wapage.fillCompanyDetails(fileName);		}
-
+	public void fill_the_details_in_the_WA_application_form_using_data_from(String fileName)
+			throws IOException, URISyntaxException, InterruptedException {
+		wapage.fillCompanyDetails(fileName);
 	}
+
+	@And("change the view to {string}")
+	public void change_the_view_to(String typeOfCases) {
+		common.changeView(typeOfCases);
+	}
+
+	@And("verify the case form fields validation")
+	public void verify_the_case_form_fields_validation() {
+		wrn1casepage.caseFormFieldsValidation();
+	}
+
+	@And("Validate the system triggered {string} email to the applicant")
+	public void Validate_the_system_triggered_email_to_the_applicant(String mail)
+			throws InterruptedException, ParseException {
+		wrn1casepage.mailGeneratedOrNotWRN1(mail);
+	}
+
+	@And("navigate to Assignment stage and update all documents received data and navigate to next stage")
+	public void navigate_to_Assignment_stage_and_update_all_documents_received_data_and_navigate_to_next_stage() {
+		wrn1casepage.completeAssignmentStage();
+	}
+
+	@And("Create a new lab report by filling {string},{string},{string} details")
+	public void Create_a_new_lab_report_by_filling_details(String reportTypeval, String chemicalval,
+			String concentrationval) throws InterruptedException {
+		wrn1casepage.createNewLabReport(reportTypeval, chemicalval, concentrationval);
+	}
+
+	@And("verify the lab report result")
+	public void verify_the_lab_report_result() {
+		wrn1casepage.verifyTheResult();
+	}
+
+	@And("validate that SO get notified to Review WA application")
+	public void validate_that_SO_get_notified_to_Review_WA_application() throws InterruptedException {
+		wrn1casepage.validateSOReviewnewWANotification();
+	}
+
+	@And("validate that AO get notified to Review WA application")
+	public void validate_that_AO_get_notified_to_Review_WA_application() throws InterruptedException {
+		wrn1casepage.validateAOReviewnewWANotification();
+	}
+
+	@And("validate that FIO get notified by AO approval notification and ask FIO to generate email")
+	public void validate_that_FIO_get_notified_by_AO_approval_notification_and_ask_FIO_to_generate_email() throws InterruptedException {
+		wrn1casepage.validateFIOToGenerateEmailNotification();
+	}
+
+	@And("verify the WA status once AO approved")
+	public void verify_the_WA_status_once_AO_approved() {
+		wrn1casepage.verifyWAStatus();
+	}
+}

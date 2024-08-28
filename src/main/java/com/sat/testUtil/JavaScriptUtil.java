@@ -141,7 +141,10 @@ public class JavaScriptUtil {
     public void clickElementByJS(WebElement element) {
         js.executeScript("arguments[0].click();", element);
     }
-
+    public void clickElementByJSLog(WebElement element, String printConsoleVal) {
+        js.executeScript("arguments[0].click();", element);
+        Log.info(printConsoleVal);
+    }
     public void sendKeysUsingWithId(String id, String value) {
         js.executeScript("document.getElementById('" + id + "').value='" + value + "'");
         // document.getElementById('input-email').value ='tom@gmail.com'
