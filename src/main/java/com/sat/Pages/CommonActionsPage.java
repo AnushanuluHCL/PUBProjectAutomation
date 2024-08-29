@@ -498,7 +498,8 @@ public class CommonActionsPage {
 			eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.Tankercompanyname,"Entered text is : ");
 		} else {
 			System.out.println(CommonActionsPage.WRN1_factoryname);
-			eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.WRN1_factoryname,"Entered text is : ");
+			//eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.WRN1_factoryname,"Entered text is : ");
+			eleUtil.doSendKeysLog(entityLookupField, "Testcomp290824044953","Entered text is : ");
 		}
 		Thread.sleep(25000);
 		By tankercompanyxpath = By.xpath("//li[contains(@data-id,'customerid')]");
@@ -519,5 +520,7 @@ public class CommonActionsPage {
         js.executeScript("arguments[0].style.display='block';", element);
         element.sendKeys(path);
     }
+    
+    
 
 }

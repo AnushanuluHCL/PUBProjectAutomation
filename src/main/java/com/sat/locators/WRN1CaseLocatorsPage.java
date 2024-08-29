@@ -7,13 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.commonCRMActions;
 import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 
 public class WRN1CaseLocatorsPage extends CommonActionsPage {
+	
 
 	// Locators for BPF
 	private By allDocsReceived = By.xpath("//select[@aria-label='All Documents Received']");
@@ -33,9 +36,9 @@ public class WRN1CaseLocatorsPage extends CommonActionsPage {
 
 	private By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
 
-	// Locators for WA sttaus check
-	private By WADetailsSectionName = By.xpath("//h2[text()='WA Details']");
-	private By WAStatusField = By.xpath("//select[@aria-label='WA status']");
+	private By caseid = By.xpath("//input[@aria-label='Case ID']");
+	private By statusField = By.xpath("//div[text()='Status']/preceding-sibling::div/div");
+	 private By workOrderVerify = By.xpath("//div[@col-id='msdyn_name']//a");
 
 	public WRN1CaseLocatorsPage(WebDriver driver) {
 		super(driver);
@@ -112,11 +115,28 @@ public class WRN1CaseLocatorsPage extends CommonActionsPage {
 		return eleUtil.doGetElementAttributeLog(systemAssesment, "title", "System assesment is : ");
 	}
 
-	public String WAStatusVal() {
-		eleUtil.waitForVisibilityOfElement(WADetailsSectionName, 10);
-		jsutil.scrollIntoView(driver.findElement(WADetailsSectionName));
-		eleUtil.waitForVisibilityOfElement(WAStatusField, 10);
-		return eleUtil.doGetElementAttributeLog(WAStatusField, "title", "WA Status is :");
+	public void caseNamevalue(String startsWithName) {
+		//clickOnRefreshBtnOnHome();
+		try {
+			CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
+			assertTrue(CommonActionsPage.casenumber.startsWith(startsWithName), "Case number format is not expected");
+			Log.info(CommonActionsPage.casenumber);
+			return;
+		} catch (NoSuchElementException e) {
+			Log.error("Case number element not found: " + e.getMessage());
+		}
 	}
+	
+
+    public String getWorkOrderNumber() {
+        String workOrder = eleUtil.doElementGetText(workOrderVerify);
+        return workOrder;
+    }
+	
+	
+	
 
 }
+
+
+

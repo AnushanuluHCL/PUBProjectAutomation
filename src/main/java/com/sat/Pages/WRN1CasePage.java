@@ -1,7 +1,8 @@
 package com.sat.Pages;
 
-import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import java.text.ParseException;
 
 import org.openqa.selenium.By;
@@ -9,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.sat.locators.WRN1CaseLocatorsPage;
+import com.sat.locators.factoryPage;
 import com.sat.testUtil.Log;
 
 public class WRN1CasePage extends CommonActionsPage {
@@ -18,6 +20,8 @@ public class WRN1CasePage extends CommonActionsPage {
 	}
 
 	WRN1CaseLocatorsPage wrn1case = new WRN1CaseLocatorsPage(driver);
+	commonCRMActions crmActions = new commonCRMActions(driver);
+	factoryPage factoryloc = new factoryPage(driver);
 
 	public void caseFormFieldsValidation() {
 		assertEquals(verifyBUField(), "WA& TEF", "Business Function is not same");
@@ -77,7 +81,8 @@ public class WRN1CasePage extends CommonActionsPage {
 					clickOnCancelIconOnNotification();
 				}
 			} catch (Exception e) {
-				Log.error("Notification is not generated. So continue andcheck the notification within 5minuites of time");
+				Log.error(
+						"Notification is not generated. So continue andcheck the notification within 5minuites of time");
 			}
 
 			if (!isNotificationFound) {
@@ -86,6 +91,7 @@ public class WRN1CasePage extends CommonActionsPage {
 			}
 		}
 	}
+
 	public void validateAOReviewnewWANotification() throws InterruptedException {
 		eleUtil.isPageLoaded(100);
 		clickOnNotificationIcon();
@@ -108,7 +114,8 @@ public class WRN1CasePage extends CommonActionsPage {
 					clickOnCancelIconOnNotification();
 				}
 			} catch (Exception e) {
-				Log.error("Notification is not generated. So continue andcheck the notification within 5minuites of time");
+				Log.error(
+						"Notification is not generated. So continue andcheck the notification within 5minuites of time");
 			}
 
 			if (!isNotificationFound) {
@@ -140,7 +147,8 @@ public class WRN1CasePage extends CommonActionsPage {
 					clickOnCancelIconOnNotification();
 				}
 			} catch (Exception e) {
-				Log.error("Notification is not generated. So continue andcheck the notification within 5minuites of time");
+				Log.error(
+						"Notification is not generated. So continue andcheck the notification within 5minuites of time");
 			}
 
 			if (!isNotificationFound) {
@@ -183,8 +191,18 @@ public class WRN1CasePage extends CommonActionsPage {
 	public void verifyWAStatus() {
 		navigatingToTab("Inspection Case Information");
 		clickOnEntityOnCaseForm();
-		wrn1case.WAStatusVal();
-		assertEquals(wrn1case.WAStatusVal(), "Approved", "WAApplication status is not same");
+		factoryloc.WAStatusVal();
+		assertEquals(factoryloc.WAStatusVal(), "Approved", "WAApplication status is not same");
 	}
-	
+
+	public void verifyCaseFormat(String startsWithName) {
+		wrn1case.caseNamevalue(startsWithName);
+	}
+	public void caseNotification() throws InterruptedException {
+		  crmActions.notificationForTabToOpen(CommonActionsPage.casenumber, "Inspection Case Information");
+	}
+	public void workOrderNotification() {
+		crmActions.notificationForTabToOpen(getWorkOrderNumber(), "Work Order");
+	}
+
 }

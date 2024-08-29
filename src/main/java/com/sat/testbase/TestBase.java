@@ -13,11 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import com.sat.exception.FrameworkException;
-import com.sat.factory.DriverFactory;
 import com.sat.factory.OptionsManager;
-import com.sat.testUtil.ElementUtil;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 
 
 public class TestBase {

@@ -1,6 +1,10 @@
 package com.sat.Pages;
 
 import com.sat.locators.factoryPage;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import org.openqa.selenium.WebDriver;
 
 public class factoryCreationPage extends CommonActionsPage{
@@ -30,7 +34,7 @@ public class factoryCreationPage extends CommonActionsPage{
     }
 
     public void verifyCaseCreatedWithStatus(String schedule) throws InterruptedException {
-        factory.caseVerification();
+        factory.caseVerificationInGrid();
         factory.verifyCaseStatus(schedule);
     }
 
@@ -109,5 +113,28 @@ public class factoryCreationPage extends CommonActionsPage{
         factory.clickOnSavingInProgressOkButton();
         factory.checkCaseStatus(status);
     }
+    
+    public void verifyWAStatus() {
+		navigatingToTab("Inspection Case Information");
+		clickOnEntityOnCaseForm();
+		factory.WAStatusVal();
+		assertEquals(factory.WAStatusVal(), "Approved", "WAApplication status is not same");
+	}
+
+	public void verifyWANumberStatus(String tradeGrp, String fpeVal, String WAnumVal) {
+		factory.entitySelectionInFactoryView();
+		filterView(CommonActionsPage.WRN1_factoryname);
+		//filterView("Testcomp270824081515");
+		selectFirstRecord();
+		getFirstRecord();
+		String actualTradeGroupValue=factory.tradeGrpVal(tradeGrp);
+		assertEquals(actualTradeGroupValue, tradeGrp, "WAApplication status is not same");
+		String actualFPEValue=factory.fpeVal(fpeVal);
+		assertEquals(actualFPEValue, fpeVal, "WAApplication status is not same");
+		String actualWANumberValue=factory.WANumberVal(WAnumVal);
+		assertTrue(actualWANumberValue.contains("TER"), "WA Number is empty field");
+		clickonSaveAndCloseBtn();
+	}
+
 
 }

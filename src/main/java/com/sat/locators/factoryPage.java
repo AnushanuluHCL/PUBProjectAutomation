@@ -93,10 +93,20 @@ public class factoryPage extends CommonActionsPage {
 
     private By caseReadOnly = By.cssSelector("span[data-id='warningNotification']");
     private By caseStatus =By.xpath("//div[contains(text(),'Completed')]");
+    
+ // Locators for Factory record
+ 	private By WADetailsSectionName = By.xpath("//h2[@title='WA Details']");
+ 	private By WAStatusField = By.xpath("//select[@aria-label='WA status']");
+ 	 private By fpeField = By.xpath("//select[@aria-label='FPE/Non FPE']");
+ 	 
+ 	// Locators for Factory entity view
+ 	private By entitySelection = By.xpath("//div[@col-id='name' and @role='columnheader']");
 
     String WQPath = "\\src\\test\\resources\\testdata\\SIT_WQ 2 3 1 2.xlsx";
     String filePath = System.getProperty("user.dir");
     String factoryName = "Factory" + todayDateTime;
+    
+    
 
     public void selectEntityType() {
         eleUtil.waitTillElementIsDisplayed(entityType, 30);
@@ -143,7 +153,7 @@ public class factoryPage extends CommonActionsPage {
         return workOrder;
     }
 
-    public void caseVerification() throws InterruptedException {
+    public void caseVerificationInGrid() throws InterruptedException {
         eleUtil.waitTillElementIsDisplayed(caseGridRefresh, 30);
         eleUtil.doClickLog(caseGridRefresh, "Clicked on case grid refresh button");
         while (System.currentTimeMillis() < endTime) {
@@ -480,4 +490,40 @@ public class factoryPage extends CommonActionsPage {
         Assert.assertEquals(getCaseReadOnly(), recordStatus, "Status not matched");
         Assert.assertEquals(getCaseStatus(), status, "Status not matched");
     }
+    public String WAStatusVal() {
+		eleUtil.waitForVisibilityOfElement(WADetailsSectionName, 10);
+		jsutil.scrollIntoView(driver.findElement(WADetailsSectionName));
+		eleUtil.waitForVisibilityOfElement(WAStatusField, 10);
+		return eleUtil.doGetElementAttribute(WAStatusField, "title");
+	}
+
+	public String WANumberVal(String WAnumVal) {
+		By WANumberField = By.xpath("//input[contains(@title,'" + WAnumVal + "')]");
+		eleUtil.waitForVisibilityOfElement(WADetailsSectionName, 10);
+		jsutil.scrollIntoView(driver.findElement(WADetailsSectionName));
+		eleUtil.waitForVisibilityOfElement(WANumberField, 10);
+		return eleUtil.doGetElementAttributeLog(WANumberField, "title","WA Number is : ");
+	}
+
+	public String tradeGrpVal(String tradeGrp) {
+		By tradeGroupField = By.xpath("//select[@title='" + tradeGrp + "']");
+		eleUtil.waitForVisibilityOfElement(tradeGroupField, 10);
+		return eleUtil.doGetElementAttributeLog(tradeGroupField, "title","Tradegroup value is : ");
+		
+	}
+
+	public String fpeVal(String fpeVal) {
+		eleUtil.waitForVisibilityOfElement(fpeField, 10);
+		eleUtil.createSelectLog(fpeField, "Click on the FPE/Non FPE dropdown ");
+		eleUtil.doSelectDropDownByVisibleTextLog(fpeField, fpeVal, "Selected FPE/Non FPE dropdown value is : ");
+		return eleUtil.doGetElementAttributeLog(fpeField, "title","FPE value is : ");
+
+	}
+
+	public void entitySelectionInFactoryView() {
+		eleUtil.waitForVisibilityOfElement(entitySelection, 10);
+		eleUtil.doElementClickableLog(entitySelection, 20, "Entiry field is clickable");
+		eleUtil.doClickLog(entitySelection, "Click on Entity/Proj Reference No field in view");
+	}
+    
 }
