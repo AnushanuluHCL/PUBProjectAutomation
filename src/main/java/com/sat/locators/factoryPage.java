@@ -85,7 +85,6 @@ public class factoryPage extends CommonActionsPage {
     private By searchResults = By.cssSelector("input[aria-labelledby='SearchResults']");
     private By adHocView = By.xpath("//label[text()='List of Ad-hoc Factories']");
     private By factoriesSearchBox = By.cssSelector("input[aria-label='Entity Filter by keyword']");
-    private By firstRecord = By.xpath("(//input[contains(@aria-label,'elect or deselect the row')])[1]");
     private By approveButton = By.cssSelector("button[aria-label='Approve Factory']");
 
     private By accountNumber = By.cssSelector("input[aria-label='Account Number']");
@@ -102,10 +101,6 @@ public class factoryPage extends CommonActionsPage {
     public void selectEntityType() {
         eleUtil.waitTillElementIsDisplayed(entityType, 30);
         eleUtil.selectDropDownValue(entityType, "selectByVisibleText", "Factory", "select entity type as Factory");
-    }
-
-    public By getFirstRecord() {
-        return firstRecord;
     }
 
     public By setLookUp() {
@@ -416,8 +411,8 @@ public class factoryPage extends CommonActionsPage {
         Thread.sleep(2000);
         driver.findElement(factoriesSearchBox).sendKeys(Keys.ENTER);
         Thread.sleep(3000);
-        selectFirstRecord(getFirstRecord(), AppConstants.SHORT_DEFAULT_WAIT);
-        getFirstRecord(getFirstRecord(), AppConstants.SHORT_DEFAULT_WAIT);
+        selectFirstRecord();
+        getFirstRecord();
     }
 
     public void approveFactory() throws InterruptedException {

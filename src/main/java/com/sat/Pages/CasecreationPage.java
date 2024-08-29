@@ -64,8 +64,6 @@ public class CasecreationPage extends CommonActionsPage {
     private By caseidOnCaseForm = By.xpath("//div[@col-id='title']//a"); // (//div[@col-id='title'])[2]
     // //h1[@data-id='header_title']
     private By entityIdOnCaseHome = By.xpath("//ul[@title='Entity']");
-
-    private By firstRecord = By.xpath("(//input[contains(@aria-label,'elect or deselect the row')])[1]");
     // "(//input[@aria-label='Select or deselect the row'])[1] |
     // (//input[@aria-label='select or deselect the row'])[1]");
     private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
@@ -665,8 +663,8 @@ public class CasecreationPage extends CommonActionsPage {
 
         driver.findElement(searchbox).sendKeys(Keys.ENTER);
         Thread.sleep(3000);
-        selectFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
-        getFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
+        selectFirstRecord();
+        getFirstRecord();
     }
 
     public void navigatingToTab(String tabName) {
@@ -809,8 +807,8 @@ public class CasecreationPage extends CommonActionsPage {
             // Validation on Booking tab
             eleUtil.doClick(bookingTab);
             Thread.sleep(2000);
-            selectFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
-            getFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
+            selectFirstRecord();
+            getFirstRecord();
             eleUtil.doElementClickable(maximizescreenBtn, 10);
             eleUtil.doClick(maximizescreenBtn);
             eleUtil.doClickWithWait(bookingStatusField, 100);
@@ -895,8 +893,8 @@ public class CasecreationPage extends CommonActionsPage {
             assertEquals(durationVal, "2 hours", "WO duration is not 2 hours");
 
             Thread.sleep(2000);
-            selectFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
-            getFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
+            selectFirstRecord();
+            getFirstRecord();
             // clickOnRefrehBtn();
             eleUtil.doElementClickable(maximizescreenBtn, 10);
             eleUtil.doClick(maximizescreenBtn);
@@ -1464,7 +1462,7 @@ public class CasecreationPage extends CommonActionsPage {
         eleUtil.createSelect(generateInspectionReportOption);
         eleUtil.doSelectDropDownByVisibleText(generateInspectionReportOption, "Yes");
         eleUtil.doClick(saveBtn);
-        clickOnRefrehBtn();
+        clickOnRefreshBtn();
     }
 
     public void SORejectForRework() {
@@ -1506,8 +1504,8 @@ public class CasecreationPage extends CommonActionsPage {
             eleUtil.waitForVisibilityOfElement(bookingTab, 30);
             eleUtil.doClick(bookingTab);
             Thread.sleep(2000);
-            selectFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
-            getFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
+            selectFirstRecord();
+            getFirstRecord();
 
             eleUtil.doElementClickable(maximizescreenBtn, 10);
             eleUtil.doClick(maximizescreenBtn);
@@ -1744,8 +1742,8 @@ public class CasecreationPage extends CommonActionsPage {
             } else {
                 eleUtil.doElementClickable(tankerNumberInWOform, 30);
                 eleUtil.doClick(tankerNumberInWOform);
-                clickOnRefrehBtn();
-                clickOnRefrehBtn();
+                clickOnRefreshBtn();
+                clickOnRefreshBtn();
                 CommonActionsPage.permitnums.put("permits" + i, permitnumval());
                 try {
                     Thread.sleep(5000);
@@ -2462,8 +2460,8 @@ public class CasecreationPage extends CommonActionsPage {
         // and sort the records from Newer to Older + select first record
 
         // sortTheRecords(createdonCol, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
-        selectFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
-        getFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
+        selectFirstRecord();
+        getFirstRecord();
         // Validation on Booking tab
         eleUtil.waitForVisibilityOfElement(bookingTab, 30);
         eleUtil.doClick(bookingTab);
@@ -2886,8 +2884,8 @@ public class CasecreationPage extends CommonActionsPage {
         driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
         eleUtil.doClick(applyBtn);
 
-        selectFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
-        getFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
+        selectFirstRecord();
+        getFirstRecord();
         switch (wastetype) {
             case "Greasy Waste":
                 eleUtil.waitForVisibilityOfElement(wasteType, 20);
@@ -2925,7 +2923,7 @@ public class CasecreationPage extends CommonActionsPage {
     }
 
     public void mailGeneratedOrNot(String mailType) throws InterruptedException, ParseException {
-        clickOnRefrehBtn();
+        clickOnRefreshBtn();
         navigatingToTab("Timeline");
         // eleUtil.isPageLoaded(100);
         Thread.sleep(2000);
@@ -3121,7 +3119,7 @@ public class CasecreationPage extends CommonActionsPage {
     }
 
     public void mailValidationNew(String mailType) throws InterruptedException, ParseException {
-        clickOnRefrehBtn();
+        clickOnRefreshBtn();
         navigatingToTab("Timeline");
         // eleUtil.isPageLoaded(100);
         Thread.sleep(2000);
@@ -3372,8 +3370,8 @@ public class CasecreationPage extends CommonActionsPage {
         Thread.sleep(3000);
         driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
         eleUtil.doClick(applyBtn);
-        selectFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
-        getFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
+        selectFirstRecord();
+        getFirstRecord();
         eleUtil.waitForVisibilityOfElement(wasteType, 20);
         assertEquals(eleUtil.doGetElementAttribute(wasteType, "title"),
                 "Greasy Waste, Organic Sludge – Ships, Organic Sludge – Industries", "Wate type is not matching");
@@ -3439,7 +3437,7 @@ public class CasecreationPage extends CommonActionsPage {
     }
 
     public void mailValidation(String mailType) throws InterruptedException, ParseException {
-        clickOnRefrehBtn();
+        clickOnRefreshBtn();
         navigatingToTab("Timeline");
         // eleUtil.isPageLoaded(100);
         Thread.sleep(2000);
@@ -3946,7 +3944,7 @@ public class CasecreationPage extends CommonActionsPage {
             } else {
                 eleUtil.doElementClickable(tankerNumberInWOform, 30);
                 eleUtil.doClick(tankerNumberInWOform);
-                clickOnRefrehBtn();
+                clickOnRefreshBtn();
             }
             eleUtil.scrollUsingRobotClass();
             String reregisteringWithNewCompanyValue = eleUtil.createSelect(reregisteringWithNewCompany).getFirstSelectedOption().getText();
