@@ -13,7 +13,7 @@ public class AppConstants {
 
     public static final int SHORT_DEFAULT_WAIT = 5;
     public static final int MEDIUM_DEFAULT_WAIT = 10;
-    public static final int LONG_DEFAULT_WAIT = 20;
+    public static final int LONG_DEFAULT_WAIT = 100;
 
     public static final int POLLING_DEFAUTT_WAIT = 2;
 

@@ -316,12 +316,19 @@ public class CasecreationPage extends CommonActionsPage {
     // Locators for permitstatus at Tanker level
     private By editFilterBtn = By.xpath("//button[@aria-label='Edit filters']");
     private By selectedItem = By.xpath("//span[contains(@aria-labelledby,'selected-items-id')]");
+    private By cancelItem = By.xpath("//span[text()='Remove']/..//i[@data-icon-name='Cancel']");
     private By listbox = By.xpath("//input[@aria-haspopup='listbox']");
     private By selectInactiveOption = By.xpath("//label[text()='Inactive']");
 
 
     private By colHeader = By.xpath("//div[@col-id='msdyn_account']");
     private By permitstatus = By.xpath("(//div[@col-id='pub_tankerpermitstatus'])[2]//label");
+
+    private By custHeader = By.xpath("(//div[@col-id='pub_customer'])[1]");
+    private By inactivePermit = By.xpath("//label[text()='Inactive Permits']");
+    private By permitNumcol = By.xpath("(//div[@col-id='pub_name'])[1]");
+    private By dropdownIcon = By.xpath("//i[@data-icon-name='ChevronDownSmall']");
+    private By permitnumrowval = By.xpath("//div[@col-id='pub_name' and not(@role='columnheader')]//span");
 
     private By name = By.cssSelector("input[aria-label='Name']");
     private By GWCCompanyName = By.cssSelector("input[aria-label='GWC Company, Lookup']");
@@ -345,6 +352,34 @@ public class CasecreationPage extends CommonActionsPage {
     private By caseNumberForTankerDeregister = By.xpath("//p[contains(text(),'A tanker has been Deregistered and required your approval')]" +
             "/preceding::p[contains(text(),'DQB')]");
     private By caseNumberForCompliant = By.xpath("//p[contains(text(),'Case is compliant')]/preceding::p[contains(text(),'DQB')]");
+
+    // Locators for blacklist a company
+    private By blacklistSelect = By.xpath("//select[@aria-label='Blacklist']");
+    private By blacklistedOnCalendar = By
+            .xpath("//input[@aria-label='Date of Blacklisted On']/following-sibling::i[@data-icon-name='Calendar']");
+    private By selectCurrentDate = By.xpath("//td[contains(@class,'ms-CalendarDay-daySelected')]");
+    private By blacklistPeriod = By.xpath("//input[contains(@aria-label,'Period of Blacklisting')]");
+    private By NEAlistgridAtCompanylvl = By.xpath("//h2[text()='NEA List']");
+    private By BalcklistgridAtCompanylvl = By.xpath("//section[@aria-label='Blacklist Details']");
+    private By TankerdetailsGridAtCompanylvl = By.xpath("//section[@aria-label='Tanker Details']");
+    private By allemails = By.xpath("//label[text()='All Emails']");
+    private By regardingFilterIcon = By.xpath("//div[@data-testid='regardingobjectid']");
+
+    // Locators for Resealing
+    private By SIESgrisAtTankerLvl = By.xpath("//h2[text()='SIES']");
+    private By SealingdetailsAtTankerLvl = By.xpath("//h2[text()='Seal Number']");
+    private By oldsealnumField = By.xpath("//input[@aria-label='Old Seal Number']");
+    private By newsealnumField = By.xpath("//input[@aria-label='New Seal Number']");
+    private By resealReaonField = By.xpath("//input[@aria-label='Reason for resealing']");
+    private By dateOfResealField = By.xpath("//input[@aria-label='Date of Date of resealing']");
+
+    // Locators for Audit
+    private By tpConfigurationsField = By.xpath("//span[text()='TP Configurations']");
+    private By noOfCasesForAudit = By.xpath("//span[text()='Number of Tanker Audit Cases to be scheduled']");
+    private By configDate = By.xpath("//textarea[@aria-label='Config']");
+    private By calendorIconFromFilter = By.xpath("//i[@aria-label='Filter by value']");
+    private By rowsCount = By.xpath("//span[contains(@class,'statusTextContainer')]");
+
     long startTime = System.currentTimeMillis();
     long endTime = startTime + 120000;
 
@@ -569,10 +604,12 @@ public class CasecreationPage extends CommonActionsPage {
         CommonActionsPage.case_AO = CaseAO;
     }
 
-    public void changeView() {
+    public void changeView(String typeOfCases) {
         eleUtil.waitForVisibilityOfElement(changeViewIcon, 20);
         eleUtil.doElementClickable(changeViewIcon, 30);
         eleUtil.doClick(changeViewIcon);
+        By viewXpath = By.xpath("//label[contains(text(),'" + typeOfCases + "')]");
+        eleUtil.waitForVisibilityOfElement(viewXpath, 20);
         eleUtil.doClick(ActiveCases);
     }
 
@@ -2154,6 +2191,65 @@ public class CasecreationPage extends CommonActionsPage {
         }
     }
 
+    public void validateResealingNotification() throws InterruptedException {
+
+        eleUtil.isPageLoaded(100);
+        eleUtil.waitForVisibilityOfElement(notificationIcon, 100);
+        eleUtil.doClick(notificationIcon);
+        Boolean flag = false;
+        long startTime = System.currentTimeMillis();
+        while (!flag && (System.currentTimeMillis() - startTime) < 300000) {
+            try {
+                Thread.sleep(3000);
+                WebElement WOalert = driver.findElement(
+                        By.xpath("//p[contains(text(),'A tanker has requested to be  resealed and requires your')]"));
+                // JavascriptExecutor js = (JavascriptExecutor) driver;
+                // js.executeScript("arguments[0].scrollIntoView(true);", WOalert);
+                if (eleUtil.isClickable(WOalert, 10)) {
+                    String actualAlertcontent = WOalert.getText();
+                    // eleUtil.waitForVisibilityOfElement(SIESGWCCompanyfield,AppConstants.SHORT_DEFAULT_WAIT);
+                    System.out.println("actualAlertcontent" + actualAlertcontent);
+                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                    wait.until(ExpectedConditions.elementToBeClickable(WOalert));
+                    String ExpectedAlertContent = "A tanker has requested to be resealed and requires your approval. \"Click here\".";
+                    System.out.println("ExpectedAlertContent is :" + ExpectedAlertContent);
+                    assertTrue(actualAlertcontent.contains(ExpectedAlertContent), "Alert content is not same");
+                    WebElement taptoopenBtn = driver.findElement(By.xpath(
+                            "//p[contains(text(),'A tanker has requested to be  resealed and requires your approval')]/a"));
+                    taptoopenBtn.click();
+                    flag = true;
+                    ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+                    System.out.println("open tabs" + tabs.size());
+                    driver.switchTo().window(tabs.get(1));
+                    // Thread.sleep(10000);
+                    eleUtil.waitForVisibilityOfElement(caseid, 100);
+                    String afterTaptoOpenBtn = eleUtil.doGetElementAttribute(caseid, "Value");
+
+                    System.out.println("afterTaptoOpenBtn:" + afterTaptoOpenBtn);
+                    assertTrue(afterTaptoOpenBtn.contains(CommonActionsPage.casenumber),
+                            "case is not same after clicking on tap to open button");
+                    System.out.println(tabs.size() - 1);
+                    // driver.switchTo().window(tabs.get(tabs.size() - 2));
+                    eleUtil.doElementClickable(saveCloseBtn, 20);
+                    eleUtil.doClick(saveCloseBtn);
+                    driver.switchTo().window(tabs.get(0));
+                    try {
+                        eleUtil.doClick(cancelBtn);
+                    } catch (Exception e) {
+                        eleUtil.doActionsClick(cancelBtn);
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!flag) {
+                System.out.println("Notification not found within 5 minutes, canceling.");
+                eleUtil.doClick(cancelBtn);
+            }
+        }
+    }
+
 
     public void completeSOReviewStage() {
         navigatingToStage("SO Review");
@@ -2259,6 +2355,14 @@ public class CasecreationPage extends CommonActionsPage {
         eleUtil.doActionsClick(saveBtn);
 
         navigatingToStage("Processing");
+        eleUtil.doElementClickable(nextstageBtn, 10);
+        eleUtil.doClick(nextstageBtn);
+
+    }
+
+    public void processingStageResealing() {
+        navigatingToStage("Processing");
+        eleUtil.waitForVisibilityOfElement(nextstageBtn, 20);
         eleUtil.doElementClickable(nextstageBtn, 10);
         eleUtil.doClick(nextstageBtn);
 
@@ -2512,14 +2616,18 @@ public class CasecreationPage extends CommonActionsPage {
         eleUtil.doClick(backBtn);
     }
 
-    public void tankerPermitStatusAtTankercompLvl() throws InterruptedException {
+    public void tankerPermitStatusAtTankerLvl() throws InterruptedException {
+
+        changeAreaSelection("GWC Tanker");
+
+        selectEntity("GWC Tankers");
 
         eleUtil.waitForVisibilityOfElement(editFilterBtn, 30);
         eleUtil.doClick(editFilterBtn);
-        eleUtil.waitForVisibilityOfElement(selectedItem, 30);
-        eleUtil.doClick(selectedItem);
+        eleUtil.waitForVisibilityOfElement(cancelItem, 30);
+        eleUtil.doClick(cancelItem);
         eleUtil.waitForVisibilityOfElement(listbox, 30);
-        eleUtil.doClear(listbox);
+        eleUtil.doClick(listbox);
         eleUtil.waitForVisibilityOfElement(selectInactiveOption, 30);
         eleUtil.doClick(selectInactiveOption);
         eleUtil.waitForVisibilityOfElement(applyBtn, 30);
@@ -2530,14 +2638,193 @@ public class CasecreationPage extends CommonActionsPage {
         eleUtil.doClick(colHeader);
         eleUtil.doClick(filterBy);
         Thread.sleep(6000);
-        eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
+        eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.tankerNumber.get(1));
         Thread.sleep(6000);
         driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
 
         eleUtil.waitForVisibilityOfElement(permitstatus, 50);
         eleUtil.doGetElementAttribute(permitstatus, "aria-label");
+        System.out.println("permit status is" + eleUtil.doGetElementAttribute(permitstatus, "aria-label"));
 
+    }
 
+    public void tankerPermitStatusAtPermitLvl() throws InterruptedException {
+
+        changeAreaSelection("GWC Tanker");
+
+        selectEntity("Permits");
+
+        eleUtil.waitForVisibilityOfElement(changeViewIcon, 50);
+        eleUtil.doClick(changeViewIcon);
+        eleUtil.doClick(inactivePermit);
+
+        for (Map.Entry<String, String> entry : CommonActionsPage.permitnums.entrySet()) {
+            eleUtil.doElementClickable(permitNumcol, 20);
+            eleUtil.doClick(permitNumcol);
+            eleUtil.doClick(filterBy);
+            Thread.sleep(6000);
+            eleUtil.doSendKeys(filterbyinputbox, entry.getValue());
+            Thread.sleep(6000);
+            driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+
+            eleUtil.waitForVisibilityOfElement(permitnumrowval, 20);
+            System.out.println("permit number is" + eleUtil.doElementGetText(permitnumrowval));
+
+            assertEquals(eleUtil.doElementGetText(permitnumrowval), entry.getValue(), "permit number is not matching");
+
+        }
+
+    }
+
+    public void balcklistACompany(String period) {
+
+        eleUtil.waitForVisibilityOfElement(entityLink, 20);
+        eleUtil.doClick(entityLink);
+
+        eleUtil.waitForVisibilityOfElement(NEAlistgridAtCompanylvl, 10);
+
+        jsutil.scrollIntoView(driver.findElement(BalcklistgridAtCompanylvl));
+        eleUtil.waitForVisibilityOfElement(blacklistSelect, 20);
+        eleUtil.createSelect(blacklistSelect);
+        eleUtil.doSelectDropDownByVisibleText(blacklistSelect, "Yes");
+        eleUtil.waitForVisibilityOfElement(blacklistedOnCalendar, 20);
+        eleUtil.doClick(blacklistedOnCalendar);
+        eleUtil.waitForVisibilityOfElement(selectCurrentDate, 20);
+        eleUtil.doClick(selectCurrentDate);
+        eleUtil.waitForVisibilityOfElement(blacklistPeriod, 20);
+        eleUtil.doClick(blacklistPeriod);
+        eleUtil.doSendKeys(blacklistPeriod, period);
+
+        eleUtil.waitForVisibilityOfElement(saveBtn, 10);
+        eleUtil.doClick(saveBtn);
+
+        eleUtil.waitForVisibilityOfElement(saveCloseBtn, 20);
+        eleUtil.doClick(saveCloseBtn);
+        eleUtil.isPageLoaded(30);
+    }
+
+    public void emailsFromEmailmessages() {
+        changeAreaSelection("Inspection");
+
+        selectEntity("Email Messages");
+        eleUtil.waitForVisibilityOfElement(changeViewIcon, 20);
+        eleUtil.doClick(changeViewIcon);
+
+        eleUtil.waitForVisibilityOfElement(allemails, 20);
+        eleUtil.doClick(allemails);
+
+        eleUtil.waitForVisibilityOfElement(regardingFilterIcon, 50);
+        eleUtil.doElementClickable(regardingFilterIcon, 20);
+        eleUtil.doClick(regardingFilterIcon);
+        eleUtil.doClick(filterBy);
+        eleUtil.waitForVisibilityOfElement(filterBy, 60);
+        eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
+        eleUtil.waitForVisibilityOfElement(filterBy, 60);
+        driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+        eleUtil.waitForVisibilityOfElement(applyBtn, 30);
+        eleUtil.doClick(applyBtn);
+
+        String ExpectedBlacklistEmail = "Account " + CommonActionsPage.Tankercompanyname + " has been Blacklisted";
+        By ele = By.xpath("//a[contains(@aria-label,'has been Blacklisted')]");
+        String actualBlacklistEmail = eleUtil.doGetElementAttribute(ele, "aria-label");
+        assertEquals(actualBlacklistEmail, ExpectedBlacklistEmail, "Blacklist email is not generated");
+
+        /*
+         * String ExpectedCanPermitEmail = "Cancellation of permit"; By
+         * ele1=By.xpath("//a[contains(@aria-label,'Cancellation of permit')]"); String
+         * actualCanPermitEmail = eleUtil.doGetElementAttribute(ele1, "aria-label");
+         * assertEquals(actualBlacklistEmail, ExpectedBlacklistEmail,
+         * "permit Cancellation email is not generated");
+         */
+    }
+
+    public void resealingTankersInfoCheck() {
+        navigatingToTab("Inspection Case Information");
+
+        eleUtil.waitForVisibilityOfElement(entityLink, 20);
+        eleUtil.doClick(entityLink);
+
+        eleUtil.waitForVisibilityOfElement(NEAlistgridAtCompanylvl, 10);
+
+        jsutil.scrollIntoView(driver.findElement(TankerdetailsGridAtCompanylvl));
+        eleUtil.waitForVisibilityOfElement(tankerLink, 20);
+        eleUtil.doClick(tankerLink);
+
+        eleUtil.waitForVisibilityOfElement(SIESgrisAtTankerLvl, 20);
+        jsutil.scrollIntoView(driver.findElement(SealingdetailsAtTankerLvl));
+
+        String oldsealnumFieldVal = eleUtil.doGetElementAttribute(oldsealnumField, "title");
+        assertEquals(oldsealnumFieldVal, CommonActionsPage.oldSealNumber,
+                "Old Seal Number field value is not matching");
+
+        String newsealnumFieldVal = eleUtil.doGetElementAttribute(newsealnumField, "title");
+        assertEquals(newsealnumFieldVal, CommonActionsPage.newSealNumber,
+                "New Seal Number field value is not matching");
+
+        String resealReaonFieldVal = eleUtil.doGetElementAttribute(resealReaonField, "title");
+        assertEquals(resealReaonFieldVal, CommonActionsPage.resealReason, "Reseal reason field value is not matching");
+
+        /*
+         * String dateOfResealFieldVal =
+         * eleUtil.doGetElementAttribute(dateOfResealField,"title");
+         * assertEquals(dateOfResealFieldVal, "",
+         * "Reseal date field value is not matching");
+         */
+
+        eleUtil.waitForVisibilityOfElement(backBtn, 10);
+        eleUtil.doClick(backBtn);
+
+        eleUtil.waitForVisibilityOfElement(backBtn, 10);
+        eleUtil.doClick(backBtn);
+
+    }
+
+    public void tpConfigChangeForAudit() {
+        changeAreaSelection("Settings");
+
+        selectEntity("TP Configurations");
+
+        eleUtil.waitForVisibilityOfElement(noOfCasesForAudit, 20);
+        eleUtil.doClick(noOfCasesForAudit);
+        eleUtil.waitForVisibilityOfElement(configDate, 20);
+        eleUtil.doClear(configDate);
+
+        LocalDate today = LocalDate.now();
+
+        // Define the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = today.format(formatter);
+        eleUtil.doClearUsingKeys(configDate);
+        eleUtil.doSendKeys(configDate, formattedDate);
+        eleUtil.waitForVisibilityOfElement(saveBtn, 30);
+        eleUtil.doClick(saveBtn);
+        eleUtil.waitForVisibilityOfElement(saveCloseBtn, 30);
+        eleUtil.doClick(saveCloseBtn);
+    }
+
+    public void verifyingCreatedCases() {
+        selectEntity("Cases");
+        changeView("Tanker Audit Inspection Cases");
+        eleUtil.isPageLoaded(30);
+        By createdonCol = By.xpath("//div[@col-id='createdon']");
+        eleUtil.waitForVisibilityOfElement(createdonCol, 20);
+        eleUtil.doElementClickable(createdonCol, 20);
+        eleUtil.doClick(createdonCol);
+        eleUtil.doClick(filterBy);
+        eleUtil.doClick(calendorIconFromFilter);
+        eleUtil.doClick(selectCurrentDate);
+        eleUtil.doClick(applyBtn);
+        eleUtil.waitForVisibilityOfElement(rowsCount, 20);
+        String rowsText = eleUtil.doElementGetText(rowsCount);
+        String rowsCountVal = rowsText.substring(6);
+        Log.info("Rows count : " + rowsCountVal);
+        assertEquals(rowsCountVal, "10", "Created cases are not equal to 10");
+    }
+
+    public void GWEstQuan(String GWPerMonth) {
+        eleUtil.waitForVisibilityOfElement(GWEstimatedQuantity, 10);
+        String actualGWEstimatedQuantity = eleUtil.doGetElementAttribute(GWEstimatedQuantity, "title");
+        assertEquals(actualGWEstimatedQuantity, GWPerMonth, "GW Estimated quantity not matching");
     }
 
     public int OSEstQuan(String OSSPerMonth, String OSIPerMonth) {
@@ -2586,7 +2873,10 @@ public class CasecreationPage extends CommonActionsPage {
 
     }
 
-    public void paymentWasteTypeValidation() throws InterruptedException {
+    public void paymentRecordValidation(String OSSPerMonth, String OSIPerMonth, String GWPerMonth, String wastetype)
+            throws InterruptedException {
+        eleUtil.doElementClickable(customerName, 30);
+        eleUtil.doClick(customerName);
         eleUtil.waitForVisibilityOfElement(customerName, 50);
         eleUtil.doElementClickable(customerName, 100);
         eleUtil.doClick(customerName);
@@ -2595,77 +2885,50 @@ public class CasecreationPage extends CommonActionsPage {
         Thread.sleep(3000);
         driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
         eleUtil.doClick(applyBtn);
+
         selectFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
         getFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
-        eleUtil.waitForVisibilityOfElement(wasteType, 20);
-        assertEquals(eleUtil.doGetElementAttribute(wasteType, "title"),
-                "Greasy Waste, Organic Sludge – Ships, Organic Sludge – Industries", "Wate type is not matching");
-    }
+        switch (wastetype) {
+            case "Greasy Waste":
+                eleUtil.waitForVisibilityOfElement(wasteType, 20);
+                assertEquals(eleUtil.doGetElementAttribute(wasteType, "title"), "Greasy Waste",
+                        "Wate type is not matching");
+                GWEstQuan(GWPerMonth);
+                assertEquals(eleUtil.doGetElementAttribute(OSEstimatedQuantity, "title"), "0.00",
+                        "OS Estimated quantity not matching");
+                break;
+            case "Organic Sludge":
+                eleUtil.waitForVisibilityOfElement(wasteType, 20);
+                assertEquals(eleUtil.doGetElementAttribute(wasteType, "title"),
+                        "Organic Sludge – Ships, Organic Sludge – Industries", "Wate type is not matching");
+                eleUtil.waitForVisibilityOfElement(OSEstimatedQuantity, 10);
+                String actualOSEstimatedQuantity = eleUtil.doGetElementAttribute(OSEstimatedQuantity, "title");
+                int averageVal = OSEstQuan(OSSPerMonth, OSIPerMonth);
+                String expectedOSEstimatedQuantity = Integer.toString(averageVal);
+                assertEquals(actualOSEstimatedQuantity, expectedOSEstimatedQuantity, "OS Estimated quantity not matching");
+                assertEquals(eleUtil.doGetElementAttribute(GWEstimatedQuantity, "title"), "0.00",
+                        "OS Estimated quantity not matching");
+                break;
+            case "Graesy Waste and Organic Sludge":
+                eleUtil.waitForVisibilityOfElement(wasteType, 20);
+                assertEquals(eleUtil.doGetElementAttribute(wasteType, "title"),
+                        "Greasy Waste, Organic Sludge – Ships, Organic Sludge – Industries", "Wate type is not matching");
+                GWEstQuan(GWPerMonth);
+                eleUtil.waitForVisibilityOfElement(OSEstimatedQuantity, 10);
+                actualOSEstimatedQuantity = eleUtil.doGetElementAttribute(OSEstimatedQuantity, "title");
+                averageVal = OSEstQuan(OSSPerMonth, OSIPerMonth);
+                expectedOSEstimatedQuantity = Integer.toString(averageVal);
+                assertEquals(actualOSEstimatedQuantity, expectedOSEstimatedQuantity, "OS Estimated quantity not matching");
+                break;
+        }
 
-    public void paymentRecordBeforeActualQuantitiesValidation(int OSSPerMonth, int OSIPerMonth, int GWPerMonth)
-            throws InterruptedException {
-        // Calculation for Payment
-        float totalOSEstimatedQuantity = OSSPerMonth + OSIPerMonth;
-        float totalActualCalDepositOS = totalOSEstimatedQuantity * 38;
-        float totalActualCalDepositGW = (float) (GWPerMonth * 10.8605);
-        LocalDate currentDate = LocalDate.now();
-        int currentYear = currentDate.getYear();
-        float totalActualCalculatedDepositApp = (totalActualCalDepositGW + totalActualCalDepositGW) * 2;
-
-        eleUtil.waitForVisibilityOfElement(GWEstimatedQuantity, 10);
-        float actualGWEstimatedQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(GWEstimatedQuantity, "title"));
-        assertEquals(actualGWEstimatedQuantity, GWPerMonth, "GW Estimated Quantity not matching");
-
-        eleUtil.waitForVisibilityOfElement(GWActualQuantity, 10);
-        float actualGWActualQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(GWActualQuantity, "title"));
-        assertEquals(actualGWActualQuantity, 0.00, "GW Actual Quantity not matching");
-
-        eleUtil.waitForVisibilityOfElement(OSEstimatedQuantity, 10);
-        float actualOSEstimatedQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(OSEstimatedQuantity, "title"));
-        assertEquals(actualOSEstimatedQuantity, totalOSEstimatedQuantity, "OS Estimated Quantity not matching");
-
-        eleUtil.waitForVisibilityOfElement(OSActualQuantity, 10);
-        float actualOSActualQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(OSActualQuantity, "title"));
-        assertEquals(actualOSActualQuantity, 0.00, "OS Actual Quantity not matching");
-
-        eleUtil.waitForVisibilityOfElement(CalDepositOS, 10);
-        float actualCalDepositOS = Float.parseFloat(eleUtil.doGetElementAttribute(CalDepositOS, "title"));
-        assertEquals(actualCalDepositOS, totalActualCalDepositOS, "Calculated Deposit OS not matching");
-
-        eleUtil.waitForVisibilityOfElement(CalDepositGW, 10);
-        float actualCalDepositGW = Float.parseFloat(eleUtil.doGetElementAttribute(CalDepositGW, "title"));
-        assertEquals(actualCalDepositGW, totalActualCalDepositGW, "Calculated Deposit GW not matching");
-
-        eleUtil.waitForVisibilityOfElement(CalculatedDepositApp, 10);
-        float actualCalculatedDepositApp = Float.parseFloat(eleUtil.doGetElementAttribute(CalculatedDepositApp, "title"));
-        assertEquals(actualCalculatedDepositApp, totalActualCalculatedDepositApp, "Calculated Deposit Based on Application not matching");
-
-        eleUtil.waitForVisibilityOfElement(CalculatedDepositActual, 10);
-        float actualCalculatedDepositActual = Float.parseFloat(eleUtil.doGetElementAttribute(CalculatedDepositActual, "title"));
-        assertEquals(actualCalculatedDepositActual, 0.00, "Calculated Deposit Based on Actual Volume not matching");
-
-        eleUtil.waitForVisibilityOfElement(CalculatedDeposit, 10);
-        float actualCalculatedDeposit = Float.parseFloat(eleUtil.doGetElementAttribute(CalculatedDeposit, "title"));
-        assertEquals(actualCalculatedDeposit, totalActualCalculatedDepositApp, "Calculated Deposit not matching");
-
-        eleUtil.waitForVisibilityOfElement(depositAmount, 10);
-        float actualdepositAmount = Float.parseFloat(eleUtil.doGetElementAttribute(depositAmount, "title"));
-        assertEquals(actualdepositAmount, 0.00, "Deposit Amount not matching");
-
-        eleUtil.waitForVisibilityOfElement(topUpRefund, 10);
-        float actualtopUpRefund = Float.parseFloat(eleUtil.doGetElementAttribute(topUpRefund, "title"));
-        assertEquals(actualtopUpRefund, totalActualCalculatedDepositApp, "Top-Up Required (Refund) not matching");
-
-        eleUtil.waitForVisibilityOfElement(year, 10);
-        int actualyear = Integer.parseInt(eleUtil.doGetElementAttribute(year, "title"));
-        assertEquals(actualyear, currentYear, "Year not matching");
     }
 
     public void mailGeneratedOrNot(String mailType) throws InterruptedException, ParseException {
         clickOnRefrehBtn();
         navigatingToTab("Timeline");
         // eleUtil.isPageLoaded(100);
-        Thread.sleep(5000);
+        Thread.sleep(2000);
         By ele;
         switch (mailType) {
 
@@ -2839,12 +3102,340 @@ public class CasecreationPage extends CommonActionsPage {
                 break;
 
             case "Tanker Deregistration":
-                ele = By.xpath("//label[contains(text(),'Deregistration of')]");
+                ele = By.xpath("(//label[contains(text(),'Deregistration of')])[1]");
+                eleUtil.waitForVisibilityOfElement(ele, 20);
                 mailTrigger = eleUtil.doElementGetText(ele);
                 assertTrue(mailTrigger.contains("Deregistration of"), "Mail is not generated");
+
+                break;
+            case "Tanker Resealing":
+                ele = By.xpath("//label[contains(text(),'Tanker Resealing Email')]");
+                eleUtil.waitForVisibilityOfElement(ele, 20);
+                mailTrigger = eleUtil.doElementGetText(ele);
+                assertTrue(mailTrigger.contains("Tanker Resealing Email"), "Mail is not generated");
+
                 break;
 
         }
+
+    }
+
+    public void mailValidationNew(String mailType) throws InterruptedException, ParseException {
+        clickOnRefrehBtn();
+        navigatingToTab("Timeline");
+        // eleUtil.isPageLoaded(100);
+        Thread.sleep(2000);
+        String actualSub, actualFrom, actualBody;
+        List<WebElement> actualTo;
+        List<String> headersValList;
+        By ele;
+        /*
+         * SimpleDateFormat formatter = new SimpleDateFormat("dd/M/yyyy"); Date date =
+         * formatter.parse(CommonActionsPage.getSharedValue("scheduledStartDate"));
+         * SimpleDateFormat newFormat = new SimpleDateFormat("dd/MM/yyyy"); String
+         * finalString = newFormat.format(date); System.out.println(finalString);
+         */
+        switch (mailType) {
+
+            case "Inspection Schedule":
+
+                ele = By.xpath(
+                        "//label[contains(text(),'Inspection Appointment')]//ancestor::div[contains(@id,'timeline_record')]//a[@title='Open Record']");
+                eleUtil.waitForVisibilityOfElement(ele, 30);
+                eleUtil.doElementClickable(ele, 10);
+                eleUtil.doClick(ele);
+
+                Thread.sleep(4000);
+                // eleUtil.waitForVisibilityOfElement(mailframeLoc, 10);
+                driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Designer']")));
+                driver.switchTo().frame(driver.findElement(By.xpath(
+                        "//iframe[@title='Description rich text editor' and @aria-label='Description rich text editor']")));
+                // eleUtil.waitForFrameByLocator(mailframeLoc, AppConstants.LONG_DEFAULT_WAIT);
+                Thread.sleep(4000);
+
+                actualBody = eleUtil.doElementGetText(mailBody);
+                String Expectedstr = "Dear , \n" + "\n"
+                        + "Please send in the tanker  to Water hub during working hours on  between  to . Confirm the appointment date and time 1 Day in advance.\n"
+                        + "\n" + "Please ensure the tanker is ready for inspection.\n"
+                        + "Tank should be empty to open for visual check, the GPS operational and camera can view the suction and discharge valve.\n"
+                        + "If satisfactory, its discharge handle will be tagged with PUB seal.\n" + "\n" + "\n"
+                        + "Regards\n" + "G RAJ KUMAR\n" + "Senior Assistant Engineer\n"
+                        + "Water Reclamation (Network) Department (Operation & Maintenance Division)\n";
+                String straar[] = {"Dear , \n" + "\n" + "Please send in the tanker ",
+                        "to Water hub during working hours on", "between",
+                        "Confirm the appointment date and time 1 Day in advance.",
+                        "Please ensure the tanker is ready for inspection.\n"
+                                + "Tank should be empty to open for visual check, the GPS operational and camera can view the suction and discharge valve.\n"
+                                + "If satisfactory, its discharge handle will be tagged with PUB seal.\n" + "\n" + "\n"
+                                + "Regards\n" + "G RAJ KUMAR\n" + "Senior Assistant Engineer\n"
+                                + "Water Reclamation (Network) Department (Operation & Maintenance Division)"};
+                System.out.println(actualBody);
+                System.out.println("straar[0] :" + straar[0]);
+                System.out.println("straar[1] :" + straar[1]);
+                System.out.println("straar[2] :" + straar[2]);
+                System.out.println("straar[3] :" + straar[3]);
+                System.out.println("straar[4] :" + straar[4]);
+
+                assertTrue(actualBody.contains(straar[0]), "Body is not matching-0");
+                assertTrue(actualBody.contains(straar[1]), "Body is not matching-1");
+                assertTrue(actualBody.contains(straar[2]), "Body is not matching-2");
+                assertTrue(actualBody.contains(straar[3]), "Body is not matching-3");
+                assertTrue(actualBody.contains(straar[4]), "Body is not matching-4");
+                // assertEquals(actualBody, Expectedstr, "Body is not matching");
+                driver.switchTo().defaultContent();
+                break;
+            case "Permit generation":
+                ele = By.xpath(
+                        "//label[text()='Permit to Dispose Of Waste at Water Reclamation Plants (WRPs)']//ancestor::div[contains(@id,'timeline_record')]//a[@title='Open Record']");
+                eleUtil.doElementClickable(ele, 10);
+                eleUtil.doClick(ele);
+                eleUtil.waitForVisibilityOfElement(mailSubject, 10);
+                actualSub = eleUtil.doGetElementAttribute(mailSubject, "Value");
+                System.out.println("subject is" + actualSub);
+                actualFrom = eleUtil.doElementGetText(mailFrom);
+                actualTo = driver.findElements(mailTo);
+                headersValList = new ArrayList<String>();
+                for (int i = 0; i < actualTo.size(); i++) {
+                    String actualToVal = actualTo.get(i).getText();
+                    headersValList.add(actualToVal);
+                }
+
+                System.out.println("actualTo values:" + headersValList);
+                assertEquals(actualFrom, "SIES DEV2", "From address is not matching");
+                List<String> expectedTo = new ArrayList<String>();
+
+                expectedTo.add("WRN5 WRP Contact");
+                // expectedTo.add("Tankcompany01032024080235");
+                expectedTo.add(CommonActionsPage.Tankercompanyname);
+                System.out.println("expectedTo values:" + expectedTo);
+                // assertEquals(headersValList, expectedTo, "To address is not matching");
+
+                Collections.sort(headersValList);
+                Collections.sort(expectedTo);
+                if (headersValList.equals(expectedTo) == true) {
+                    System.out.println(" To address is matching     :" + headersValList + "------->" + expectedTo);
+                } else {
+                    System.out.println(" To address is not matching ");
+                }
+
+                assertEquals(actualSub, "Permit to Dispose Of Waste at Water Reclamation Plants (WRPs)",
+                        "Subject is not matching");
+                eleUtil.scrollUsingRobotClass();
+                Thread.sleep(4000);
+                // eleUtil.waitForVisibilityOfElement(mailframeLoc, 10);
+                driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Designer']")));
+                driver.switchTo().frame(driver.findElement(By.xpath(
+                        "//iframe[@title='Description rich text editor' and @aria-label='Description rich text editor']")));
+                // eleUtil.waitForFrameByLocator(mailframeLoc, AppConstants.LONG_DEFAULT_WAIT);
+                Thread.sleep(4000);
+                actualBody = eleUtil.doElementGetText(mailBody);
+
+                /*
+                 * String ExpectedBody = "Dear Sir,\n" + "\n" +
+                 * "The attached permits dated 1/3/2024 are for disposal of greasy waste, organic sludge at Jurong WRP and human wastewater at WRPs. These permits expire on 31/3/2025.\n"
+                 * + "\n" +
+                 * "Please acknowledge acceptance of the terms and conditions by returning us a copy of this agreement within 5 working days with the signature of a representative of your company listed in ACRA. \n"
+                 * + "\n" + "Regards\n" + "\n" + "\n" + "\n" + "SIES DEV2\n" +
+                 * "Field Inspection Officer\n" +
+                 * "Water Reclamation (Network) Department (Operation & Maintenance Division)\n"
+                 * + "\n" +
+                 * "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email"
+                 * ;
+                 */
+
+                String ExpectedBody = "Dear Sir,\n" + "\n" + "The attached permits dated " + CommonActionsPage.startdateval
+                        + " are for disposal of greasy waste, organic sludge at Jurong WRP and human wastewater at WRPs. These permits expire on "
+                        + CommonActionsPage.permitExpiryDate + ".\n" + "\n"
+                        + "Please acknowledge acceptance of the terms and conditions by returning us a copy of this agreement within 5 working days with the signature of a representative of your company listed in ACRA. \n"
+                        + "\n" + "Regards\n" + "\n" + "\n" + "\n" + "SIES DEV2\n" + "Field Inspection Officer\n"
+                        + "Water Reclamation (Network) Department (Operation & Maintenance Division)\n" + "\n"
+                        + "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email";
+                System.out.println("permit  generation actual" + actualBody);
+                System.out.println("Permit generation expected" + ExpectedBody);
+                if (actualBody.equalsIgnoreCase(ExpectedBody)) {
+                    System.out.println(" Body is same     :" + actualBody + "------->" + ExpectedBody);
+                } else {
+                    System.out.println(" Body is not same");
+                }
+                driver.switchTo().defaultContent();
+                // Assert.assertEquals(true, driver.findElement(attachment).isDisplayed());
+                List<WebElement> files = driver.findElements(attachment);
+                if (!files.isEmpty()) {
+                    System.out.println("attachment is present");
+                } else {
+                    System.out.println("attachment is not present");
+                }
+                break;
+            case "Permit WRP email":
+                ele = By.xpath(
+                        "//label[contains(text(),'For your assistance')]//ancestor::div[contains(@id,'timeline_record')]//a[@title='Open Record']");
+                eleUtil.doElementClickable(ele, 10);
+                eleUtil.doClick(ele);
+                eleUtil.waitForVisibilityOfElement(mailSubject, 10);
+                actualSub = eleUtil.doGetElementAttribute(mailSubject, "Value");
+                System.out.println("subject is" + actualSub);
+                actualFrom = eleUtil.doElementGetText(mailFrom);
+                actualTo = driver.findElements(mailTo);
+                headersValList = new ArrayList<String>();
+                for (int i = 0; i < actualTo.size(); i++) {
+                    String actualToVal = actualTo.get(i).getText();
+                    headersValList.add(actualToVal);
+                }
+                assertEquals(actualFrom, "SIES DEV2", "From address is not matching");
+                assertTrue(headersValList.contains("WRN5 WRP Contact"), "To address is not matching");
+                assertEquals(actualSub,
+                        "For your assistance: Agreement to dispose waste at PUB's Water Reclamation Plants (WRPs) for Year.",
+                        "Subject is not matching");
+                eleUtil.scrollUsingRobotClass();
+                Thread.sleep(4000);
+                // eleUtil.waitForVisibilityOfElement(mailframeLoc, 10);
+                driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Designer']")));
+                driver.switchTo().frame(driver.findElement(By.xpath(
+                        "//iframe[@title='Description rich text editor' and @aria-label='Description rich text editor']")));
+                // eleUtil.waitForFrameByLocator(mailframeLoc, AppConstants.LONG_DEFAULT_WAIT);
+                Thread.sleep(4000);
+                actualBody = eleUtil.doElementGetText(mailBody);
+                // System.out.println(actualBody);
+
+                ExpectedBody = "Dear WRP colleagues\n" + "\n" + CommonActionsPage.Tankercompanyname
+                        + "'s new permit for 0 tankers has been issued.\n" + "\n"
+                        + "Please take note and pass on to your teams on the ground to allow the tankers access to WRPs according to type of waste.\n"
+                        + "\n" + "Description Attachment Remarks\n"
+                        + "List of all GWCs and their vehicle numbers granted permit\n"
+                        + "Valid until: [Please refer to attachment for expiry date]\n"
+                        + "File 2023 WRP list of tankers effective from 1 Apr 2023_V2.xlsx\n"
+                        + "Updated tanker list excludes the following tanker:\n" + CommonActionsPage.Tankercompanyname
+                        + " - " + CommonActionsPage.GWCReferenceNum + "\n" + "\n" + "\n" + "\n" + "Regards\n" + "\n" + "\n"
+                        + "G RAJ KUMAR \n" + "Assistant Engineer\n"
+                        + "Water Reclamation (Network) Department (Operation & Maintenance Division)\n" + "\n"
+                        + "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email";
+
+                /*
+                 * ExpectedBody = "Dear WRP colleagues\n" +
+                 * "\n Tankcompany01032024080235's new permit for 0 tankers has been issued.\n"
+                 * + "\n" +
+                 * "Please take note and pass on to your teams on the ground to allow the tankers access to WRPs according to type of waste.\n"
+                 * + "\n" + "Description Attachment Remarks\n" +
+                 * "List of all GWCs and their vehicle numbers granted permit\n" +
+                 * "Valid until: [Please refer to attachment for expiry date]\n" +
+                 * "File 2023 WRP list of tankers effective from 1 Apr 2023_V2.xlsx\n" +
+                 * "Updated tanker list excludes the following tanker:\n Tankcompany01032024080235 - 886\n"
+                 * + "\n" + "\n" + "\n" + "Regards\n" + "\n" + "\n" + "G RAJ KUMAR \n" +
+                 * "Assistant Engineer\n" +
+                 * "Water Reclamation (Network) Department (Operation & Maintenance Division)\n"
+                 * + "\n" +
+                 * "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email"
+                 * ;
+                 */
+                System.out.println("permit  generation actual" + actualBody);
+                System.out.println("Permit generation expected" + ExpectedBody);
+                // assertEquals(actualBody, Expectedstr, "Body is not matching");
+                if (actualBody.equalsIgnoreCase(ExpectedBody)) {
+                    // System.out.println(" Body is same :" + actualBody + "------->" +
+                    // ExpectedBody);
+                    System.out.println(" Body is same");
+                } else {
+                    System.out.println(" Body is not same");
+                }
+                driver.switchTo().defaultContent();
+                if (driver.findElement(attachment).isDisplayed()) {
+                    System.out.println("attachment is present");
+                } else {
+                    System.out.println("attachment is not present");
+                }
+                break;
+        }
+        eleUtil.doElementClickable(backBtn, 50);
+        eleUtil.doClick(backBtn);
+    }
+
+    /*public void mailValidationUsingExcel() throws InterruptedException, ParseException {
+        clickOnRefrehBtn();
+        navigatingToTab("Timeline");
+        Thread.sleep(2000);
+        String actualSub, actualFrom, actualBody;
+        List<WebElement> actualTo;
+        List<String> headersValList;
+        By ele;
+        excelUtil.getRowData("WRN5 Mails", "Inspection Schedule");
+
+        eleUtil.doElementClickable(backBtn, 50);
+        eleUtil.doClick(backBtn);
+    }*/
+
+    public void paymentWasteTypeValidation() throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(customerName, 50);
+        eleUtil.doElementClickable(customerName, 100);
+        eleUtil.doClick(customerName);
+        eleUtil.doClick(filterBy);
+        eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
+        Thread.sleep(3000);
+        driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+        eleUtil.doClick(applyBtn);
+        selectFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
+        getFirstRecord(firstRecord, AppConstants.SHORT_DEFAULT_WAIT);
+        eleUtil.waitForVisibilityOfElement(wasteType, 20);
+        assertEquals(eleUtil.doGetElementAttribute(wasteType, "title"),
+                "Greasy Waste, Organic Sludge – Ships, Organic Sludge – Industries", "Wate type is not matching");
+    }
+
+    public void paymentRecordBeforeActualQuantitiesValidation(int OSSPerMonth, int OSIPerMonth, int GWPerMonth)
+            throws InterruptedException {
+        // Calculation for Payment
+        float totalOSEstimatedQuantity = OSSPerMonth + OSIPerMonth;
+        float totalActualCalDepositOS = totalOSEstimatedQuantity * 38;
+        float totalActualCalDepositGW = (float) (GWPerMonth * 10.8605);
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+        float totalActualCalculatedDepositApp = (totalActualCalDepositGW + totalActualCalDepositGW) * 2;
+
+        eleUtil.waitForVisibilityOfElement(GWEstimatedQuantity, 10);
+        float actualGWEstimatedQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(GWEstimatedQuantity, "title"));
+        assertEquals(actualGWEstimatedQuantity, GWPerMonth, "GW Estimated Quantity not matching");
+
+        eleUtil.waitForVisibilityOfElement(GWActualQuantity, 10);
+        float actualGWActualQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(GWActualQuantity, "title"));
+        assertEquals(actualGWActualQuantity, 0.00, "GW Actual Quantity not matching");
+
+        eleUtil.waitForVisibilityOfElement(OSEstimatedQuantity, 10);
+        float actualOSEstimatedQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(OSEstimatedQuantity, "title"));
+        assertEquals(actualOSEstimatedQuantity, totalOSEstimatedQuantity, "OS Estimated Quantity not matching");
+
+        eleUtil.waitForVisibilityOfElement(OSActualQuantity, 10);
+        float actualOSActualQuantity = Float.parseFloat(eleUtil.doGetElementAttribute(OSActualQuantity, "title"));
+        assertEquals(actualOSActualQuantity, 0.00, "OS Actual Quantity not matching");
+
+        eleUtil.waitForVisibilityOfElement(CalDepositOS, 10);
+        float actualCalDepositOS = Float.parseFloat(eleUtil.doGetElementAttribute(CalDepositOS, "title"));
+        assertEquals(actualCalDepositOS, totalActualCalDepositOS, "Calculated Deposit OS not matching");
+
+        eleUtil.waitForVisibilityOfElement(CalDepositGW, 10);
+        float actualCalDepositGW = Float.parseFloat(eleUtil.doGetElementAttribute(CalDepositGW, "title"));
+        assertEquals(actualCalDepositGW, totalActualCalDepositGW, "Calculated Deposit GW not matching");
+
+        eleUtil.waitForVisibilityOfElement(CalculatedDepositApp, 10);
+        float actualCalculatedDepositApp = Float.parseFloat(eleUtil.doGetElementAttribute(CalculatedDepositApp, "title"));
+        assertEquals(actualCalculatedDepositApp, totalActualCalculatedDepositApp, "Calculated Deposit Based on Application not matching");
+
+        eleUtil.waitForVisibilityOfElement(CalculatedDepositActual, 10);
+        float actualCalculatedDepositActual = Float.parseFloat(eleUtil.doGetElementAttribute(CalculatedDepositActual, "title"));
+        assertEquals(actualCalculatedDepositActual, 0.00, "Calculated Deposit Based on Actual Volume not matching");
+
+        eleUtil.waitForVisibilityOfElement(CalculatedDeposit, 10);
+        float actualCalculatedDeposit = Float.parseFloat(eleUtil.doGetElementAttribute(CalculatedDeposit, "title"));
+        assertEquals(actualCalculatedDeposit, totalActualCalculatedDepositApp, "Calculated Deposit not matching");
+
+        eleUtil.waitForVisibilityOfElement(depositAmount, 10);
+        float actualdepositAmount = Float.parseFloat(eleUtil.doGetElementAttribute(depositAmount, "title"));
+        assertEquals(actualdepositAmount, 0.00, "Deposit Amount not matching");
+
+        eleUtil.waitForVisibilityOfElement(topUpRefund, 10);
+        float actualtopUpRefund = Float.parseFloat(eleUtil.doGetElementAttribute(topUpRefund, "title"));
+        assertEquals(actualtopUpRefund, totalActualCalculatedDepositApp, "Top-Up Required (Refund) not matching");
+
+        eleUtil.waitForVisibilityOfElement(year, 10);
+        int actualyear = Integer.parseInt(eleUtil.doGetElementAttribute(year, "title"));
+        assertEquals(actualyear, currentYear, "Year not matching");
     }
 
     public void mailValidation(String mailType) throws InterruptedException, ParseException {
@@ -3087,235 +3678,6 @@ public class CasecreationPage extends CommonActionsPage {
         eleUtil.doElementClickable(backBtn, 50);
         eleUtil.doClick(backBtn);
 
-    }
-
-    public void mailValidationNew(String mailType) throws InterruptedException, ParseException {
-        clickOnRefrehBtn();
-        navigatingToTab("Timeline");
-        // eleUtil.isPageLoaded(100);
-        Thread.sleep(2000);
-        String actualSub, actualFrom, actualBody;
-        List<WebElement> actualTo;
-        List<String> headersValList;
-        By ele;
-        /*
-         * SimpleDateFormat formatter = new SimpleDateFormat("dd/M/yyyy"); Date date =
-         * formatter.parse(CommonActionsPage.getSharedValue("scheduledStartDate"));
-         * SimpleDateFormat newFormat = new SimpleDateFormat("dd/MM/yyyy"); String
-         * finalString = newFormat.format(date); System.out.println(finalString);
-         */
-        switch (mailType) {
-
-            case "Inspection Schedule":
-
-                ele = By.xpath(
-                        "//label[contains(text(),'Inspection Appointment')]//ancestor::div[contains(@id,'timeline_record')]//a[@title='Open Record']");
-                eleUtil.waitForVisibilityOfElement(ele, 30);
-                eleUtil.doElementClickable(ele, 10);
-                eleUtil.doClick(ele);
-
-                Thread.sleep(4000);
-                // eleUtil.waitForVisibilityOfElement(mailframeLoc, 10);
-                driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Designer']")));
-                driver.switchTo().frame(driver.findElement(By.xpath(
-                        "//iframe[@title='Description rich text editor' and @aria-label='Description rich text editor']")));
-                // eleUtil.waitForFrameByLocator(mailframeLoc, AppConstants.LONG_DEFAULT_WAIT);
-                Thread.sleep(4000);
-
-                actualBody = eleUtil.doElementGetText(mailBody);
-                String Expectedstr = "Dear , \n" + "\n"
-                        + "Please send in the tanker  to Water hub during working hours on  between  to . Confirm the appointment date and time 1 Day in advance.\n"
-                        + "\n" + "Please ensure the tanker is ready for inspection.\n"
-                        + "Tank should be empty to open for visual check, the GPS operational and camera can view the suction and discharge valve.\n"
-                        + "If satisfactory, its discharge handle will be tagged with PUB seal.\n" + "\n" + "\n"
-                        + "Regards\n" + "G RAJ KUMAR\n" + "Senior Assistant Engineer\n"
-                        + "Water Reclamation (Network) Department (Operation & Maintenance Division)\n";
-                String straar[] = {"Dear , \n" + "\n" + "Please send in the tanker ",
-                        "to Water hub during working hours on", "between",
-                        "Confirm the appointment date and time 1 Day in advance.",
-                        "Please ensure the tanker is ready for inspection.\n"
-                                + "Tank should be empty to open for visual check, the GPS operational and camera can view the suction and discharge valve.\n"
-                                + "If satisfactory, its discharge handle will be tagged with PUB seal.\n" + "\n" + "\n"
-                                + "Regards\n" + "G RAJ KUMAR\n" + "Senior Assistant Engineer\n"
-                                + "Water Reclamation (Network) Department (Operation & Maintenance Division)"};
-                System.out.println(actualBody);
-                System.out.println("straar[0] :" + straar[0]);
-                System.out.println("straar[1] :" + straar[1]);
-                System.out.println("straar[2] :" + straar[2]);
-                System.out.println("straar[3] :" + straar[3]);
-                System.out.println("straar[4] :" + straar[4]);
-
-                assertTrue(actualBody.contains(straar[0]), "Body is not matching-0");
-                assertTrue(actualBody.contains(straar[1]), "Body is not matching-1");
-                assertTrue(actualBody.contains(straar[2]), "Body is not matching-2");
-                assertTrue(actualBody.contains(straar[3]), "Body is not matching-3");
-                assertTrue(actualBody.contains(straar[4]), "Body is not matching-4");
-                // assertEquals(actualBody, Expectedstr, "Body is not matching");
-                driver.switchTo().defaultContent();
-                break;
-            case "Permit generation":
-                ele = By.xpath(
-                        "//label[text()='Permit to Dispose Of Waste at Water Reclamation Plants (WRPs)']//ancestor::div[contains(@id,'timeline_record')]//a[@title='Open Record']");
-                eleUtil.doElementClickable(ele, 10);
-                eleUtil.doClick(ele);
-                eleUtil.waitForVisibilityOfElement(mailSubject, 10);
-                actualSub = eleUtil.doGetElementAttribute(mailSubject, "Value");
-                System.out.println("subject is" + actualSub);
-                actualFrom = eleUtil.doElementGetText(mailFrom);
-                actualTo = driver.findElements(mailTo);
-                headersValList = new ArrayList<String>();
-                for (int i = 0; i < actualTo.size(); i++) {
-                    String actualToVal = actualTo.get(i).getText();
-                    headersValList.add(actualToVal);
-                }
-
-                System.out.println("actualTo values:" + headersValList);
-                assertEquals(actualFrom, "SIES DEV2", "From address is not matching");
-                List<String> expectedTo = new ArrayList<String>();
-
-                expectedTo.add("WRN5 WRP Contact");
-                // expectedTo.add("Tankcompany01032024080235");
-                expectedTo.add(CommonActionsPage.Tankercompanyname);
-                System.out.println("expectedTo values:" + expectedTo);
-                // assertEquals(headersValList, expectedTo, "To address is not matching");
-
-                Collections.sort(headersValList);
-                Collections.sort(expectedTo);
-                if (headersValList.equals(expectedTo) == true) {
-                    System.out.println(" To address is matching     :" + headersValList + "------->" + expectedTo);
-                } else {
-                    System.out.println(" To address is not matching ");
-                }
-
-                assertEquals(actualSub, "Permit to Dispose Of Waste at Water Reclamation Plants (WRPs)",
-                        "Subject is not matching");
-                eleUtil.scrollUsingRobotClass();
-                Thread.sleep(4000);
-                // eleUtil.waitForVisibilityOfElement(mailframeLoc, 10);
-                driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Designer']")));
-                driver.switchTo().frame(driver.findElement(By.xpath(
-                        "//iframe[@title='Description rich text editor' and @aria-label='Description rich text editor']")));
-                // eleUtil.waitForFrameByLocator(mailframeLoc, AppConstants.LONG_DEFAULT_WAIT);
-                Thread.sleep(4000);
-                actualBody = eleUtil.doElementGetText(mailBody);
-
-                /*
-                 * String ExpectedBody = "Dear Sir,\n" + "\n" +
-                 * "The attached permits dated 1/3/2024 are for disposal of greasy waste, organic sludge at Jurong WRP and human wastewater at WRPs. These permits expire on 31/3/2025.\n"
-                 * + "\n" +
-                 * "Please acknowledge acceptance of the terms and conditions by returning us a copy of this agreement within 5 working days with the signature of a representative of your company listed in ACRA. \n"
-                 * + "\n" + "Regards\n" + "\n" + "\n" + "\n" + "SIES DEV2\n" +
-                 * "Field Inspection Officer\n" +
-                 * "Water Reclamation (Network) Department (Operation & Maintenance Division)\n"
-                 * + "\n" +
-                 * "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email"
-                 * ;
-                 */
-
-                String ExpectedBody = "Dear Sir,\n" + "\n" + "The attached permits dated " + CommonActionsPage.startdateval
-                        + " are for disposal of greasy waste, organic sludge at Jurong WRP and human wastewater at WRPs. These permits expire on "
-                        + CommonActionsPage.permitExpiryDate + ".\n" + "\n"
-                        + "Please acknowledge acceptance of the terms and conditions by returning us a copy of this agreement within 5 working days with the signature of a representative of your company listed in ACRA. \n"
-                        + "\n" + "Regards\n" + "\n" + "\n" + "\n" + "SIES DEV2\n" + "Field Inspection Officer\n"
-                        + "Water Reclamation (Network) Department (Operation & Maintenance Division)\n" + "\n"
-                        + "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email";
-                System.out.println("permit  generation actual" + actualBody);
-                System.out.println("Permit generation expected" + ExpectedBody);
-                if (actualBody.equalsIgnoreCase(ExpectedBody)) {
-                    System.out.println(" Body is same     :" + actualBody + "------->" + ExpectedBody);
-                } else {
-                    System.out.println(" Body is not same");
-                }
-                driver.switchTo().defaultContent();
-                // Assert.assertEquals(true, driver.findElement(attachment).isDisplayed());
-                List<WebElement> files = driver.findElements(attachment);
-                if (!files.isEmpty()) {
-                    System.out.println("attachment is present");
-                } else {
-                    System.out.println("attachment is not present");
-                }
-                break;
-            case "Permit WRP email":
-                ele = By.xpath(
-                        "//label[contains(text(),'For your assistance')]//ancestor::div[contains(@id,'timeline_record')]//a[@title='Open Record']");
-                eleUtil.doElementClickable(ele, 10);
-                eleUtil.doClick(ele);
-                eleUtil.waitForVisibilityOfElement(mailSubject, 10);
-                actualSub = eleUtil.doGetElementAttribute(mailSubject, "Value");
-                System.out.println("subject is" + actualSub);
-                actualFrom = eleUtil.doElementGetText(mailFrom);
-                actualTo = driver.findElements(mailTo);
-                headersValList = new ArrayList<String>();
-                for (int i = 0; i < actualTo.size(); i++) {
-                    String actualToVal = actualTo.get(i).getText();
-                    headersValList.add(actualToVal);
-                }
-                assertEquals(actualFrom, "SIES DEV2", "From address is not matching");
-                assertTrue(headersValList.contains("WRN5 WRP Contact"), "To address is not matching");
-                assertEquals(actualSub,
-                        "For your assistance: Agreement to dispose waste at PUB's Water Reclamation Plants (WRPs) for Year.",
-                        "Subject is not matching");
-                eleUtil.scrollUsingRobotClass();
-                Thread.sleep(4000);
-                // eleUtil.waitForVisibilityOfElement(mailframeLoc, 10);
-                driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Designer']")));
-                driver.switchTo().frame(driver.findElement(By.xpath(
-                        "//iframe[@title='Description rich text editor' and @aria-label='Description rich text editor']")));
-                // eleUtil.waitForFrameByLocator(mailframeLoc, AppConstants.LONG_DEFAULT_WAIT);
-                Thread.sleep(4000);
-                actualBody = eleUtil.doElementGetText(mailBody);
-                // System.out.println(actualBody);
-
-                ExpectedBody = "Dear WRP colleagues\n" + "\n" + CommonActionsPage.Tankercompanyname
-                        + "'s new permit for 0 tankers has been issued.\n" + "\n"
-                        + "Please take note and pass on to your teams on the ground to allow the tankers access to WRPs according to type of waste.\n"
-                        + "\n" + "Description Attachment Remarks\n"
-                        + "List of all GWCs and their vehicle numbers granted permit\n"
-                        + "Valid until: [Please refer to attachment for expiry date]\n"
-                        + "File 2023 WRP list of tankers effective from 1 Apr 2023_V2.xlsx\n"
-                        + "Updated tanker list excludes the following tanker:\n" + CommonActionsPage.Tankercompanyname
-                        + " - " + CommonActionsPage.GWCReferenceNum + "\n" + "\n" + "\n" + "\n" + "Regards\n" + "\n" + "\n"
-                        + "G RAJ KUMAR \n" + "Assistant Engineer\n"
-                        + "Water Reclamation (Network) Department (Operation & Maintenance Division)\n" + "\n"
-                        + "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email";
-
-                /*
-                 * ExpectedBody = "Dear WRP colleagues\n" +
-                 * "\n Tankcompany01032024080235's new permit for 0 tankers has been issued.\n"
-                 * + "\n" +
-                 * "Please take note and pass on to your teams on the ground to allow the tankers access to WRPs according to type of waste.\n"
-                 * + "\n" + "Description Attachment Remarks\n" +
-                 * "List of all GWCs and their vehicle numbers granted permit\n" +
-                 * "Valid until: [Please refer to attachment for expiry date]\n" +
-                 * "File 2023 WRP list of tankers effective from 1 Apr 2023_V2.xlsx\n" +
-                 * "Updated tanker list excludes the following tanker:\n Tankcompany01032024080235 - 886\n"
-                 * + "\n" + "\n" + "\n" + "Regards\n" + "\n" + "\n" + "G RAJ KUMAR \n" +
-                 * "Assistant Engineer\n" +
-                 * "Water Reclamation (Network) Department (Operation & Maintenance Division)\n"
-                 * + "\n" +
-                 * "Confidential information may be in this message. If you are not the intended recipient, please notify the sender and delete the email"
-                 * ;
-                 */
-                System.out.println("permit  generation actual" + actualBody);
-                System.out.println("Permit generation expected" + ExpectedBody);
-                // assertEquals(actualBody, Expectedstr, "Body is not matching");
-                if (actualBody.equalsIgnoreCase(ExpectedBody)) {
-                    // System.out.println(" Body is same :" + actualBody + "------->" +
-                    // ExpectedBody);
-                    System.out.println(" Body is same");
-                } else {
-                    System.out.println(" Body is not same");
-                }
-                driver.switchTo().defaultContent();
-                if (driver.findElement(attachment).isDisplayed()) {
-                    System.out.println("attachment is present");
-                } else {
-                    System.out.println("attachment is not present");
-                }
-                break;
-        }
-        eleUtil.doElementClickable(backBtn, 50);
-        eleUtil.doClick(backBtn);
     }
 
 	/*public void mailValidationUsingExcel() throws InterruptedException, ParseException {

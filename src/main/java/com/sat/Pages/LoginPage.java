@@ -131,15 +131,20 @@ public class LoginPage extends CommonActionsPage {
     }
 
     public void signoutApp() {
-        eleUtil.waitForVisibilityOfElement(signoutPic, 20);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        eleUtil.waitForVisibilityOfElement(signoutPic, 50);
         try {
             eleUtil.doClick(signoutPic);
         } catch (Exception e) {
             eleUtil.doActionsClick(signoutPic);
         }
-        eleUtil.waitForVisibilityOfElement(signoutBtn, 10);
+        eleUtil.waitForVisibilityOfElement(signoutBtn, 30);
         eleUtil.doClick(signoutBtn);
-        eleUtil.waitForVisibilityOfElement(useanotheraccount, 10);
+        eleUtil.waitForVisibilityOfElement(useanotheraccount, 30);
         eleUtil.doClick(useanotheraccount);
     }
 

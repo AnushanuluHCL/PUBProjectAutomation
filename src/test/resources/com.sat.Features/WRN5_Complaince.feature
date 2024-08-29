@@ -29,7 +29,7 @@ Feature: Testing WRN5-New pemit complaince Functionality
 	And go to "Work Orders" tab
 	And validate the schedule workorder notification
 	And navigate to Assignment stage and confirm the inspection schedule
-  And Validate "Inspection Schedule" mail with subject
+  	And Validate "Inspection Schedule" mail with subject
 	And navigate to Assignment stage and fill the respective details and navigate to next stage
 	And fill the details in Bookings section
 	And go to Service tasks tab and fill and complete the checklist as "Compliance"
@@ -75,7 +75,7 @@ Feature: Testing WRN5-New pemit complaince Functionality
 	And create tankers by filling the details
 	  | WasteType        |
 	  | Human Wastewater |
-	And logout from the admin credentials
+	And logout from the application
 	When Login to app with "FIO_userid" and "FIO_pwd"
 	And user selects App "DQB Case Management"
 	And user change the changearea to "GWC Tanker"
