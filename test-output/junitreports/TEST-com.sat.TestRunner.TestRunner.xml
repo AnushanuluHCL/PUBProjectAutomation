@@ -13,7 +13,7 @@ Command: [e7d499a8f8e97217355ed1b75c5598fd, clickElement {id=f.1CAB82C78B22548EF
 Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 122.0.6261.95, chrome: {chromedriverVersion: 122.0.6261.94 (880dbf29479c..., userDataDir: C:\Users\SRISWA~1.NUL\AppDa...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:53260}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:53260/devtoo..., se:cdpVersion: 122.0.6261.95, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
 Element: [[ChromeDriver: chrome on windows (e7d499a8f8e97217355ed1b75c5598fd)] -&gt; xpath: //button[@aria-label=&#039;Save &amp; Close&#039;]]
 Session ID: e7d499a8f8e97217355ed1b75c5598fd" type="org.openqa.selenium.ElementClickInterceptedException">
-      <![CDATA[org.openqa.selenium.ElementClickInterceptedException: element click intercepted: Element <button id="msdyn_workorder|NoRelationship|Form|Mscrm.SaveAndClosePrimary116-button" aria-label="Save &amp; Close" aria-describedby="id-8647" role="menuitem" title="Save &amp; Close
+        <![CDATA[org.openqa.selenium.ElementClickInterceptedException: element click intercepted: Element <button id="msdyn_workorder|NoRelationship|Form|Mscrm.SaveAndClosePrimary116-button" aria-label="Save &amp; Close" aria-describedby="id-8647" role="menuitem" title="Save &amp; Close
 
 Save and close this Work Order." tabindex="-1" data-id="msdyn_workorder|NoRelationship|Form|Mscrm.Form.msdyn_workorder.SaveAndClose" data-lp-id="Form:msdyn_workorder-msdyn_workorder|NoRelationship|Form|Mscrm.Form.msdyn_workorder.SaveAndClose" type="button" class="pa-aw pa-ie pa-if pa-hy pa-cp pa-bo pa-il pa-p pa-iq pa-ir flexbox">...</button> is not clickable at point (424, 68). Other element would receive the click: <img src="https://content.powerapps.com/resource/uci-infra/resources/images/PageBlock.a0c742e10064ee8c30d58c111947f54f.svg" alt="Deactivate" title="Deactivate" class="pa-im pa-cy pa-ds pa-cz pa-is ">
   (Session info: chrome=122.0.6261.95)
@@ -38,7 +38,7 @@ at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:607)
 at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:224)
 at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:77)
 at com.sat.testUtil.ElementUtil.doClick(ElementUtil.java:94)
-at com.sat.Pages.CasecreationPage.workOrderValidation(CasecreationPage.java:636)
+at com.sat.Pages.caseCreationPage.workOrderValidation(CasecreationPage.java:636)
 at com.sat.StepDefinitions.GWComplaintStepdefs.fill_the_details_in_Bookings_section(GWComplaintStepdefs.java:81)
 at ✽.fill the details in Bookings section(file:///C:/Users/sriswathianusha.nulu/newworkspace/AutomationFramework-main/src/test/resources/com.sat.Features/GWComplaint.feature:25)
 ]]>

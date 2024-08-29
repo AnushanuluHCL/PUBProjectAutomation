@@ -12,28 +12,20 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
-import com.sat.constants.AppConstants;
 import com.sat.exception.FrameworkException;
-import com.sat.testbase.TestBase;
 
 public class ElementUtil {
 	private WebDriver driver;
@@ -822,18 +814,55 @@ public class ElementUtil {
 		act.doubleClick(getElement(locator)).build().perform();
 	}
 
-	public void scrollUsingRobotClass() {
-		Robot robot;
-		try {
-			robot = new Robot();
-			robot.keyPress(KeyEvent.VK_PAGE_DOWN);
-			robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+    public void scrollUsingRobotClass() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Robot robot;
+        try {
+            robot = new Robot();
+            for(int i=0; i<=5;i++) {
+                robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+                robot.keyRelease(KeyEvent.VK_PAGE_DOWN);
+            }
 
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-			System.out.println("scroll is not working " + e.getStackTrace());
-		}
-	}
+        } catch (AWTException e) {
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+            System.out.println("scroll is not working " + e.getStackTrace());
+        }
+    }
+    /*
+    Generate Last Month Random Date in mm/dd/YYYY format
+            */
+    public String generateLastMonthRandomDate(){
+        Random random = new Random();
+        LocalDate today = LocalDate.now();
+        YearMonth lastMonth = YearMonth.from(today).minusMonths(1);
+        int randomDay = random.nextInt(lastMonth.lengthOfMonth()) + 1;
+        LocalDate randomDateLastMonth = lastMonth.atDay(randomDay);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String formattedDate = randomDateLastMonth.format(formatter);
+        return formattedDate;
+
+    }
+
+    public static boolean staleElementRefExecClickCRM(WebElement element) {
+        boolean result = false;
+        int attempts = 0;
+        while (attempts <3) {
+            try {
+                element.getText();
+                result = true;
+                break;
+            } catch (StaleElementReferenceException e) {
+            }
+            attempts++;
+        }
+        return result;
+    }
 
 }

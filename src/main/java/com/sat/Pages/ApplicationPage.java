@@ -91,6 +91,7 @@ public class ApplicationPage extends CommonActionsPage {
 	private By HWgrid = By.xpath("//h2[@title='Human Waste Water']");
 
 	// Locators for creating tankers
+	private By newAppMoreTankerBtn = By.xpath("//button[@aria-label='More commands for Application Tankers']");
 	private By newAppTankerBtn = By.xpath("//span[text()='New Application Tankers']");
 	private By regNoFiled = By.xpath("//input[@aria-label='Registration No']");
 	private By capacityField = By.xpath("//input[@aria-label='Capacity of Tanker (Cu/m)']");
@@ -168,11 +169,16 @@ public class ApplicationPage extends CommonActionsPage {
 		 * eleUtil.doSendKeysWithWait(addressField, addrval,
 		 * AppConstants.SHORT_DEFAULT_WAIT);
 		 */
-		eleUtil.doClearUsingKeys(addressOfTankerYardField);
+		eleUtil.scrollUsingRobotClass();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        eleUtil.doClearUsingKeys(addressOfTankerYardField);
 		eleUtil.doSendKeys(addressOfTankerYardField, addryard);
 		eleUtil.doClearUsingKeys(phonenumField);
 		eleUtil.doSendKeys(phonenumField, phonenumval);
-		// eleUtil.scrollUsingRobotClass();
 		eleUtil.waitForVisibilityOfElement(emailField, 20);
 		eleUtil.doClearUsingKeys(emailField);
 		eleUtil.doSendKeys(emailField, emailval);
@@ -184,6 +190,7 @@ public class ApplicationPage extends CommonActionsPage {
 
 	public void amountOfWastetypeOfTankers(String GWSelected, String GWPerMonth, String HWSelected, String HWType,
 			String HWPerMonth, String OSSSelected, String OSSPerMonth, String OSISelected, String OSIPerMonth) {
+		eleUtil.scrollUsingRobotClass();
 		eleUtil.createSelect(GreasyWasteBox);
 		eleUtil.doSelectDropDownByVisibleText(GreasyWasteBox, GWSelected);
 		eleUtil.doClick(sourceOfGWField);
@@ -390,6 +397,7 @@ public class ApplicationPage extends CommonActionsPage {
 	}
 
 	public void creationOfMultipleTankers(DataTable diftypeOfTankersdata) throws InterruptedException {
+		eleUtil.doClickWithWait(refreshBtn, 50);
 		List<Map<String, String>> data = diftypeOfTankersdata.asMaps(String.class, String.class);
 		System.out.println("data size is" + data.size());
 		for (Map<String, String> form : data) {
@@ -397,7 +405,8 @@ public class ApplicationPage extends CommonActionsPage {
 			// String tankernmae = form.get("Tanker_Name");
 			// String capacity = form.get("CapacityOfTanker");
 			String wastetype = form.get("WasteType");
-			// eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAULT_WAIT);
+			//eleUtil.isPageLoaded(AppConstants.MEDIUM_DEFAULT_WAIT);
+			eleUtil.doClickWithWait(newAppMoreTankerBtn, 50);
 			eleUtil.doClickWithWait(newAppTankerBtn, AppConstants.MEDIUM_DEFAULT_WAIT);
 			Thread.sleep(3000);
 			eleUtil.doElementClickable(regNoFiled, 10);
@@ -414,6 +423,7 @@ public class ApplicationPage extends CommonActionsPage {
 			ele.click();
 			eleUtil.doElementClickable(saveCloseBtn, 10);
 			eleUtil.doClick(saveCloseBtn);
+			eleUtil.doClickWithWait(refreshBtn, 20);
 		}
 		System.out.println("All tankers are created");
 		eleUtil.doElementClickable(saveCloseBtn, 10);
@@ -429,8 +439,6 @@ public class ApplicationPage extends CommonActionsPage {
 	}
 
 	public void approveApp() throws InterruptedException {
-		// selectFirstRecord(firstRecord, 20);
-		// eleUtil.doClick(refreshBtn);
 		eleUtil.isPageLoaded(50);
 		eleUtil.waitForVisibilityOfElement(createdApp, 50);
 		eleUtil.doElementClickable(gwccomnpanydropdpwn, 100);

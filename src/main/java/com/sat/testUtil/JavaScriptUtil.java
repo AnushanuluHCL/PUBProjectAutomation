@@ -91,6 +91,10 @@ public class JavaScriptUtil {
         js.executeScript("window.scrollTo(document.body.scrollHeight, 0);");
     }
 
+    public void scrollAtTop() {
+        js.executeScript("window.scrollTo(0, 0);");
+    }
+
     public void scrollIntoView(WebElement element) {
         js.executeScript("arguments[0].scrollIntoView(true);", element);
     }

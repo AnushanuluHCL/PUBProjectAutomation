@@ -15,6 +15,7 @@ import java.util.TreeMap;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -79,14 +80,14 @@ public class CommonActionsPage {
 	private By filterBy = By.xpath("//span[text()='Filter by']");
 	private By filterbyinputbox = By.xpath("//input[@aria-label='Filter by value']");
 
-	public CommonActionsPage(WebDriver driver) {
-		this.driver = driver;
-		eleUtil = new ElementUtil(this.driver);
-		jsutil = new JavaScriptUtil(this.driver);
-		excelUtil = new ExcelUtil();
-		prop = eleUtil.readProperties();
-		softassert = new SoftAssert();
-	}
+    public CommonActionsPage(WebDriver driver) {
+        this.driver = driver;
+        eleUtil = new ElementUtil(this.driver);
+        jsutil = new JavaScriptUtil(this.driver);
+        //excelUtil = new ExcelUtil();
+        prop = eleUtil.readProperties();
+        softassert = new SoftAssert();
+    }
 
 	public static void setSharedValue(String key, String value) {
 		sharedValues.put(key, value);

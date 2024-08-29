@@ -48,13 +48,13 @@ Feature: Testing WRN5-Generating permit for multiple tankers
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "DQB Case Management"
 	And search for the case to open it
-	And Validate that SO get notified by case/WO complaint notification
+	And Validate that AO or SO get notified by Case or WO complaint notification
 	And Validate that SO get notified to approve the case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "DQB Case Management"
 	And search for the case to open it
-	And Validate that AO get notified by case/WO complaint notification
+	And Validate that AO or SO get notified by Case or WO complaint notification
 	And Validate that AO get notified to approve the case
 	And navigate to AO Review stage and fill the respective details and navigate to next stage
 	When Login to app with "FIO_userid" and "FIO_pwd"
@@ -64,12 +64,6 @@ Feature: Testing WRN5-Generating permit for multiple tankers
 	And validate the system triggered email "Permit WRP email" to WRP FD to update the status of Tankers
 	And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
 	And navigate to Close stage and fill the respective details and navigate to next stage
-
-
-
-
-
-
 
 	Examples:
 	  | AddOfCompany | PhoneNum    | Email          | GW  | GWPerMonth | HW  | HWType        | HWPerMonth | OSS | OSSPerMonth | OSI | OSIPerMonth |

@@ -3,13 +3,50 @@ package com.sat.testUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+public class ExcelUtil {
+
+    private Workbook workbook;
+    private Sheet sheet;
+    private String filePath;
+
+    public ExcelUtil(String filePath) throws IOException {
+        this.filePath = filePath;
+        FileInputStream fis = new FileInputStream(filePath);
+        this.workbook = new XSSFWorkbook(fis);
+    }
+
+    public void setSheet(String sheetName) {
+        this.sheet = workbook.getSheet(sheetName);
+        if (this.sheet == null) {
+            this.sheet = workbook.createSheet(sheetName);
+        }
+    }
+
+    public void setCellValue(int rowNumber, int columnNumber, String value) {
+        Row row = sheet.getRow(rowNumber);
+        if (row == null) {
+            row = sheet.createRow(rowNumber);
+        }
+        Cell cell = row.getCell(columnNumber);
+        if (cell == null) {
+            cell = row.createCell(columnNumber);
+        }
+        cell.setCellValue(value);
+    }
+
+    public void saveAndClose() throws IOException {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        workbook.write(fos);
+        fos.close();
+        workbook.close();
+    }
+}
+
+/*
 public class ExcelUtil {
 
     private static final String TEST_DATA_SHEET_PATH = "./src/test/resources/testdata/OpenCartTestData.xlsx";
@@ -59,4 +96,4 @@ public class ExcelUtil {
 
         return cellDataList;
     }
-}
+}*/

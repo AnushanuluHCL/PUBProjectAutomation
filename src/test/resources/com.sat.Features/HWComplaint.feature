@@ -25,7 +25,7 @@ Feature: Testing Login Functionality
 	And navigate to Assignment stage and confirm the inspection schedule
 	And Validate "Inspection Schedule" mail with subject
 	And go to "Work Orders" tab
-	And go to Service tasks tab and fill and complete the checklist as "Complaince"
+	And go to Service tasks tab and fill and complete the checklist as "Compliance"
 #And verify the WO status field is "Completed" and verify tanker Iscomplaince? field value as "Yes"
 	And navigate to Assignment stage and fill the respective details and navigate to next stage
 	And navigate to Inspection stage and select the Inspection completed value as yes
@@ -33,15 +33,15 @@ Feature: Testing Login Functionality
 #And verify "Permit" letter is generated
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
 	When Login to app with "SO_userid" and "SO_pwd"
-	And user selects App "DQB - Case Management"
+	And user selects App "DQB Case Management"
 	And search for the case to open it
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
 	When Login to app with "AO_userid" and "AO_pwd"
-	And user selects App "DQB - Case Management"
+	And user selects App "DQB Case Management"
 	And search for the case to open it
 	And navigate to AO Review stage and fill the respective details and navigate to next stage
 	When Login to app with "FIO_userid" and "FIO_pwd"
-	And user selects App "DQB - Case Management"
+	And user selects App "DQB Case Management"
 	And search for the case to open it
 	And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
 	And validate the system triggered email "Permit generation" to tankercompany once tanker is approved for disposing waste
