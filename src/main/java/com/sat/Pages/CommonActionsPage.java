@@ -1,5 +1,6 @@
 package com.sat.Pages;
 
+import java.time.Duration;
 import static org.testng.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
@@ -13,8 +14,13 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.TreeMap;
 
+import com.sat.testUtil.Log;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -29,15 +35,17 @@ import com.sat.testUtil.JavaScriptUtil;
 import com.sat.testUtil.Log;
 import com.sat.testbase.TestBase;
 
+import static org.testng.Assert.assertTrue;
+
 public class CommonActionsPage {
 
-	protected WebDriver driver;
-	protected Properties prop;
-	protected ElementUtil eleUtil;
-	protected ExcelUtil excelUtil;
-	protected TestBase testbase;
-	protected JavaScriptUtil jsutil;
-	protected SoftAssert softassert;
+    protected WebDriver driver;
+    protected Properties prop;
+    protected ElementUtil eleUtil;
+    protected ExcelUtil excelUtil;
+    protected TestBase testbase;
+    protected JavaScriptUtil jsutil;
+    protected SoftAssert softassert;
 
 	public static List<String> WOnumber;
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
@@ -50,10 +58,10 @@ public class CommonActionsPage {
 	protected static Map<String, Integer> tankerNumberSize = new HashMap<>();
 	protected static Map<String, String> permitnums = new TreeMap<>();
 
-	private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
-	private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
-	private By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
-	private By changeAreaLocatoin = By.id("areaSwitcherId");
+    private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
+    private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
+    private By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
+    private By changeAreaLocatoin = By.id("areaSwitcherId");
 
 	private By newBtn = By.xpath("//button[@aria-label='New' or @aria-label='New Case']");
 	private By createdonCol = By.xpath("//div[text()='Created On']");
@@ -78,48 +86,49 @@ public class CommonActionsPage {
 	// Locators for View
 	private By filterBy = By.xpath("//span[text()='Filter by']");
 	private By filterbyinputbox = By.xpath("//input[@aria-label='Filter by value']");
+    private By pageTitle = By.cssSelector("h1[data-id='header_title']");
 
-	public CommonActionsPage(WebDriver driver) {
-		this.driver = driver;
-		eleUtil = new ElementUtil(this.driver);
-		jsutil = new JavaScriptUtil(this.driver);
-		excelUtil = new ExcelUtil();
-		prop = eleUtil.readProperties();
-		softassert = new SoftAssert();
-	}
+    public CommonActionsPage(WebDriver driver) {
+        this.driver = driver;
+        eleUtil = new ElementUtil(this.driver);
+        jsutil = new JavaScriptUtil(this.driver);
+        //excelUtil = new ExcelUtil();
+        prop = eleUtil.readProperties();
+        softassert = new SoftAssert();
+    }
 
-	public static void setSharedValue(String key, String value) {
-		sharedValues.put(key, value);
-	}
+    public static void setSharedValue(String key, String value) {
+        sharedValues.put(key, value);
+    }
 
-	public static String getSharedValue(String key) {
-		return sharedValues.get(key);
-	}
+    public static String getSharedValue(String key) {
+        return sharedValues.get(key);
+    }
 
-	public static void tankerNumber(Integer key, String value) {
-		tankerNumber.put(key, value);
-	}
+    public static void tankerNumber(Integer key, String value) {
+        tankerNumber.put(key, value);
+    }
 
-	public static String tankerNumber(String key) {
-		return tankerNumber.get(key);
-	}
+    public static String tankerNumber(String key) {
+        return tankerNumber.get(key);
+    }
 
-	public static Integer tankerNumberSize(String key, Integer value) {
-		return tankerNumberSize.put(key, value);
-	}
+    public static Integer tankerNumberSize(String key, Integer value) {
+        return tankerNumberSize.put(key, value);
+    }
 
-	public static String permitnums(String key, String value) {
-		return permitnums.put(key, value);
-	}
+    public static String permitnums(String key, String value) {
+        return permitnums.put(key, value);
+    }
 
-	public static void setSharedValuesList(String key, List<String> value) {
-		List<String> vals = new ArrayList<>();
-		sharedValuesList.put(key, vals);
-	}
+    public static void setSharedValuesList(String key, List<String> value) {
+        List<String> vals = new ArrayList<>();
+        sharedValuesList.put(key, vals);
+    }
 
-	public static List<String> getSharedValueList(String key) {
-		return sharedValuesList.get(key);
-	}
+    public static List<String> getSharedValueList(String key) {
+        return sharedValuesList.get(key);
+    }
 
 	public void changeAreaSelection(String changearea) {
 		eleUtil.waitForVisibilityOfElement(changeAreaLocatoin, 30);
@@ -168,23 +177,23 @@ public class CommonActionsPage {
 
 	public void sortTheRecords(By Locator1, By Locator2, int tiemout) {
 
-		try {
-			Thread.sleep(3000);
-			eleUtil.doElementClickable(Locator1, tiemout);
-			eleUtil.doActionsClick(Locator1);
-			// Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		try {
-			Thread.sleep(3000);
-			eleUtil.doElementClickable(Locator2, tiemout);
-			eleUtil.doActionsClick(Locator2);
-			// Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.getMessage();
-		}
-	}
+        try {
+            Thread.sleep(3000);
+            eleUtil.doElementClickable(Locator1, tiemout);
+            eleUtil.doActionsClick(Locator1);
+            // Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(3000);
+            eleUtil.doElementClickable(Locator2, tiemout);
+            eleUtil.doActionsClick(Locator2);
+            // Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.getMessage();
+        }
+    }
 
 	public void getFirstRecord() {
 		eleUtil.doDoubleClick(firstRecord);
@@ -502,5 +511,13 @@ public class CommonActionsPage {
 		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
 		Log.info("updated case number : " + CommonActionsPage.casenumber);
 	}
+
+    public void uploadFile(By locator, String path) throws InterruptedException {
+        Thread.sleep(4000);
+        WebElement element = eleUtil.getElement(locator);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].style.display='block';", element);
+        element.sendKeys(path);
+    }
 
 }

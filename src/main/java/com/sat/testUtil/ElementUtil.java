@@ -8,36 +8,27 @@ import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
-import com.sat.constants.AppConstants;
 import com.sat.exception.FrameworkException;
-import com.sat.testbase.TestBase;
 
 public class ElementUtil {
-	private WebDriver driver;
-	protected Properties prop;
+    private static WebDriver driver;
+    protected Properties prop;
 
 	public ElementUtil(WebDriver driver) {
 		this.driver = driver;
@@ -130,17 +121,78 @@ public class ElementUtil {
 		return getElement(locatorType, locatorValue).getText();
 	}
 
-	public String doGetElementAttribute(By locator, String attrName) {
-		return getElement(locator).getAttribute(attrName);
-	}
+    /**
+     * To Validate element is displayed on the screen
+     *
+     * @param locator
+     * @param elementName
+     * @return
+     */
+    public static boolean elementIsDisplayed(By locator, String elementName) throws InterruptedException {
+        Thread.sleep(3000);
+        try {
+            WebElement element = getElement(locator);
+            staleElementRefExecClickCRM(locator);
+            if (element.isDisplayed()) {
+                Log.info(elementName + " is Displayed");
+                return true;
+            }
+        } catch (NoSuchElementException e) {
+            Log.error(elementName + " is not Displayed " + e.getMessage());
+        }
+        return false;
+    }
 
+    /**
+     * Return boolean value for element's visibility on the screen
+     *
+     * @param locator
+     * @param time
+     * @return
+     */
+    public static boolean isElementPresent(By locator, int time) throws InterruptedException {
+        Thread.sleep(1000); // Reduced sleep time
+        try {
+            waitTillPresenceElement(locator, time); // Corrected method name
+            WebElement element = getElement(locator);
+            staleElementRefExecClickCRM(locator);
+            return element.isDisplayed();
+        } catch (NoSuchElementException | TimeoutException e) {
+            Log.info("Element not found: " + e.getMessage());
+            return false;
+        }
+    }
+
+
+    /**
+     * Verify the text of given attribute, e.g value
+     *
+     * @param locator
+     * @param attribute
+     */
+    public String doGetElementAttribute(By locator, String attribute) {
+        waitTillElementIsDisplayed(locator, 20);
+        String attributeValue = null;
+        try {
+            WebElement element = getElement(locator);
+            if (element.isDisplayed()) {
+                attributeValue = element.getAttribute(attribute);
+                Log.info("Attribute '" + attribute + "' value: " + attributeValue);
+            } else {
+                Log.error("Element not found for locator: " + locator);
+            }
+        } catch (Exception e) {
+            Log.error("An error occurred while getting attribute '" + attribute + "' from element: " + e.getMessage());
+        }
+        return attributeValue;
+    }
+
+    public static WebElement getElement(By locator) {
+        return driver.findElement(locator);
+    }
 	public String doGetElementAttributeLog(By locator, String attrName, String printConsoleVal) {
 		Log.info(printConsoleVal + "" + getElement(locator).getAttribute(attrName));
 		return getElement(locator).getAttribute(attrName);
-	}
-
-	public WebElement getElement(By locator) {
-		return driver.findElement(locator);
 	}
 
 	public WebElement getElement(String locatorType, String locatorValue) {
@@ -463,9 +515,9 @@ public class ElementUtil {
 		return ele;
 	}
 
-	public WebElement waitForVisibilityOfElement(By locator, int timeOut, int intervalTime) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut), Duration.ofSeconds(intervalTime));
-		return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    public static WebElement waitVisibilityOfElement(By locator, int timeOut) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 
 	}
 
@@ -486,11 +538,18 @@ public class ElementUtil {
 	 * @param timeOut
 	 * @return
 	 */
-	public List<WebElement> waitForVisibilityOfElements(By locator, int timeOut) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
-		return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    public List<WebElement> waitForVisibilityOfElements(By locator, int timeOut) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
 
-	}
+    }
+
+    public void doSendKeysWithWaitEnter(By locator, String value, int timeOut) throws InterruptedException {
+        WebElement element = waitForVisibilityOfElement(locator, timeOut);
+        element.sendKeys(value);
+        Thread.sleep(2000);
+        element.sendKeys(Keys.ENTER);
+    }
 
 	/**
 	 * An expectation for checking that there is at least one element present on a
@@ -822,18 +881,251 @@ public class ElementUtil {
 		act.doubleClick(getElement(locator)).build().perform();
 	}
 
-	public void scrollUsingRobotClass() {
-		Robot robot;
-		try {
-			robot = new Robot();
-			robot.keyPress(KeyEvent.VK_PAGE_DOWN);
-			robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+    public void scrollUsingRobotClass() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Robot robot;
+        try {
+            robot = new Robot();
+            for (int i = 0; i <= 5; i++) {
+                robot.keyPress(KeyEvent.VK_PAGE_DOWN);
+                robot.keyRelease(KeyEvent.VK_PAGE_DOWN);
+            }
 
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-			System.out.println("scroll is not working " + e.getStackTrace());
-		}
-	}
+        } catch (AWTException e) {
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+            System.out.println("scroll is not working " + e.getStackTrace());
+        }
+    }
+
+    /*
+    Generate Last Month Random Date in mm/dd/YYYY format
+            */
+    public String generateLastMonthRandomDate() {
+        Random random = new Random();
+        LocalDate today = LocalDate.now();
+        YearMonth lastMonth = YearMonth.from(today).minusMonths(1);
+        int randomDay = random.nextInt(lastMonth.lengthOfMonth()) + 1;
+        LocalDate randomDateLastMonth = lastMonth.atDay(randomDay);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String formattedDate = randomDateLastMonth.format(formatter);
+        return formattedDate;
+
+    }
+
+    public static boolean staleElementRefExecClickCRM(By locator) {
+        WebElement element = getElement(locator);
+        boolean result = false;
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                element.getText();
+                result = true;
+                break;
+            } catch (StaleElementReferenceException e) {
+            }
+            attempts++;
+        }
+        return result;
+    }
+
+    /**
+     * Explicit wait till element is visible on the screen
+     *
+     * @param locator
+     * @param time
+     *
+     */
+    public void waitTillElementIsDisplayed(By locator, int time) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    /**
+     * Explicit wait till element presence on the screen
+     *
+     * @param element
+     * @param time
+     * @return
+     */
+    public static WebElement waitTillPresenceOfElementReturn(By element, int time) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
+        return wait.until(ExpectedConditions.presenceOfElementLocated(element));
+    }
+
+    /**
+     * Wait till the presence of element
+     *
+     * @param locator
+     * @param time
+     */
+    public static void waitTillPresenceElement(By locator, int time) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    /**
+     * Select an element from dropdown
+     * based on parameters
+     *
+     * @param element
+     * @param selectType
+     * @param text
+     * @param elementName
+     */
+    public static void selectDropDownValue(By element, String selectType, String text, String elementName) {
+        waitVisibilityOfElement(element, 20);
+        if (selectType.equals("selectByVisibleText")) {
+            try {
+                Select select = new Select(getElement(element));
+                select.selectByVisibleText(text);
+                Log.info(elementName + " selected");
+            } catch (Exception e) {
+                Log.error(e.getMessage());
+            }
+        }
+        if (selectType.equals("selectByValue")) {
+            try {
+                Select select = new Select(getElement(element));
+                select.selectByValue(text);
+                Log.info(elementName + " selected");
+            } catch (Exception e) {
+                Log.error(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Generate current date and time
+     */
+    public static String todayDateAndTime() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        String currentDateTime = formatter.format(date);
+        currentDateTime = currentDateTime.replaceAll("\\W", "");
+        return currentDateTime;
+    }
+
+    /**
+     * Generate current date and time
+     */
+    public static String todayDate() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String currentDateTime = formatter.format(date);
+        return currentDateTime;
+    }
+
+    /**
+     * Verify the text of given attribute, e.g value
+     *
+     * @param locator
+     * @param attribute
+     * @param expectedText
+     */
+    public void textVerificationFormAttribute(By locator, String attribute, String expectedText) {
+        waitTillElementIsDisplayed(locator, 20);
+        try {
+            WebElement element = getElement(locator);
+            if (element.isDisplayed()) {
+                String actualText = element.getAttribute(attribute);
+                if (actualText.equals(expectedText)) {
+                    Log.info("Element is displayed " + "Element text is: " + actualText);
+                } else {
+                    Log.error("Expected text is : " + expectedText + " " + "but got " + actualText);
+                }
+            }
+        } catch (Exception e) {
+            Log.error("An error occurred while getting attribute '" + attribute + "' from element: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Switch to iFrame
+     */
+    public WebElement switchToFrame(By locator) {
+        waitTillElementIsDisplayed(locator, 50);
+        WebElement element = getElement(locator);
+        driver.switchTo().frame(element);
+        return element;
+    }
+
+    /**
+     * Switch to Default Content
+     */
+    public void switchToDefaultContent() {
+        driver.switchTo().defaultContent();
+    }
+
+    /**
+     * Scroll till End
+     *
+     * @param interactableElement
+     * @param time
+     */
+    public static void scrollDownTillEnd(By interactableElement, int time) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
+        WebElement element = getElement(interactableElement);
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.click();
+        int i = 1;
+        while (i <= 5) {
+            i++;
+            element.sendKeys(Keys.PAGE_DOWN);
+        }
+    }
+
+    /**
+     * Scroll down till element available
+     *
+     * @param locator
+     */
+    public static void scrollDownTillElementVisible(By locator) throws InterruptedException {
+        int i = 1;
+        while (i <= 5) {
+            i++;
+            if (isElementPresent(locator, 10)) {
+                break;
+            } else {
+                scrollDown();
+                Thread.sleep(1000);
+            }
+        }
+    }
+
+    /**
+     * Scroll down
+     */
+    public static void scrollDown() {
+        Actions actions = new Actions(driver);
+        actions.keyDown(Keys.CONTROL).sendKeys(Keys.END).keyUp(Keys.CONTROL).perform();
+    }
+
+    /**
+     * Wait for Alert
+     */
+    public void waitForAlertAndAccept(int timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+        try {
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+            Log.info(alert.getText());
+            alert.accept(); // Accept the alert here
+        } catch (TimeoutException e) {
+            Log.info("Alert not present within the timeout period.");
+        }
+    }
+
+    /**
+     * Accept Alert
+     */
+    public void acceptAlert(int timeoutInSeconds) {
+        waitForAlertAndAccept(timeoutInSeconds);
+    }
 
 }
+

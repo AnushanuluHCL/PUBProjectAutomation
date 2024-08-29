@@ -4,8 +4,6 @@ import java.awt.AWTException;
 import java.io.IOException;
 import java.util.Properties;
 
-
-
 import com.sat.Pages.ApplicationPage;
 import com.sat.Pages.LoginPage;
 import com.sat.Pages.NEAListPage;
@@ -21,7 +19,7 @@ public class LoginStepdefs{
     private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
     private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
- 
+
 
     private Properties prop;
     private TestBase testbase = new TestBase();
@@ -53,7 +51,7 @@ public class LoginStepdefs{
 
     @And("fill the details {string},{string},{string},{string},{string},{string} in the NEA list record form")
     public void fill_the_details_in_the_NEA_list_record_form(String companyname, String VehicleNum, String Vehicletype, String Capacity, String RegOrDereg, String iteration) throws InterruptedException {
-        neapage.clcikOnNewButton();
+        neapage.clickNewButton();
         neapage.creationOfNEAListRecord(companyname, VehicleNum, Vehicletype, Capacity, RegOrDereg, iteration);
         //neapage.newrecord();
 
@@ -66,7 +64,7 @@ public class LoginStepdefs{
 
     @And("fill the details in application form for General details {string},{string},{string}")
     public void fill_the_details_in_application_form_for_General_details(String AddressOfTankerYard, String PhoneNo, String Emailid) {
-        neapage.clcikOnNewButton();
+        neapage.clickNewButton();
         apppage.creationOfApplicationRecord(AddressOfTankerYard, PhoneNo, Emailid);
     }
 

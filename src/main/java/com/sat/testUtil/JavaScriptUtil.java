@@ -31,8 +31,8 @@ public class JavaScriptUtil {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         driver.switchTo().alert().accept();
+        js.executeScript("alert('" + mesg + "')");
     }
 
     public void generateJSConfirm(String mesg) {
@@ -81,6 +81,13 @@ public class JavaScriptUtil {
 
     public void scrollPageDown() {
         js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
+        // Add a delay to see the scroll effect (optional)
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void scrollPageDown(String height) {
@@ -89,6 +96,10 @@ public class JavaScriptUtil {
 
     public void scrollPageUp() {
         js.executeScript("window.scrollTo(document.body.scrollHeight, 0);");
+    }
+
+    public void scrollAtTop() {
+        js.executeScript("window.scrollTo(0, 0);");
     }
 
     public void scrollIntoView(WebElement element) {

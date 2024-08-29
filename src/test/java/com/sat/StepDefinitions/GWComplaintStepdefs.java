@@ -1,23 +1,13 @@
 package com.sat.StepDefinitions;
 
 import java.awt.AWTException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 import java.util.Properties;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 import com.sat.Pages.ApplicationPage;
 import com.sat.Pages.CasecreationPage;
 import com.sat.Pages.LoginPage;
-import com.sat.Pages.NEAListPage;
 import com.sat.Pages.CommonActionsPage;
-import com.sat.config.ConfigFileReader;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;
@@ -37,7 +27,6 @@ public class GWComplaintStepdefs {
     @And("fill the details in application form for greasy waste type details {string},{string}")
     public void fill_the_details_in_application_form_for_greasy_waste_type_details(String GWSelected, String GWPerMomnth) {
         apppage.amountOfGWWastetypeTanker(GWSelected, GWPerMomnth);
-
     }
 
     @And("approve the application")
@@ -47,7 +36,7 @@ public class GWComplaintStepdefs {
 
     @Then("verify whether case is created")
     public void verify_whether_case_is_created() throws InterruptedException {
-        casepage.caseCreatioCheck();
+        casepage.caseCreationCheck();
     }
 
     @When("Case is opened verify the fields")
@@ -70,7 +59,7 @@ public class GWComplaintStepdefs {
 
     @And("go to {string} tab")
     public void go_to_tab(String tabnanme) {
-        casepage.navigatingtotab(tabnanme);
+        casepage.navigatingToTab(tabnanme);
     }
 
     @And("validate the schedule workorder notification")
@@ -81,7 +70,7 @@ public class GWComplaintStepdefs {
     @And("fill the details in Bookings section")
     public void fill_the_details_in_Bookings_section() throws InterruptedException, ParseException {
         // casepage.workOrderValidation();
-        casepage.fillBookingDeatils();
+        casepage.fillBookingDetails();
     }
 
     @And("navigate to Assignment stage and confirm the inspection schedule")
@@ -175,10 +164,15 @@ public class GWComplaintStepdefs {
         casepage.rolesUpdate();
     }
 
-    @And("Validate that SO get notified by case\\/WO complaint notification")
-    public void validate_that_so_get_notified_by_case_wo_complaint_notification() throws InterruptedException {
+    @And("Validate that AO or SO get notified by Case or WO complaint notification")
+    public void validateThatAOOrSOGetNotifiedByCaseOrWOComplaintNotification() throws InterruptedException {
         casepage.validateCaseComplaintNotification();
     }
+
+    /*@And("Validate that SO get notified by case\\/WO complaint notification")
+    public void validate_that_so_get_notified_by_case_wo_complaint_notification() throws InterruptedException {
+      casepage.validateCaseComplaintNotification(); //Related to Compliance, For MultipleTankers (Line no51)
+    }*/
 
     @And("Validate that SO get notified to approve the case")
     public void validate_that_so_get_notified_to_approve_the_case() throws InterruptedException {
@@ -187,7 +181,7 @@ public class GWComplaintStepdefs {
 
     @And("Validate that SO get notified by WO complaint notification")
     public void Validate_that_SO_get_notified_by_WO_complaint_notification() throws InterruptedException {
-        casepage.validateWOComplaintNotification();
+        casepage.validateWOComplaintNotification(); //Related to Non-Compliance
     }
 
     @And("navigate to SO Review stage and fill the respective details and navigate to next stage")
@@ -198,18 +192,17 @@ public class GWComplaintStepdefs {
 
     @And("Validate that AO get notified by case\\/WO complaint notification")
     public void validate_that_AO_get_notified_by_case_wo_complaint_notification() throws InterruptedException {
-        casepage.validateCaseComplaintNotification();
+        casepage.validateCaseComplaintNotification(); //For MultipleTankers (Line no57)
     }
 
     @And("Validate that AO get notified to approve the case")
     public void validate_that_AO_get_notified_to_approve_the_case() throws InterruptedException {
         casepage.validateSOReviewNotification();
-        ;
     }
 
     @And("Validate that AO get notified by WO complaint notification")
     public void Validate_that_AO_get_notified_by_WO_complaint_notification() throws InterruptedException {
-        casepage.validateWOComplaintNotification();
+        casepage.validateWOComplaintNotification(); // For Non-Compliance
     }
 
     @And("navigate to AO Review stage and fill the respective details and navigate to next stage")
@@ -267,8 +260,43 @@ public class GWComplaintStepdefs {
         casepage.amendChecklist();
     }
 
-    @And("verify the payment record validaton for {string}")
-    public void verify_the_payment_record_validaton_for(String OSSPerMonth, String OSIPerMonth, String GWPerMonth, String wastetype) throws InterruptedException {
-        casepage.paymentRecordValidation(OSSPerMonth, OSIPerMonth, GWPerMonth, wastetype);
+    @Then("verify the payment validation before creating actual quantities for {int}, {int} and {int}")
+    public void verifyThePaymentValidationBeforeCreatingActualQuantitiesForGWPerMonthOSSPerMonthAndOSIPerMonth(int GWPerMonth,int OSSPerMonth, int OSIPerMonth) throws InterruptedException {
+        casepage.paymentWasteTypeValidation();
+        casepage.paymentRecordBeforeActualQuantitiesValidation(GWPerMonth, OSSPerMonth, OSIPerMonth);
     }
+
+    @And("Create Actual Quantity \\(Disposal) by filling details")
+    public void createActualQuantityDisposalByFillingDetails(DataTable typeOfTankersdata) {
+        casepage.createActualQuantity(typeOfTankersdata);
+    }
+
+    @Then("Verify the payment validation after creating actual quantities for {int}, {int} and {int}")
+    public void verifyThePaymentValidationAfterCreatingActualQuantitiesForGWPerMonthOSSPerMonthAndOSIPerMonth(int GWPerMonth,int OSSPerMonth, int OSIPerMonth) throws InterruptedException {
+        casepage.paymentWasteTypeValidation();
+        casepage.paymentRecordAfterActualQuantitiesValidation(GWPerMonth, OSSPerMonth, OSIPerMonth);
+    }
+
+    @And("Update excel with GIRO value as {string} for Deposit Amount calculation")
+    public void updateExcelGIROForDepositAmountCalculation(String giro) {
+        casepage.updateExcelForDepositAmountCal(giro);
+    }
+
+    @And("Upload excel file for Deposit Amount calculation with deposit amount as {string} and giro as {string}")
+    public void uploadExcelFileForDepositAmountCalculationWithDepositAmountAsAndGiroAs(String deposit, String giro) throws InterruptedException {
+        casepage.importExcelForDeposit(deposit, giro);
+    }
+
+    @Then("Verify the payment validation after creating deposit quantities for {int}, {int} and {int}")
+    public void verifyThePaymentValidationAfterCreatingDepositQuantitiesForAnd(int GWPerMonth,int OSSPerMonth, int OSIPerMonth) throws InterruptedException {
+        casepage.paymentWasteTypeValidation();
+        casepage.paymentRecordAfterDepositQuantitiesValidation(GWPerMonth, OSSPerMonth, OSIPerMonth);
+    }
+
+    @And("verify reregistering with new company as {string}")
+    public void verifyReregisteringWithNewCompanyAs(String reregisterWithNewCompany) throws InterruptedException {
+        casepage.verifyReregisteringWithNewCompany(reregisterWithNewCompany);
+
+    }
+
 }

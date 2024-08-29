@@ -1,37 +1,26 @@
 package com.sat.Pages;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
+import com.sat.testUtil.Log;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 import com.sat.constants.AppConstants;
-import com.sat.testUtil.ElementUtil;
-import com.sat.testUtil.JavaScriptUtil;
-import com.sat.testUtil.Log;
-import com.sat.testbase.TestBase;
-
 import io.cucumber.datatable.DataTable;
 
 public class NEAListPage extends CommonActionsPage {
 
-    String tankercompanyname = null;
+    String tankerCompanyName = null;
     static String storedTankerName = null;
+    static String storedCompanyName = null;
     HashMap<Integer, String> tanker = new HashMap<Integer, String>();
     HashMap<Integer, String> capacity = new HashMap<Integer, String>();
-
+    HashMap<Integer, String> company = new HashMap<Integer, String>();
     /*
      * private WebDriver driver; private Properties prop; private ElementUtil
      * eleUtil; private TestBase testbase; private JavaScriptUtil jsutil; private
@@ -85,11 +74,11 @@ public class NEAListPage extends CommonActionsPage {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             String currentDateTime = formatter.format(date);
             currentDateTime = currentDateTime.replaceAll("\\W", "");
-            tankercompanyname = "Tankcompany" + currentDateTime;
-            return tankercompanyname;
+            tankerCompanyName = "Tankcompany" + currentDateTime;
+            return tankerCompanyName;
         } else {
-            return tankercompanyname;
-        }	
+            return tankerCompanyName;
+        }
     }
 
     public String getRandomTankerName() {
@@ -102,7 +91,7 @@ public class NEAListPage extends CommonActionsPage {
 
     }
 
-    public void clcikOnNewButton() {
+    public void clickNewButton() {
         eleUtil.doElementClickable(newBtn, AppConstants.SHORT_DEFAULT_WAIT);
         eleUtil.clickElementWhenReady(newBtn, AppConstants.SHORT_DEFAULT_WAIT);
     }
@@ -167,7 +156,14 @@ public class NEAListPage extends CommonActionsPage {
             x = x + 1;
 
             //TEST CODE STARTED//
+            String iteration = form.get("Iteration");
             String vehicle_type = form.get("Vehicle_Type");
+            // Check if vehicle_type is "existingCompanyTanker", if yes use the stored name, else generate a new name
+            String existingCompanyName = "existingCompanyTanker".equals(vehicle_type) ? storedTankerName : getRandomTankercompanyName(iteration);
+            Log.info("old Company "+ existingCompanyName);
+            company.put(x, existingCompanyName);
+            // Store the generated name for the next run
+            storedCompanyName = existingCompanyName;
             // Check if vehicle_type is "oldTanker", if yes use the stored name, else generate a new name
             String tankerName = "oldTanker".equals(vehicle_type) ? storedTankerName : getRandomTankerName();
             Log.info("old Tanker "+ tankerName);
@@ -187,12 +183,12 @@ public class NEAListPage extends CommonActionsPage {
 
             //String capacity = form.get("Tankers_Capacity");
             String Reg_Dereg = form.get("Registration_Deregistration");
-            String iteration = form.get("Iteration");
-            clcikOnNewButton();
+            //String iteration = form.get("Iteration"); //UNCOMMENT THESE LINES//
+            clickNewButton();
             Thread.sleep(3000);
             eleUtil.doClickWithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
             eleUtil.doClearUsingKeyswithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
-            eleUtil.doSendKeysWithWait(companyName, getRandomTankercompanyName(iteration), AppConstants.LONG_DEFAULT_WAIT);
+            eleUtil.doSendKeysWithWait(companyName, company.get(x), AppConstants.LONG_DEFAULT_WAIT);
             eleUtil.doClearUsingKeyswithWait(vehicleNo, AppConstants.LONG_DEFAULT_WAIT);
             eleUtil.doSendKeysWithWait(vehicleNo, tanker.get(x), AppConstants.LONG_DEFAULT_WAIT);
             eleUtil.doClearUsingKeys(vehicleType);
