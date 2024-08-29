@@ -20,12 +20,12 @@ public class factoryCreationPage extends CommonActionsPage{
     }
 
     public void verifyFactoryStatus(String status) {
-        clickOnRefrehBtn();
+        clickOnRefreshBtn();
         factory.getStatusReason(status);
     }
 
     public void navigateToServiceTab() {
-        clickOnRefrehBtn();
+        clickOnRefreshBtn();
         crmActions.navigatingToTabFactory("Services");
     }
 

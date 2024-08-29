@@ -22,7 +22,6 @@ public class commonCRMActions extends CommonActionsPage {
 
     private static By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
     private static By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
-    private By firstRecord = By.xpath("(//input[contains(@aria-label,'elect or deselect the row')])[1]");
     private By notificationIcon = By.xpath("//button[@aria-label='Notifications']");
     private static By cancelBtn = By.xpath("//button[@title='Close']");
     private static By pageTitle = By.cssSelector("h1[data-id='header_title']");
@@ -220,8 +219,8 @@ public class commonCRMActions extends CommonActionsPage {
             eleUtil.staleElementRefExecClickCRM(bookingTab);
             eleUtil.doClick(bookingTab);
             Thread.sleep(2000);
-            selectFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
-            getFirstRecord(firstRecord, AppConstants.MEDIUM_DEFAULT_WAIT);
+            selectFirstRecord();
+            getFirstRecord();
             eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
             eleUtil.doClick(getMaximizeScreenBtn());
             eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
