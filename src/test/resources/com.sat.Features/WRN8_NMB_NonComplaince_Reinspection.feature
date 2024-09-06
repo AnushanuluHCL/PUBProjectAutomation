@@ -30,7 +30,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
     #Then verify whether case is created once project is approved
     #And open the case from project
     #And Verify that created case starts with "DQB/TF/I" with status "Scheduled"
-    #And go to "Work Orders" tab
+    And go to "Work Orders" tab
     #And verify the WO status "Scheduled"
     #And validate the schedule workorder notification
     #And go to "All Activities" and verify the email for "Inspection Schedule"
