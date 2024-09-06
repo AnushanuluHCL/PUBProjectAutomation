@@ -8,7 +8,7 @@ import org.testng.Assert;
 
 import com.sat.testUtil.Log;
 
-public class PowerAppsAutomateFlowPage extends CommonActionsPage {
+public class PowerAppsAutomateFlowPage extends commonActionsPage {
 
 	private By UserName = By.xpath("//*[@name='loginfmt']");
 	private By NextButton = By.xpath("//*[@type='submit']");

@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 import com.sat.Pages.ApplicationPage;
-import com.sat.Pages.LoginPage;
+import com.sat.Pages.loginPage;
 import com.sat.Pages.NEAListPage;
-import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.commonActionsPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;
@@ -15,10 +15,10 @@ import io.cucumber.java.en.*;
 
 public class LoginStepdefs{
 
-    private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    private loginPage loginpage = new loginPage(TestBase.getDriver());
     private NEAListPage neapage = new NEAListPage(TestBase.getDriver());
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
-    private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
+    private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
 
 
     private Properties prop;

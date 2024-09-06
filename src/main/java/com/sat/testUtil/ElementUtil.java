@@ -575,7 +575,7 @@ public class ElementUtil {
 			System.out.println(titleFraction + " title value is not present....");
 			e.printStackTrace();
 		}
-		return null;
+		return titleFraction;
 
 	}
 
@@ -584,13 +584,13 @@ public class ElementUtil {
 
 		try {
 			if (wait.until(ExpectedConditions.titleIs(title))) {
+				Log.info("title is "+title);
 				return driver.getTitle();
 			}
 		} catch (TimeoutException e) {
-			System.out.println(title + " title value is not present....");
-			e.printStackTrace();
+			Log.error(title + " title value is not present....");
 		}
-		return null;
+		return title;
 
 	}
 
@@ -605,7 +605,7 @@ public class ElementUtil {
 			System.out.println(urlFraction + " url value is not present....");
 			e.printStackTrace();
 		}
-		return null;
+		return urlFraction;
 
 	}
 
@@ -620,7 +620,7 @@ public class ElementUtil {
 			System.out.println(url + " url value is not present....");
 			e.printStackTrace();
 		}
-		return null;
+		return url;
 
 	}
 
@@ -1126,6 +1126,7 @@ public class ElementUtil {
     public void acceptAlert(int timeoutInSeconds) {
         waitForAlertAndAccept(timeoutInSeconds);
     }
+
 
 }
 

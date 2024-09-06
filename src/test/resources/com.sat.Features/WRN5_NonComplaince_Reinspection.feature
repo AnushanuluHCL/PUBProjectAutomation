@@ -36,7 +36,7 @@ Feature: Testing Non-Compalince end to end flow
 	And verify the WO status field is "Completed" and verify tanker Iscomplaint? field value as "No" in work order form
 	And navigate to Inspection stage and select the Inspection completed value as yes
 	And verify that "Tanker non-complaince" mail is generated once Iscomplaint? field value updated to No
-	And verify that inspection report is generated
+	And verify that "Inspection Report" is generated
 	And go to "Work Orders" tab
 	And create a new manual WO to create the tanker again
 	And go to Service tasks tab and fill and complete the checklist as "Compliance"

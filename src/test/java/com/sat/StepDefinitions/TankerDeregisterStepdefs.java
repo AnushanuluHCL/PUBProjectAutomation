@@ -3,18 +3,18 @@ package com.sat.StepDefinitions;
 import java.text.ParseException;
 import java.util.Properties;
 
-import com.sat.Pages.CasecreationPage;
-import com.sat.Pages.LoginPage;
-import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.caseCreationPage;
+import com.sat.Pages.loginPage;
+import com.sat.Pages.commonActionsPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.java.en.*;
 
 public class TankerDeregisterStepdefs {
 
-    private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
-    private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
-    private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
+    private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
+    private loginPage loginpage = new loginPage(TestBase.getDriver());
 
 	private Properties prop;
 	private TestBase testbase = new TestBase();

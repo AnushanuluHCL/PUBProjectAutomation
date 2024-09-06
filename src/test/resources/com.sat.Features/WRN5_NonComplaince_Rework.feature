@@ -36,7 +36,7 @@ Feature: Testing Non-Compalince Rework end to end flow
   And verify the WO status field is "Completed" and verify tanker Iscomplaint? field value as "No" in work order form 
  	And navigate to Inspection stage and select the Inspection completed value as yes
  	And verify that "Tanker non-complaince" mail is generated once Iscomplaint? field value updated to No
-  And verify that inspection report is generated
+  And verify that "Inspection Report" is generated
  	And navigate to Inspection stage and fill the respective details and navigate to next stage
  	When Login to app with "SO_userid" and "SO_pwd"
  	And user selects App "DQB Case Management" 

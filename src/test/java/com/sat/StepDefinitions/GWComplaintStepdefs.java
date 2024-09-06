@@ -5,9 +5,9 @@ import java.text.ParseException;
 import java.util.Properties;
 
 import com.sat.Pages.ApplicationPage;
-import com.sat.Pages.CasecreationPage;
-import com.sat.Pages.LoginPage;
-import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.caseCreationPage;
+import com.sat.Pages.loginPage;
+import com.sat.Pages.commonActionsPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;
@@ -16,9 +16,9 @@ import io.cucumber.java.en.*;
 public class GWComplaintStepdefs {
 
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
-    private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
-    private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
-    private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
+    private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
+    private loginPage loginpage = new loginPage(TestBase.getDriver());
     // public static String tankercompanyname;
 
     private Properties prop;
@@ -59,7 +59,7 @@ public class GWComplaintStepdefs {
 
     @And("go to {string} tab")
     public void go_to_tab(String tabnanme) {
-        casepage.navigatingToTab(tabnanme);
+        common.navigatingToTab(tabnanme);
     }
 
     @And("validate the schedule workorder notification")
@@ -134,9 +134,9 @@ public class GWComplaintStepdefs {
         casepage.mailGeneratedOrNot(mailType);
     }
 
-    @And("verify that inspection report is generated")
-    public void verify_that_inspection_report_is_generated() {
-        casepage.inspectionReportCheck();
+    @And("verify that {string} is generated")
+    public void verify_that_is_generated(String report) {
+        casepage.inspectionReportCheck(report);
     }
 
     @And("create a new manual WO to create the tanker again")

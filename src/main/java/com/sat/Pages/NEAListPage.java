@@ -13,7 +13,7 @@ import org.openqa.selenium.WebDriver;
 import com.sat.constants.AppConstants;
 import io.cucumber.datatable.DataTable;
 
-public class NEAListPage extends CommonActionsPage {
+public class NEAListPage extends commonActionsPage {
 
     String tankerCompanyName = null;
     static String storedTankerName = null;
@@ -225,8 +225,8 @@ public class NEAListPage extends CommonActionsPage {
             clickonSaveAndCloseBtn();
             System.out.println("NEA Record created successfully");
             sortTheRecords(createdonCol, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
-            CommonActionsPage.Tankercompanyname = getTankercompName();
-            System.out.println("Tankercompany  - " + CommonActionsPage.Tankercompanyname);
+            commonActionsPage.Tankercompanyname = getTankercompName();
+            System.out.println("Tankercompany  - " + commonActionsPage.Tankercompanyname);
             // newrecord();
             System.out.println("tanker - " + tanker.get(x));
 
@@ -237,26 +237,26 @@ public class NEAListPage extends CommonActionsPage {
         // System.out.println("List of tankers: " + new ArrayList<>(tanker.values()));
 
         x = 0;
-        CommonActionsPage.tankerNumber.putAll(tanker);
-        CommonActionsPage.tankcapacity.putAll(capacity);
-        CommonActionsPage.tankerNumberSize.put("tankersize", tanker.size());
+        commonActionsPage.tankerNumber.putAll(tanker);
+        commonActionsPage.tankcapacity.putAll(capacity);
+        commonActionsPage.tankerNumberSize.put("tankersize", tanker.size());
         System.out.println("Tankers size" + tanker.size());
 
-        System.out.println("CommonActionsPage.tankerNumber" + CommonActionsPage.tankerNumber);
+        System.out.println("CommonActionsPage.tankerNumber" + commonActionsPage.tankerNumber);
 
-        System.out.println("CommonActionsPage.tankcapacity" + CommonActionsPage.tankcapacity);
+        System.out.println("CommonActionsPage.tankcapacity" + commonActionsPage.tankcapacity);
 
     }
 
     public void newrecord() throws InterruptedException {
         sortTheRecords(createdonCol, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
         // common.getFirstRecord(firstRecord, AppConstants.LONG_DEFAULT_WAIT);
-        CommonActionsPage.Tankercompanyname = getTankercompName();
-        System.out.println("Tankercompany  - " + CommonActionsPage.Tankercompanyname);
-        CommonActionsPage.TankerName = getTankerName();
-        System.out.println("Tankername - " + CommonActionsPage.TankerName);
-        CommonActionsPage.TankerCapacity = getTankerCapacity();
-        System.out.println("Tanker Capacity - " + CommonActionsPage.TankerCapacity);
+        commonActionsPage.Tankercompanyname = getTankercompName();
+        System.out.println("Tankercompany  - " + commonActionsPage.Tankercompanyname);
+        commonActionsPage.TankerName = getTankerName();
+        System.out.println("Tankername - " + commonActionsPage.TankerName);
+        commonActionsPage.TankerCapacity = getTankerCapacity();
+        System.out.println("Tanker Capacity - " + commonActionsPage.TankerCapacity);
     }
 
     public String getTankercompName() {

@@ -1,7 +1,7 @@
 package com.sat.StepDefinitions;
 
-import com.sat.Pages.CasecreationPage;
-import com.sat.Pages.LoginPage;
+import com.sat.Pages.caseCreationPage;
+import com.sat.Pages.loginPage;
 import com.sat.Pages.commonCRMActions;
 import com.sat.Pages.factoryCreationPage;
 import com.sat.testbase.TestBase;
@@ -11,8 +11,8 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
 
     private factoryCreationPage factoryPage = new factoryCreationPage(TestBase.getDriver());
     private commonCRMActions crmActions = new commonCRMActions(TestBase.getDriver());
-    private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
-    private LoginPage loginpage = new LoginPage(TestBase.getDriver());
+    private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
+    private loginPage loginpage = new loginPage(TestBase.getDriver());
 
     @And("create a new Ad hoc factory")
     public void createANewAdHocFactory() {

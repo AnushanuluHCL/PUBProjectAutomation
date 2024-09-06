@@ -13,7 +13,7 @@ import com.sat.locators.WRN1CaseLocatorsPage;
 import com.sat.locators.factoryPage;
 import com.sat.testUtil.Log;
 
-public class WRN1CasePage extends CommonActionsPage {
+public class WRN1CasePage extends commonActionsPage {
 
 	public WRN1CasePage(WebDriver driver) {
 		super(driver);
@@ -70,13 +70,13 @@ public class WRN1CasePage extends CommonActionsPage {
 			try {
 				Thread.sleep(3000);
 				WebElement notificationElement = eleUtil
-						.getElement(By.xpath("//p[contains(text(),'" + CommonActionsPage.casenumber + "')]"));
+						.getElement(By.xpath("//p[contains(text(),'" + commonActionsPage.casenumber + "')]"));
 				if (eleUtil.isClickable(notificationElement, 10)) {
-					validateAlertContent(CommonActionsPage.casenumber,
-							CommonActionsPage.casenumber + " is waiting for SO Approval");
-					tapToOpenBtn(CommonActionsPage.casenumber);
+					validateAlertContent(commonActionsPage.casenumber,
+							commonActionsPage.casenumber + " is waiting for SO Approval");
+					tapToOpenBtn(commonActionsPage.casenumber);
 					isNotificationFound = true;
-					handleNewTab("Value", CommonActionsPage.casenumber);
+					handleNewTab("Value", commonActionsPage.casenumber);
 					closeCurrentTabAndSwitchBack();
 					clickOnCancelIconOnNotification();
 				}
@@ -102,14 +102,14 @@ public class WRN1CasePage extends CommonActionsPage {
 			try {
 				Thread.sleep(3000);
 				WebElement notificationElement = eleUtil
-						.getElement(By.xpath("//p[contains(text(),'" + CommonActionsPage.casenumber + "')]"));
+						.getElement(By.xpath("//p[contains(text(),'" + commonActionsPage.casenumber + "')]"));
 
 				if (eleUtil.isClickable(notificationElement, 10)) {
-					validateAlertContent(CommonActionsPage.casenumber,
-							CommonActionsPage.casenumber + " is pending for AO Approval");
-					tapToOpenBtn(CommonActionsPage.casenumber);
+					validateAlertContent(commonActionsPage.casenumber,
+							commonActionsPage.casenumber + " is pending for AO Approval");
+					tapToOpenBtn(commonActionsPage.casenumber);
 					isNotificationFound = true;
-					handleNewTab("Value", CommonActionsPage.casenumber);
+					handleNewTab("Value", commonActionsPage.casenumber);
 					closeCurrentTabAndSwitchBack();
 					clickOnCancelIconOnNotification();
 				}
@@ -135,14 +135,14 @@ public class WRN1CasePage extends CommonActionsPage {
 			try {
 				Thread.sleep(3000);
 				WebElement notificationElement = eleUtil
-						.getElement(By.xpath("//p[contains(text(),'" + CommonActionsPage.casenumber + "')]"));
+						.getElement(By.xpath("//p[contains(text(),'" + commonActionsPage.casenumber + "')]"));
 
 				if (eleUtil.isClickable(notificationElement, 10)) {
-					validateAlertContent(CommonActionsPage.casenumber,
-							CommonActionsPage.casenumber + " is approved by AO, Please generate email");
-					tapToOpenBtn(CommonActionsPage.casenumber);
+					validateAlertContent(commonActionsPage.casenumber,
+							commonActionsPage.casenumber + " is approved by AO, Please generate email");
+					tapToOpenBtn(commonActionsPage.casenumber);
 					isNotificationFound = true;
-					handleNewTab("Value", CommonActionsPage.casenumber);
+					handleNewTab("Value", commonActionsPage.casenumber);
 					closeCurrentTabAndSwitchBack();
 					clickOnCancelIconOnNotification();
 				}
@@ -179,30 +179,33 @@ public class WRN1CasePage extends CommonActionsPage {
 		eleUtil.isPageLoadedLog(30, "Load the page in ");
 	}
 
-	public void verifyTheResult() {
+	public void verifyTheResult(String status) {
 		clickOnRefreshBtnOnHome();
 		navigatingToTab("Lab Report Result");
 		wrn1case.clickOnLabReportToggleBtn();
 		clickOnSaveBtn();
 		wrn1case.complainceStatus();
-		assertEquals(wrn1case.complainceStatus(), "Compliance", "System Assesment is not same");
-	}
-
-	public void verifyWAStatus() {
-		navigatingToTab("Inspection Case Information");
-		clickOnEntityOnCaseForm();
-		factoryloc.WAStatusVal();
-		assertEquals(factoryloc.WAStatusVal(), "Approved", "WAApplication status is not same");
+		assertEquals(wrn1case.complainceStatus(), status, "System Assesment is not same");
 	}
 
 	public void verifyCaseFormat(String startsWithName) {
 		wrn1case.caseNamevalue(startsWithName);
 	}
 	public void caseNotification() throws InterruptedException {
-		  crmActions.notificationForTabToOpen(CommonActionsPage.casenumber, "Inspection Case Information");
+		  crmActions.notificationForTabToOpen(commonActionsPage.casenumber, "Inspection Case Information");
 	}
-	public void workOrderNotification() {
-		crmActions.notificationForTabToOpen(getWorkOrderNumber(), "Work Order");
+	public void interestedInTEFScheme() {
+		navigatingToTab("Inspection Case Information");
+		wrn1case.clickOnInterestedInTEFToggleBtn();
+		clickOnSaveBtn();
 	}
+	public void selectDepositValue(String consumptionval,String number) {
+		navigatingToTab("Inspection Case Information");
+		wrn1case.sendWaterConsumptionFieldVal(consumptionval);
+		wrn1case.sendTEFAccNumFieldVal(number);
+		wrn1case.selectMonthlyReturnForm();
+		clickOnSaveBtn();
+	}
+	
 
 }

@@ -11,9 +11,9 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import com.sat.Pages.ApplicationPage;
-import com.sat.Pages.LoginPage;
+import com.sat.Pages.loginPage;
 import com.sat.Pages.NEAListPage;
-import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.commonActionsPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;

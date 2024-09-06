@@ -20,7 +20,7 @@ import com.sat.constants.AppConstants;
 import com.sat.testUtil.ElementUtil;
 import com.sat.testbase.TestBase;
 
-public class LoginPage extends CommonActionsPage {
+public class loginPage extends commonActionsPage {
 
     /*
      * private WebDriver driver; private Properties prop; private ElementUtil
@@ -50,7 +50,7 @@ public class LoginPage extends CommonActionsPage {
     private By signoutBtn = By.xpath("//button[text()='Sign out']");
     private By useanotheraccount = By.xpath("//div[text()='Use another account']");
 
-    public LoginPage(WebDriver driver) {
+    public loginPage(WebDriver driver) {
         super(driver);
         /*
          * this.driver = driver; eleUtil = new ElementUtil(this.driver); prop =
