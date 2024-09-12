@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sat.locators.WAApplicationLocatorsPage;
 
-public class WAApplicationPage extends CommonActionsPage {
+public class WAApplicationPage extends commonActionsPage {
 
 	public WAApplicationPage(WebDriver driver) {
 		super(driver);
@@ -86,7 +86,7 @@ public class WAApplicationPage extends CommonActionsPage {
 				String WorkingDays =row.get("Number of working days per month");
 				String Hours=row.get("Operating Hours per Day");
 
-				CommonActionsPage.WRN1_factoryname=waapp.companyName();
+				commonActionsPage.WRN1_factoryname=waapp.companyName();
 				waapp.houseNumber(blkno);
 				waapp.unit(unitval);
 				waapp.buildingName(buildingName);

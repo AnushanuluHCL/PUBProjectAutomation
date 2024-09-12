@@ -31,7 +31,7 @@ import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;
 
-public class ApplicationPage extends CommonActionsPage {
+public class ApplicationPage extends commonActionsPage {
 	int x = 0;
 	/*
 	 * private WebDriver driver; private Properties prop; private ElementUtil
@@ -161,7 +161,7 @@ public class ApplicationPage extends CommonActionsPage {
 
 		eleUtil.doClick(NameOfCompanyField);
 		eleUtil.doClearUsingKeys(NameOfCompanyField);
-		eleUtil.doSendKeysWithWait(NameOfCompanyField, CommonActionsPage.Tankercompanyname,
+		eleUtil.doSendKeysWithWait(NameOfCompanyField, commonActionsPage.Tankercompanyname,
 				AppConstants.SHORT_DEFAULT_WAIT);
 
 		/*
@@ -360,8 +360,8 @@ public class ApplicationPage extends CommonActionsPage {
 			eleUtil.doElementClickable(regNoFiled, 10);
 			eleUtil.doActionsClick(regNoFiled);
 			eleUtil.doClearUsingKeys(regNoFiled);
-			System.out.println("tanker number from Applicationtanker - " + CommonActionsPage.TankerName);
-			eleUtil.doSendKeys(regNoFiled, CommonActionsPage.TankerName);
+			System.out.println("tanker number from Applicationtanker - " + commonActionsPage.TankerName);
+			eleUtil.doSendKeys(regNoFiled, commonActionsPage.TankerName);
 			try {// need to remove this code
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -371,7 +371,7 @@ public class ApplicationPage extends CommonActionsPage {
 			// System.out.println("tanker number from Applicationtanker - " +
 			// CommonActionsPage.TankerName);
 			eleUtil.doClearUsingKeys(capacityField);
-			String stringWithCommas = CommonActionsPage.TankerCapacity;
+			String stringWithCommas = commonActionsPage.TankerCapacity;
 			String stringWithoutCommas = stringWithCommas.replaceAll(",", "");
 			// eleUtil.doSendKeys(capacityField, CommonActionsPage.TankerCapacity);
 			eleUtil.doSendKeys(capacityField, stringWithoutCommas);
@@ -413,11 +413,11 @@ public class ApplicationPage extends CommonActionsPage {
 			eleUtil.doActionsClick(regNoFiled);
 			eleUtil.doClearUsingKeys(regNoFiled);
 			// eleUtil.doSendKeys(regNoFiled, tankernmae);
-			eleUtil.doSendKeys(regNoFiled, CommonActionsPage.tankerNumber.get(x));
+			eleUtil.doSendKeys(regNoFiled, commonActionsPage.tankerNumber.get(x));
 			Thread.sleep(3000);
 			eleUtil.doClearUsingKeys(capacityField);
 			// eleUtil.doSendKeys(capacityField, capacity);
-			eleUtil.doSendKeys(capacityField, CommonActionsPage.tankcapacity.get(x));
+			eleUtil.doSendKeys(capacityField, commonActionsPage.tankcapacity.get(x));
 			eleUtil.doClick(typeOfWastedropdown);
 			WebElement ele = driver.findElement(By.xpath("//option[text()='" + wastetype + "']"));
 			ele.click();
@@ -445,7 +445,7 @@ public class ApplicationPage extends CommonActionsPage {
 		eleUtil.doClick(gwccomnpanydropdpwn);
 		eleUtil.doClick(filterBy);
 
-		eleUtil.doSendKeys(filterbyinputbox, CommonActionsPage.Tankercompanyname);
+		eleUtil.doSendKeys(filterbyinputbox, commonActionsPage.Tankercompanyname);
 		Thread.sleep(3000);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
 		eleUtil.doClick(applyBtn);

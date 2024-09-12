@@ -9,13 +9,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
-import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.commonActionsPage;
 import com.sat.constants.AppConstants;
 import com.sat.testUtil.ElementUtil;
 import com.sat.testUtil.Log;
 import com.sat.testbase.TestBase;
 
-public class WAApplicationLocatorsPage extends CommonActionsPage {
+public class WAApplicationLocatorsPage extends commonActionsPage {
 
 	// Locators for Company Details
 
@@ -298,6 +298,6 @@ public class WAApplicationLocatorsPage extends CommonActionsPage {
 				Log.error("Case is not created. So clicking on refresh button again");
 			}
 		}
-		CommonActionsPage.casenumber=eleUtil.doElementGetTextLog(caseIdField, "Case id is ");
+		commonActionsPage.casenumber=eleUtil.doElementGetTextLog(caseIdField, "Case id is ");
 	}
 }

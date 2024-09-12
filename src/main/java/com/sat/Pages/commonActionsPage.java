@@ -1,6 +1,8 @@
 package com.sat.Pages;
 
 import java.time.Duration;
+
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
@@ -37,20 +39,20 @@ import com.sat.testbase.TestBase;
 
 import static org.testng.Assert.assertTrue;
 
-public class CommonActionsPage {
+public class commonActionsPage {
 
-    protected WebDriver driver;
-    protected Properties prop;
-    protected ElementUtil eleUtil;
-    protected ExcelUtil excelUtil;
-    protected TestBase testbase;
-    protected JavaScriptUtil jsutil;
-    protected SoftAssert softassert;
+	protected WebDriver driver;
+	protected Properties prop;
+	protected ElementUtil eleUtil;
+	protected ExcelUtil excelUtil;
+	protected TestBase testbase;
+	protected JavaScriptUtil jsutil;
+	protected SoftAssert softassert;
 
 	public static List<String> WOnumber;
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
 			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO, oldSealNumber, newSealNumber,
-			resealReason, WRN1_factoryname;
+			resealReason, WRN1_factoryname, WRN8NMB_Projname;
 	private static Map<String, String> sharedValues = new HashMap<>();
 	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
 	protected static Map<Integer, String> tankerNumber = new HashMap<>();
@@ -58,10 +60,10 @@ public class CommonActionsPage {
 	protected static Map<String, Integer> tankerNumberSize = new HashMap<>();
 	protected static Map<String, String> permitnums = new TreeMap<>();
 
-    private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
-    private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
-    private By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
-    private By changeAreaLocatoin = By.id("areaSwitcherId");
+	private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
+	private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
+	private By refreshBtn = By.xpath("//button[contains(@aria-label,'Refresh')]");
+	private By changeAreaLocatoin = By.id("areaSwitcherId");
 
 	private By newBtn = By.xpath("//button[@aria-label='New' or @aria-label='New Case']");
 	private By createdonCol = By.xpath("//div[text()='Created On']");
@@ -86,49 +88,61 @@ public class CommonActionsPage {
 	// Locators for View
 	private By filterBy = By.xpath("//span[text()='Filter by']");
 	private By filterbyinputbox = By.xpath("//input[@aria-label='Filter by value']");
-    private By pageTitle = By.cssSelector("h1[data-id='header_title']");
+	private By pageTitle = By.cssSelector("h1[data-id='header_title']");
 
-    public CommonActionsPage(WebDriver driver) {
-        this.driver = driver;
-        eleUtil = new ElementUtil(this.driver);
-        jsutil = new JavaScriptUtil(this.driver);
-        //excelUtil = new ExcelUtil();
-        prop = eleUtil.readProperties();
-        softassert = new SoftAssert();
-    }
+	// Locators for file import
+	String filePath = System.getProperty("user.dir");
 
-    public static void setSharedValue(String key, String value) {
-        sharedValues.put(key, value);
-    }
+	private By moreAction = By.cssSelector("button[aria-label='More commands for Entity']");
+	private By importExcel = By.cssSelector("li[aria-label='Import from Excel']");
+	private By fileUpload = By.cssSelector("input[aria-label='File Upload']");
+	private By nextButton = By.cssSelector("button[aria-label='Next']");
+	private By allowDuplicate = By.cssSelector("a[aria-label='Allow Duplicates: No']");
+	private By finishImport = By.cssSelector("button[aria-label='Finish Import']");
+	private By doneButton = By.cssSelector("button[aria-label='Done']");
+	private By uploadBtn = By.xpath("//span[text()='Upload']/ancestor::button");
 
-    public static String getSharedValue(String key) {
-        return sharedValues.get(key);
-    }
+	public commonActionsPage(WebDriver driver) {
+		this.driver = driver;
+		eleUtil = new ElementUtil(this.driver);
+		jsutil = new JavaScriptUtil(this.driver);
+		// excelUtil = new ExcelUtil();
+		prop = eleUtil.readProperties();
+		softassert = new SoftAssert();
+	}
 
-    public static void tankerNumber(Integer key, String value) {
-        tankerNumber.put(key, value);
-    }
+	public static void setSharedValue(String key, String value) {
+		sharedValues.put(key, value);
+	}
 
-    public static String tankerNumber(String key) {
-        return tankerNumber.get(key);
-    }
+	public static String getSharedValue(String key) {
+		return sharedValues.get(key);
+	}
 
-    public static Integer tankerNumberSize(String key, Integer value) {
-        return tankerNumberSize.put(key, value);
-    }
+	public static void tankerNumber(Integer key, String value) {
+		tankerNumber.put(key, value);
+	}
 
-    public static String permitnums(String key, String value) {
-        return permitnums.put(key, value);
-    }
+	public static String tankerNumber(String key) {
+		return tankerNumber.get(key);
+	}
 
-    public static void setSharedValuesList(String key, List<String> value) {
-        List<String> vals = new ArrayList<>();
-        sharedValuesList.put(key, vals);
-    }
+	public static Integer tankerNumberSize(String key, Integer value) {
+		return tankerNumberSize.put(key, value);
+	}
 
-    public static List<String> getSharedValueList(String key) {
-        return sharedValuesList.get(key);
-    }
+	public static String permitnums(String key, String value) {
+		return permitnums.put(key, value);
+	}
+
+	public static void setSharedValuesList(String key, List<String> value) {
+		List<String> vals = new ArrayList<>();
+		sharedValuesList.put(key, vals);
+	}
+
+	public static List<String> getSharedValueList(String key) {
+		return sharedValuesList.get(key);
+	}
 
 	public void changeAreaSelection(String changearea) {
 		eleUtil.waitForVisibilityOfElement(changeAreaLocatoin, 30);
@@ -148,6 +162,7 @@ public class CommonActionsPage {
 	}
 
 	public void clickonSaveAndCloseBtn() {
+		eleUtil.waitForVisibilityOfElement(saveCloseBtn, 40);
 		eleUtil.doElementClickable(saveCloseBtn, 30);
 		try {
 			eleUtil.doClickLog(saveCloseBtn, "Save & Close button clciked using click");
@@ -177,23 +192,23 @@ public class CommonActionsPage {
 
 	public void sortTheRecords(By Locator1, By Locator2, int tiemout) {
 
-        try {
-            Thread.sleep(3000);
-            eleUtil.doElementClickable(Locator1, tiemout);
-            eleUtil.doActionsClick(Locator1);
-            // Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(3000);
-            eleUtil.doElementClickable(Locator2, tiemout);
-            eleUtil.doActionsClick(Locator2);
-            // Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.getMessage();
-        }
-    }
+		try {
+			Thread.sleep(3000);
+			eleUtil.doElementClickable(Locator1, tiemout);
+			eleUtil.doActionsClick(Locator1);
+			// Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		try {
+			Thread.sleep(3000);
+			eleUtil.doElementClickable(Locator2, tiemout);
+			eleUtil.doActionsClick(Locator2);
+			// Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.getMessage();
+		}
+	}
 
 	public void getFirstRecord() {
 		eleUtil.doDoubleClick(firstRecord);
@@ -211,7 +226,7 @@ public class CommonActionsPage {
 	}
 
 	public void selectEntity(String entityname) {
-		clickOnRefreshBtn();
+		clickOnRefreshBtnOnHome();
 		eleUtil.isPageLoaded(10);
 		By nameoftheentity = By.xpath("//div[@title='" + entityname + "']");
 		/*
@@ -236,7 +251,7 @@ public class CommonActionsPage {
 	public void searchACase() throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(searchbox, 20);
 		Thread.sleep(2000);
-		eleUtil.doSendKeysLog(searchbox, CommonActionsPage.casenumber, "Sending search crieteria to the textbox ");
+		eleUtil.doSendKeysLog(searchbox, commonActionsPage.casenumber, "Sending search crieteria to the textbox ");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 		driver.findElement(searchbox).sendKeys(Keys.ENTER);
@@ -255,9 +270,8 @@ public class CommonActionsPage {
 	}
 
 	public void navigatingToTab(String tabName) {
-
 		By loc = By.xpath("//ul[@aria-label='Case Form']//li[@aria-label='" + tabName + "']");
-		eleUtil.waitForVisibilityOfElement(loc, 30);
+		eleUtil.waitForVisibilityOfElement(loc, 50);
 		eleUtil.doClickLog(loc, "Clicked on " + tabName);
 	}
 
@@ -326,7 +340,7 @@ public class CommonActionsPage {
 		eleUtil.doClickLog(nextstageBtn, "Clicked on next stage button");
 	}
 
-	public void clickOnloseIconOnBPF() {
+	public void clickOnCloseIconOnBPF() {
 		eleUtil.isPageLoadedLog(20, "Load the page in ");
 		eleUtil.waitForVisibilityOfElement(closeBtnOnBPF, 30);
 		eleUtil.doElementClickableLog(closeBtnOnBPF, 10, "Close icon is clickable");
@@ -354,7 +368,7 @@ public class CommonActionsPage {
 		return CaseSubtype;
 	}
 
-	public String verifyCaseStatus() {
+	public String verifyCaseStatusonCaseForm(String statusOnCase) {
 		String status = eleUtil.doElementGetText(statusField);
 		Boolean flag = false;
 		long startTime = System.currentTimeMillis();
@@ -364,15 +378,17 @@ public class CommonActionsPage {
 				eleUtil.doClickWithWait(refreshBtn, AppConstants.SHORT_DEFAULT_WAIT);
 				eleUtil.waitForVisibilityOfElement(statusField, AppConstants.SHORT_DEFAULT_WAIT);
 				status = eleUtil.doElementGetText(statusField);
-				if (status.equals("Scheduled")) {
+				Log.info("Current status: " + status);
+				if (statusOnCase.equals(status)) {
 					flag = true;
+					return status;
 				}
 			} catch (Exception e) {
 				Log.error("Status is not updated. So clicking on refresh button again");
 			}
 		}
-		Log.info("Status is : " + eleUtil.doElementGetText(statusField));
-		return eleUtil.doElementGetText(statusField);
+		Log.info("Status after timeout is: " + status);
+		return status;
 	}
 
 	public void clickOnEntityOnCaseForm() {
@@ -483,41 +499,66 @@ public class CommonActionsPage {
 	public void manualCaseCreation(String caseSubType) throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(newBtn, 50);
 		eleUtil.doElementClickable(newBtn, 20);
-		jsutil.clickElementByJSLog(driver.findElement(newBtn),"Clicked on New button");
+		jsutil.clickElementByJSLog(driver.findElement(newBtn), "Clicked on New button");
 		eleUtil.waitForVisibilityOfElement(caseSubtypeField, 30);
-		eleUtil.doElementClickableLog(caseSubtypeField, 30,"Element is clickable");
-		eleUtil.createSelectLog(caseSubtypeField,"Clicked on Case Sub Type field");
+		eleUtil.doElementClickableLog(caseSubtypeField, 30, "Element is clickable");
+		eleUtil.createSelectLog(caseSubtypeField, "Clicked on Case Sub Type field");
 		eleUtil.doSelectDropDownByVisibleTextLog(caseSubtypeField, caseSubType, "Selected dropdown value is : ");
 
 		eleUtil.waitForVisibilityOfElement(entityLookupField, 50);
 		eleUtil.doClickLog(entityLookupField, "Clicked on entity lookup field");
-		eleUtil.doClearLog(entityLookupField,"Clear the field");
+		eleUtil.doClearLog(entityLookupField, "Clear the field");
 
 		if (BusinessFunctionField.equals("TP")) {
-			System.out.println(CommonActionsPage.Tankercompanyname);
-			eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.Tankercompanyname,"Entered text is : ");
+			System.out.println(commonActionsPage.Tankercompanyname);
+			eleUtil.doSendKeysLog(entityLookupField, commonActionsPage.Tankercompanyname, "Entered text is : ");
 		} else {
-			System.out.println(CommonActionsPage.WRN1_factoryname);
-			eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.WRN1_factoryname,"Entered text is : ");
+			System.out.println(commonActionsPage.WRN1_factoryname);
+			eleUtil.doSendKeysLog(entityLookupField, commonActionsPage.WRN1_factoryname, "Entered text is : ");
+			// eleUtil.doSendKeysLog(entityLookupField, "Testcomp020924094446", "Entered
+			// text is : ");
 		}
 		Thread.sleep(25000);
 		By tankercompanyxpath = By.xpath("//li[contains(@data-id,'customerid')]");
-		eleUtil.doActionsMoveToElement(tankercompanyxpath,"Selected the value from lookup");
+		eleUtil.doActionsMoveToElement(tankercompanyxpath, "Selected the value from lookup");
 		clickOnSaveBtn();
 
 		eleUtil.isPageLoaded(30);
 
-		Thread.sleep(4000);
-		CommonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
-		Log.info("updated case number : " + CommonActionsPage.casenumber);
+		Thread.sleep(10000);
+		// eleUtil.waitTillPresenceElement(caseid, 30);
+		eleUtil.waitForVisibilityOfElement(caseid, 30);
+		commonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
+		Log.info("updated case number : " + commonActionsPage.casenumber);
 	}
 
-    public void uploadFile(By locator, String path) throws InterruptedException {
-        Thread.sleep(4000);
-        WebElement element = eleUtil.getElement(locator);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].style.display='block';", element);
-        element.sendKeys(path);
-    }
+	public void uploadFile(By locator, String path) throws InterruptedException {
+		Thread.sleep(4000);
+		WebElement element = eleUtil.getElement(locator);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].style.display='block';", element);
+		element.sendKeys(path);
+	}
+
+	public void importExcel(String path) throws InterruptedException {
+		eleUtil.isPageLoaded(50);
+		eleUtil.doClickWithWait(moreAction, 30);
+		eleUtil.doClickWithWait(importExcel, 30);
+		eleUtil.waitForVisibilityOfElement(fileUpload, 50);
+		eleUtil.doSendKeysWithWait(fileUpload, filePath + path, 50);
+		eleUtil.doClickWithWait(nextButton, 30);
+		eleUtil.doClickWithWait(allowDuplicate, 30);
+		eleUtil.doClickWithWait(finishImport, 30);
+		eleUtil.doClickWithWait(doneButton, 30);
+		Thread.sleep(5000);
+		clickOnRefreshBtnOnHome();
+	}
+
+	public void navigatingToTabInProject(String tabName) {
+
+		By loc = By.xpath("//li[contains(@aria-label,'" + tabName + "') and @role='tab']");
+		eleUtil.waitForVisibilityOfElement(loc, 30);
+		eleUtil.doClickLog(loc, "Clicked on " + tabName);
+	}
 
 }

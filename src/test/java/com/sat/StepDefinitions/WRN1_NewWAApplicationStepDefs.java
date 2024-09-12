@@ -1,17 +1,13 @@
 package com.sat.StepDefinitions;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.util.List;
-import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.WAApplicationPage;
 import com.sat.Pages.WRN1CasePage;
+import com.sat.Pages.factoryCreationPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.java.en.And;
@@ -19,8 +15,9 @@ import io.cucumber.java.en.And;
 public class WRN1_NewWAApplicationStepDefs {
 
 	private WAApplicationPage wapage = new WAApplicationPage(TestBase.getDriver());
-	private CommonActionsPage common = new CommonActionsPage(TestBase.getDriver());
+	private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
 	private WRN1CasePage wrn1casepage = new WRN1CasePage(TestBase.getDriver());
+	private factoryCreationPage factoryCreapage = new factoryCreationPage(TestBase.getDriver());
 
 	@And("fill the details in the WA application form")
 	public void fill_the_details_in_the_WA_application_form(String blkno, String unitval, String buildingname,
@@ -48,8 +45,8 @@ public class WRN1_NewWAApplicationStepDefs {
 	}
 
 	@And("verify the case form fields validation")
-	public void verify_the_case_form_fields_validation() {
-		wrn1casepage.caseFormFieldsValidation();
+	public void verify_the_case_form_fields_validation(String status) {
+		wrn1casepage.caseFormFieldsValidation(status);
 	}
 
 	@And("Validate the system triggered {string} email to the applicant")
@@ -69,9 +66,9 @@ public class WRN1_NewWAApplicationStepDefs {
 		wrn1casepage.createNewLabReport(reportTypeval, chemicalval, concentrationval);
 	}
 
-	@And("verify the lab report result")
-	public void verify_the_lab_report_result() {
-		wrn1casepage.verifyTheResult();
+	@And("verify the lab report result as {string}")
+	public void verify_the_lab_report_result_as_(String status) {
+		wrn1casepage.verifyTheResult(status);
 	}
 
 	@And("validate that SO get notified to Review WA application")
@@ -89,8 +86,8 @@ public class WRN1_NewWAApplicationStepDefs {
 		wrn1casepage.validateFIOToGenerateEmailNotification();
 	}
 
-	@And("verify the WA status once AO approved")
-	public void verify_the_WA_status_once_AO_approved() {
-		wrn1casepage.verifyWAStatus();
+	@And("verify the WA status once AO approved is {string}")
+	public void verify_the_WA_status_once_AO_approved_is(String status) {
+		factoryCreapage.verifyWAStatus(status);
 	}
 }

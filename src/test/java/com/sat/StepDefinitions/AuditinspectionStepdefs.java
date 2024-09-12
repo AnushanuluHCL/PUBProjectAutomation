@@ -3,15 +3,15 @@ package com.sat.StepDefinitions;
 
 import java.util.Properties;
 import com.sat.Pages.PowerAppsAutomateFlowPage;
-import com.sat.Pages.CasecreationPage;
-import com.sat.Pages.CommonActionsPage;
+import com.sat.Pages.caseCreationPage;
+import com.sat.Pages.commonActionsPage;
 import com.sat.testbase.TestBase;
 import io.cucumber.java.en.*;
 
 public class AuditinspectionStepdefs {
 
 	private PowerAppsAutomateFlowPage powerapppage = new PowerAppsAutomateFlowPage(TestBase.getDriver());
-    private CasecreationPage casepage = new CasecreationPage(TestBase.getDriver());
+    private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
 
 
 	private Properties prop;
