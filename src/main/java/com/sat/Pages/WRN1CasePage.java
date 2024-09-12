@@ -23,11 +23,11 @@ public class WRN1CasePage extends commonActionsPage {
 	commonCRMActions crmActions = new commonCRMActions(driver);
 	factoryPage factoryloc = new factoryPage(driver);
 
-	public void caseFormFieldsValidation() {
+	public void caseFormFieldsValidation(String status) {
 		assertEquals(verifyBUField(), "WA& TEF", "Business Function is not same");
 		assertEquals(verifyCaseTypeField(), "Inspection Case", "Case  Type is not same");
 		assertEquals(verifyCaseSubTypeField(), "New WA Application", "Case Sub Type is not same");
-		assertEquals(verifyCaseStatus(), "Scheduled", "Case status is not same");
+		assertEquals(verifyCaseStatusonCaseForm(status), "Scheduled", "Case status is not same");
 	}
 
 	public void mailGeneratedOrNotWRN1(String mailType) throws InterruptedException, ParseException {
@@ -164,7 +164,8 @@ public class WRN1CasePage extends commonActionsPage {
 		clickOnSaveBtn();
 		navigatingToStage("Assignment");
 		clickOnNextStageBtn();
-		clickOnloseIconOnBPF();
+		//clickOnCloseIconOnBPF();
+		clickOnRefreshBtnOnHome();
 	}
 
 	public void createNewLabReport(String reportTypeval, String chemicalval, String concentrationval)

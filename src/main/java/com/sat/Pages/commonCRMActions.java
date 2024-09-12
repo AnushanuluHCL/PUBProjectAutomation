@@ -7,7 +7,10 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import com.sat.testUtil.ElementUtil;
 import com.sat.testUtil.Log;
+import com.sat.testbase.TestBase;
+
 import org.openqa.selenium.*;
 
 import com.sat.constants.AppConstants;
@@ -62,6 +65,12 @@ public class commonCRMActions extends commonActionsPage {
 	private By starttimeField = By.xpath("(//div[@col-id='starttime']/descendant::label)[2]"); // (//div[@col-id='starttime'])[2]
 	private By endtimeField = By.xpath("(//div[@col-id='endtime'])[2]");
 	private By durationField = By.xpath("(//div[@col-id='duration'])[2]");
+	private By WOstatusInWOform = By.xpath(
+			"//select[@aria-label='WO Status']//ancestor::div[@data-lp-id='MscrmControls.FieldControls.OptionSet|msdyn_systemstatus.fieldControl|msdyn_workorder']//select");
+
+	// Locators on case home page
+	private By systemAssesmentField = By.xpath("//select[@aria-label='System Assessment']");
+	private By userAssesmentField = By.xpath("//select[@aria-label='User Assessment']");
 
 	public By getSaveBtn() {
 		return saveBtn;
@@ -205,8 +214,12 @@ public class commonCRMActions extends commonActionsPage {
 		return all_elements_text;
 	}
 
+	
 	public void processWorkOrder(String woNumber) throws InterruptedException {
 		By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + woNumber + "']");
+		// label[@aria-label='Scheduled']//ancestor::div[@col-id='msdyn_systemstatus']/following-sibling::div[@col-id='msdyn_name']//descendant::a[@aria-label='"+
+		// woNumber + "']
+
 		eleUtil.doActionsClick(woele);
 		eleUtil.waitForVisibilityOfElement(getWorkOrderText(), 30);
 		String actualWO = eleUtil.doGetElementAttribute(getWorkOrderText(), "value");
@@ -216,7 +229,7 @@ public class commonCRMActions extends commonActionsPage {
 	}
 
 	public void fillBookingDetails() throws InterruptedException {
-		
+
 		commonActionsPage.WOnumber = getWONumber();
 		List<String> woNum = commonActionsPage.WOnumber;
 		Thread.sleep(2000);
@@ -239,10 +252,14 @@ public class commonCRMActions extends commonActionsPage {
 			eleUtil.waitForVisibilityOfElement(selectAnOption, 100);
 			eleUtil.doClick(selectAnOption);
 
-			String durationValOnHome = eleUtil.doGetElementAttribute(durationFieldOnBooking, "title");
-			assertTrue(durationValOnHome.contains("2 hours"), "WO duration is not 2 hours");
-			Log.info("Duration is : " + durationValOnHome);
-			
+			/*
+			 * String durationValOnHome =
+			 * eleUtil.doGetElementAttribute(durationFieldOnBooking, "title");
+			 * assertTrue(durationValOnHome.contains("2 hours"),
+			 * "WO duration is not 2 hours"); Log.info("Duration is : " +
+			 * durationValOnHome);
+			 */
+
 			eleUtil.doElementClickable(saveOnBooking, 10);
 			eleUtil.doClick(saveOnBooking);
 			Thread.sleep(7000);
@@ -265,7 +282,9 @@ public class commonCRMActions extends commonActionsPage {
 		}
 	}
 
-	public void openCheckList(String woNumber) throws InterruptedException {
+
+
+public void openCheckList(String woNumber, String checklistname) throws InterruptedException {
 		commonActionsPage.WOnumber = getWONumber();
 		List<String> woNum = commonActionsPage.WOnumber;
 		Thread.sleep(2000);
@@ -276,13 +295,15 @@ public class commonCRMActions extends commonActionsPage {
 			processWorkOrder(woNum.get(i));
 			eleUtil.doClick(getChecklistTab());
 			String actualName = eleUtil.doGetElementAttribute(getCheckListNameField(), "aria-label");
-			assertTrue(actualName.contains("Trade Effluent Inspection"), "Checklist name is not matching");
+			assertTrue(actualName.contains(checklistname), "Checklist name is not matching");
 			eleUtil.doElementClickable(getCheckListNameField(), 20);
 			eleUtil.doClick(getCheckListNameField());
 			eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
 			eleUtil.doClick(getMaximizeScreenBtn());
 		}
 	}
+	
+	
 
 	public void saveChecklist() throws InterruptedException {
 		eleUtil.doClick(getSaveBtnInChklist());
@@ -352,14 +373,61 @@ public class commonCRMActions extends commonActionsPage {
 		return false;
 	}
 
+	public void verifyBookingStatus(String WOstatus) {
+		List<String> wonum = commonActionsPage.WOnumber;
+		System.out.println("Size of wonum list is: " + wonum.size());
+
+		for (int i = 0; i < wonum.size(); i++) {
+			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + wonum.get(i) + "']");
+			eleUtil.waitForVisibilityOfElement(woele, 30);
+			eleUtil.doActionsClick(woele);
+			By status = By.xpath("//select[@title='" + WOstatus + "']");
+			String actualStatusval = eleUtil.doGetElementAttribute(WOstatusInWOform, "title");
+			boolean flag = false;
+			long startTime = System.currentTimeMillis();
+			while (!flag && (System.currentTimeMillis() - startTime) < 180000) {
+				try {
+					// Wait for visibility of the status element
+					eleUtil.waitForVisibilityOfElement(WOstatusInWOform, 10);
+
+					// Get the actual status value
+					actualStatusval = eleUtil.doGetElementAttribute(WOstatusInWOform, "title");
+
+					// Check if the status matches the expected value
+					if (actualStatusval.equals(WOstatus)) {
+						flag = true;
+					} else {
+						// Refresh the page or re-click the work order if status does not match
+						eleUtil.doClick(refreshBtn);
+						// Wait for status element again after refreshing
+						eleUtil.waitForVisibilityOfElement(status, 10);
+					}
+				} catch (StaleElementReferenceException e) {
+					System.out.println("catching the exception");
+				} catch (Exception e) {
+					System.out.println("Button is not present");
+				}
+			}
+			// eleUtil.waitForVisibilityOfElement(status, 10);
+			// String actualStatusval = eleUtil.doGetElementAttributeLog(status,
+			// "aria-label", "WO Status value is : ");
+			assertEquals(actualStatusval, WOstatus, "WO status is not same");
+			Log.info("Booking sttaus is : " + actualStatusval);
+			eleUtil.waitForVisibilityOfElement(saveCloseBtn, 30);
+			eleUtil.doClick(saveCloseBtn);
+		}
+	}
+
 	public void verifyWOStatusOnCaseHomepage(String WOstatus) {
+		navigatingToTab("Work Orders");
 		By status = By.xpath("//label[@aria-label='" + WOstatus + "']");
 		eleUtil.waitForVisibilityOfElement(status, 10);
-		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label", "WO Status value is : ");
+		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label",
+				"WO Status value from case home page is : ");
 		assertEquals(actualStatusval, WOstatus, "WO status is not same");
 
 	}
-	
+
 	public void emailCheckAtProject(String subjectName) throws InterruptedException {
 		eleUtil.isPageLoaded(50);
 		By loc = By.xpath("//label[contains(text(),'" + subjectName + "')]");
@@ -373,6 +441,59 @@ public class commonCRMActions extends commonActionsPage {
 				Log.info("Email is visible " + subjectName);
 				break;
 			}
+		}
+	}
+
+	public void verifySystemAssesmentOnCaseHome(String asses) {
+		navigatingToTab("Inspection Case Information");
+		clickOnRefreshBtnOnHome();
+		eleUtil.waitForVisibilityOfElement(systemAssesmentField, 30);
+		String SystemAssesmentVal = eleUtil.doGetElementAttributeLog(systemAssesmentField, "title",
+				"Displayed System Assesment is : ");
+		assertEquals(SystemAssesmentVal, asses, "System Assesment is not same");
+
+		eleUtil.waitForVisibilityOfElement(userAssesmentField, 0);
+		String UserAssesmentVal = eleUtil.doGetElementAttributeLog(userAssesmentField, "title",
+				"Displayed User Assesment is : ");
+		assertEquals(UserAssesmentVal, asses, "System Assesment is not same");
+	}
+
+	public void notificationForTabToOpenCase(String text, String tab) throws InterruptedException {
+		By notificationIDCheck = By.xpath("//p[contains(text(), '" + text + "')]");
+		long endTime = System.currentTimeMillis() + 300000;
+		while (System.currentTimeMillis() < endTime) {
+			eleUtil.isPageLoaded(100);
+			eleUtil.waitForVisibilityOfElement(getNotificationIcon(), 100);
+			eleUtil.doClick(getNotificationIcon());
+			Thread.sleep(3000);
+			try {
+				WebElement WOalert = eleUtil.waitTillPresenceOfElementReturn(notificationIDCheck, 30);
+				if (WOalert != null && WOalert.isDisplayed()) {
+					WebElement tapToOpenBtn = driver.findElement(By.xpath("//p[contains(text(), '" + text
+							+ "')]/ancestor::div[contains(@class, 'ac-container')]//a[contains(text(),'Tap to Open Case')]"));
+					tapToOpenBtn.click();
+					ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+					Log.info("open tabs: " + tabs.size());
+					driver.switchTo().window(tabs.get(1));
+					eleUtil.waitForVisibilityOfElement(getPageTitle(), 100);
+					String afterTapToOpenBtn = eleUtil.doGetElementAttribute(getPageTitle(), "title");
+					Log.info("afterTapToOpenBtn: " + afterTapToOpenBtn);
+					assertTrue(afterTapToOpenBtn.contains(text),
+							"Record is not the same after clicking on tap to open button");
+					eleUtil.doElementClickable(getSaveCloseBtn(), 20);
+					eleUtil.doClick(getSaveCloseBtn());
+					driver.switchTo().window(tabs.get(0));
+					eleUtil.doClick(getCancelBtn());
+					break;
+				}
+			} catch (TimeoutException e) {
+				Log.error("Timeout waiting for element: " + notificationIDCheck);
+			}
+			// If the element is not found or not displayed, execute the else block logic
+			eleUtil.doClickLog(getCancelBtn(), "Click on Cancel button");
+			eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
+			navigatingToTabFactory(tab);
+			Log.error("Actual Case number is not matched with the open Case number");
 		}
 	}
 

@@ -45,8 +45,8 @@ public class WRN1_NewWAApplicationStepDefs {
 	}
 
 	@And("verify the case form fields validation")
-	public void verify_the_case_form_fields_validation() {
-		wrn1casepage.caseFormFieldsValidation();
+	public void verify_the_case_form_fields_validation(String status) {
+		wrn1casepage.caseFormFieldsValidation(status);
 	}
 
 	@And("Validate the system triggered {string} email to the applicant")

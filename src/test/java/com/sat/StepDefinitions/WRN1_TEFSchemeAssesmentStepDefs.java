@@ -24,7 +24,7 @@ public class WRN1_TEFSchemeAssesmentStepDefs {
 	public void Verify_that_case_is_created_starts_with_created_with_status_and_verify_Case_notification(
 			String startsWithName, String schedule) throws InterruptedException {
 		wrn1casepage.verifyCaseFormat(startsWithName);
-		common.verifyCaseStatus();
+		common.verifyCaseStatusonCaseForm(schedule);
 		wrn1casepage.caseNotification();
 	}
 

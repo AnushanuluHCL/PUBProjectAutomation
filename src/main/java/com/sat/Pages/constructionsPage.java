@@ -6,9 +6,11 @@ import static org.testng.Assert.assertTrue;
 import java.text.ParseException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.sat.constants.AppConstants;
 import com.sat.locators.ConstructionLocatorsPage;
 import com.sat.locators.WRN1CaseLocatorsPage;
 import com.sat.locators.factoryPage;
@@ -67,12 +69,47 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.affectedByDTSSVal(DTSSValue);
 		constructionpage.affectedBySewerVal(SewerValue);
 		clickonSaveAndCloseBtn();
-		eleUtil.isPageLoaded(50);
+		clickOnSaveBtn();
 		clickonSaveAndCloseBtn();
 	}
-	public void verifyProjectInShortListView() {
+	public void searchForAProject() {
 		factory.entitySelectionInFactoryView();
 		filterView(commonActionsPage.WRN8NMB_Projname);
+	}
+	public void verifyProjectInShortListView() {
 		constructionpage.compareProjValue();
 	}
+	public void approveProject() throws InterruptedException {
+		constructionpage.approveproj();
+	}
+	public void verifyCaseCreated() {
+		changeAreaSelection("Inspection");
+		selectEntity("Cases");
+		constructionpage.entitySelectionInCaseView();
+		filterView(commonActionsPage.WRN8NMB_Projname);
+		//filterView("Projrefno_100924044713");
+		constructionpage.caseCreationCheck();
+	}
+	public void fillChecklistWRN8NMB() throws InterruptedException {
+		constructionpage.fillCheckListQuestionsforWRN8NMB();
+	}
+	public void POWSapprovalNotification() throws InterruptedException {
+		// CommonActionsPage.casenumber= getCaseNumber();
+		eleUtil.isPageLoaded(60);
+		commonCRM.notificationForTabToOpenCase(commonActionsPage.casenumber, "Inspection Case Information");
+	}
+	
+	public void updateReinspectionDate() throws ParseException {
+		navigatingToTab("Inspection Case Information");
+		clickOnEntityOnCaseForm();
+		commonCRM.navigatingToTabInProject("System related information");
+		constructionpage.verifyReinspectionValue();
+		constructionpage.verifyReinspectionDate();
+		constructionpage.updateReinspectionDateVal();
+		clickOnSaveBtn();
+	}
+	public void verifyTypeOFWO(String type) {
+		constructionpage.verifyNewWoType(type);
+	}
+	
 }

@@ -5,10 +5,12 @@ import static org.testng.Assert.assertTrue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.commonCRMActions;
@@ -16,7 +18,6 @@ import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 
 public class WRN1CaseLocatorsPage extends commonActionsPage {
-	
 
 	// Locators for BPF
 	private By allDocsReceived = By.xpath("//select[@aria-label='All Documents Received']");
@@ -25,33 +26,37 @@ public class WRN1CaseLocatorsPage extends commonActionsPage {
 	private By newLabReportBtn = By.xpath("//button[contains(@aria-label,'New Lab Report')]");
 	private By sampleRefNoFieldSearchsymbol = By
 			.xpath("//button[contains(@aria-label,'Search records for  Lab Sample Ref No')]");
-	private By selectFirstRecord = By.xpath("(//li[contains(@data-id,'pub_')])[1]");//(//li[contains(@data-id,'pub_labreportheader')])[1]
+	private By selectFirstRecord = By.xpath("(//li[contains(@data-id,'pub_')])[1]");// (//li[contains(@data-id,'pub_labreportheader')])[1]
 	private By reportTypeField = By.xpath("//select[contains(@data-id,'pub_reporttype')]");// GCMS
 	private By chemicalLookupField = By.xpath("//input[contains(@aria-label,'Substance/Chemical Name')]");
 	private By chemicalLookupvalue = By.xpath("//span[contains(@data-id,'pub_teregulation.fieldControl-pub_name')]");// span[contains(@data-id,'pub_teregulation_resultsLabel')]
 	private By concentrationField = By.xpath("//input[contains(@aria-label,'Result')]");
 	private By saveNcloseBtnInQuickCreateLabreportForm = By.xpath("//button[@aria-label='Save and Close']");
 	private By labReportUploadToggleBtn = By.xpath("//button[contains(@aria-label,'Lab Report Uploaded:')]");
-	private By systemAssesment = By.xpath("//section[@aria-label='Lab Results for Inspection Case']//select[@aria-label='System Assessment']");
+	private By systemAssesment = By
+			.xpath("//section[@aria-label='Lab Results for Inspection Case']//select[@aria-label='System Assessment']");
 
 	private By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
 
 	private By caseid = By.xpath("//input[@aria-label='Case ID']");
 	private By statusField = By.xpath("//div[text()='Status']/preceding-sibling::div/div");
-	 private By workOrderVerify = By.xpath("//div[@col-id='msdyn_name']//a");
-	 
-	 // Locators for TEF scheme
-	 private By interestedIntogleBtn = By.xpath("//button[@aria-label='Interested in TEF Scheme: No']");
-	 private By waterConsumptionField = By.xpath("//input[contains(@aria-label,'Water Consumption')]");
-	 private By TEFAccNumField = By.xpath("//input[contains(@aria-label,'TEF account number')]");
-	 private By monthlyReturnFormfieldsymbol = By.xpath("//button[@aria-label='Search records for Monthly Return Form, Lookup field']");
+	private By workOrderVerify = By.xpath("//div[@col-id='msdyn_name']//a");
+	private By saveNContinueBtn = By.xpath("//span[text()='Save and continue']");
+
+	// Locators for TEF scheme
+	private By interestedIntogleBtn = By.xpath("//button[@aria-label='Interested in TEF Scheme: No']");
+	private By waterConsumptionField = By.xpath("//input[contains(@aria-label,'Water Consumption')]");
+	private By TEFAccNumField = By.xpath("//input[contains(@aria-label,'TEF account number')]");
+	private By monthlyReturnFormfieldsymbol = By
+			.xpath("//button[@aria-label='Search records for Monthly Return Form, Lookup field']");
 
 	public WRN1CaseLocatorsPage(WebDriver driver) {
 		super(driver);
 	}
 
 	public void confirmDocuemntsReceived() {
-		eleUtil.waitForVisibilityOfElementLog(allDocsReceived, 20, "Waiting for the All Documents Received element");
+		eleUtil.waitForVisibilityOfElementLog(allDocsReceived, 30, "Waiting for the All Documents Received element");
+		eleUtil.doClick(allDocsReceived);
 		eleUtil.createSelectLog(allDocsReceived, "Selected the All Documents Received dropdown ");
 		eleUtil.doSelectDropDownByVisibleTextLog(allDocsReceived, "Yes", "Selected dropdown value is :");
 	}
@@ -75,7 +80,7 @@ public class WRN1CaseLocatorsPage extends commonActionsPage {
 				"Selected Report Type dropdown value is ");
 	}
 
-	public void selectChemicalValue(String chemicalval)  {
+	public void selectChemicalValue(String chemicalval) {
 		eleUtil.waitForVisibilityOfElement(chemicalLookupField, 10);
 		eleUtil.doClickLog(chemicalLookupField, "Clicked on Substance/Chemical Name field");
 		eleUtil.doSendKeysLog(chemicalLookupField, chemicalval, "Substance/Chemical Name is :");
@@ -111,7 +116,8 @@ public class WRN1CaseLocatorsPage extends commonActionsPage {
 				navigatingToTab("Lab Report Result");
 				eleUtil.waitForVisibilityOfElement(systemAssesment, AppConstants.SHORT_DEFAULT_WAIT);
 				systemAssesmentfieldval = eleUtil.doGetElementAttribute(systemAssesment, "title");
-				if (systemAssesmentfieldval.contains("Compliance") || systemAssesmentfieldval.contains("Non-Compliance")) {
+				if (systemAssesmentfieldval.contains("Compliance")
+						|| systemAssesmentfieldval.contains("Non-Compliance")) {
 					flag = true;
 				}
 			} catch (Exception e) {
@@ -123,6 +129,24 @@ public class WRN1CaseLocatorsPage extends commonActionsPage {
 
 	public void caseNamevalue(String startsWithName) {
 		clickOnRefreshBtnOnHome();
+		eleUtil.isPageLoaded(30);
+		try {
+			if (eleUtil.elementIsDisplayed(By.xpath("//div[contains(@id,'modalDialogView_')]"),"Save and continue Pop Up")) {
+				while (true) {
+					try {
+						eleUtil.doElementClickable(saveNContinueBtn, 10); // Assuming eleUtil has the doElementClickable
+																			// method
+						eleUtil.doClick(saveNContinueBtn); // Assuming eleUtil has the doClick method
+					} catch (org.openqa.selenium.NoSuchElementException e) {
+						break; // Exit the loop if the button is no longer found
+					}
+				}
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		clickOnRefreshBtnOnHome();
 		try {
 			commonActionsPage.casenumber = eleUtil.doGetElementAttribute(caseid, "title");
@@ -133,36 +157,34 @@ public class WRN1CaseLocatorsPage extends commonActionsPage {
 			Log.error("Case number element not found: " + e.getMessage());
 		}
 	}
-	
 
-    public String getWorkOrderNumber() {
-        String workOrder = eleUtil.doElementGetText(workOrderVerify);
-        return workOrder;
-    }
-    
-    public void clickOnInterestedInTEFToggleBtn() {
+	public String getWorkOrderNumber() {
+		String workOrder = eleUtil.doElementGetText(workOrderVerify);
+		return workOrder;
+	}
+
+	public void clickOnInterestedInTEFToggleBtn() {
 		eleUtil.waitForVisibilityOfElement(interestedIntogleBtn, 10);
 		eleUtil.doClickLog(interestedIntogleBtn, "Clicked on Interested in TEF Scheme toggle button");
 	}
-    public void sendWaterConsumptionFieldVal(String value)  {
+
+	public void sendWaterConsumptionFieldVal(String value) {
 		eleUtil.waitForVisibilityOfElement(waterConsumptionField, 10);
 		eleUtil.doClickLog(waterConsumptionField, "Clicked on Water Consumption field");
 		eleUtil.doSendKeysLog(waterConsumptionField, value, "Water Consumption is :");
 	}
-    public void sendTEFAccNumFieldVal(String value)  {
+
+	public void sendTEFAccNumFieldVal(String value) {
 		eleUtil.waitForVisibilityOfElement(TEFAccNumField, 10);
 		eleUtil.doClickLog(TEFAccNumField, "Clicked on TEF account number field");
 		eleUtil.doSendKeysLog(TEFAccNumField, value, "TEF account number is :");
 	}
-    public void selectMonthlyReturnForm()  {
-    	eleUtil.waitForVisibilityOfElement(monthlyReturnFormfieldsymbol, 30);
+
+	public void selectMonthlyReturnForm() {
+		eleUtil.waitForVisibilityOfElement(monthlyReturnFormfieldsymbol, 30);
 		eleUtil.doActionsMoveToElement(monthlyReturnFormfieldsymbol, "Clicked on Monthly Return Form field");
 		eleUtil.waitForVisibilityOfElement(selectFirstRecord, 30);
 		eleUtil.doActionsMoveToElement(selectFirstRecord, "Clicked on first record");
 	}
-    
 
 }
-
-
-

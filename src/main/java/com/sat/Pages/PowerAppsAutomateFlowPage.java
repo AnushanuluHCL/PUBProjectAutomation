@@ -25,6 +25,11 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 	private By refresh = By.xpath("//*[@data-icon-name='Refresh']");
 	private By successmessage = By.xpath("(//div[@data-automation-key='status'])[1]");
 	private By running = By.xpath("//*[contains(@class,'fl-StatusInCell root')]//*[text()='Running']");
+	
+	private By OtherAccount = By.xpath("//div[@id='otherTileText']");
+	
+	private By signoutPic= By.xpath("//div[@id='meInitialsButton']");
+	private By signoutBtn = By.xpath("//a[@aria-label='Sign out of this account']");
 
 	public PowerAppsAutomateFlowPage(WebDriver driver) {
 		super(driver);
@@ -33,6 +38,8 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 	
 
 	public void loginPowerApp(String userid, String password) {
+		eleUtil.waitForVisibilityOfElement(OtherAccount, 40);
+		eleUtil.doClick(OtherAccount);
 		eleUtil.doElementClickable(UserName, 10);
 		eleUtil.doSendKeys(UserName, prop.getProperty(userid));
 		eleUtil.doClick(NextButton);
@@ -89,6 +96,25 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 				condition = false;
 			}
 		}
+	}
+	public void logoutPowerApp() {
+		
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+			eleUtil.waitForVisibilityOfElement(signoutPic, 50);
+			try {
+				eleUtil.doClick(signoutPic);
+			} catch (Exception e) {
+				eleUtil.doActionsClick(signoutPic);
+			}
+			eleUtil.waitForVisibilityOfElement(signoutBtn, 30);
+			eleUtil.doClick(signoutBtn);
+			eleUtil.waitForVisibilityOfElement(OtherAccount, 30);
+			eleUtil.doClick(OtherAccount);
+		
 	}
 
 }

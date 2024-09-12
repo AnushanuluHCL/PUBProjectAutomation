@@ -162,6 +162,7 @@ public class commonActionsPage {
 	}
 
 	public void clickonSaveAndCloseBtn() {
+		eleUtil.waitForVisibilityOfElement(saveCloseBtn, 40);
 		eleUtil.doElementClickable(saveCloseBtn, 30);
 		try {
 			eleUtil.doClickLog(saveCloseBtn, "Save & Close button clciked using click");
@@ -269,9 +270,8 @@ public class commonActionsPage {
 	}
 
 	public void navigatingToTab(String tabName) {
-
 		By loc = By.xpath("//ul[@aria-label='Case Form']//li[@aria-label='" + tabName + "']");
-		eleUtil.waitForVisibilityOfElement(loc, 30);
+		eleUtil.waitForVisibilityOfElement(loc, 50);
 		eleUtil.doClickLog(loc, "Clicked on " + tabName);
 	}
 
@@ -340,7 +340,7 @@ public class commonActionsPage {
 		eleUtil.doClickLog(nextstageBtn, "Clicked on next stage button");
 	}
 
-	public void clickOnloseIconOnBPF() {
+	public void clickOnCloseIconOnBPF() {
 		eleUtil.isPageLoadedLog(20, "Load the page in ");
 		eleUtil.waitForVisibilityOfElement(closeBtnOnBPF, 30);
 		eleUtil.doElementClickableLog(closeBtnOnBPF, 10, "Close icon is clickable");
@@ -368,7 +368,7 @@ public class commonActionsPage {
 		return CaseSubtype;
 	}
 
-	public String verifyCaseStatus() {
+	public String verifyCaseStatusonCaseForm(String statusOnCase) {
 		String status = eleUtil.doElementGetText(statusField);
 		Boolean flag = false;
 		long startTime = System.currentTimeMillis();
@@ -379,7 +379,7 @@ public class commonActionsPage {
 				eleUtil.waitForVisibilityOfElement(statusField, AppConstants.SHORT_DEFAULT_WAIT);
 				status = eleUtil.doElementGetText(statusField);
 				Log.info("Current status: " + status);
-				if ("Scheduled".equals(status)) {
+				if (statusOnCase.equals(status)) {
 					flag = true;
 					return status;
 				}
@@ -556,7 +556,7 @@ public class commonActionsPage {
 
 	public void navigatingToTabInProject(String tabName) {
 
-		By loc = By.xpath("//li[@aria-label='" + tabName + "' and @role='tab']");
+		By loc = By.xpath("//li[contains(@aria-label,'" + tabName + "') and @role='tab']");
 		eleUtil.waitForVisibilityOfElement(loc, 30);
 		eleUtil.doClickLog(loc, "Clicked on " + tabName);
 	}

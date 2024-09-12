@@ -666,7 +666,7 @@ public class caseCreationPage extends commonActionsPage {
 		Thread.sleep(2000);
 		eleUtil.doSendKeys(searchbox, commonActionsPage.casenumber);
 
-		// eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24244");
+		//eleUtil.doSendKeys(searchbox, "NMB/NG/I/2024/25601");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 
@@ -1453,6 +1453,7 @@ public class caseCreationPage extends commonActionsPage {
 		navigatingToStage("Assignment");
 		eleUtil.doElementClickable(nextstageBtn, 10);
 		eleUtil.doClick(nextstageBtn);
+		eleUtil.doActionsClick(saveBtn);
 	}
 
 	public void completeInspection() {
@@ -2292,8 +2293,7 @@ public class caseCreationPage extends commonActionsPage {
 		}
 		// if (driver.findElement(okBtn).isDisplayed()) {
 		try {
-			if (eleUtil.elementIsDisplayed(By.cssSelector("div[id='modalDialogContentContainer_1']"),
-					"Saving in Progress Pop Up")) {
+			if (eleUtil.elementIsDisplayed(By.cssSelector("div[id='modalDialogContentContainer_1']"),"Saving in Progress Pop Up")) {
 				eleUtil.waitForVisibilityOfElement(okBtn, 10);
 				eleUtil.doClickLog(okBtn,"Click on ok button");
 			} else {

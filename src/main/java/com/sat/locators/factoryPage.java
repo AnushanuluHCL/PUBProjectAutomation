@@ -270,7 +270,7 @@ public class factoryPage extends commonActionsPage {
 		Log.info("size is:" + woNum.size());
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i));
+			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection");
 			sampleLabForAnalysis();
 			selectChecklistForWRN2Report();
 			crmActions.saveChecklist();
@@ -560,7 +560,7 @@ public class factoryPage extends commonActionsPage {
 
 	public void entitySelectionInFactoryView() {
 		eleUtil.waitForVisibilityOfElement(entitySelection, 10);
-		eleUtil.doElementClickableLog(entitySelection, 20, "Entiry field is clickable");
+		eleUtil.doElementClickableLog(entitySelection, 20, "Entity field is clickable");
 		eleUtil.doClickLog(entitySelection, "Click on Entity/Proj Reference No field in view");
 	}
 
@@ -587,7 +587,7 @@ public class factoryPage extends commonActionsPage {
 		Log.info("size is:" + woNum.size());
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i));
+			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection");
 			sampleLabForAnalysis();
 			selectChecklistForWRN1TEF();
 			crmActions.saveChecklist();

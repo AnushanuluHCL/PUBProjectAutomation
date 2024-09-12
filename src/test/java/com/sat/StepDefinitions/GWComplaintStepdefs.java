@@ -152,10 +152,10 @@ public class GWComplaintStepdefs {
         // casepage.rolesUpdate();//need to remove once everything is merged
     }
 
-    @And("change the view and search a case")
-    public void change_the_view_and_search_a_case() throws InterruptedException {
+    @And("change the view {string} and search a case")
+    public void change_the_view_and_search_a_case(String viewname) throws InterruptedException {
         casepage.openACase();
-        casepage.changeView("Tanker Inspection Cases");
+        casepage.changeView(viewname);
         casepage.searchACase();
     }
 
