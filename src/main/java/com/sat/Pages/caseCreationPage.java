@@ -387,9 +387,6 @@ public class caseCreationPage extends commonActionsPage {
 	private By calendorIconFromFilter = By.xpath("//i[@aria-label='Filter by value']");
 	private By rowsCount = By.xpath("//span[contains(@class,'statusTextContainer')]");
 
-	long startTime = System.currentTimeMillis();
-	long endTime = startTime + 120000;
-
 	public caseCreationPage(WebDriver driver) {
 		super(driver);
 		/*
@@ -3750,7 +3747,7 @@ public class caseCreationPage extends commonActionsPage {
 		LocalDate currentDate = LocalDate.now();
 		int currentYear = currentDate.getYear();
 		float totalActualCalculatedDepositApp = (totalActualCalDepositGW + totalActualCalDepositGW) * 2;
-
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		String actualGWActualQuantity = eleUtil.doGetElementAttribute(GWActualQuantity, "title");
 		while (actualGWActualQuantity.contains("0.00")) {
 			if (System.currentTimeMillis() > endTime) {
@@ -3826,6 +3823,7 @@ public class caseCreationPage extends commonActionsPage {
 
 		String actualdepositAmount = eleUtil.doGetElementAttribute(depositAmount, "title"); // 0.00
 		String newDepositAmount = actualdepositAmount;
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (actualdepositAmount.equals(newDepositAmount)) {
 			if (System.currentTimeMillis() > endTime) {
 				throw new RuntimeException("Test timed out after 120 seconds");
@@ -3927,6 +3925,7 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.doClick(filterBy);
 		eleUtil.doSendKeysWithWait(filterbyinputbox, commonActionsPage.Tankercompanyname, 30);
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (!driver.findElement(applyBtn).isEnabled()) {
 			if (System.currentTimeMillis() > endTime) {
 				throw new RuntimeException("Test timed out after 120 seconds");
@@ -3978,5 +3977,9 @@ public class caseCreationPage extends commonActionsPage {
 			Assert.assertEquals(reregisteringWithNewCompanyValue, reregisterWithNewCompany,
 					"Reregistering with new company is not set as Yes");
 		}
+	}
+	public void processingStageToNextStage() {
+		navigatingToStage("Processing");
+		clickOnNextStageBtn();
 	}
 }

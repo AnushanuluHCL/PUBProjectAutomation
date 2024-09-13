@@ -5,10 +5,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 
 import com.sat.Pages.commonActionsPage;
@@ -22,9 +19,6 @@ public class factoryPage extends commonActionsPage {
 		super(driver);
 	}
 
-	String todayDateTime = eleUtil.todayDateAndTime();
-	String todayDate = eleUtil.todayDate();
-	long endTime = System.currentTimeMillis() + 5 * 60 * 1000; // 5 minutes in milliseconds
 	commonCRMActions crmActions = new commonCRMActions(driver);
 
 	private By entityType = By.cssSelector("select[aria-label='Entity Type']");
@@ -35,12 +29,12 @@ public class factoryPage extends commonActionsPage {
 	// Service Tab verification
 	private By checkCaseCreated = By
 			.xpath("//div[@data-id='cases-pcf_grid_control_container'] //span[text()='No data available']");
-	private By caseNumberVerify = By.xpath("//div[@col-id='title']//a");
+	private static By caseNumberVerify = By.xpath("//div[@col-id='title']//a");
 	private By caseStatusUnscheduled = By.xpath("//div[@col-id='statuscode'] //label[@aria-label='Unscheduled']");
 	private By caseStatusVerify = By.xpath("//div[@col-id='statuscode']//label[@aria-label]");
 	private By checkWOCreated = By
 			.xpath("//div[@data-id='workorder-pcf_grid_control_container'] //span[text()='No data available']");
-	private By workOrderVerify = By.xpath("//div[@col-id='msdyn_name']//a");
+	private static By workOrderVerify = By.xpath("//div[@col-id='msdyn_name']//a");
 	private By caseGridRefresh = By.xpath("//ul[@aria-label='Case Commands'] //button[@aria-label='Refresh']");
 	private By workOrderGridRefresh = By
 			.xpath("//ul[@aria-label='Work Order Commands'] //button[@aria-label='Refresh']");
@@ -49,7 +43,6 @@ public class factoryPage extends commonActionsPage {
 	private By workOrderStatusVerify = By.xpath("//div[@col-id='msdyn_systemstatus']//label[@aria-label]");
 	private By sampleForLab = By.xpath("//button[contains(@title,'Add New Sample For Lab Analysis')]");
 	private By dateAndTime = By.xpath("//input[contains(@aria-label,'Date of Date And Time')] ");
-	private By selectTodayDateAndTime = By.cssSelector("td[aria-selected='true']");
 	private By parametersAnalysed = By.xpath("//input[@aria-label='Parameters Analysed, Multiple Selection Lookup']");
 	private By lab = By.xpath("//input[@aria-label='Lab, Lookup']");
 	private By saveAndClose = By.xpath("//button[@aria-label='Save and Close']");
@@ -112,8 +105,8 @@ public class factoryPage extends commonActionsPage {
 	private By approveButton = By.cssSelector("button[aria-label='Approve Factory']");
 
 	private By accountNumber = By.cssSelector("input[aria-label='Account Number']");
-	private By savingInProgressOkButton = By.cssSelector("span[id='okButtonText_1']");
-	private By savingInProgressPopUp = By.cssSelector("div[id='modalDialogContentContainer_1']");
+	private By savingInProgressOkButton = By.xpath("//span[contains(@id,'okButtonText')]");
+	private By savingInProgressPopUp = By.xpath("//div[contains(@id,'modalDialogContentContainer')]");
 
 	private By caseReadOnly = By.cssSelector("span[data-id='warningNotification']");
 	private By caseStatus = By.xpath("//div[contains(text(),'Completed')]");
@@ -127,6 +120,8 @@ public class factoryPage extends commonActionsPage {
 	private By entitySelection = By.xpath("//div[@col-id='name' and @role='columnheader']");
 
 	String WQPath = "\\src\\test\\resources\\testdata\\SIT_WQ 2 3 1 2.xlsx";
+	String todayDateTime = eleUtil.todayDateAndTime();
+	String todayDate = eleUtil.todayDate("MM/dd/yyyy");
 	String tefFilePath = "\\src\\test\\resources\\testdata\\WQ_Sample_NC.xlsx";
 	String filePath = System.getProperty("user.dir");
 	String factoryName = "Factory" + todayDateTime;
@@ -140,12 +135,24 @@ public class factoryPage extends commonActionsPage {
 		return selectLookUp;
 	}
 
-	public By getCaseNumberVerify() {
+	public static By getWorkOrderVerify() {
+		return workOrderVerify;
+	}
+
+	public static By getCaseNumberVerify() {
 		return caseNumberVerify;
 	}
 
 	public By getSavingInProgressPopUp() {
 		return savingInProgressPopUp;
+	}
+
+	public By getSearchResults() {
+		return searchResults;
+	}
+
+	public By getSaveAndClose() {
+		return saveAndClose;
 	}
 
 	public void enterEntityName() {
@@ -165,20 +172,22 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.textVerificationFormAttribute(statusReason, "title", expectedStatus);
 	}
 
-	public String getCaseNumber() {
+	public static String getCaseNumber() {
 		eleUtil.waitForVisibilityOfElement(getCaseNumberVerify(), 100);
 		String caseNumber = eleUtil.doElementGetText(getCaseNumberVerify());
 		return caseNumber;
 	}
 
-	public String getWorkOrderNumber() {
-		String workOrder = eleUtil.doElementGetText(workOrderVerify);
+	public static String getWorkOrderNumber() {
+		eleUtil.waitForVisibilityOfElement(getWorkOrderVerify(), 40);
+		String workOrder = eleUtil.doElementGetText(getWorkOrderVerify());
 		return workOrder;
 	}
 
-	public void caseVerificationInGrid() throws InterruptedException {
+	public void caseVerification(String caseNumber) throws InterruptedException {
 		eleUtil.waitTillElementIsDisplayed(caseGridRefresh, 30);
 		eleUtil.doClickLog(caseGridRefresh, "Clicked on case grid refresh button");
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
 			if (eleUtil.elementIsDisplayed(checkCaseCreated, "No data available")) {
 				Thread.sleep(3000);
@@ -187,8 +196,8 @@ public class factoryPage extends commonActionsPage {
 				// If the element is not displayed, execute the else block logic
 				try {
 					commonActionsPage.casenumber = getCaseNumber();
-					assertTrue(commonActionsPage.casenumber.startsWith("DQB/TE/I"),
-							"Case number format is not expected");
+					assertTrue(commonActionsPage.casenumber.startsWith("DQB/TE/I"), "Case number format is not expected");
+					assertTrue(commonActionsPage.casenumber.startsWith(caseNumber), "Case number format is not expected");
 					Log.info(commonActionsPage.casenumber);
 					return; // Exit the method if the case number is verified
 				} catch (NoSuchElementException e) {
@@ -200,6 +209,7 @@ public class factoryPage extends commonActionsPage {
 
 	public void verifyCaseStatus(String expectedStatus) throws InterruptedException {
 		eleUtil.waitTillElementIsDisplayed(caseStatusVerify, 30);
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
 			if (eleUtil.elementIsDisplayed(caseStatusUnscheduled, "Status is unscheduled")) {
 				Thread.sleep(3000);
@@ -223,6 +233,7 @@ public class factoryPage extends commonActionsPage {
 	public void workOrderVerification() throws InterruptedException {
 		eleUtil.waitTillElementIsDisplayed(workOrderGridRefresh, 30);
 		eleUtil.doClickLog(workOrderGridRefresh, "Clicked on work order grid refresh button");
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
 			if (eleUtil.elementIsDisplayed(checkWOCreated, "No data available")) {
 				Thread.sleep(3000);
@@ -242,6 +253,7 @@ public class factoryPage extends commonActionsPage {
 
 	public void verifyWorkOrderStatus(String expectedStatus) throws InterruptedException {
 		eleUtil.waitTillElementIsDisplayed(workOrderStatusVerify, 30);
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
 			if (eleUtil.elementIsDisplayed(workOrderUnscheduled, "Status is Unscheduled")) {
 				Thread.sleep(3000);
@@ -270,35 +282,32 @@ public class factoryPage extends commonActionsPage {
 		Log.info("size is:" + woNum.size());
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection");
+			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection", "In Progress");
 			sampleLabForAnalysis();
 			selectChecklistForWRN2Report();
 			crmActions.saveChecklist();
 		}
+		crmActions.resetFirstRunFlag();
 	}
 
 	public void sampleLabForAnalysis() throws InterruptedException {
 		eleUtil.waitTillElementIsDisplayed(toolboxBriefingConducted, 30);
 		eleUtil.doClickLog(sampleForLab, "Click on New Sample For Lab Analysis button");
 		eleUtil.waitTillElementIsDisplayed(dateAndTime, 30);
-		// eleUtil.doClickLog(dateAndTime, "Open Calender");
-		// eleUtil.waitTillElementIsDisplayed(calender, 30);
-		// eleUtil.doClickLog(dateAndTime, "Open Calender");
 		eleUtil.doSendKeysWithWaitEnter(dateAndTime, todayDate, 100);
-		eleUtil.doClearUsingKeyswithWait(parametersAnalysed, 30);
 		eleUtil.doClickLog(parametersAnalysed, "Enter 1st value as Toluene");
+		eleUtil.doClearUsingKeyswithWait(parametersAnalysed, 30);
 		eleUtil.doSendKeysWithWaitEnter(parametersAnalysed, "Toluene", 30);
 		eleUtil.doClickLog(setLookUp(), "Select Look-up value");
-		eleUtil.doClearUsingKeyswithWait(lab, 30);
 		eleUtil.doClickLog(lab, "Enter 1st value as PUB Laboratory 1");
+		eleUtil.doClearUsingKeyswithWait(lab, 30);
 		eleUtil.doSendKeysWithWaitEnter(lab, "PUB Laboratory 1", 30);
 		eleUtil.doClickLog(setLookUp(), "Select Look-up value");
 		eleUtil.doClickLog(parametersAnalysed, "Enter 2nd value as Styrene");
 		eleUtil.doSendKeysWithWaitEnter(parametersAnalysed, "Styrene", 50);
 		eleUtil.doClickLog(setLookUp(), "Select Look-up value");
-		eleUtil.waitTillElementIsDisplayed(saveAndClose, 30);
-		eleUtil.doClickLog(saveAndClose, "Click on Save and Close button");
-
+		eleUtil.waitTillElementIsDisplayed(getSaveAndClose(), 30);
+		eleUtil.doClickLog(getSaveAndClose(), "Click on Save and Close button");
 	}
 
 	public void selectChecklistForWRN2Report() {
@@ -329,6 +338,7 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.scrollDownTillElementVisible(abnormalityInChamber);
 		eleUtil.waitTillElementIsDisplayed(abnormalityInChamber, 30);
 		eleUtil.waitTillElementIsDisplayed(abnormalityInOilInterceptor, 30);
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
 			if (eleUtil.elementIsDisplayed(abnormalityChamberCheck, "Abnormality In Chamber is empty")
 					&& eleUtil.elementIsDisplayed(abnormalityOilCheck, "Abnormality In Oil Interceptor is empty")) {
@@ -372,12 +382,13 @@ public class factoryPage extends commonActionsPage {
 	}
 
 	public void pubReportIsUploadAndCheckData() throws InterruptedException {
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
 			if (eleUtil.elementIsDisplayed(checkPubLab, "Pub report not upload refresh the page") && eleUtil
 					.elementIsDisplayed(checkSumHeavyMetal, "sum of heavy metal is not updated refresh the page")) {
 				eleUtil.doClickLog(crmActions.getRefreshBtn(), "Click on Refresh button");
 				Thread.sleep(1000);// Wait for 1 second before checking again
-				crmActions.navigatingToTabFactory("Lab Report Result");
+				crmActions.navigateToTab("Lab Report Result");
 			} else {
 				try {
 					Log.info("Pub report uploaded successfully");
@@ -397,7 +408,8 @@ public class factoryPage extends commonActionsPage {
 		crmActions.clickOnSaveButton();
 	}
 
-	public void checkSystemAndUserAssessment() throws InterruptedException {
+	public void checkSystemAndUserAssessment(String value) throws InterruptedException {
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
 			if (eleUtil.elementIsDisplayed(emptyUserAssessment, "User Assessment is empty")
 					&& eleUtil.elementIsDisplayed(emptySystemAssessment, "System Assessment is empty")) {
@@ -405,8 +417,8 @@ public class factoryPage extends commonActionsPage {
 				Thread.sleep(1000); // Wait for 1 second before checking again
 			} else {
 				try {
-					eleUtil.textVerificationFormAttribute(userAssessment, "title", "Non-Compliance");
-					eleUtil.textVerificationFormAttribute(systemAssessment, "title", "Non-Compliance");
+					eleUtil.textVerificationFormAttribute(userAssessment, "title", value);
+					eleUtil.textVerificationFormAttribute(systemAssessment, "title", value);
 					break;
 				} catch (NoSuchElementException e) {
 					Log.error("System and User Assessment are empty: " + e.getMessage());
@@ -417,15 +429,16 @@ public class factoryPage extends commonActionsPage {
 
 	public void labResultNotification() throws InterruptedException {
 		eleUtil.isPageLoaded(50);
-		String beforeTapToOpenBtn = eleUtil.doGetElementAttribute(crmActions.getPageTitle(), "title");
+		String beforeTapToOpenBtn = crmActions.setPageTitle();
 		By notificationIDCheck = By
 				.xpath("//div[@aria-label='Warning notification: Lab result value(s) are higher than expected range']"
 						+ "//a[contains(text(), '" + beforeTapToOpenBtn + "')]");
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
-			eleUtil.isPageLoaded(100);
-			eleUtil.waitForVisibilityOfElement(crmActions.getNotificationIcon(), 100);
+			eleUtil.isPageLoaded(50);
+			eleUtil.waitForVisibilityOfElement(crmActions.getNotificationIcon(), 50);
 			eleUtil.doClick(crmActions.getNotificationIcon());
-			Thread.sleep(3000);
+			eleUtil.waitForVisibilityOfElement(notificationIDCheck, 50);
 			if (crmActions.notificationForRecordNumber(notificationIDCheck, beforeTapToOpenBtn,
 					"Warning notification: Lab result value(s) are higher than expected range")) {
 				break;
@@ -439,8 +452,8 @@ public class factoryPage extends commonActionsPage {
 	public void selectListOfAdHocFactory() {
 		eleUtil.waitForVisibilityOfElement(listOfFactoryListView, 100);
 		eleUtil.doClickLog(listOfFactoryListView, "Click on Factory list view");
-		eleUtil.waitForVisibilityOfElement(searchResults, 100);
-		eleUtil.doSendKeysLog(searchResults, "List of Ad-hoc Factories", "Enter List of Ad-hoc Factories");
+		eleUtil.waitForVisibilityOfElement(getSearchResults(), 100);
+		eleUtil.doSendKeysLog(getSearchResults(), "List of Ad-hoc Factories", "Enter List of Ad-hoc Factories");
 		eleUtil.waitForVisibilityOfElement(adHocView, 20);
 		eleUtil.doClickLog(adHocView, "click on Ad-hoc Factories");
 	}
@@ -464,15 +477,15 @@ public class factoryPage extends commonActionsPage {
 	}
 
 	public void factoryApprovalNotification() throws InterruptedException {
-		eleUtil.isPageLoaded(50);
+		eleUtil.isPageLoaded(30);
 		String beforeTapToOpenBtn = eleUtil.doGetElementAttribute(accountNumber, "title");
 		By notificationIDCheck = By.xpath("//div[@aria-label='Informational notification: New Factory Added']"
 				+ "//a[contains(text(), '" + beforeTapToOpenBtn + "')]");
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
-			eleUtil.isPageLoaded(100);
-			eleUtil.waitForVisibilityOfElement(crmActions.getNotificationIcon(), 100);
+			eleUtil.isPageLoaded(50);
+			eleUtil.waitForVisibilityOfElement(crmActions.getNotificationIcon(), 50);
 			eleUtil.doClick(crmActions.getNotificationIcon());
-			Thread.sleep(3000);
 			if (crmActions.notificationForRecordNumber(notificationIDCheck, beforeTapToOpenBtn,
 					"Informational notification: New Factory Added")) {
 				break;
@@ -489,17 +502,26 @@ public class factoryPage extends commonActionsPage {
 		crmActions.notificationForTabToOpen(commonActionsPage.casenumber, "Inspection Case Information");
 	}
 
-	public void checkSavingInProgress() {
-		eleUtil.waitForVisibilityOfElement(savingInProgressOkButton, 30);
-		eleUtil.doClickLog(savingInProgressOkButton, "click on Ok button");
-	}
-
 	public void clickOnSavingInProgressOkButton() throws InterruptedException { // remove this code once issue is
 																				// resolved
-		Thread.sleep(2000);
 		eleUtil.isPageLoaded(100);
 		if (eleUtil.elementIsDisplayed(getSavingInProgressPopUp(), "Saving in Progress Pop Up")) {
-			checkSavingInProgress();
+			eleUtil.waitForVisibilityOfElement(savingInProgressOkButton, 30);
+			while (true) {
+				List<WebElement> okButtons = driver.findElements(savingInProgressOkButton);
+				if (okButtons.isEmpty()) {
+					break;
+				}
+				for (WebElement button : okButtons) {
+					try {
+						button.click();
+						// Refresh the list of elements after each click
+						okButtons = driver.findElements(savingInProgressOkButton);
+					} catch (Exception e) {
+						Log.error("Error clicking on Ok button: {}"+ e.getMessage());
+					}
+				}
+			}
 		} else {
 			eleUtil.doClickLog(crmActions.getRefreshBtn(), "Click on Refresh button");
 		}
@@ -519,7 +541,7 @@ public class factoryPage extends commonActionsPage {
 
 	public void checkCaseStatus(String status) {
 		eleUtil.doClickLog(crmActions.getRefreshBtn(), "Click on Refresh button");
-		String recordStatus = "Read-only  This record’s status: Resolved";
+		String recordStatus = "Read-only This record’s status: Resolved";
 		Assert.assertEquals(getCaseReadOnly(), recordStatus, "Status not matched");
 		Assert.assertEquals(getCaseStatus(), status, "Status not matched");
 	}
@@ -579,7 +601,7 @@ public class factoryPage extends commonActionsPage {
 				"Select No spillages of chemicals / oil found in the premises");
 	}
 
-	public void fillCheckListQuestionsforWRN1TEF() throws InterruptedException {
+	public void fillCheckListQuestionsForWRN1TEF() throws InterruptedException {
 		commonActionsPage.WOnumber = crmActions.getWONumber();
 		List<String> woNum = commonActionsPage.WOnumber;
 		Thread.sleep(2000);
@@ -587,7 +609,7 @@ public class factoryPage extends commonActionsPage {
 		Log.info("size is:" + woNum.size());
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection");
+			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection", "In Progress");
 			sampleLabForAnalysis();
 			selectChecklistForWRN1TEF();
 			crmActions.saveChecklist();
@@ -611,7 +633,7 @@ public class factoryPage extends commonActionsPage {
 	public void pubReportIsUploadInHeavyMetalTab() {
 		navigatingToTab("Lab Report Result");
 		boolean flag = false;
-		long startTime = System.currentTimeMillis();
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (!flag && (System.currentTimeMillis() < endTime)) {
 			try {
 				eleUtil.waitForVisibilityOfElement(morecommands, 30);

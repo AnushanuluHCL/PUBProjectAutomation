@@ -13,7 +13,7 @@ Feature: Testing WRN2- Adhoc factory inspection for non-compliance
 	And verify factory is created with "New" status reason
 	Then verify in service tab Case created with status "Scheduled" and verify Case notification
 	Then verify in service tab Work Order created with status "Scheduled" and verify Work Order notification
-	And open WO and fill the Booking details
+	And open "Scheduled" WO and fill the Booking details and select "In Progress" status
 	And go to Checklist tab create sample for lab analysis details with and fill the required checklist
 	# Case Verification
 	Then go to Cases and verify Abnormality In Chamber and Abnormality in Oil Interceptor fields
@@ -22,7 +22,7 @@ Feature: Testing WRN2- Adhoc factory inspection for non-compliance
 	Then Verify the sum of heavy metal count and system assessment as Non-Compliance
   	# Click on Lab Report Uploaded
 	And upload lab report
-	Then verify System Assessment and User Assessment are marked as Non-Compliance
+	Then verify System Assessment and User Assessment are marked as "Non-Compliance"
 	Then go to "All Activities" and verify the email for Request for "Non-compliance Case" and "Inspection Case has been Submitted for Review"
 	# Lab result value(s) are higher than expected range
 	Then verify notification for lab result
