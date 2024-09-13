@@ -9,10 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
+import java.time.*;
 import java.util.*;
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 import org.openqa.selenium.*;
@@ -27,7 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.sat.exception.FrameworkException;
 
 public class ElementUtil {
-	private static WebDriver driver;
+	private WebDriver driver;
 	protected Properties prop;
 
 	public ElementUtil(WebDriver driver) {
@@ -128,7 +126,7 @@ public class ElementUtil {
 	 * @param elementName
 	 * @return
 	 */
-	public static boolean elementIsDisplayed(By locator, String elementName) throws InterruptedException {
+	public boolean elementIsDisplayed(By locator, String elementName) throws InterruptedException {
 		Thread.sleep(3000);
 		try {
 			WebElement element = getElement(locator);
@@ -150,7 +148,7 @@ public class ElementUtil {
 	 * @param time
 	 * @return
 	 */
-	public static boolean isElementPresent(By locator, int time) throws InterruptedException {
+	public boolean isElementPresent(By locator, int time) throws InterruptedException {
 		Thread.sleep(1000); // Reduced sleep time
 		try {
 			waitTillPresenceElement(locator, time); // Corrected method name
@@ -170,7 +168,7 @@ public class ElementUtil {
 	 * @param attribute
 	 */
 	public String doGetElementAttribute(By locator, String attribute) {
-		waitTillElementIsDisplayed(locator, 20);
+		waitTillElementIsDisplayed(locator, 40);
 		String attributeValue = null;
 		try {
 			WebElement element = getElement(locator);
@@ -186,7 +184,7 @@ public class ElementUtil {
 		return attributeValue;
 	}
 
-	public static WebElement getElement(By locator) {
+	public WebElement getElement(By locator) {
 		return driver.findElement(locator);
 	}
 
@@ -205,7 +203,6 @@ public class ElementUtil {
 		List<String> eleTextList = new ArrayList<String>();// pc=0 {}
 		for (WebElement e : eleList) {
 			String text = e.getText();
-
 			if (text.length() != 0) {
 				eleTextList.add(text);
 			}
@@ -266,7 +263,7 @@ public class ElementUtil {
 		}
 	}
 
-	public void clikcOnElement(By locator, String eleText) {
+	public void clickOnElement(By locator, String eleText) {
 		List<WebElement> eleList = getElements(locator);
 		System.out.println(eleList.size());
 		for (WebElement e : eleList) {
@@ -515,7 +512,7 @@ public class ElementUtil {
 		return ele;
 	}
 
-	public static WebElement waitVisibilityOfElement(By locator, int timeOut) {
+	public WebElement waitVisibilityOfElement(By locator, int timeOut) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 
@@ -926,7 +923,7 @@ public class ElementUtil {
 
 	}
 
-	public static boolean staleElementRefExecClickCRM(By locator) {
+	public boolean staleElementRefExecClickCRM(By locator) {
 		WebElement element = getElement(locator);
 		boolean result = false;
 		int attempts = 0;
@@ -961,9 +958,29 @@ public class ElementUtil {
 	 * @param time
 	 * @return
 	 */
-	public static WebElement waitTillPresenceOfElementReturn(By element, int time) {
+	public WebElement waitTillPresenceOfElementReturn(By element, int time) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
 		return wait.until(ExpectedConditions.presenceOfElementLocated(element));
+	}
+
+	/**
+	 * Explicit wait till element is invisible on the screen
+	 *
+	 * @param locator
+	 * @param timeOut
+	 * @return
+	 */
+	public Boolean waitForInVisibilityOfElement(By locator, int timeOut) {
+		Boolean isElementInvisible = false;
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+			isElementInvisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+		} catch (TimeoutException e) {
+			Log.error("Element is still visible after waiting for " + timeOut + " seconds.");
+		} catch (Exception e) {
+			Log.error("An error occurred while waiting for the element to become invisible: " + e.getMessage());
+		}
+		return isElementInvisible;
 	}
 
 	/**
@@ -972,7 +989,7 @@ public class ElementUtil {
 	 * @param locator
 	 * @param time
 	 */
-	public static void waitTillPresenceElement(By locator, int time) {
+	public void waitTillPresenceElement(By locator, int time) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
 		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 	}
@@ -985,7 +1002,7 @@ public class ElementUtil {
 	 * @param text
 	 * @param elementName
 	 */
-	public static void selectDropDownValue(By element, String selectType, String text, String elementName) {
+	public void selectDropDownValue(By element, String selectType, String text, String elementName) {
 		waitVisibilityOfElement(element, 20);
 		if (selectType.equals("selectByVisibleText")) {
 			try {
@@ -1019,13 +1036,48 @@ public class ElementUtil {
 	}
 
 	/**
-	 * Generate current date and time
+	 * Format a given date
+	 * @param date
+	 * @param format
+	 * @return formatted date string
 	 */
-	public static String todayDate() {
-		Date date = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		String currentDateTime = formatter.format(date);
-		return currentDateTime;
+	private static String formatDate(Date date, String format) {
+		SimpleDateFormat formatter = new SimpleDateFormat(format);
+		formatter.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
+		return formatter.format(date);
+	}
+
+	/**
+	 * Generate current date
+	 */
+	public static String todayDate(String format) {
+		return formatDate(new Date(), format);
+	}
+
+	/**
+	 * Generate current date + x Days
+	 * @param format
+	 * @param days
+	 */
+    /*public static String todayDatePlusDays(String format, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        return formatDate(calendar.getTime(), format);
+    }*/
+
+	public static String todayDatePlusDays(String format, int days) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
+		int addedDays = 0;
+		while (addedDays < days) {
+			calendar.add(Calendar.DAY_OF_YEAR, 1);
+			int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+			if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
+				addedDays++;
+			}
+		}
+		return formatDate(calendar.getTime(), format);
 	}
 
 	/**
@@ -1075,7 +1127,7 @@ public class ElementUtil {
 	 * @param interactableElement
 	 * @param time
 	 */
-	public static void scrollDownTillEnd(By interactableElement, int time) {
+	public void scrollDownTillEnd(By interactableElement, int time) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
 		WebElement element = getElement(interactableElement);
 		wait.until(ExpectedConditions.visibilityOf(element));
@@ -1092,7 +1144,7 @@ public class ElementUtil {
 	 *
 	 * @param locator
 	 */
-	public static void scrollDownTillElementVisible(By locator) throws InterruptedException {
+	public void scrollDownTillElementVisible(By locator) throws InterruptedException {
 		int i = 1;
 		while (i <= 5) {
 			i++;
@@ -1108,7 +1160,7 @@ public class ElementUtil {
 	/**
 	 * Scroll down
 	 */
-	public static void scrollDown() {
+	public void scrollDown() {
 		Actions actions = new Actions(driver);
 		actions.keyDown(Keys.CONTROL).sendKeys(Keys.END).keyUp(Keys.CONTROL).perform();
 	}
@@ -1133,24 +1185,62 @@ public class ElementUtil {
 	public void acceptAlert(int timeoutInSeconds) {
 		waitForAlertAndAccept(timeoutInSeconds);
 	}
-	
-	public static String todayDatePlusDays(String format, int days) {
-	    Calendar calendar = Calendar.getInstance();
-	    calendar.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
-	    int addedDays = 0;
-	    while (addedDays < days) {
-	        calendar.add(Calendar.DAY_OF_YEAR, 1);
-	        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-	        if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
-	            addedDays++;
-	        }
-	    }
-	    return formatDate(calendar.getTime(), format);
+
+	/**
+	 * This is giving me last value of the String
+	 *
+	 * @param input
+	 * @return
+	 */
+	public static int extractLastValue(String input) {
+		// Split the string by spaces
+		String[] parts = input.split(" ");
+		// Get the last part and convert it to an integer
+		int lastValue = Integer.parseInt(parts[parts.length - 1]);
+		return lastValue;
 	}
-	private static String formatDate(Date date, String format) {
-	    SimpleDateFormat formatter = new SimpleDateFormat(format);
-	    formatter.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
-	    return formatter.format(date);
+
+	public static String getSingaporeCurrentTime() {
+		ZonedDateTime singaporeTime = ZonedDateTime.now(ZoneId.of("Asia/Singapore"));
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+		return singaporeTime.format(formatter);
+	}
+
+	public static String getSingaporeCurrentTimePlusTwoHours() {
+		ZonedDateTime singaporeTimePlusTwoHours = ZonedDateTime.now(ZoneId.of("Asia/Singapore")).plusHours(2);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+		return singaporeTimePlusTwoHours.format(formatter);
+	}
+
+	/**
+	 * This is giving current date and time in this format ddMMyyyy-HHmmss
+	 *
+	 * @return
+	 */
+	public String currentDateTime(String format) {
+		LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Singapore"));
+		// Format date as ddMMyyyy
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(format);
+		String formattedDate = now.format(dateFormatter);
+		// Format time as HHmmss
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
+		String formattedTime = now.format(timeFormatter);
+		// Combine date and time
+		String result = formattedDate + "-" + formattedTime;
+		return result;
+	}
+
+	/**
+	 * This is giving me 5 digit random number
+	 *
+	 * @return
+	 */
+	public int randomNumber() {
+		Random random = new Random();
+
+		// Generate a random number between 10000 and 99999
+		int randomNumber = 10000 + random.nextInt(90000);
+		return randomNumber;
 	}
 
 }

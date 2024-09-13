@@ -5,17 +5,10 @@ import static org.testng.Assert.assertTrue;
 
 import java.text.ParseException;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
-import com.sat.constants.AppConstants;
 import com.sat.locators.ConstructionLocatorsPage;
-import com.sat.locators.WRN1CaseLocatorsPage;
 import com.sat.locators.factoryPage;
-import com.sat.testUtil.Log;
-import com.sat.testbase.TestBase;
 
 public class constructionsPage extends commonActionsPage {
 	String path = "\\src\\test\\resources\\testdata\\8NMB_ConstructionCreation.xlsx";
@@ -91,7 +84,7 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.caseCreationCheck();
 	}
 	public void fillChecklistWRN8NMB() throws InterruptedException {
-		constructionpage.fillCheckListQuestionsforWRN8NMB();
+		constructionpage.fillCheckListQuestionsForWRN8NMB();
 	}
 	public void POWSapprovalNotification() throws InterruptedException {
 		// CommonActionsPage.casenumber= getCaseNumber();

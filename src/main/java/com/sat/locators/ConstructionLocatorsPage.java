@@ -4,24 +4,18 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.commonCRMActions;
-import com.sat.constants.AppConstants;
 import com.sat.testUtil.ExcelUtil;
 import com.sat.testUtil.Log;
 
@@ -303,7 +297,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		}
 	}
 
-	public void fillCheckListQuestionsforWRN8NMB() throws InterruptedException {
+	public void fillCheckListQuestionsForWRN8NMB() throws InterruptedException {
 		commonActionsPage.WOnumber = crmActions.getWONumber();
 		List<String> woNum = commonActionsPage.WOnumber;
 		Thread.sleep(2000);
@@ -311,7 +305,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		Log.info("size is:" + woNum.size());
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i), "BCA Project Site Inspection affecting Public Sewerage System");
+			crmActions.openCheckList(woNum.get(i), "BCA Project Site Inspection affecting Public Sewerage System" ,"In Progress");
 			selectChecklistForWRN8NMB();
 			crmActions.saveChecklist();
 		}
