@@ -39,9 +39,9 @@ import static org.testng.Assert.assertTrue;
 
 public class CommonActionsPage {
 
-    protected WebDriver driver;
+    protected static WebDriver driver;
     protected Properties prop;
-    protected ElementUtil eleUtil;
+    protected static ElementUtil eleUtil;
     protected ExcelUtil excelUtil;
     protected TestBase testbase;
     protected JavaScriptUtil jsutil;
@@ -50,7 +50,7 @@ public class CommonActionsPage {
 	public static List<String> WOnumber;
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
 			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO, oldSealNumber, newSealNumber,
-			resealReason, WRN1_factoryname;
+			resealReason, WRN1_factoryname, childCaseNumber, projectRefNumber;
 	private static Map<String, String> sharedValues = new HashMap<>();
 	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
 	protected static Map<Integer, String> tankerNumber = new HashMap<>();
@@ -85,8 +85,9 @@ public class CommonActionsPage {
 
 	// Locators for View
 	private By filterBy = By.xpath("//span[text()='Filter by']");
-	private By filterbyinputbox = By.xpath("//input[@aria-label='Filter by value']");
+	private By filterbyinputbox = By.cssSelector("[aria-label='Filter by value']");
     private By pageTitle = By.cssSelector("h1[data-id='header_title']");
+	private By applyButton = By.cssSelector("button[type='submit']");
 
     public CommonActionsPage(WebDriver driver) {
         this.driver = driver;
@@ -161,7 +162,7 @@ public class CommonActionsPage {
 		while (!flag) {
 			try {
 				Thread.sleep(3000);
-				eleUtil.doClickWithWait(refreshBtn, AppConstants.SHORT_DEFAULT_WAIT);
+				eleUtil.doClickWithWait(refreshBtn, AppConstants.LONG_DEFAULT_WAIT);
 				System.out.println("refresh button clicked");
 				flag = true;
 			} catch (InterruptedException e) {
@@ -211,8 +212,8 @@ public class CommonActionsPage {
 	}
 
 	public void selectEntity(String entityname) {
-		clickOnRefreshBtn();
-		eleUtil.isPageLoaded(10);
+		//clickOnRefreshBtn();
+		eleUtil.isPageLoaded(30);
 		By nameoftheentity = By.xpath("//div[@title='" + entityname + "']");
 		/*
 		 * try { Thread.sleep(3000); } catch (InterruptedException e) { // TODO
@@ -398,6 +399,23 @@ public class CommonActionsPage {
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
 	}
 
+	public void filterViewForStatus(String value) throws InterruptedException {
+		eleUtil.isPageLoaded(20);
+		eleUtil.waitForVisibilityOfElement(filterBy, 50);
+		eleUtil.staleElementRefExecClickCRM(filterBy);
+		eleUtil.doClickLog(filterBy, "click on Filter By");
+		Thread.sleep(2000);
+		eleUtil.doClickLog(filterbyinputbox, "click on filter selection");
+		By filterValue = By.xpath("//div[@title='" + value + "']");
+		Log.info("filter value "+filterValue);
+		eleUtil.waitForVisibilityOfElement(filterValue, 30);
+		eleUtil.doClickLog(filterValue, "Select filter value "+value);
+		Thread.sleep(2000);
+		eleUtil.waitForVisibilityOfElement(applyButton, 50);
+		eleUtil.doClickLog(applyButton,"Click on Apply button");
+		Thread.sleep(2000);
+	}
+
 	public void clickOnNotificationIcon() {
 		eleUtil.waitForVisibilityOfElement(notificationIcon, 100);
 		eleUtil.doClickLog(notificationIcon, "Clicked on notification bell icon");
@@ -488,11 +506,9 @@ public class CommonActionsPage {
 		eleUtil.doElementClickableLog(caseSubtypeField, 30,"Element is clickable");
 		eleUtil.createSelectLog(caseSubtypeField,"Clicked on Case Sub Type field");
 		eleUtil.doSelectDropDownByVisibleTextLog(caseSubtypeField, caseSubType, "Selected dropdown value is : ");
-
 		eleUtil.waitForVisibilityOfElement(entityLookupField, 50);
 		eleUtil.doClickLog(entityLookupField, "Clicked on entity lookup field");
 		eleUtil.doClearLog(entityLookupField,"Clear the field");
-
 		if (BusinessFunctionField.equals("TP")) {
 			System.out.println(CommonActionsPage.Tankercompanyname);
 			eleUtil.doSendKeysLog(entityLookupField, CommonActionsPage.Tankercompanyname,"Entered text is : ");

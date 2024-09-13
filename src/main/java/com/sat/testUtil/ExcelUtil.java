@@ -35,14 +35,18 @@ public class ExcelUtil {
         if (cell == null) {
             cell = row.createCell(columnNumber);
         }
-        cell.setCellValue(value);
+        cell.setCellValue(""); // Clear the cell value
+        cell.setCellValue(value); // Set the new cell value
     }
 
     public void saveAndClose() throws IOException {
-        FileOutputStream fos = new FileOutputStream(filePath);
-        workbook.write(fos);
-        fos.close();
-        workbook.close();
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            workbook.write(fos);
+        } finally {
+            if (workbook != null) {
+                workbook.close();
+            }
+        }
     }
 }
 

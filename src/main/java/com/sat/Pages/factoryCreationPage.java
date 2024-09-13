@@ -26,11 +26,11 @@ public class factoryCreationPage extends CommonActionsPage{
 
     public void navigateToServiceTab() {
         clickOnRefreshBtn();
-        crmActions.navigatingToTabFactory("Services");
+        crmActions.navigateToTab("Services");
     }
 
     public void verifyCaseCreatedWithStatus(String schedule) throws InterruptedException {
-        factory.caseVerification();
+        factory.caseVerification("DQB/TE/I");
         factory.verifyCaseStatus(schedule);
     }
 
@@ -60,7 +60,7 @@ public class factoryCreationPage extends CommonActionsPage{
     }
 
     public void navigateToTab(String tab) {
-        crmActions.navigatingToTabFactory(tab);
+        crmActions.navigateToTab(tab);
     }
 
     public void verifyEmail(String emailSubject) throws InterruptedException {
@@ -83,8 +83,8 @@ public class factoryCreationPage extends CommonActionsPage{
         factory.clickOnUploadLabReportSwitch();
     }
 
-    public void verifySystemAndUserAssessment() throws InterruptedException {
-        factory.checkSystemAndUserAssessment();
+    public void verifySystemAndUserAssessment(String value) throws InterruptedException {
+        factory.checkSystemAndUserAssessment(value);
     }
 
     public void verifyNotificationForLabReport() throws InterruptedException {

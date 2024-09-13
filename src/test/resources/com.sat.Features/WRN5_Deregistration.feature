@@ -51,7 +51,7 @@ Feature: Testing WRN5-Deregistering a tanker Functionality
      And navigate to Close stage and fill the respective details and navigate to next stage
 
     Then create a manual case with case subtype as "Tanker Deregistration"
-     And select a tnaker to deregister it
+     And select a tanker to deregister it
      And navigate to Processing stage and fill the respective details and navigate to next stage
     When Login to app with "SO_userid" and "SO_pwd"
      And user selects App "DQB Case Management"

@@ -378,9 +378,6 @@ public class CasecreationPage extends CommonActionsPage {
     private By calendorIconFromFilter = By.xpath("//i[@aria-label='Filter by value']");
     private By rowsCount = By.xpath("//span[contains(@class,'statusTextContainer')]");
 
-    long startTime = System.currentTimeMillis();
-    long endTime = startTime + 120000;
-
     public CasecreationPage(WebDriver driver) {
         super(driver);
         /*
@@ -656,11 +653,9 @@ public class CasecreationPage extends CommonActionsPage {
         eleUtil.waitForVisibilityOfElement(searchbox, 20);
         Thread.sleep(2000);
         eleUtil.doSendKeys(searchbox, CommonActionsPage.casenumber);
-
         // eleUtil.doSendKeys(searchbox, "DQB/TP/I/2024/24244");
         eleUtil.isPageLoaded(50);
         Thread.sleep(2000);
-
         driver.findElement(searchbox).sendKeys(Keys.ENTER);
         Thread.sleep(3000);
         selectFirstRecord();
@@ -683,6 +678,8 @@ public class CasecreationPage extends CommonActionsPage {
         // CommonActionsPage.WOnumber = getWONumber();
         // CommonActionsPage.TankerName = getTankername();
     }
+
+
 
     public void navigatingToStage(String stageName) {
         By clickOnStage = By.xpath("//div[contains(@id,'stageNameContainer') and @title='" + stageName + "']");
@@ -3730,7 +3727,7 @@ public class CasecreationPage extends CommonActionsPage {
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
         float totalActualCalculatedDepositApp = (totalActualCalDepositGW + totalActualCalDepositGW) * 2;
-
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         String actualGWActualQuantity = eleUtil.doGetElementAttribute(GWActualQuantity, "title");
         while (actualGWActualQuantity.contains("0.00")) {
             if (System.currentTimeMillis() > endTime) {
@@ -3803,6 +3800,7 @@ public class CasecreationPage extends CommonActionsPage {
 
         String actualdepositAmount = eleUtil.doGetElementAttribute(depositAmount, "title"); //0.00
         String newDepositAmount = actualdepositAmount;
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         while (actualdepositAmount.equals(newDepositAmount)) {
             if (System.currentTimeMillis() > endTime) {
                 throw new RuntimeException("Test timed out after 120 seconds");
@@ -3901,6 +3899,7 @@ public class CasecreationPage extends CommonActionsPage {
         eleUtil.doClick(filterBy);
         eleUtil.doSendKeysWithWait(filterbyinputbox, CommonActionsPage.Tankercompanyname, 30);
         driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         while (!driver.findElement(applyBtn).isEnabled()) {
             if (System.currentTimeMillis() > endTime) {
                 throw new RuntimeException("Test timed out after 120 seconds");
@@ -3950,5 +3949,10 @@ public class CasecreationPage extends CommonActionsPage {
             String reregisteringWithNewCompanyValue = eleUtil.createSelect(reregisteringWithNewCompany).getFirstSelectedOption().getText();
             Assert.assertEquals(reregisteringWithNewCompanyValue, reregisterWithNewCompany, "Reregistering with new company is not set as Yes");
         }
+    }
+
+    public void processingStageToNextStage() {
+        navigatingToStage("Processing");
+        clickOnNextStageBtn();
     }
 }

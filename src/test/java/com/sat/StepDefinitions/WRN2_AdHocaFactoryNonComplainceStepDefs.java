@@ -37,9 +37,9 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
         factoryPage.verifyWorkOrderNotification();
     }
 
-    @And("open WO and fill the Booking details")
-    public void openWOAndFillTheBookingDetails() throws InterruptedException {
-        crmActions.fillBookingDetails();
+    @And("open {string} WO and fill the Booking details and select {string} status")
+    public void openWOAndFillTheBookingDetailsAndSelectStatus(String status, String selectBookingStatus) throws InterruptedException  {
+        crmActions.fillBookingDetails(status, selectBookingStatus);
     }
 
     @And("go to Checklist tab create sample for lab analysis details with and fill the required checklist")
@@ -76,9 +76,9 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
         factoryPage.clickUploadLabReportSwitch();
     }
 
-    @Then("verify System Assessment and User Assessment are marked as Non-Compliance")
-    public void verifySystemAssessmentAndUserAssessmentAreMarkedAsNonCompliance() throws InterruptedException {
-        factoryPage.verifySystemAndUserAssessment();
+    @Then("verify System Assessment and User Assessment are marked as {string}")
+    public void verifySystemAssessmentAndUserAssessmentAreMarkedAs(String value) throws InterruptedException {
+        factoryPage.verifySystemAndUserAssessment(value);
     }
 
     @Then("go to {string} and verify the email for Request for {string} and {string}")
@@ -123,6 +123,5 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
         factoryPage.verifyCaseStatus(status);
         loginpage.signoutApp();
     }
-
 
 }
