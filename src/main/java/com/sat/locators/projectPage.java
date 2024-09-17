@@ -25,9 +25,9 @@ public class projectPage extends commonActionsPage {
 
     String projectPath = "\\src\\main\\resources\\documents\\WRN11NMBProjectsTemplate.xlsx";
     String bpuSubmissionPath = "\\src\\main\\resources\\documents\\WRN11NMB1BPUSubmissionTemplates.xlsx";
-    static String projectTitle = "A" + eleUtil.todayDate("yyyy/MM/dd") + "/PP-" + eleUtil.randomNumber();
-    static String projectReferenceNo = "A" + eleUtil.todayDate("yyyy/MM/dd") + "/PP-" + eleUtil.randomNumber();
-    static String submissionNo = "SN" + eleUtil.todayDate("yyyy/MM/dd") + "/" + eleUtil.randomNumber();
+    String projectTitle = "A" + eleUtil.todayDate("yyyy/MM/dd") + "/PP-" + eleUtil.randomNumber();
+    String projectReferenceNo = "A" + eleUtil.todayDate("yyyy/MM/dd") + "/PP-" + eleUtil.randomNumber();
+    String submissionNo = "SN" + eleUtil.todayDate("yyyy/MM/dd") + "/" + eleUtil.randomNumber();
 
     // Create new Project and verification
     private By moreCommandButton = By.xpath("//button[contains(@title,'More commands for')]");
@@ -38,6 +38,10 @@ public class projectPage extends commonActionsPage {
     private By doneButton = By.cssSelector("button[aria-label='Done']");
     private By bpuOfficer = By.cssSelector("input[aria-label='1BPU Officers, Lookup']");
     private By projectRefNumber = By.xpath("//div[@col-id='pub_projectreferencenumber']//a");
+
+    private By importFromExcelErrorDialog = By.xpath("//div[contains(@id,'modalDialogContentContainer')]");
+    private By okButton = By.cssSelector("button[aria-label='OK']");
+    private By backButton = By.cssSelector("button[aria-label='Back']");
 
     // BPU Submission and verification
     private By bpuSubmissionGridRefresh = By.xpath("//ul[@aria-label='1BPU Submission Commands'] //button[@aria-label='Refresh']");
@@ -70,6 +74,18 @@ public class projectPage extends commonActionsPage {
         return projectRefNumber;
     }
 
+    public By getImportFromExcelErrorDialog() {
+        return importFromExcelErrorDialog;
+    }
+
+    public By getOkButton() {
+        return okButton;
+    }
+
+    public By getBackButton() {
+        return backButton;
+    }
+
     public void createProjectWithExcel(String accountSubType) throws InterruptedException, IOException {
         updateProjectExcel(accountSubType);
         eleUtil.waitForVisibilityOfElement(getMoreCommandButton(), 30);
@@ -78,15 +94,25 @@ public class projectPage extends commonActionsPage {
         eleUtil.doClickLog(getImportExcel(), "Click on Import from Excel button");
         eleUtil.waitForVisibilityOfElement(getFileUpload(), 30);
         String path = cases.filePath + projectPath;
-        Log.info("final path to upload " + path);
-        uploadFile(getFileUpload(), path);
+        Log.info(String.format("Final path to upload: %s", path));
         eleUtil.waitForVisibilityOfElement(getNextButton(), 40);
+        uploadFile(getFileUpload(), path);
         eleUtil.doClickLog(getNextButton(), "Click on Next button");
+        if (eleUtil.elementIsDisplayed(getImportFromExcelErrorDialog(), "Excel import Dialog box is visible")) {
+            eleUtil.waitForVisibilityOfElement(getOkButton(), 40);
+            eleUtil.doClickLog(getOkButton(), "Click on OK button");
+            eleUtil.waitForVisibilityOfElement(getBackButton(), 40);
+            eleUtil.doClickLog(getBackButton(), "Click on Back button");
+            eleUtil.waitForVisibilityOfElement(getNextButton(), 40);
+            eleUtil.doClickLog(getNextButton(), "Click on Next button");
+        }
+        //eleUtil.doClickLog(getNextButton(), "Click on Next button");
         eleUtil.waitForVisibilityOfElement(getFinishImport(), 40);
         eleUtil.doClickLog(getFinishImport(), "Click on Finish Import button");
         eleUtil.waitForVisibilityOfElement(getDoneButton(), 40);
         eleUtil.doClickLog(getDoneButton(), "Click on Done button");
     }
+
 
     public void updateProjectExcel(String accountSubType) throws IOException {
         excelUtil = new ExcelUtil(cases.filePath + projectPath);
@@ -120,9 +146,20 @@ public class projectPage extends commonActionsPage {
         eleUtil.waitForVisibilityOfElement(getFileUpload(), 30);
         String path = cases.filePath + bpuSubmissionPath;
         Log.info("final path to upload " + path);
-        uploadFile(getFileUpload(), path);
         eleUtil.waitForVisibilityOfElement(getNextButton(), 40);
+        uploadFile(getFileUpload(), path);
         eleUtil.doClickLog(getNextButton(), "Click on Next button");
+        if (eleUtil.elementIsDisplayed(getImportFromExcelErrorDialog(), "Excel import Dialog box is visible")) {
+            eleUtil.waitForVisibilityOfElement(getOkButton(), 40);
+            eleUtil.doClickLog(getOkButton(), "Click on OK button");
+            eleUtil.waitForVisibilityOfElement(getBackButton(), 40);
+            eleUtil.doClickLog(getBackButton(), "Click on Back button");
+            eleUtil.waitForVisibilityOfElement(getNextButton(), 40);
+            eleUtil.doClickLog(getNextButton(), "Click on Next button");
+        }
+        /*eleUtil.doClickLog(getNextButton(), "Click on Next button");
+        eleUtil.waitForVisibilityOfElement(getNextButton(), 40);
+        eleUtil.doClickLog(getNextButton(), "Click on Next button");*/
         eleUtil.waitForVisibilityOfElement(getFinishImport(), 40);
         eleUtil.doClickLog(getFinishImport(), "Click on Finish Import button");
         eleUtil.waitForVisibilityOfElement(getDoneButton(), 40);

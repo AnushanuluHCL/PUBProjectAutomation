@@ -76,6 +76,9 @@ public class commonCRMActions extends commonActionsPage {
     private By durationField = By.xpath("(//div[@col-id='duration'])[2]");
     private By WOstatusInWOform = By.xpath(
             "//select[@aria-label='WO Status']//ancestor::div[@data-lp-id='MscrmControls.FieldControls.OptionSet|msdyn_systemstatus.fieldControl|msdyn_workorder']//select");
+    private By checkBOCreated = By.xpath("//div[@data-id='bookings-pcf_grid_control_container'] //span[text()='No data available']");
+    private By moreCommandButtonForBooking = By.xpath("button[aria-label='More commands for Bookable Resource Booking']");
+    private By bookingRefreshButton = By.xpath("//button[contains(@id,'bookableresourcebooking') and @aria-label='Refresh']");
 
     // Locators on case home page
     private By systemAssesmentField = By.xpath("//select[@aria-label='System Assessment']");
@@ -175,6 +178,14 @@ public class commonCRMActions extends commonActionsPage {
 
     public By getSelectTodayDateAndTime() {
         return selectTodayDateAndTime;
+    }
+
+    public By getMoreCommandButtonForBooking() {
+        return moreCommandButtonForBooking;
+    }
+
+    public By getBookingRefreshButton() {
+        return bookingRefreshButton;
     }
 
     public static void clickOnSaveNCloseButton() {
@@ -306,6 +317,20 @@ public class commonCRMActions extends commonActionsPage {
         assertTrue(actualWO.contains(woNumber), "WO is not same");
     }
 
+    public void checkBookingsOrder() throws InterruptedException {
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            if (eleUtil.elementIsDisplayed(checkBOCreated, "No data available")) {
+                Thread.sleep(3000);
+                eleUtil.waitTillElementIsDisplayed(getBookingRefreshButton(), 30);
+                eleUtil.doClickLog(getBookingRefreshButton(), "Booking not created click on Booking grid refresh button");
+            } else {
+                // Exit the loop if data is available
+                break;
+            }
+        }
+    }
+
     public void fillBookingDetails(String status, String selectBookingStatus) throws InterruptedException {
         workOrderStatusFilter(status);
         List<String> woNum = new ArrayList<>();
@@ -338,6 +363,7 @@ public class commonCRMActions extends commonActionsPage {
             eleUtil.staleElementRefExecClickCRM(getBookingTab());
             eleUtil.doClick(getBookingTab());
             Thread.sleep(2000);
+            checkBookingsOrder();
             selectFirstRecord();
             getFirstRecord();
             eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
@@ -373,197 +399,198 @@ public class commonCRMActions extends commonActionsPage {
         resetFirstRunFlag();
     }
 
-	public void openCheckList(String woNumber, String checkListName, String status) throws InterruptedException {
-		Thread.sleep(2000);
-		processWorkOrder(woNumber, status);
-		eleUtil.doClick(getChecklistTab());
-		String actualName = eleUtil.doGetElementAttribute(getCheckListNameField(), "aria-label");
-		assertTrue(actualName.contains(checkListName), "Checklist name is not matching");
-		eleUtil.doElementClickable(getCheckListNameField(), 20);
-		eleUtil.doClick(getCheckListNameField());
-		eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
-		eleUtil.doClick(getMaximizeScreenBtn());
-	}
+    public void openCheckList(String woNumber, String checkListName, String status) throws InterruptedException {
+        Thread.sleep(2000);
+        processWorkOrder(woNumber, status);
+        eleUtil.doClick(getChecklistTab());
+        String actualName = eleUtil.doGetElementAttribute(getCheckListNameField(), "aria-label");
+        assertTrue(actualName.contains(checkListName), "Checklist name is not matching");
+        eleUtil.doElementClickable(getCheckListNameField(), 20);
+        eleUtil.doClick(getCheckListNameField());
+        eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
+        eleUtil.doClick(getMaximizeScreenBtn());
+    }
 
-	public void saveChecklist() throws InterruptedException {
-		eleUtil.doClick(getSaveBtnInChklist());
-		System.out.println("clicked on save button");
-		Thread.sleep(3000);
-		eleUtil.doElementClickable(getMarkCompleteBtn(), 40);
-		try {
-			eleUtil.doClick(getMarkCompleteBtn());
-		} catch (Exception e) {
-			eleUtil.doActionsClick(getMarkCompleteBtn());
-		}
-		eleUtil.staleElementRefExecClickCRM(getSaveNCloseBtnInChklist());
-		Thread.sleep(2000);
-		eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
-		try {
-			clickOnSaveNCloseButton();
-		} catch (Exception e) {
-			eleUtil.doActionsClick(getSaveNCloseBtn());
-		}
-	}
+    public void saveChecklist() throws InterruptedException {
+        eleUtil.doClick(getSaveBtnInChklist());
+        System.out.println("clicked on save button");
+        Thread.sleep(3000);
+        eleUtil.doElementClickable(getMarkCompleteBtn(), 40);
+        try {
+            eleUtil.doClick(getMarkCompleteBtn());
+        } catch (Exception e) {
+            eleUtil.doActionsClick(getMarkCompleteBtn());
+        }
+        eleUtil.staleElementRefExecClickCRM(getSaveNCloseBtnInChklist());
+        Thread.sleep(2000);
+        eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
+        try {
+            clickOnSaveNCloseButton();
+        } catch (Exception e) {
+            eleUtil.doActionsClick(getSaveNCloseBtn());
+        }
+    }
 
 
-	public void emailCheck(String subjectName) throws InterruptedException {
-		eleUtil.isPageLoaded(50);
-		By loc = By.xpath("//a[contains(@aria-label,'" + subjectName + "')]");
-		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
-		while (System.currentTimeMillis() < endTime) {
-			if (!eleUtil.elementIsDisplayed(loc, subjectName)) {
-				eleUtil.doClickLog(moreButtonEmail, "Click on More Email button");
-				eleUtil.waitForVisibilityOfElement(emailRefreshButton, 50);
-				eleUtil.doClickLog(emailRefreshButton, "Click on Refresh button");
-				Thread.sleep(1000); // Wait for 1 second before checking again
-			} else {
-				Log.info("Email is visible " + subjectName);
-				break;
-			}
-		}
-	}
+    public void emailCheck(String subjectName) throws InterruptedException {
+        eleUtil.isPageLoaded(50);
+        By loc = By.xpath("//a[contains(@aria-label,'" + subjectName + "')]");
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            if (!eleUtil.elementIsDisplayed(loc, subjectName)) {
+                eleUtil.doClickLog(moreButtonEmail, "Click on More Email button");
+                eleUtil.waitForVisibilityOfElement(emailRefreshButton, 50);
+                eleUtil.doClickLog(emailRefreshButton, "Click on Refresh button");
+                Thread.sleep(1000); // Wait for 1 second before checking again
+            } else {
+                Log.info("Email is visible " + subjectName);
+                break;
+            }
+        }
+    }
 
-	public void documentCheck(String documentName) throws InterruptedException {
-		eleUtil.isPageLoaded(50);
-		By loc = By.xpath("//a[contains(@aria-label,'" + documentName + "')]");
-		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
-		while (System.currentTimeMillis() < endTime) {
-			if (!eleUtil.elementIsDisplayed(loc, documentName)) {
-				eleUtil.doClickLog(moreButtonDocument, "Click on More Document button");
-				eleUtil.waitForVisibilityOfElement(documentRefreshButton, 50);
-				eleUtil.doClickLog(documentRefreshButton, "Click on Refresh button");
-				Thread.sleep(1000); // Wait for 1 second before checking again
-			} else {
-				Log.info("Document is visible " + documentName);
-				break;
-			}
-		}
-	}
+    public void documentCheck(String documentName) throws InterruptedException {
+        eleUtil.isPageLoaded(50);
+        By loc = By.xpath("//a[contains(@aria-label,'" + documentName + "')]");
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            if (!eleUtil.elementIsDisplayed(loc, documentName)) {
+                eleUtil.doClickLog(moreButtonDocument, "Click on More Document button");
+                eleUtil.waitForVisibilityOfElement(documentRefreshButton, 50);
+                eleUtil.doClickLog(documentRefreshButton, "Click on Refresh button");
+                Thread.sleep(1000); // Wait for 1 second before checking again
+            } else {
+                Log.info("Document is visible " + documentName);
+                break;
+            }
+        }
+    }
 
-	public static boolean notificationForRecordNumber(By notificationIDCheck, String beforeTapToOpenBtn, String notificationType) {
-		String titleOnParentPage = setPageTitle();
-		try {
-			WebElement woAlert = eleUtil.waitTillPresenceOfElementReturn(notificationIDCheck, 30);
-			if (woAlert != null && woAlert.isDisplayed()) {
-				WebElement tapToOpenBtn = driver.findElement(By.xpath("//div[@aria-label='" + notificationType + "']" +
-						"//a[contains(text(), '" + beforeTapToOpenBtn + "')]"));
-				tapToOpenBtn.click();
-				ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
-				Log.info("open tabs: " + tabs.size());
-				driver.switchTo().window(tabs.get(1));
-				eleUtil.waitForVisibilityOfElement(getPageTitle(), 100);
-				String afterTapToOpenBtn = setPageTitle();
-				Log.info("afterTapToOpenBtn: " + afterTapToOpenBtn);
-				assertTrue(afterTapToOpenBtn.contains(titleOnParentPage), "Record is not the same after clicking on tap to open button");
-				clickOnSaveNCloseButton();
-				driver.switchTo().window(tabs.get(0));
-				eleUtil.waitForVisibilityOfElement(getCancelBtn(), 30);
-				eleUtil.doClick(getCancelBtn());
-				return true;
-			}
-		} catch (TimeoutException e) {
-			Log.error("Timeout waiting for element: " + notificationIDCheck);
-		} catch (Exception e) {
-			Log.error("An error occurred: " + e.getMessage());
-		}
-		return false;
-	}
+    public static boolean notificationForRecordNumber(By notificationIDCheck, String beforeTapToOpenBtn, String notificationType) {
+        String titleOnParentPage = setPageTitle();
+        try {
+            WebElement woAlert = eleUtil.waitTillPresenceOfElementReturn(notificationIDCheck, 30);
+            if (woAlert != null && woAlert.isDisplayed()) {
+                WebElement tapToOpenBtn = driver.findElement(By.xpath("//div[@aria-label='" + notificationType + "']" +
+                        "//a[contains(text(), '" + beforeTapToOpenBtn + "')]"));
+                tapToOpenBtn.click();
+                ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+                Log.info("open tabs: " + tabs.size());
+                driver.switchTo().window(tabs.get(1));
+                eleUtil.waitForVisibilityOfElement(getPageTitle(), 100);
+                String afterTapToOpenBtn = setPageTitle();
+                Log.info("afterTapToOpenBtn: " + afterTapToOpenBtn);
+                assertTrue(afterTapToOpenBtn.contains(titleOnParentPage), "Record is not the same after clicking on tap to open button");
+                clickOnSaveNCloseButton();
+                driver.switchTo().window(tabs.get(0));
+                eleUtil.waitForVisibilityOfElement(getCancelBtn(), 30);
+                eleUtil.doClick(getCancelBtn());
+                return true;
+            }
+        } catch (TimeoutException e) {
+            Log.error("Timeout waiting for element: " + notificationIDCheck);
+        } catch (Exception e) {
+            Log.error("An error occurred: " + e.getMessage());
+        }
+        return false;
+    }
 
-	public void workOrderStatusFilter(String status) throws InterruptedException {
-		eleUtil.isPageLoaded(50);
-		eleUtil.waitForVisibilityOfElement(workOrderStatusGridHeader, 50);
-		eleUtil.doClickLog(workOrderStatusGridHeader, "Click on Work Order Status Column");
-		filterViewForStatus(status);
-		eleUtil.isPageLoaded(30);
-	}
+    public void workOrderStatusFilter(String status) throws InterruptedException {
+        eleUtil.isPageLoaded(50);
+        eleUtil.waitForVisibilityOfElement(workOrderStatusGridHeader, 50);
+        eleUtil.doClickLog(workOrderStatusGridHeader, "Click on Work Order Status Column");
+        filterViewForStatus(status);
+        eleUtil.isPageLoaded(30);
+    }
 
-	public void searchRecord(String recordNumber) throws InterruptedException {
-		eleUtil.waitForVisibilityOfElement(getSearchBox(), 20);
-		Thread.sleep(2000);
-		eleUtil.doSendKeysLog(getSearchBox(), recordNumber, "Enter record number " + recordNumber);
-		eleUtil.isPageLoaded(50);
-		Thread.sleep(2000);
-		driver.findElement(getSearchBox()).sendKeys(Keys.ENTER);
-		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
-		while (System.currentTimeMillis() < endTime) {
-			if (eleUtil.elementIsDisplayed(getNoRecord(), "No data available")) {
-				Thread.sleep(3000);
-				eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
-			} else {
-				// If the element is not displayed, execute the else block logic
-				try {
-					Thread.sleep(3000);
-					selectFirstRecord();
-					getFirstRecord();
-					return; // Exit the method if the case number is verified
-				} catch (NoSuchElementException e) {
-					Log.error("Project is not created: " + e.getMessage());
-				}
-			}
-		}
-	}
+    public void searchRecord(String recordNumber) throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(getSearchBox(), 20);
+        Thread.sleep(2000);
+        eleUtil.doSendKeysLog(getSearchBox(), recordNumber, "Enter record number " + recordNumber);
+        eleUtil.isPageLoaded(50);
+        Thread.sleep(2000);
+        driver.findElement(getSearchBox()).sendKeys(Keys.ENTER);
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            if (eleUtil.elementIsDisplayed(getNoRecord(), "No data available")) {
+                Thread.sleep(3000);
+                eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
+            } else {
+                // If the element is not displayed, execute the else block logic
+                try {
+                    Thread.sleep(3000);
+                    selectFirstRecord();
+                    getFirstRecord();
+                    return; // Exit the method if the case number is verified
+                } catch (NoSuchElementException e) {
+                    Log.error("Project is not created: " + e.getMessage());
+                }
+            }
+        }
+    }
 
-	public void openWOCreateManualBooking(String status) throws InterruptedException {
-		workOrderStatusFilter(status);
-		List<String> woNum = new ArrayList<>();
-		String nextButton;
-		// Store all WOs from the first page
-		commonActionsPage.WOnumber = getWONumber();
-		woNum.addAll(commonActionsPage.WOnumber);
-		Thread.sleep(2000);
-		Log.info("print wo number " + woNum);
-		Log.info("size is: " + woNum.size());
-		// Check if there is a next button and click it if enabled
-		nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled", "Check next button is true/false");
-		while (nextButton.contains("false")) {
-			eleUtil.doClickLog(getNextButtonOnWorkOrder(), "click on next button on Work Order");
-			Thread.sleep(2000);
-			// Store all WOs from the next page
-			commonActionsPage.WOnumber = getWONumber();
-			woNum.addAll(commonActionsPage.WOnumber);
-			Log.info("print wo number " + woNum);
-			Log.info("size is: " + woNum.size());
-			// Check the next button status again
-			nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled", "Check next button is true/false");
-		}
-		// Process all collected WOs
-		for (int i = 0; i < woNum.size(); i++) {
-			Thread.sleep(2000);
-			processWorkOrder(woNum.get(i), status);
-			// create Booking Manually
-			eleUtil.waitForVisibilityOfElement(getAcknowledgeButton(), 30);
-			eleUtil.doClickLog(getAcknowledgeButton(), "click on Acknowledge button");
-			eleUtil.waitForVisibilityOfElement(getClickOnProposedInspectionDateCalender(), 30);
-			eleUtil.doSendKeysLog(getClickOnProposedInspectionDateCalender(), eleUtil.todayDatePlusDays("MM/dd/yyyy", 2), "Enter today's date + 2");
-			eleUtil.doClickLog(getSaveAndCloseOnManualBooking(), "click on save and close button on Manual Booking");
-			eleUtil.waitForVisibilityOfElement(getRefreshBtn(), 100);
-			eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
-			long endTime = System.currentTimeMillis() + 5 * 60 * 1000; // 5 minutes from now
-			while (System.currentTimeMillis() < endTime) {
-				try {
-					if (eleUtil.elementIsDisplayed(getAcknowledgeButton(), "Acknowledge button is available")) {
-						Thread.sleep(3000); // Wait for 3 seconds
-						eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
-					} else {
-						// If the element is not displayed, execute the else block logic
-						clickOnSaveNCloseButton();
-						return; // Exit the method
-					}
-				} catch (NoSuchElementException e) {
-					Log.error("Booking Order is not created: " + e.getMessage());
-					return; // Exit the method if NoSuchElementException is caught
-				} catch (InterruptedException e) {
-					Log.error("Thread was interrupted: " + e.getMessage());
-					Thread.currentThread().interrupt(); // Restore the interrupted status
-					return; // Exit the method if InterruptedException is caught
-				} catch (Exception e) {
-					Log.error("An unexpected error occurred: " + e.getMessage());
-					return; // Exit the method if any other exception is caught
-				}
-			}
-		}
-		resetFirstRunFlag();
-	}
+    public void openWOCreateManualBooking(String status) throws InterruptedException {
+        eleUtil.waitForLoad(40, "wait for page to be loaded");
+        workOrderStatusFilter(status);
+        List<String> woNum = new ArrayList<>();
+        String nextButton;
+        // Store all WOs from the first page
+        commonActionsPage.WOnumber = getWONumber();
+        woNum.addAll(commonActionsPage.WOnumber);
+        Thread.sleep(2000);
+        Log.info("print wo number " + woNum);
+        Log.info("size is: " + woNum.size());
+        // Check if there is a next button and click it if enabled
+        nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled", "Check next button is true/false");
+        while (nextButton.contains("false")) {
+            eleUtil.doClickLog(getNextButtonOnWorkOrder(), "click on next button on Work Order");
+            Thread.sleep(2000);
+            // Store all WOs from the next page
+            commonActionsPage.WOnumber = getWONumber();
+            woNum.addAll(commonActionsPage.WOnumber);
+            Log.info("print wo number " + woNum);
+            Log.info("size is: " + woNum.size());
+            // Check the next button status again
+            nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled", "Check next button is true/false");
+        }
+        // Process all collected WOs
+        for (int i = 0; i < woNum.size(); i++) {
+            Thread.sleep(2000);
+            processWorkOrder(woNum.get(i), status);
+            // create Booking Manually
+            eleUtil.waitForVisibilityOfElement(getAcknowledgeButton(), 30);
+            eleUtil.doClickLog(getAcknowledgeButton(), "click on Acknowledge button");
+            eleUtil.waitForVisibilityOfElement(getClickOnProposedInspectionDateCalender(), 30);
+            eleUtil.doSendKeysLog(getClickOnProposedInspectionDateCalender(), eleUtil.todayDatePlusDays("MM/dd/yyyy", 2), "Enter today's date + 2");
+            eleUtil.doClickLog(getSaveAndCloseOnManualBooking(), "click on save and close button on Manual Booking");
+            eleUtil.waitForVisibilityOfElement(getRefreshBtn(), 100);
+            eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
+            long endTime = System.currentTimeMillis() + 5 * 60 * 1000; // 5 minutes from now
+            while (System.currentTimeMillis() < endTime) {
+                try {
+                    if (eleUtil.elementIsDisplayed(getAcknowledgeButton(), "Acknowledge button is available")) {
+                        Thread.sleep(3000); // Wait for 3 seconds
+                        eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
+                    } else {
+                        // If the element is not displayed, execute the else block logic
+                        clickOnSaveNCloseButton();
+                        return; // Exit the method
+                    }
+                } catch (NoSuchElementException e) {
+                    Log.error("Booking Order is not created: " + e.getMessage());
+                    return; // Exit the method if NoSuchElementException is caught
+                } catch (InterruptedException e) {
+                    Log.error("Thread was interrupted: " + e.getMessage());
+                    Thread.currentThread().interrupt(); // Restore the interrupted status
+                    return; // Exit the method if InterruptedException is caught
+                } catch (Exception e) {
+                    Log.error("An unexpected error occurred: " + e.getMessage());
+                    return; // Exit the method if any other exception is caught
+                }
+            }
+        }
+        resetFirstRunFlag();
+    }
 
     public void verifyBookingStatus(String WOstatus) {
         List<String> wonum = commonActionsPage.WOnumber;
@@ -605,7 +632,7 @@ public class commonCRMActions extends commonActionsPage {
             // "aria-label", "WO Status value is : ");
             assertEquals(actualStatusval, WOstatus, "WO status is not same");
             Log.info("Booking sttaus is : " + actualStatusval);
-			clickOnSaveNCloseButton();
+            clickOnSaveNCloseButton();
         }
     }
 
@@ -622,7 +649,7 @@ public class commonCRMActions extends commonActionsPage {
     public void emailCheckAtProject(String subjectName) throws InterruptedException {
         eleUtil.isPageLoaded(50);
         By loc = By.xpath("//label[contains(text(),'" + subjectName + "')]");
-		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         while (System.currentTimeMillis() < endTime) {
             if (!eleUtil.elementIsDisplayed(loc, subjectName)) {
                 eleUtil.waitForVisibilityOfElement(getRefreshBtn(), 50);
@@ -672,7 +699,7 @@ public class commonCRMActions extends commonActionsPage {
                     Log.info("afterTapToOpenBtn: " + afterTapToOpenBtn);
                     assertTrue(afterTapToOpenBtn.contains(text),
                             "Record is not the same after clicking on tap to open button");
-					clickOnSaveNCloseButton();
+                    clickOnSaveNCloseButton();
                     driver.switchTo().window(tabs.get(0));
                     eleUtil.doClick(getCancelBtn());
                     break;
@@ -688,4 +715,18 @@ public class commonCRMActions extends commonActionsPage {
         }
     }
 
+    public void fetchWorkOrderNumbers(List<String> woNum) throws InterruptedException {
+        String nextButton;
+        do {
+            commonCRMActions.WOnumber = getWONumber();
+            woNum.addAll(commonCRMActions.WOnumber);
+            Log.info("print wo number " + woNum);
+            Log.info("size is: " + woNum.size());
+            nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled", "Check next button is true/false");
+            if (nextButton.contains("false")) {
+                eleUtil.doClickLog(getNextButtonOnWorkOrder(), "click on next button on Work Order");
+                Thread.sleep(2000);
+            }
+        } while (nextButton.contains("false"));
+    }
 }

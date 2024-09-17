@@ -161,4 +161,12 @@ public class originalCaseCreationPage extends commonActionsPage{
     public void createManualWOWRN11() {
         cases.manualWOWRN11();
     }
+
+    public void clickHydroTestLowPressureAirTest() {
+        cases.hydroTestLowPressureAirTest();
+    }
+
+    public void completeReInspectionForWRN11() throws InterruptedException {
+        cases.reInspectionForWRN11();
+    }
 }

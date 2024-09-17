@@ -1,5 +1,6 @@
 package com.sat.StepDefinitions;
 
+import com.sat.Pages.caseCreationPage;
 import com.sat.Pages.commonCRMActions;
 import com.sat.Pages.originalCaseCreationPage;
 import com.sat.Pages.projectCreationPage;
@@ -13,6 +14,7 @@ public class WRN11NMB_AuditInspectionNonCompliance {
     private projectCreationPage projectPage = new projectCreationPage(TestBase.getDriver());
     private commonCRMActions crmAction = new commonCRMActions(TestBase.getDriver());
     private originalCaseCreationPage casePage = new originalCaseCreationPage(TestBase.getDriver());
+    private caseCreationPage cases = new caseCreationPage(TestBase.getDriver());
 
     @And("create a Project with Account Sub Type as {string}")
     public void createAProjectWithAccountSubTypeAs(String accountSubType) throws IOException, InterruptedException {
@@ -110,4 +112,13 @@ public class WRN11NMB_AuditInspectionNonCompliance {
         casePage.createManualWOWRN11();
     }
 
+    @And("select Yes for Hydro Test & Low Pressure Air Test Submitted in Case")
+    public void selectYesForHydroTestLowPressureAirTestSubmittedInCase() {
+        casePage.clickHydroTestLowPressureAirTest();
+    }
+
+    @And("navigate to Inspection stage and fill the respective details")
+    public void navigateToInspectionStageAndFillTheRespectiveDetails() throws InterruptedException {
+        casePage.completeReInspectionForWRN11();
+    }
 }

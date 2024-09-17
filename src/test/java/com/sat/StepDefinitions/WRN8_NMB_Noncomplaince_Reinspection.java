@@ -138,10 +138,10 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 		powerapppage.logoutPowerApp();
 	}
 
-	@And("open {string} WO and fill the Booking details and select {string} status")
+	/*@And("open {string} WO and fill the Booking details and select {string} status")
 	public void open_WO_and_fill_the_Booking_details_and_select_status(String status, String status2)
 			throws InterruptedException {
 		//commoncrm.fillBookingDetails(status, status2);
-	}
+	}*/
 
 }
