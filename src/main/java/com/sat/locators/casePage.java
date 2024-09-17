@@ -86,6 +86,8 @@ public class casePage extends commonCRMActions {
     private By generateLetter = By.cssSelector("button[aria-label='In-Order/Not In-Order Letter. Generate Letter']");
     private By newWorkOrder = By.cssSelector("button[aria-label='New Work Order. Add New Work Order']");
     private By woType = By.cssSelector("select[aria-label='WO Type']");
+    private By hydroAndPressure = By.xpath("//button[contains(@aria-label,'Hydro Test & Low Pressure Air Test Submitted')]");
+    private By soReworkComment = By.cssSelector("textarea[aria-label='SO Rework Comments']");
 
     // WRN11-BPF
     private By emailToCustomer = By.cssSelector("select[aria-label='Email To Customer Sent?']");
@@ -210,6 +212,9 @@ public class casePage extends commonCRMActions {
         return woType;
     }
 
+    public By getHydroAndPressure() {
+        return hydroAndPressure;
+    }
     // This method can be removed once this issue is fixed
     /*public void enableWRPSubType() {
         eleUtil.waitForVisibilityOfElement(getCaseType(), 30);
@@ -556,11 +561,9 @@ public class casePage extends commonCRMActions {
     }
 
     public void fillCheckListForWRN11AuditInspection(String status, String checklistType, String checkListName) throws InterruptedException {
-        commonCRMActions.WOnumber = crmActions.getWONumber();
-        List<String> woNum = commonCRMActions.WOnumber;
-        Thread.sleep(2000);
-        Log.info("print wo number " + woNum);
-        Log.info("size is:" + woNum.size());
+        crmActions.workOrderStatusFilter(status);
+        List<String> woNum = new ArrayList<>();
+        crmActions.fetchWorkOrderNumbers(woNum);
         for (int i = 0; i < woNum.size(); i++) {
             Thread.sleep(2000);
             crmActions.openCheckList(woNum.get(i), checkListName, status);
@@ -570,22 +573,27 @@ public class casePage extends commonCRMActions {
     }
 
     public void WRN11NonCompChecklistAuditInspection(String checklistType, String checkListName) throws InterruptedException {
-        if ("WRN 11 NMB Sanitary Inspection".contains(checkListName) && "Non-Compliance".equals(checklistType)) {
-            eleUtil.waitForVisibilityOfElement(branchDrainNonCompliance, 30);
-            eleUtil.doClickLog(branchDrainNonCompliance, "Select Non-Compliance for Branch drain-lines / Main drain lines: The minimum diameter of branch drain lines");
-        } else if ("Minor Works Inspection".contains(checkListName) && "Non-Compliance".equals(checklistType)) {
-            eleUtil.waitForVisibilityOfElement(urinalTrapNonCompliance, 30);
-            eleUtil.doClickLog(urinalTrapNonCompliance, "Select No for Urinals provided with urinal trap");
-        } else if ("WRN 11 NMB Sanitary Inspection".contains(checkListName) && "Compliance".equals(checklistType)) {
-            eleUtil.waitForVisibilityOfElement(branchDrainCompliance, 30);
-            eleUtil.doClickLog(branchDrainCompliance, "Select Compliance for Branch drain-lines / Main drain lines: The minimum diameter of branch drain lines");
-        } else {
-            eleUtil.waitForVisibilityOfElement(urinalTrapCompliance, 30);
-            eleUtil.doClickLog(urinalTrapCompliance, "Select Yes for Urinals provided with urinal trap");
-        }
         String path = filePath + pngFilePath;
         Log.info("final path to upload " + path);
-        uploadFile(choosePhoto, path);
+        if ("WRN 11 NMB Sanitary Inspection".equals(checkListName)) {
+            if ("Non-Compliance".equals(checklistType)) {
+                eleUtil.waitForVisibilityOfElement(branchDrainNonCompliance, 40);
+                eleUtil.doClickLog(branchDrainNonCompliance, "Select Non-Compliance for Branch drain-lines / Main drain lines: The minimum diameter of branch drain lines");
+                uploadFile(choosePhoto, path);
+            } else if ("Compliance".equals(checklistType)) {
+                eleUtil.waitForVisibilityOfElement(branchDrainCompliance, 40);
+                eleUtil.doClickLog(branchDrainCompliance, "Select Compliance for Branch drain-lines / Main drain lines: The minimum diameter of branch drain lines");
+            }
+        } else if ("Audit Inspection: Temp Toilet / Minor Works Check".equals(checkListName)) {
+            if ("Non-Compliance".equals(checklistType)) {
+                eleUtil.waitForVisibilityOfElement(urinalTrapNonCompliance, 40);
+                eleUtil.doClickLog(urinalTrapNonCompliance, "Select No for Urinals provided with urinal trap");
+                uploadFile(choosePhoto, path);
+            } else if ("Compliance".equals(checklistType)) {
+                eleUtil.waitForVisibilityOfElement(urinalTrapCompliance, 40);
+                eleUtil.doClickLog(urinalTrapCompliance, "Select Yes for Urinals provided with urinal trap");
+            }
+        }
     }
 
     public void checkCaseNotification(String tabName) throws InterruptedException {
@@ -612,6 +620,7 @@ public class casePage extends commonCRMActions {
     }
 
     public void soReviewForWRN11ReInspection() {
+        eleUtil.doSendKeysLog(soReworkComment, "Sending back to FIO", "Enter value in SO Rework Comments");
         navigatingToStage("SO Review");
         eleUtil.waitForVisibilityOfElement(emailToCustomer, 10);
         eleUtil.selectDropDownValue(emailToCustomer, "selectByVisibleText", "Yes", "Select Yes in Email TO Customer Sent");
@@ -626,5 +635,18 @@ public class casePage extends commonCRMActions {
         eleUtil.waitTillElementIsDisplayed(factory.getSaveAndClose(), 30);
         eleUtil.doClickLog(factory.getSaveAndClose(), "Click on Save and Close button");
         clickOnRefreshBtn();
+    }
+
+    public void hydroTestLowPressureAirTest() {
+        eleUtil.waitForVisibilityOfElement(getHydroAndPressure(), 50);
+        eleUtil.doClickLog(getHydroAndPressure(), "Click on Hydro Test & Low Pressure Air Test Submitted toggle button");
+        eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
+    }
+
+    public void reInspectionForWRN11() throws InterruptedException {
+        navigatingToStage("Inspection");
+        clickOnNextStageBtn();
+        factory.clickOnSavingInProgressOkButton();
+        eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
     }
 }

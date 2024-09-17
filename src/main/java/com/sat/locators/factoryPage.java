@@ -196,7 +196,6 @@ public class factoryPage extends commonActionsPage {
 				// If the element is not displayed, execute the else block logic
 				try {
 					commonActionsPage.casenumber = getCaseNumber();
-					assertTrue(commonActionsPage.casenumber.startsWith("DQB/TE/I"), "Case number format is not expected");
 					assertTrue(commonActionsPage.casenumber.startsWith(caseNumber), "Case number format is not expected");
 					Log.info(commonActionsPage.casenumber);
 					return; // Exit the method if the case number is verified

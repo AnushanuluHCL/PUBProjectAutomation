@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.TreeMap;
 
+import com.sat.locators.factoryPage;
 import com.sat.testUtil.Log;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -273,7 +274,7 @@ public class commonActionsPage {
 
 	public void navigatingToTab(String tabName) {
 		By loc = By.xpath("//ul[@aria-label='Case Form']//li[@aria-label='" + tabName + "']");
-		eleUtil.waitForVisibilityOfElement(loc, 50);
+		eleUtil.doElementClickableLog(loc, 100, "Wait for Tab to be clickable " + tabName);
 		eleUtil.doClickLog(loc, "Clicked on " + tabName);
 	}
 
