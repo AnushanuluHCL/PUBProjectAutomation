@@ -80,11 +80,10 @@ public class constructionsPage extends commonActionsPage {
 		selectEntity("Cases");
 		constructionpage.entitySelectionInCaseView();
 		filterView(commonActionsPage.WRN8NMB_Projname);
-		//filterView("Projrefno_100924044713");
-		constructionpage.caseCreationCheck();
+		constructionpage.caseCreationCheck(commonActionsPage.WRN8NMB_Projname);
 	}
-	public void fillChecklistWRN8NMB() throws InterruptedException {
-		constructionpage.fillCheckListQuestionsForWRN8NMB();
+	public void fillChecklistWRN8NMB(String activityCoveredIs) throws InterruptedException {
+		constructionpage.fillCheckListQuestionsForWRN8NMB(activityCoveredIs);
 	}
 	public void POWSapprovalNotification() throws InterruptedException {
 		// CommonActionsPage.casenumber= getCaseNumber();

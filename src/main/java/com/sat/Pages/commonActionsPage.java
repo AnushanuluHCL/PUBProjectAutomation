@@ -52,13 +52,14 @@ public class commonActionsPage {
 	public static List<String> WOnumber;
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
 			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO, oldSealNumber, newSealNumber,
-			resealReason, WRN1_factoryname, WRN8NMB_Projname , childCaseNumber, projectRefNumber;
+			resealReason, WRN1_factoryname, WRN8NMB_Projname , childCaseNumber, projectRefNumber,WRN7NMB_Projname;
 	private static Map<String, String> sharedValues = new HashMap<>();
 	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
 	protected static Map<Integer, String> tankerNumber = new HashMap<>();
 	protected static Map<Integer, String> tankcapacity = new HashMap<>();
 	protected static Map<String, Integer> tankerNumberSize = new HashMap<>();
 	protected static Map<String, String> permitnums = new TreeMap<>();
+	protected static Map<Integer,String> chamberId = new TreeMap<>();
 
 	private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
 	private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
@@ -90,6 +91,7 @@ public class commonActionsPage {
 	private By filterbyinputbox = By.cssSelector("[aria-label='Filter by value']");
 	private By pageTitle = By.cssSelector("h1[data-id='header_title']");
 	private By applyButton = By.cssSelector("button[type='submit']");
+	private By applyBtn = By.xpath("//span[text()='Apply']");
 
 
 	// Locators for file import
@@ -131,6 +133,10 @@ public class commonActionsPage {
 
 	public static Integer tankerNumberSize(String key, Integer value) {
 		return tankerNumberSize.put(key, value);
+	}
+	
+	public static String chamberId(Integer key, String value) {
+		return chamberId.put(key,value);
 	}
 
 	public static String permitnums(String key, String value) {
@@ -414,6 +420,10 @@ public class commonActionsPage {
 			e.printStackTrace();
 		}
 		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+	}
+	public void clickOnApplyBtn() {
+		eleUtil.waitForVisibilityOfElement(applyBtn, 30);
+		eleUtil.doClickLog(applyBtn,"Clicked on apply button");
 	}
 
 	public void filterViewForStatus(String value) throws InterruptedException {

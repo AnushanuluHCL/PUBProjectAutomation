@@ -201,18 +201,17 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		eleUtil.doClickLog(entitydropdown, "Click on Entity/Proj Reference No field in view");
 	}
 
-	public void caseCreationCheck() {
+	public void caseCreationCheck(String value) {
 		eleUtil.waitForVisibilityOfElement(entitynameOnCaseForm, 30);
 		String entitynameonCase = eleUtil.doGetElementAttribute(entitynameOnCaseForm, "aria-label");
-		System.out.println(
-				"entitynameonCase - " + entitynameonCase + "Project Name - " + commonActionsPage.WRN8NMB_Projname);
-		// Assert.assertEquals(entitynameonCase, commonActionsPage.WRN8NMB_Projname);
+		//System.out.println("entitynameonCase - " + entitynameonCase + "Project Name - " + commonActionsPage.WRN8NMB_Projname);
+		Assert.assertEquals(entitynameonCase, value);
 		Log.info("Case created successfully");
 		commonActionsPage.casenumber = eleUtil.doElementGetText(caseidOnCaseForm);
 		Log.info("Case number is: " + commonActionsPage.casenumber);
 	}
 
-	public void selectChecklistForWRN8NMB() {
+	public void selectChecklistForWRN8NMB(String activityCoveredis) {
 		eleUtil.waitTillElementIsDisplayed(constructionActivitiyFound, 30);
 		eleUtil.selectDropDownValue(constructionActivitiyFound, "selectByVisibleText", "Yes",
 				"Select Yes Is there any construction activity found? field");
@@ -281,14 +280,11 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 				"Selected Status of specified activity field");
 
 		eleUtil.waitTillElementIsDisplayed(activityCovered, 30);
-		eleUtil.selectDropDownValue(activityCovered, "selectByVisibleText", "No",
+		eleUtil.selectDropDownValue(activityCovered, "selectByVisibleText", activityCoveredis,
 				"Selected activity covered in POWS approval? field");
 
 		eleUtil.waitTillElementIsDisplayed(attachReport, 30);
 		eleUtil.doClickLog(attachReport, "Clicked on Attach report field");
-		// eleUtil.doSendKeysLog(sendfileToReport, filePath +
-		// "\\src\\test\\resources\\testdata\\UploadForChecklist.xlsx", "Attched
-		// repport");
 		try {
 			common.uploadFile(sendfileToReport, filePath + "\\src\\test\\resources\\testdata\\UploadForChecklist.xlsx");
 		} catch (InterruptedException e) {
@@ -297,7 +293,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		}
 	}
 
-	public void fillCheckListQuestionsForWRN8NMB() throws InterruptedException {
+	public void fillCheckListQuestionsForWRN8NMB(String activityCoveredIs) throws InterruptedException {
 		commonActionsPage.WOnumber = crmActions.getWONumber();
 		List<String> woNum = commonActionsPage.WOnumber;
 		Thread.sleep(2000);
@@ -305,8 +301,9 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		Log.info("size is:" + woNum.size());
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i), "BCA Project Site Inspection affecting Public Sewerage System" ,"In Progress");
-			selectChecklistForWRN8NMB();
+			crmActions.openCheckList(woNum.get(i), "BCA Project Site Inspection affecting Public Sewerage System",
+					"In Progress");
+			selectChecklistForWRN8NMB(activityCoveredIs);
 			crmActions.saveChecklist();
 		}
 	}
@@ -319,46 +316,57 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 
 	public void verifyReinspectionDate() throws ParseException {
 		String reinspectionDateVal = eleUtil.doGetElementAttribute(reinspectionDate, "value");
-		SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MMM/yyyy");
-		// LocalDate today = LocalDate.now();
-		Date today = new Date();
-		String formattedDate = timeFormat.format(today);
-		// Date date = timeFormat.parse(today);
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(today);
-		// cal.add(Calendar.MONTH, 3);
-		cal.add(Calendar.DAY_OF_WEEK, 90);
-		String result = timeFormat.format(cal.getTime());
-		System.out.println("After updation result" + result);
-		//Assert.assertEquals(reinspectionDateVal, result, "Reinspection Date is not matching");
+		/*
+		 * SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MMM/yyyy"); //
+		 * LocalDate today = LocalDate.now(); Date today = new Date(); String
+		 * formattedDate = timeFormat.format(today); // Date date =
+		 * timeFormat.parse(today); Calendar cal = Calendar.getInstance();
+		 * cal.setTime(today); // cal.add(Calendar.MONTH, 3);
+		 * cal.add(Calendar.DAY_OF_WEEK, 90); String result =
+		 * timeFormat.format(cal.getTime());
+		 */
+
+		String value = eleUtil.todayDatePlusDaysWithWeekend("dd/MMM/yyyy", 90);
+		// System.out.println("After updation result" + result);
+		Assert.assertEquals(reinspectionDateVal, value, "Reinspection Date is not matching");
 	}
 
 	public void updateReinspectionDateVal() {
-		SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MMM/yyyy");
-		Date today = new Date();
-		String formattedDate = timeFormat.format(today);
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(today);
-		cal.add(Calendar.DAY_OF_WEEK, 7);
-		String result = timeFormat.format(cal.getTime());
-		System.out.println("Date after 7 days is " + result);
+		/*
+		 * SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MMM/yyyy"); Date today
+		 * = new Date(); String formattedDate = timeFormat.format(today); Calendar cal =
+		 * Calendar.getInstance(); cal.setTime(today); cal.add(Calendar.DAY_OF_WEEK, 7);
+		 * String result = timeFormat.format(cal.getTime());
+		 * System.out.println("Date after 7 days is " + result);
+		 */
 
-		eleUtil.waitForVisibilityOfElement(reinspectionDate, 40);
+	/*	eleUtil.waitForVisibilityOfElement(reinspectionDate, 40);
 		eleUtil.doElementClickable(reinspectionDate, 30);
-		// eleUtil.doClickLog(reinspectionDate, "Clicked on Reinspection Date field");
 		eleUtil.doClearUsingKeysLog(reinspectionDate, "Clear Reinspection Date field");
 		eleUtil.doClear(reinspectionDate);
 		clickOnSaveBtn();
 		eleUtil.waitForVisibilityOfElement(reinspectionDate, 60);
-		//eleUtil.doClickLog(reinspectionDate, "Clicked on Reinspection Date field");
-		eleUtil.doSendKeysLog(reinspectionDate, result, "Entered value is : ");
-		 try {
-		        Thread.sleep(2000); // Wait for 2 seconds (adjust as necessary)
-		    } catch (InterruptedException e) {
-		        e.printStackTrace();
-		    }
-		 clickOnSaveBtn();
-		 eleUtil.waitForVisibilityOfElement(reinspectionDate, 60);
+		String value = eleUtil.todayDatePlusDaysWithWeekend("dd/MMM/yyyy", 7);
+		eleUtil.doSendKeysLog(reinspectionDate, value, "Entered value is : ");
+		try {
+			Thread.sleep(2000); // Wait for 2 seconds (adjust as necessary)
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		clickOnSaveBtn();
+		eleUtil.waitForVisibilityOfElement(reinspectionDate, 60);*/
+		
+		eleUtil.waitTillElementIsDisplayed(reinspectionDate, 30);
+		eleUtil.doElementClickable(reinspectionDate, 30);
+		eleUtil.doClearUsingKeysLog(reinspectionDate, "Clear Reinspection Date field");
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		eleUtil.doSendKeysLog(reinspectionDate, eleUtil.todayDatePlusDaysWithWeekend("dd/MMM/yyyy", 7), "Enter today's date + 7");
+		clickOnSaveBtn();
 	}
 
 	public void verifyNewWoType(String type) {
@@ -377,7 +385,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 				Assert.assertEquals(actualWOType, type, "WO Type is not matching");
 				break;
 			}
-			
+
 		}
 	}
 

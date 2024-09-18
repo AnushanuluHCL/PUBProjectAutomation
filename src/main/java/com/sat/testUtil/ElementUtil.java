@@ -1037,6 +1037,7 @@ public class ElementUtil {
 
 	/**
 	 * Format a given date
+	 * 
 	 * @param date
 	 * @param format
 	 * @return formatted date string
@@ -1056,15 +1057,16 @@ public class ElementUtil {
 
 	/**
 	 * Generate current date + x Days
+	 * 
 	 * @param format
 	 * @param days
 	 */
-    /*public static String todayDatePlusDays(String format, int days) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
-        calendar.add(Calendar.DAY_OF_YEAR, days);
-        return formatDate(calendar.getTime(), format);
-    }*/
+	public static String todayDatePlusDaysWithWeekend(String format, int days) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
+		calendar.add(Calendar.DAY_OF_YEAR, days);
+		return formatDate(calendar.getTime(), format);
+	}
 
 	public static String todayDatePlusDays(String format, int days) {
 		Calendar calendar = Calendar.getInstance();

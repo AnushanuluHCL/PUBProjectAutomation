@@ -2,7 +2,7 @@
 Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
 
   Background: Test CRM Login with valid credentials
-   Given User navigates to CRM login page
+    Given User navigates to CRM login page
     When Login to app with "AO_userid" and "AO_pwd"
     And user selects App "NMB Case Management"
 
@@ -23,7 +23,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
     And change the view to "List of BCA Projects shortlisted for Inspection" and verify created project available in this view
     And logout from the application
     When Login to app with "SO_userid" and "SO_pwd"
-    And user selects App "NMB Case Management"
+   And user selects App "NMB Case Management"
     And user selects entity as "Construction Sites"
     And change the view to "List of BCA Projects shortlisted for Inspection"
     And search for the project to open it
@@ -40,9 +40,8 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
     #And go to "All Activities" and verify the email for "Inspection Schedule"
     And navigate to Assignment stage and fill the respective details and navigate to next stage
     And go to "Work Orders" tab
-   And open WO and fill the Booking details
-    ###And open "Scheduled" WO and fill the Booking details and select "In Progress" status
-    And go to Service tasks tab and fill and complete the checklist
+    And open "Scheduled" WO and fill the Booking details and select "In Progress" status
+    And go to Service tasks tab and fill and complete the checklist with "No"
     And verify Booking status is "Completed" and WO status field is "Completed"
     Then verify System Assessment and User Assessment are marked as "Non-Compliance" in case form
     And verify that "Inspection Report" is generated
@@ -50,43 +49,43 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
     When Login to app with "SO_userid" and "SO_pwd"
     And user selects App "NMB Case Management"
     And search for the case to open it
-   And verify SO/AO get notified by alert for approval
-    And Verify that SO/AO get notified by no POWS approval notification
+    And verify SO and AO get notified by alert for approval
+    And Verify that SO and AO get notified by no POWS approval notification
     And go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review"
     And navigate to SO Review stage and fill the respective details and navigate to next stage
     When Login to app with "AO_userid" and "AO_pwd"
     And user selects App "NMB Case Management"
     And search for the case to open it
-    And verify SO/AO get notified by alert for approval
-    And Verify that SO/AO get notified by no POWS approval notification
+    And verify SO and AO get notified by alert for approval
+    And Verify that SO and AO get notified by no POWS approval notification
     #And navigate to AO Review stage and fill the respective details and navigate to next stage
     Then go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review" and "Project Reference Number" and "Please Obtain POWS Approval from PUB"
-    ##When user click on entity link on case form
     And change the Reinspection date value
     And logout from the application
-    Given User navigates to powerapps cloud flow page
+    Given User navigates to powerapps cloud flow page in "SIT2" environemnt
     When Login to powerapp with "PAsit2_userid" and "PAsit2_pwd"
     And Run the automatic cloudflow job for "SIES/WRN8 NMB/Creating WO for Reinspection BCA projects" 
     And logout from the powerapps application
     
+    
  # Reinspection work order
+ 		Given User navigates to CRM login page
+ 		And logout from the application
     When Login to app with "FIO_userid" and "FIO_pwd"
     And user selects App "NMB Case Management"
     And search for the case to open it
     And go to "Work Orders" tab
     And verify new work order is created with type as "Re-Inspection" after job run and open it
-    #Then Click and open the work order
-    ###And open "Scheduled" WO and fill the Booking details and select "In Progress" status
-    And open WO and fill the Booking details
-    #And go to Service tasks tab and fill and complete the checklist as "Non-Complaince"
-    #And verify Booking status is "Completed" and WO status field is "Completed"
-    #Then verify System Assessment and User Assessment are marked as "Compliance" in case form
-    #When Login to app with "SO_userid" and "SO_pwd"
-    #And user selects App "NMB Case Management"
-    #And search for the case to open it
-    #And verify SO/AO get notified by alert for approva
-    #And navigate to SO Review stage and fill the respective details and navigate to next stage
-    #And navigate to Close stage and fill the respective details and navigate to next stage
+    And open "Scheduled" WO and fill the Booking details and select "In Progress" status
+    And go to Service tasks tab and fill and complete the checklist with "Yes"
+    And verify Booking status is "Completed" and WO status field is "Completed"
+    Then verify System Assessment and User Assessment are marked as "Compliance" in case form
+    When Login to app with "SO_userid" and "SO_pwd"
+    And user selects App "NMB Case Management"
+    And search for the case to open it
+    And verify SO and AO get notified by alert for approval
+    And navigate to SO Review stage and fill the respective details and navigate to next stage
+    And navigate to Close stage and fill the respective details and navigate to next stage
     Examples: 
       |Project_Mukim_Lot_No.| Diameter | Affected by DTSS | Affected by Sewer |
       |4536456|     1000 | Yes              | Yes               |

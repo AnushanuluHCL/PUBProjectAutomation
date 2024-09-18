@@ -82,9 +82,9 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 		common.verifyCaseStatusonCaseForm(statusOnCase);
 	}
 
-	@And("go to Service tasks tab and fill and complete the checklist")
-	public void go_to_Service_tasks_tab_and_fill_and_complete_the_checklist() throws InterruptedException {
-		constructPage.fillChecklistWRN8NMB();
+	@And("go to Service tasks tab and fill and complete the checklist with {string}")
+	public void go_to_Service_tasks_tab_and_fill_and_complete_the_checklist(String activityCoveredIs) throws InterruptedException {
+		constructPage.fillChecklistWRN8NMB(activityCoveredIs);
 	}
 
 	@And("verify Booking status is {string} and WO status field is {string}")
@@ -98,12 +98,12 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 		commoncrm.verifySystemAssesmentOnCaseHome(assesment);
 	}
 
-	@And("verify SO\\/AO get notified by alert for approval")
+	@And("verify SO and AO get notified by alert for approval")
 	public void verify_SO_AO_get_notified_by_alert_for_approval() throws InterruptedException {
 		factory.approvalNotification();
 	}
 
-	@And("Verify that SO\\/AO get notified by no POWS approval notification")
+	@And("Verify that SO and AO get notified by no POWS approval notification")
 	public void Verify_that_SO_AO_get_notified_by_no_POWS_approval_notification() throws InterruptedException {
 		constructPage.POWSapprovalNotification();
 	}
@@ -136,12 +136,6 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 	@And("logout from the powerapps application")
 	public void logout_from_the_powerapps_application() {
 		powerapppage.logoutPowerApp();
-	}
-
-	@And("open {string} WO and fill the Booking details and select {string} status")
-	public void open_WO_and_fill_the_Booking_details_and_select_status(String status, String status2)
-			throws InterruptedException {
-		//commoncrm.fillBookingDetails(status, status2);
 	}
 
 }
