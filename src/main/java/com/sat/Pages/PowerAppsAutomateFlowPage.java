@@ -25,17 +25,15 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 	private By refresh = By.xpath("//*[@data-icon-name='Refresh']");
 	private By successmessage = By.xpath("(//div[@data-automation-key='status'])[1]");
 	private By running = By.xpath("//*[contains(@class,'fl-StatusInCell root')]//*[text()='Running']");
-	
+
 	private By OtherAccount = By.xpath("//div[@id='otherTileText']");
-	
-	private By signoutPic= By.xpath("//div[@id='meInitialsButton']");
+
+	private By signoutPic = By.xpath("//div[@id='meInitialsButton']");
 	private By signoutBtn = By.xpath("//a[@aria-label='Sign out of this account']");
 
 	public PowerAppsAutomateFlowPage(WebDriver driver) {
 		super(driver);
 	}
-	
-	
 
 	public void loginPowerApp(String userid, String password) {
 		eleUtil.waitForVisibilityOfElement(OtherAccount, 40);
@@ -54,7 +52,7 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 		eleUtil.waitForVisibilityOfElement(Search, 20);
 		eleUtil.doClick(Search);
 		eleUtil.doSendKeys(Search, flowName);
-		//driver.findElement(Search).sendKeys(flowName, Keys.ENTER);
+		// driver.findElement(Search).sendKeys(flowName, Keys.ENTER);
 		By ele = By.xpath("//a[text()='" + flowName + "']");
 		eleUtil.waitForVisibilityOfElement(ele, 20);
 		eleUtil.doClick(ele);
@@ -66,8 +64,7 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 		eleUtil.waitForVisibilityOfElement(Runflowbutton, 30);
 		try {
 			eleUtil.doClick(Runflowbutton);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			eleUtil.doActionsClick(Runflowbutton);
 		}
 		eleUtil.waitForVisibilityOfElement(Done, 30);
@@ -97,24 +94,25 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 			}
 		}
 	}
+
 	public void logoutPowerApp() {
-		
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-			eleUtil.waitForVisibilityOfElement(signoutPic, 50);
-			try {
-				eleUtil.doClick(signoutPic);
-			} catch (Exception e) {
-				eleUtil.doActionsClick(signoutPic);
-			}
-			eleUtil.waitForVisibilityOfElement(signoutBtn, 30);
-			eleUtil.doClick(signoutBtn);
-			eleUtil.waitForVisibilityOfElement(OtherAccount, 30);
-			eleUtil.doClick(OtherAccount);
-		
+		driver.navigate().refresh();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		eleUtil.waitForVisibilityOfElement(signoutPic, 50);
+		try {
+			eleUtil.doClick(signoutPic);
+		} catch (Exception e) {
+			eleUtil.doActionsClick(signoutPic);
+		}
+		eleUtil.waitForVisibilityOfElement(signoutBtn, 30);
+		eleUtil.doClick(signoutBtn);
+		// eleUtil.waitForVisibilityOfElement(OtherAccount, 30);
+		// eleUtil.doClick(OtherAccount);
 	}
 
 }

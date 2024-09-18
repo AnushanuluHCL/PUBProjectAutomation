@@ -614,7 +614,7 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.doClick(changeViewIcon);
 		By viewXpath = By.xpath("//label[contains(text(),'" + typeOfCases + "')]");
 		eleUtil.waitForVisibilityOfElement(viewXpath, 20);
-		eleUtil.doClick(ActiveCases);
+		eleUtil.doClick(viewXpath);
 	}
 
 	public void rolesUpdate() {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 
 import org.openqa.selenium.*;
@@ -79,7 +80,9 @@ public class commonCRMActions extends commonActionsPage {
     private By checkBOCreated = By.xpath("//div[@data-id='bookings-pcf_grid_control_container'] //span[text()='No data available']");
     private By moreCommandButtonForBooking = By.xpath("button[aria-label='More commands for Bookable Resource Booking']");
     private By bookingRefreshButton = By.xpath("//button[contains(@id,'bookableresourcebooking') and @aria-label='Refresh']");
-
+    private By startTimeCol = By.xpath("//div[text()='Start Time']");
+	private By NewToOldCol = By.xpath("//span[text()='Sort newer to older']");
+    
     // Locators on case home page
     private By systemAssesmentField = By.xpath("//select[@aria-label='System Assessment']");
     private By userAssesmentField = By.xpath("//select[@aria-label='User Assessment']");
@@ -398,6 +401,93 @@ public class commonCRMActions extends commonActionsPage {
         }
         resetFirstRunFlag();
     }
+    
+    public void multipleBookingfilling(String status, String selectBookingStatus) throws InterruptedException {
+		workOrderStatusFilter(status);
+		List<String> woNum = new ArrayList<>();
+		String nextButton;
+		// Store all WOs from the first page
+		commonCRMActions.WOnumber = getWONumber();
+		woNum.addAll(commonCRMActions.WOnumber);
+		Thread.sleep(2000);
+		Log.info("print wo number " + woNum);
+		Log.info("size is: " + woNum.size());
+		// Check if there is a next button and click it if enabled
+		nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled",
+				"Check next button is true/false");
+		while (nextButton.contains("false")) {
+			eleUtil.doClickLog(getNextButtonOnWorkOrder(), "click on next button on Work Order");
+			Thread.sleep(2000);
+			// Store all WOs from the next page
+			commonCRMActions.WOnumber = getWONumber();
+			woNum.addAll(commonCRMActions.WOnumber);
+			Log.info("print wo number " + woNum);
+			Log.info("size is: " + woNum.size());
+			// Check the next button status again
+			nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled",
+					"Check next button is true/false");
+		}
+		// Process all collected WOs
+
+		for (int i = 0; i < woNum.size(); i++) {
+			Thread.sleep(2000);
+			processWorkOrder(woNum.get(i), status);
+			// Validation on Booking tab
+			eleUtil.waitForVisibilityOfElement(getBookingTab(), 30);
+			eleUtil.staleElementRefExecClickCRM(getBookingTab());
+			eleUtil.doClick(getBookingTab());
+			Thread.sleep(2000);
+
+			By bookingRecord = By.xpath("//input[contains(@aria-label,'elect or deselect the row')]");
+			// div[@col-id='resource' and @role='gridcell']/descendant::a
+			List<WebElement> bookingRecords = driver.findElements(bookingRecord);
+			// for(WebElement cell:li) {
+			System.out.println("no of booking records" + bookingRecords.size());
+			for (int k = 1; k < bookingRecords.size(); k++) {
+				WebElement record = bookingRecords.get(k);
+				sortTheRecords(resourceField, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
+				Actions a = new Actions(driver);
+				a.moveToElement(record).click().build().perform();
+				a.doubleClick(record).build().perform();
+
+				eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
+				eleUtil.doClick(getMaximizeScreenBtn());
+
+				//signTheChecklist();
+
+				eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
+				eleUtil.doElementClickable(saveNCloseOnBooking, 10);
+				eleUtil.doClick(saveNCloseOnBooking);
+
+				boolean continueClicked = false;
+				while (true) {
+					try {
+						eleUtil.doElementClickable(saveNContinueBtn, 10);
+						eleUtil.doClick(saveNContinueBtn);
+						continueClicked=true;
+					} catch (org.openqa.selenium.NoSuchElementException e) {
+						break;	
+					}
+				}
+				// If continue button was clicked, wait for save and close
+		        if (continueClicked) {
+		            eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
+		            eleUtil.doElementClickable(saveNCloseOnBooking, 10);
+		            eleUtil.doClick(saveNCloseOnBooking);
+		        }
+		        
+		        // Re-fetch the booking records in case DOM changes
+		        bookingRecords = driver.findElements(bookingRecord);
+			}
+
+			try {
+				clickOnSaveNCloseButton();
+			} catch (Exception e) {
+				eleUtil.doActionsClick(getSaveNCloseBtn());
+			}
+		}
+		resetFirstRunFlag();
+	}
 
     public void openCheckList(String woNumber, String checkListName, String status) throws InterruptedException {
         Thread.sleep(2000);

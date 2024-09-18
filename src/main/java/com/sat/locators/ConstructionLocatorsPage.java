@@ -216,16 +216,15 @@ public class ConstructionLocatorsPage extends commonActionsPage {
         eleUtil.doClickLog(entitydropdown, "Click on Entity/Proj Reference No field in view");
     }
 
-    public void caseCreationCheck() {
-        eleUtil.waitForVisibilityOfElement(entitynameOnCaseForm, 30);
-        String entitynameonCase = eleUtil.doGetElementAttribute(entitynameOnCaseForm, "aria-label");
-        System.out.println(
-                "entitynameonCase - " + entitynameonCase + "Project Name - " + commonActionsPage.WRN8NMB_Projname);
-        // Assert.assertEquals(entitynameonCase, commonActionsPage.WRN8NMB_Projname);
-        Log.info("Case created successfully");
-        commonActionsPage.casenumber = eleUtil.doElementGetText(caseidOnCaseForm);
-        Log.info("Case number is: " + commonActionsPage.casenumber);
-    }
+    public void caseCreationCheck(String value) {
+		eleUtil.waitForVisibilityOfElement(entitynameOnCaseForm, 30);
+		String entitynameonCase = eleUtil.doGetElementAttribute(entitynameOnCaseForm, "aria-label");
+		//System.out.println("entitynameonCase - " + entitynameonCase + "Project Name - " + commonActionsPage.WRN8NMB_Projname);
+		Assert.assertEquals(entitynameonCase, value);
+		Log.info("Case created successfully");
+		commonActionsPage.casenumber = eleUtil.doElementGetText(caseidOnCaseForm);
+		Log.info("Case number is: " + commonActionsPage.casenumber);
+	}
 
     public void selectChecklistForWRN8NMB() {
         eleUtil.waitTillElementIsDisplayed(constructionActivitiyFound, 30);

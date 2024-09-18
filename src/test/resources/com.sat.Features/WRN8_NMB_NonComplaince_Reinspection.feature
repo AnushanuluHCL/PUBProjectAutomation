@@ -40,7 +40,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
     #And go to "All Activities" and verify the email for "Inspection Schedule"
 	And navigate to Assignment stage and fill the respective details and navigate to next stage
 	And go to "Work Orders" tab
-	And open WO and fill the Booking details
+	And open "Scheduled" WO and fill the Booking details and select "In Progress" status
     ###And open "Scheduled" WO and fill the Booking details and select "In Progress" status
 	And go to Service tasks tab and fill and complete the checklist
 	And verify Booking status is "Completed" and WO status field is "Completed"
@@ -77,7 +77,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
 	And verify new work order is created with type as "Re-Inspection" after job run and open it
     #Then Click and open the work order
     ###And open "Scheduled" WO and fill the Booking details and select "In Progress" status
-	And open WO and fill the Booking details
+	And open "Scheduled" WO and fill the Booking details and select "In Progress" status
     #And go to Service tasks tab and fill and complete the checklist as "Non-Complaince"
     #And verify Booking status is "Completed" and WO status field is "Completed"
     #Then verify System Assessment and User Assessment are marked as "Compliance" in case form
