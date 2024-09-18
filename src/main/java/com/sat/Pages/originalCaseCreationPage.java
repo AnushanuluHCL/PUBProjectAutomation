@@ -169,4 +169,5 @@ public class originalCaseCreationPage extends commonActionsPage{
     public void completeReInspectionForWRN11() throws InterruptedException {
         cases.reInspectionForWRN11();
     }
+
 }

@@ -3,6 +3,7 @@ package com.sat.Pages;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 import org.openqa.selenium.WebDriver;
@@ -22,16 +23,15 @@ public class constructionsPage extends commonActionsPage {
 	factoryPage factory = new factoryPage(driver);
 
 	public void updateDataIntoExcel(String project_title) {
-		constructionpage.updateExcelForConstructioncreation(project_title);
-
+		constructionpage.updateExcelForConstructionCreation(project_title);
 	}
 
 	public void importExcelData() throws InterruptedException {
 		importExcel(path);
 	}
 
-	public void verifyProjCraetionCheck() {
-		constructionpage.datachecking();
+	public void verifyProjCreationCheck() {
+		constructionpage.dataChecking();
 		openProject();
 	}
 
@@ -54,13 +54,14 @@ public class constructionsPage extends commonActionsPage {
 		clickOnSaveBtn();
 	}
 
-	public void GERIResponse(String tab, String projMukimLotvalue, String diameterValue, String DTSSValue, String SewerValue) {
+	public void GERIResponse(String tab, String projMukimLotValue, String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
 		commonCRM.navigatingToTabInProject(tab);
 		constructionpage.newGERIResponseBtn();
-		constructionpage.projMukimLotNo(projMukimLotvalue);
+		constructionpage.projMukimLotNo(projMukimLotValue);
 		constructionpage.diameterVal(diameterValue);
 		constructionpage.affectedByDTSSVal(DTSSValue);
-		constructionpage.affectedBySewerVal(SewerValue);
+		constructionpage.affectedBySewerVal(sewerValue);
+		constructionpage.affectedByPumpingMain(pumpingMain);
 		clickonSaveAndCloseBtn();
 		clickOnSaveBtn();
 		clickonSaveAndCloseBtn();
@@ -73,7 +74,7 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.compareProjValue();
 	}
 	public void approveProject() throws InterruptedException {
-		constructionpage.approveproj();
+		constructionpage.approveProj();
 	}
 	public void verifyCaseCreated() {
 		changeAreaSelection("Inspection");
@@ -92,17 +93,53 @@ public class constructionsPage extends commonActionsPage {
 		commonCRM.notificationForTabToOpenCase(commonActionsPage.casenumber, "Inspection Case Information");
 	}
 	
-	public void updateReinspectionDate() throws ParseException {
+	public void updateReInspectionDate() throws ParseException {
 		navigatingToTab("Inspection Case Information");
 		clickOnEntityOnCaseForm();
 		commonCRM.navigatingToTabInProject("System related information");
-		constructionpage.verifyReinspectionValue();
-		constructionpage.verifyReinspectionDate();
-		constructionpage.updateReinspectionDateVal();
+		constructionpage.verifyReInspectionValue();
+		constructionpage.verifyReInspectionDate();
+		constructionpage.updateReInspectionDateVal();
 		clickOnSaveBtn();
 	}
 	public void verifyTypeOFWO(String type) {
 		constructionpage.verifyNewWoType(type);
 	}
-	
+
+	public void createWRN8IMBProject(String projectTitle) throws IOException {
+		constructionpage.updateExcelConstructionWRN8IMB(projectTitle);
+	}
+
+	public void importIMBExcel() throws InterruptedException {
+		constructionpage.importWRN8IMBExcelData();
+	}
+
+	public void verifyWRN8IMBProjectCreated() throws InterruptedException {
+		constructionpage.checkWRN8IMBProjectCreated();
+	}
+
+	public void updateContractorValues(String tab) throws InterruptedException {
+		commonCRM.navigatingToTabInProject(tab);
+		constructionpage.enterContractor();
+	}
+
+	public void GERIResponseForIMB(String tab, String projMukimLotValue, String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
+		commonCRM.navigatingToTabInProject(tab);
+		constructionpage.newGERIResponseBtn();
+		constructionpage.projMukimLotNo(projMukimLotValue);
+		constructionpage.diameterVal(diameterValue);
+		constructionpage.affectedByDTSSVal(DTSSValue);
+		constructionpage.affectedBySewerVal(sewerValue);
+		constructionpage.affectedByPumpingMain(pumpingMain);
+		clickonSaveAndCloseBtn();
+		clickOnSaveBtn();
+	}
+
+	public void verifyCaseCreatedInProject() throws InterruptedException {
+		constructionpage.checkCaseCreated();
+	}
+
+	public void saveCaseRecord() {
+		clickOnSaveBtn();
+	}
 }

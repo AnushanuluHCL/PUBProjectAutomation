@@ -34,7 +34,7 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 
 	@And("verify data is updated in the system and open it")
 	public void verify_data_is_updated_in_the_system_and_open_it() {
-		constructPage.verifyProjCraetionCheck();
+		constructPage.verifyProjCreationCheck();
 	}
 
 	@Then("go to {string} in project and verify the email for {string}")
@@ -49,9 +49,9 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 	}
 
 	@And("go to {string} tab and update the {string},{string},{string} and {string} GERI response values")
-	public void go_to_tab_and_update_the_and_GERI_response_values(String tab, String projMukimLotvalue,
-			String diameterValue, String DTSSValue, String SewerValue) {
-		constructPage.GERIResponse(tab, projMukimLotvalue, diameterValue, DTSSValue, SewerValue);
+	public void go_to_tab_and_update_the_and_GERI_response_values(String tab, String projMukimLotValue,
+			String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
+		constructPage.GERIResponse(tab, projMukimLotValue, diameterValue, DTSSValue, sewerValue, pumpingMain);
 	}
 
 	@And("change the view to {string} and verify created project available in this view")
@@ -120,7 +120,7 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 
 	@And("change the Reinspection date value")
 	public void change_the_Reinspection_date_value() throws ParseException {
-		constructPage.updateReinspectionDate();
+		constructPage.updateReInspectionDate();
 	}
 
 	@And("verify new work order is created with type as {string} after job run and open it")

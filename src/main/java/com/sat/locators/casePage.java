@@ -649,4 +649,5 @@ public class casePage extends commonCRMActions {
         factory.clickOnSavingInProgressOkButton();
         eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
     }
+
 }
