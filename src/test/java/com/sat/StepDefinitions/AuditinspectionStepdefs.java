@@ -17,14 +17,14 @@ public class AuditinspectionStepdefs {
 	private Properties prop;
 	private TestBase testBase = new TestBase();
 
-	@Given("User navigates to powerapps cloud flow page")
-	public void User_navigates_to_powerapps_cloud_flow_page() {
+	@Given("User navigates to powerapps cloud flow page in {string} environemnt")
+	public void User_navigates_to_powerapps_cloud_flow_page(String env) {
 		/*TestBase testBase = new TestBase();
 		testBase.initialization();
 		System.out.println("WebDriver instance: " + TestBase.getDriver());
 		System.out.println("URL: " + prop.getProperty("powerapps_URL"));
 		TestBase.getDriver().get(prop.getProperty("powerapps_URL"));*/
-		testBase.powerappsURLLaunch();
+		testBase.powerappsURLLaunch(env);
 	}
 	@And("Run the automatic cloudflow job for {string}")
 	public void Run_the_automatic_cloudflow_job_for(String job) {
