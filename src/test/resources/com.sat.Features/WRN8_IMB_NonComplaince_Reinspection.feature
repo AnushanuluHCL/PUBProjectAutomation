@@ -1,19 +1,18 @@
 @WRN8IMBNonComplaince
-Feature: Testing WRN8 IMB-Noncompliance and Re inspection
+Feature: Testing WRN8 IMB-Noncompliance
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
 	When Login to app with "Admin_userid" and "Admin_pwd"
 	And user selects App "IMB Case Management"
 
-  Scenario Outline: Inspecting Sewer/DTSS by reinspecting again when any noncompliance happened
+  Scenario Outline: Cases creation by configuring FSD keywords and diameter. Inspection case flow for non-compliance.
 	When user selects entity as "Construction Sites"
 	And change the view to "List of Construction Sites"
 	And create Project with title as "development"
 	And import IMB data
 	And verify record is created in the system and open it
 	Then go to "All Activities" in project and verify the email for "development"
-    # These Mukim/Lot no. usually coming from FormSG link from Request for Mukim/Lot no. email. Now updating manually in project
 	Then go to "Summary" tab and update the Contractor
 	Then go to "Summary" tab and update the Mukim number as "333" and Lot number "135"
 	And go to "POWS Submissions" tab and update the "<Project_Mukim_Lot_No.>","<Diameter>","<Affected by DTSS>", "<Affected by Sewer>" and "<Affected Pumping Main>" GERI response values for IMB
@@ -56,7 +55,12 @@ Feature: Testing WRN8 IMB-Noncompliance and Re inspection
 	Then go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review"
 	And navigate to AO Review stage and fill the respective details
 	Then verify case is "Completed" and in read only mode
-	#Then go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review" and "Project Reference Number" and "Please Obtain POWS Approval from PUB"
+	Examples:
+	  | Project_Mukim_Lot_No. | Diameter | Affected by DTSS | Affected by Sewer | Affected Pumping Main |
+	  | 4536456               | 1000     | No               | No                | Yes                   |
+
+
+
     ##When user click on entity link on case form
 	#And change the Reinspection date value
 	#And logout from the application
@@ -83,6 +87,3 @@ Feature: Testing WRN8 IMB-Noncompliance and Re inspection
     #And verify SO/AO get notified by alert for approve
     #And navigate to SO Review stage and fill the respective details and navigate to next stage
     #And navigate to Close stage and fill the respective details and navigate to next stage
-	Examples:
-	  | Project_Mukim_Lot_No. | Diameter | Affected by DTSS | Affected by Sewer | Affected Pumping Main |
-	  | 4536456               | 1000     | No               | No                | Yes                   |
