@@ -663,7 +663,7 @@ public class caseCreationPage extends commonActionsPage {
 		Thread.sleep(2000);
 		eleUtil.doSendKeys(searchbox, commonActionsPage.casenumber);
 
-		//eleUtil.doSendKeys(searchbox, "NMB/NG/I/2024/25601");
+		//eleUtil.doSendKeys(searchbox, "IMB/PC/I/2024/26335");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 

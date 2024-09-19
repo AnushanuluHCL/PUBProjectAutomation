@@ -111,8 +111,8 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 		}
 		eleUtil.waitForVisibilityOfElement(signoutBtn, 30);
 		eleUtil.doClick(signoutBtn);
-		// eleUtil.waitForVisibilityOfElement(OtherAccount, 30);
-		// eleUtil.doClick(OtherAccount);
+		//eleUtil.waitForVisibilityOfElement(OtherAccount, 30);
+		//eleUtil.doClick(OtherAccount);
 	}
 
 }
