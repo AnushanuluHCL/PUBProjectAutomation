@@ -36,17 +36,6 @@ public class WRN8IMB_Noncompliance_ReInspection {
         constructPage.updateContractorValues(tabName);
     }
 
-    @And("go to {string} tab and update the {string},{string},{string}, {string} and {string} GERI response values")
-    public void goToTabAndUpdateTheAndGERIResponseValues(String tab, String projMukimLotValue,
-                                                         String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
-        constructPage.GERIResponse(tab, projMukimLotValue, diameterValue, DTSSValue, sewerValue, pumpingMain);
-    }
-
-    @And("go to {string} tab and update the {string},{string},{string}, {string} and {string} GERI response values for IMB")
-    public void goToTabAndUpdateTheAndGERIResponseValuesForIMB(String tab, String projMukimLotValue, String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
-        constructPage.GERIResponseForIMB(tab, projMukimLotValue, diameterValue, DTSSValue, sewerValue, pumpingMain);
-    }
-
     @Then("verify Case created in Project")
     public void verifyCaseCreatedInProject() throws InterruptedException {
         constructPage.verifyCaseCreatedInProject();
@@ -65,5 +54,11 @@ public class WRN8IMB_Noncompliance_ReInspection {
     @And("navigate to AO Review stage and fill the respective details")
     public void navigateToAOReviewStageAndFillTheRespectiveDetails() {
         casepage.completeAOReviewStage();
+    }
+
+    @And("go to {string} tab and update the {string},{string},{string}, {string} and {string} GERI response values for IMB")
+    public void goToTabAndUpdateTheAndGERIResponseValuesForIMB(String tab, String projMukimLotValue,
+                                                               String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
+        constructPage.GERIResponseForIMB(tab, projMukimLotValue, diameterValue, DTSSValue, sewerValue, pumpingMain);
     }
 }
