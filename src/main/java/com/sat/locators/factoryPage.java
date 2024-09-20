@@ -126,9 +126,9 @@ public class factoryPage extends commonActionsPage {
 	String filePath = System.getProperty("user.dir");
 	String factoryName = "Factory" + todayDateTime;
 
-	public void selectEntityType() {
+	public void selectEntityType(String selectEntityType) {
 		eleUtil.waitTillElementIsDisplayed(entityType, 30);
-		eleUtil.selectDropDownValue(entityType, "selectByVisibleText", "Factory", "select entity type as Factory");
+		eleUtil.selectDropDownValue(entityType, "selectByVisibleText", selectEntityType, "select entity type as " + selectEntityType);
 	}
 
 	public By setLookUp() {

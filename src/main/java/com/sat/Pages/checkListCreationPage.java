@@ -11,14 +11,18 @@ public class checkListCreationPage extends commonActionsPage {
         super(driver);
     }
 
-    casePage cases = new casePage(driver);
-    commonCRMActions crmActions = new commonCRMActions(driver);
-    caseCreationPage caseCreation = new caseCreationPage(driver);
-    factoryPage factory = new factoryPage(driver);
     checkListPage checkList = new checkListPage(driver);
 
 
     public void fillChecklistForWRN8IMB(String status, String checklistType, String checkListName) throws InterruptedException {
-        checkList.fillCheckListForWRN8IMB(status, checklistType, checkListName);
+        checkList.checkListForWRN8IMB(status, checklistType, checkListName);
+    }
+
+    public void fillChecklistForWRN7IMBCombingPhoto(String status, String checklistType, String checkListName) throws InterruptedException {
+        checkList.checkListForWRN7NMBCombingPhoto(status, checklistType, checkListName);
+    }
+
+    public void fillChecklistForWRN7IMBCombingVirtual(String status, String checklistType, String checkListName) throws InterruptedException {
+        checkList.checkListForWRN7NMBCombingVirtual(status, checklistType, checkListName);
     }
 }

@@ -17,7 +17,7 @@ public class AuditinspectionStepdefs {
 	private Properties prop;
 	private TestBase testBase = new TestBase();
 
-	@Given("User navigates to powerapps cloud flow page in {string} environemnt")
+	@Given("User navigates to powerapps cloud flow page in {string} environment")
 	public void User_navigates_to_powerapps_cloud_flow_page(String env) {
 		/*TestBase testBase = new TestBase();
 		testBase.initialization();

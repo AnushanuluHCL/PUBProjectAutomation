@@ -1,14 +1,8 @@
 package com.sat.StepDefinitions;
 
-import java.text.ParseException;
-
-import com.sat.Pages.PowerAppsAutomateFlowPage;
-import com.sat.Pages.WRN1CasePage;
 import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.commonCRMActions;
-import com.sat.Pages.constructionsPage;
 import com.sat.Pages.pumpingMainStationsPage;
-import com.sat.locators.factoryPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.java.en.And;
@@ -38,7 +32,7 @@ public class WRN7_IMB_Noncomplaince {
 	}
 	@And("open {string} WO and select the {string} booking record and complete all the booking process")
 	public void open_WO_and_select_the_booking_record_and_complete_all_the_booking_process(String wostatus, String bookingsttaus) throws InterruptedException {
-		commoncrm.multipleBookingfilling(wostatus, bookingsttaus);
+		commoncrm.multipleBookingFilling(wostatus, bookingsttaus);
 	}
 	@And("go to Service tasks tab and complete the checklist with {string}")
 	public void go_to_Service_tasks_tab_and_complete_the_checklist(String complainceVal) throws InterruptedException {

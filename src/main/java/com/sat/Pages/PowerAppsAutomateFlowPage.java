@@ -49,7 +49,7 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 
 	public void runCloudFlow(String flowName) {
 		eleUtil.isPageLoaded(30);
-		eleUtil.waitForVisibilityOfElement(Search, 20);
+		eleUtil.waitForVisibilityOfElement(Search, 50);
 		eleUtil.doClick(Search);
 		eleUtil.doSendKeys(Search, flowName);
 		// driver.findElement(Search).sendKeys(flowName, Keys.ENTER);
@@ -79,13 +79,14 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 		boolean condition = true;
 		while (condition) {
 			if (time.contains("sec")) {
-				String successmsg = eleUtil.doElementGetText(successmessage);
-				if (successmsg.equalsIgnoreCase("Succeeded")) {
-					Log.info(successmsg);
-					Assert.assertEquals("Succeeded", successmsg);
+				String successMsg = eleUtil.doElementGetText(successmessage);
+				if (successMsg.equalsIgnoreCase("Succeeded")) {
+					Log.info(successMsg);
+					Assert.assertEquals("Succeeded", successMsg);
 					condition = false;
 				} else {
 					eleUtil.doClick(refresh);
+					eleUtil.waitForVisibilityOfElement(refresh, 50);
 				}
 
 			} else {

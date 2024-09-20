@@ -23,7 +23,7 @@ public class factoryCreationPage extends commonActionsPage {
 
     public void createFactory() {
         clickonNewBtn();
-        factory.selectEntityType();
+        factory.selectEntityType("Factory");
         factory.selectCatchment();
         factory.enterEntityName();
         clickOnSaveBtn();
