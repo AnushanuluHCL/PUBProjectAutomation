@@ -10,7 +10,7 @@ Feature: Testing WRN7 IMB - Noncomplaince
     When user selects entity as "Pumping Main Stations"
     And create a new pumping station by giving "Pumping Main Stations","Bedok","October"
     And creating 2 chambers
-    Given User navigates to powerapps cloud flow page in "SIT3" environemnt
+    Given User navigates to powerapps cloud flow page in "SIT3" environment
     And Run the automatic cloudflow job for "SIES/WRN7/IMB/Pumping Main Station Inspection Case"
     And logout from the powerapps application
     Given User navigates to CRM login page

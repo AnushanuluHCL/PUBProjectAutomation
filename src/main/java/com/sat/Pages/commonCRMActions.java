@@ -415,7 +415,7 @@ public class commonCRMActions extends commonActionsPage {
 		resetFirstRunFlag();
 	}
 
-	public void multipleBookingfilling(String status, String selectBookingStatus) throws InterruptedException {
+	public void multipleBookingFilling(String status, String selectBookingStatus) throws InterruptedException {
 		workOrderStatusFilter(status);
 		List<String> woNum = new ArrayList<>();
 		String nextButton;
@@ -457,8 +457,8 @@ public class commonCRMActions extends commonActionsPage {
 			// Collecting all the bokking resource texts
 			List<String> bookingRecordTexts = new LinkedList<>();
 			for (WebElement record : bookingRecords) {
-				String arialabel = record.getAttribute("aria-label");
-				bookingRecordTexts.add(arialabel);
+				String ariaLabel = record.getAttribute("aria-label");
+				bookingRecordTexts.add(ariaLabel);
 			}
 			System.out.println("bookingRecordTexts is : " + bookingRecordTexts);
 
