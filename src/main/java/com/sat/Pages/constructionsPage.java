@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.sat.locators.ConstructionLocatorsPage;
 import com.sat.locators.factoryPage;
+import com.sat.locators.pumpingSystemPage;
 
 public class constructionsPage extends commonActionsPage {
 	String path = "\\src\\test\\resources\\testdata\\8NMB_ConstructionCreation.xlsx";
@@ -21,6 +22,7 @@ public class constructionsPage extends commonActionsPage {
 	ConstructionLocatorsPage constructionpage = new ConstructionLocatorsPage(driver);
 	commonCRMActions commonCRM = new commonCRMActions(driver);
 	factoryPage factory = new factoryPage(driver);
+	pumpingSystemPage pumpingSystem = new pumpingSystemPage(driver);
 
 	public void updateDataIntoExcel(String project_title) {
 		constructionpage.updateExcelForConstructionCreation(project_title);
@@ -54,7 +56,8 @@ public class constructionsPage extends commonActionsPage {
 		clickOnSaveBtn();
 	}
 
-	public void GERIResponse(String tab, String projMukimLotValue, String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
+	public void GERIResponse(String tab, String projMukimLotValue, String diameterValue, String DTSSValue,
+			String sewerValue, String pumpingMain) {
 		commonCRM.navigatingToTabInProject(tab);
 		constructionpage.newGERIResponseBtn();
 		constructionpage.projMukimLotNo(projMukimLotValue);
@@ -66,16 +69,20 @@ public class constructionsPage extends commonActionsPage {
 		clickOnSaveBtn();
 		clickonSaveAndCloseBtn();
 	}
+
 	public void searchForAProject() {
 		factory.entitySelectionInFactoryView();
 		filterView(commonActionsPage.WRN8NMB_Projname);
 	}
+
 	public void verifyProjectInShortListView() {
 		constructionpage.compareProjValue();
 	}
+
 	public void approveProject() throws InterruptedException {
 		constructionpage.approveProj();
 	}
+
 	public void verifyCaseCreated() {
 		changeAreaSelection("Inspection");
 		selectEntity("Cases");
@@ -83,15 +90,17 @@ public class constructionsPage extends commonActionsPage {
 		filterView(commonActionsPage.WRN8NMB_Projname);
 		constructionpage.caseCreationCheck(commonActionsPage.WRN8NMB_Projname);
 	}
+
 	public void fillChecklistWRN8NMB() throws InterruptedException {
 		constructionpage.fillCheckListQuestionsForWRN8NMB();
 	}
+
 	public void POWSapprovalNotification() throws InterruptedException {
 		// CommonActionsPage.casenumber= getCaseNumber();
 		eleUtil.isPageLoaded(60);
 		commonCRM.notificationForTabToOpenCase(commonActionsPage.casenumber, "Inspection Case Information");
 	}
-	
+
 	public void updateReInspectionDate() throws ParseException {
 		navigatingToTab("Inspection Case Information");
 		clickOnEntityOnCaseForm();
@@ -101,6 +110,7 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.updateReInspectionDateVal();
 		clickOnSaveBtn();
 	}
+
 	public void verifyTypeOFWO(String type) {
 		constructionpage.verifyNewWoType(type);
 	}
@@ -122,7 +132,8 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.enterContractor();
 	}
 
-	public void GERIResponseForIMB(String tab, String projMukimLotValue, String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
+	public void GERIResponseForIMB(String tab, String projMukimLotValue, String diameterValue, String DTSSValue,
+			String sewerValue, String pumpingMain) {
 		commonCRM.navigatingToTabInProject(tab);
 		constructionpage.newGERIResponseBtn();
 		constructionpage.projMukimLotNo(projMukimLotValue);
@@ -140,5 +151,30 @@ public class constructionsPage extends commonActionsPage {
 
 	public void saveCaseRecord() {
 		clickOnSaveBtn();
+	}
+
+	public void createmanualProject(String entityType, String accType) throws InterruptedException {
+		clickonNewBtn();
+		pumpingSystem.selectEntityType(entityType);
+		constructionpage.selectAccountSubTypeVal(accType);
+		pumpingSystem.enterProjectReferenceNumber();
+		pumpingSystem.enterProjectTitle();
+		pumpingSystem.enterContractor();
+		constructionpage.enterArchitect();
+		factory.selectCatchment();
+		pumpingSystem.enterHouseBlkNumber();
+		pumpingSystem.enterPostalCode();
+		pumpingSystem.enterRoadName();
+		clickOnSaveBtn();
+	}
+
+	public void enableAffectedByPumpingMain() {
+		constructionpage.affectedByPumpingMain();
+		clickOnSaveBtn();
+	}
+	public void createAPOWSReq(String diameterValue) {
+		constructionpage.newPOWSSubBtn();
+		
+		constructionpage.diameterVal(diameterValue);
 	}
 }

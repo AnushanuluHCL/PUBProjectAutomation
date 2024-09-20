@@ -3,7 +3,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
-	When Login to app with "AO_userid" and "AO_pwd"
+	When Login to app with "sit2_AO_userid" and "sit2_AO_pwd"
 	And user selects App "NMB Case Management"
 
   Scenario Outline: Inspecting Sewer/DTSS by reinspecting agian when any noncomplaince happend
@@ -22,7 +22,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
 	And go to "POWS Submissions" tab and update the "<Project_Mukim_Lot_No.>","<Diameter>","<Affected by DTSS>", "<Affected by Sewer>" and "<Affected Pumping Main>" GERI response values
 	And change the view to "List of BCA Projects shortlisted for Inspection" and verify created project available in this view
 	And logout from the application
-	When Login to app with "SO_userid" and "SO_pwd"
+	When Login to app with "sit2_SO_userid" and "sit2_SO_pwd"
 	And user selects App "NMB Case Management"
 	And user selects entity as "Construction Sites"
 	And change the view to "List of BCA Projects shortlisted for Inspection"
@@ -30,7 +30,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
 	And approve the project
 	Then verify whether case is created once project is approved
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit2_FIO_userid" and "sit2_FIO_pwd"
 	And user selects App "NMB Case Management"
 	And change the view "Active Cases" and search a case
 	And Verify that created case starts with "NMB/NG/I" with status "Scheduled"
@@ -47,7 +47,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
 	Then verify System Assessment and User Assessment are marked as "Non-Compliance" in case form
 	And verify that "Inspection Report" is generated
 	And logout from the application
-	When Login to app with "SO_userid" and "SO_pwd"
+	When Login to app with "sit2_SO_userid" and "sit2_SO_pwd"
 	And user selects App "NMB Case Management"
 	And search for the case to open it
 	And verify SO/AO get notified by alert for approval
@@ -64,13 +64,13 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
     ##When user click on entity link on case form
 	And change the Reinspection date value
 	And logout from the application
-	Given User navigates to powerapps cloud flow page
+	Given User navigates to powerapps cloud flow page in "SIT2" environemnt
 	When Login to powerapp with "PAsit2_userid" and "PAsit2_pwd"
 	And Run the automatic cloudflow job for "SIES/WRN8 NMB/Creating WO for Reinspection BCA projects"
 	And logout from the powerapps application
     
  # Reinspection work order
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit2_FIO_userid" and "sit2_FIO_pwd"
 	And user selects App "NMB Case Management"
 	And search for the case to open it
 	And go to "Work Orders" tab
