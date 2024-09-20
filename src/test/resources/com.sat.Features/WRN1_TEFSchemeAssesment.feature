@@ -73,7 +73,7 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
     And navigate to Assignment stage and fill the respective details and navigate to next stage
     And go to "Work Orders" tab
     And verify the WO status "Scheduled"
-    And open WO and fill the Booking details
+	  And open "Scheduled" WO and fill the Booking details and select "In Progress" status
     And go to Checklist tab create sample for lab analysis details and fill the required checklist
     And verify that "COC Document" is generated
     Then go to "All Activities" and verify the email for "Request for Lab report result of samples"

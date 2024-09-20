@@ -19,6 +19,8 @@ public class WRN7_IMB_Noncomplaince {
 	private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
 	private commonCRMActions commoncrm = new commonCRMActions(TestBase.getDriver());
 	private pumpingMainStationsPage pumpPage = new pumpingMainStationsPage(TestBase.getDriver());
+	private factoryPage factory = new factoryPage(TestBase.getDriver());
+
 
 	@And("create a new pumping station by giving {string},{string},{string}")
 	public void create_a_new_pumping_station_by_giving_(String entityVal, String catchmentValue, String month) {
@@ -41,5 +43,15 @@ public class WRN7_IMB_Noncomplaince {
 	@And("go to Service tasks tab and complete the checklist with {string}")
 	public void go_to_Service_tasks_tab_and_complete_the_checklist(String complainceVal) throws InterruptedException {
 		pumpPage.fillChecklistWRN7NMB(complainceVal);
+	}
+	@And("verify SO get notified by alert for approval")
+	public void verify_SO_get_notified_by_alert_for_approval() throws InterruptedException {
+		factory.approvalNotification();
+	}
+	@And("go to {string} and verify the email for {string} and {string}")
+	public void go_to_and_verify_the_email_for_and(String tab, String email1, String email2) throws InterruptedException {
+		commoncrm.navigatingToTab(tab);
+		commoncrm.emailCheck(email1);
+		commoncrm.emailCheck(email2);
 	}
 }

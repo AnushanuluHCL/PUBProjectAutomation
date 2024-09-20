@@ -6,7 +6,7 @@ Feature: Testing WRN7 IMB - Noncomplaince
     When Login to app with "Admin_userid" and "Admin_pwd"
     And user selects App "IMB Case Management"
 
-  Scenario Outline: Inspecting Pumping Main Station- Noncomplaince flow
+  Scenario: Inspecting Pumping Main Station- Noncomplaince flow
     When user selects entity as "Pumping Main Stations"
     And create a new pumping station by giving "Pumping Main Stations","Bedok","October"
     And creating 2 chambers
@@ -32,8 +32,10 @@ Feature: Testing WRN7 IMB - Noncomplaince
     And search for the case to open it
     #And verify SO get notified by alert for approval
     # And go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review"
-    # And navigate to SO Review stage and fill the respective details and navigate to next stage
-    # Then go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review" and "Attention: Any Construction Sites"
-    Examples: 
-      | Project_Mukim_Lot_No. | Diameter | Affected by DTSS | Affected by Sewer |
-      |               4536456 |     1000 | Yes              | Yes               |
+    #  And go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review" and "Attention: Any Construction Sites"
+    # Then navigate to SO Review stage and fill the respective details and navigate to next stage
+    #And navigate to Close stage and set Resolve Case as "Yes"
+	  #Then verify case is "Completed" and in read only mode
+	  
+	  
+   

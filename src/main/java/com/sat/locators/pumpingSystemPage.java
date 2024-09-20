@@ -29,7 +29,7 @@ public class pumpingSystemPage extends commonActionsPage {
     private By roadName = By.cssSelector("input[aria-label='Road Name']");
 
     //1BPU Submission with Submission Type as Pumping System Inspection
-    private By submissionNo = By.cssSelector("input[aria-label='Submission No']");
+    private By submissionNo = By.xpath("//input[contains(@aria-label,'Submission No')]");
     private By submissionType = By.cssSelector("select[aria-label='Submission Type']");
     private By bpdOfficer = By.cssSelector("input[aria-label='BPD Officer in charge, Lookup']");
     private By meSystem = By.cssSelector("input[aria-label='No. of M&E System']");
