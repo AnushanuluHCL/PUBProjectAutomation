@@ -96,7 +96,6 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void POWSapprovalNotification() throws InterruptedException {
-		// CommonActionsPage.casenumber= getCaseNumber();
 		eleUtil.isPageLoaded(60);
 		commonCRM.notificationForTabToOpenCase(commonActionsPage.casenumber, "Inspection Case Information");
 	}
@@ -165,16 +164,41 @@ public class constructionsPage extends commonActionsPage {
 		pumpingSystem.enterHouseBlkNumber();
 		pumpingSystem.enterPostalCode();
 		pumpingSystem.enterRoadName();
+		commonActionsPage.WRN6NMB_Enttiyval=eleUtil.doGetElementAttributeLog(pumpingSystem.getProjectReferenceNumber(), "title", "Displayed value is : ");
 		clickOnSaveBtn();
 	}
 
-	public void enableAffectedByPumpingMain() {
-		constructionpage.affectedByPumpingMain();
+	public void enableAffectedByPumpingMain(String tab, String value) {
+		commonCRM.navigatingToTabInProject(tab);
+		constructionpage.affectedByPumpingMainToggle(value);
 		clickOnSaveBtn();
 	}
-	public void createAPOWSReq(String diameterValue) {
+
+	public void createAPOWSReq(String tab1, String diameterValue, String DCvalue) throws InterruptedException {
+		commonCRM.navigatingToTabInProject(tab1);
 		constructionpage.newPOWSSubBtn();
-		
+		pumpingSystem.enterSubmissionNo();
+		constructionpage.selectApprovalDate();
 		constructionpage.diameterVal(diameterValue);
+		commonCRM.navigatingToTabInProject("System related information (Hidden)");
+		constructionpage.enterSewerPipeType();
+		constructionpage.enterSewerDepth();
+		constructionpage.enterNearestDistance();
+		constructionpage.selectDCStatus(DCvalue);
+		constructionpage.selectInspectionDate();
+		constructionpage.selectInsScheduleDate();
+		constructionpage.selectPOWSApprovedval();
+		clickOnSaveBtn();
+		clickonSaveAndCloseBtn();
+
+	}
+
+	public void verifyCaseCreatedFor6IMB() {
+		changeAreaSelection("Inspection");
+		selectEntity("Cases");
+		changeView("All Cases");
+		constructionpage.entitySelectionInCaseView();
+		filterView(commonActionsPage.WRN6NMB_Enttiyval);
+		constructionpage.caseCreationCheck(commonActionsPage.WRN6NMB_Enttiyval);
 	}
 }

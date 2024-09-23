@@ -27,12 +27,21 @@ public class WRN6IMB_Noncomplaince_Rework {
 			throws InterruptedException {
 		constructPage.createmanualProject(entityType, acctype);
 	}
+
 	@Then("go to {string} tab and enable the {string} field")
-	public void go_to_tab_and_enable_the_field() {
-		constructPage.enableAffectedByPumpingMain();
+	public void go_to_tab_and_enable_the_field(String tab, String value) {
+		constructPage.enableAffectedByPumpingMain(tab, value);
 	}
-	@Then("go to {string} tab and create a new POWS submission request")
-	public void go_to_tab_and_create_a_new_POWS_submission_request() {
-		
+
+	@And("go to {string} tab and create a new POWS submission request by giving {string}, {string}")
+	public void go_to_tab_and_create_a_new_POWS_submission_request_by_giving(String tab1, String diameter,
+			String DCvalue) throws InterruptedException {
+		constructPage.createAPOWSReq(tab1, diameter, DCvalue);
 	}
+
+	@Then("verify whether case is created after POWS submisison request is approved")
+	public void verify_whether_case_is_created_after_POWS_submisison_request_is_approved() {
+		constructPage.verifyCaseCreatedFor6IMB();
+	}
+
 }
