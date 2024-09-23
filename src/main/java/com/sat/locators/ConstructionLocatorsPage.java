@@ -25,6 +25,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	casePage cases = new casePage(driver);
 	commonCRMActions crmAction = new commonCRMActions(driver);
 	factoryPage factory = new factoryPage(driver);
+	pumpingSystemPage pump = new pumpingSystemPage(driver);
 
 	String filePath = System.getProperty("user.dir");
 	String wrn8IMBConstructionPath = "\\src\\main\\resources\\documents\\WRN8IMBConstruction.xlsx";
@@ -38,7 +39,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	private By lotNo = By.xpath("//input[@aria-label='Lot Number']");
 	private By newBtnforGERIResp = By.xpath("//button[contains(@aria-label,'New CS GERI Response')]");
 	private By projMukimLotNumber = By.xpath("//input[@aria-label='Project Mukim Lot Number']");
-	private By diameter = By.xpath("//input[@aria-label='Diameter']");
+	private By diameter = By.xpath("//input[contains(@aria-label,'Diameter')]");
 	private By affectByDtss = By.xpath("//select[@aria-label='Affected by DTSS']");
 	private By affectBySewer = By.xpath("//select[@aria-label='Affected by Sewer']");
 	private By projValInShortlistView = By.xpath("//div[@col-id='name' and @role != 'columnheader']//span");
@@ -83,7 +84,6 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	// Loactors for manual project
 	private By accSubType = By.xpath("//select[@aria-label='Account Sub Type']");
 	private By architect = By.cssSelector("input[aria-label='Architect, Lookup']");
-	private By affectedByPumpingMain = By.xpath("//button[contains(@aria-label,'Affected by Pumping Mains?')]");
 
 	// Locators for new POWS Submission request
 	private By newPOWSSubBtn = By.xpath("//button[contains(@aria-label,'New POWS Submission')]");
@@ -458,16 +458,19 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 
 	public void enterArchitect() throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(getArchitect(), 30);
-		eleUtil.doSendKeysWithWaitEnter(getArchitect(), "QP Contractor", 30);
+		eleUtil.doClearUsingKeysLog(getArchitect(), "Clear the Architect field");
+		eleUtil.doSendKeysWithWaitEnter(getArchitect(), "Architect", 30);
 		eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
 	}
 
-	public void affectedByPumpingMain() {
-		eleUtil.waitForVisibilityOfElement(affectedByPumpingMain, 30);
-		eleUtil.doClickLog(affectedByPumpingMain, "Toggle the Affected by Pumping Mains? button");
+	public void affectedByPumpingMainToggle(String value) {
+		By affectedByPumpingMainField = By.xpath("//button[contains(@aria-label,'" + value + "')]");
+		By projectDetailssection = By.xpath("//h2[@title='Project Details']");
+		jsutil.scrollIntoView(driver.findElement(projectDetailssection));
+		eleUtil.waitForVisibilityOfElement(affectedByPumpingMainField, 30);
+		eleUtil.doClickLog(affectedByPumpingMainField, "Toggle the Affected by Pumping Mains? button");
 	}
 
-	
 	public void newPOWSSubBtn() {
 		eleUtil.waitForVisibilityOfElement(newPOWSSubBtn, 10);
 		eleUtil.doClickLog(newPOWSSubBtn, "Clicked on New POWS Submission button");
@@ -482,22 +485,59 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	}
 
 	public void selectApprovalDate() {
-
+		eleUtil.waitForVisibilityOfElement(approvalDateField, 40);
+		eleUtil.doClickLog(approvalDateField, "Click on Calender Icon for Approval Date Field");
+		eleUtil.waitForVisibilityOfElement(crmActions.getSelectTodayDateAndTime(), 30);
+		eleUtil.doClickLog(crmActions.getSelectTodayDateAndTime(), "Select today's date");
 	}
 
 	public void enterSewerPipeType() {
-
+		eleUtil.waitTillElementIsDisplayed(sewerPipeTypeField, 30);
+		eleUtil.doClickLog(sewerPipeTypeField, "Clicked on Sewer Pipe Type field");
+		eleUtil.doClearUsingKeysLog(sewerPipeTypeField, "Clear the Sewer Pipe Type field");
+		eleUtil.doSendKeysLog(sewerPipeTypeField, "Test type", "Passing value to Sewer Pipe Type field");
 	}
 
-	public void enterSewerDepth(String depth) {
-
+	public void enterSewerDepth() {
+		eleUtil.waitTillElementIsDisplayed(sewerDepthField, 30);
+		eleUtil.doClickLog(sewerDepthField, "Clicked on Sewer Depth field");
+		eleUtil.doClearUsingKeysLog(sewerDepthField, "Clear the Sewer Depth field");
+		eleUtil.doSendKeysLog(sewerDepthField, "657", "Passing value to Sewe Depth field");
 	}
 
-	public void enterNearestDistance(String distance) {
-
+	public void enterNearestDistance() {
+		eleUtil.waitTillElementIsDisplayed(nearestDistanceField, 30);
+		eleUtil.doClickLog(nearestDistanceField, "Clicked on Nearest Distance  field");
+		eleUtil.doClearUsingKeysLog(nearestDistanceField, "Clear the Nearest Distance  field");
+		eleUtil.doSendKeysLog(nearestDistanceField, "546", "Passing value to Nearest Distance  field");
 	}
 
 	public void selectDCStatus(String statusVal) {
-
+		eleUtil.waitTillElementIsDisplayed(DCStatusField, 30);
+		eleUtil.selectDropDownValue(DCStatusField, "selectByVisibleText", statusVal, "select DC Sttaus as" + statusVal);
 	}
+
+	public void selectInspectionDate() throws InterruptedException {
+		eleUtil.waitForVisibilityOfElement(inspecDateFileld, 40);
+		eleUtil.doClickLog(inspecDateFileld, "Click on Calender Icon for Inspection Date Field");
+			Thread.sleep(2000);
+		
+		eleUtil.waitForVisibilityOfElement(crmActions.getSelectTodayDateAndTime(), 30);
+		eleUtil.doClickLog(crmActions.getSelectTodayDateAndTime(), "Select today's date");
+		
+	}
+
+	public void selectInsScheduleDate() throws InterruptedException {
+		eleUtil.waitForVisibilityOfElement(inspecScheduleDateField, 40);
+		eleUtil.doClickLog(inspecScheduleDateField, "Click on Calender Icon for Inspection Scheduled Date Field");
+		Thread.sleep(2000);
+		eleUtil.waitForVisibilityOfElement(crmActions.getSelectTodayDateAndTime(), 30);
+		eleUtil.doClickLog(crmActions.getSelectTodayDateAndTime(), "Select today's date");
+	}
+
+	public void selectPOWSApprovedval() {
+		eleUtil.waitTillElementIsDisplayed(powsApprovedField, 30);
+		eleUtil.selectDropDownValue(powsApprovedField, "selectByVisibleText", "Yes", "select POWS Approved? field as");
+	}
+
 }

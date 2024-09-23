@@ -478,6 +478,18 @@ public class commonCRMActions extends commonActionsPage {
 
 				eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
 				eleUtil.doClick(getMaximizeScreenBtn());
+				
+				
+				if (selectBookingStatus.equals("Scheduled")) {
+					eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
+					eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");
+					By selectAnOption = By.cssSelector("button[title='In Progress']");
+					By bookingStatus = By
+							.xpath("//div[@aria-label='Booking Status Control' and @title='In Progress']");
+					eleUtil.doClickWithWait(selectAnOption, 40);
+					eleUtil.doElementClickable(saveOnBooking, 10);
+					eleUtil.doClick(saveOnBooking);
+				}
 
 				 signTheChecklist();
 

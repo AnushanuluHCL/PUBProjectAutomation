@@ -21,9 +21,9 @@ public class pumpingSystemPage extends commonActionsPage {
 
     //Pumping System with Entity Type as Pumping System
     private By entityType = By.cssSelector("select[aria-label='Entity Type']");
-    private By projectReferenceNumber = By.cssSelector("input[aria-label='Project Reference Number']");
+    private By projectReferenceNumber = By.xpath("//input[contains(@aria-label,'Project Reference N')]");
     private By projectTitle = By.cssSelector("textarea[aria-label='Project Title']");
-    private By contractor = By.cssSelector("input[aria-label='Contractor (QP), Lookup']");
+    private By contractor = By.cssSelector("input[aria-label*='Contractor']");
     private By houseBlkNumber = By.cssSelector("input[aria-label='House Blk Number']");
     private By postalCode = By.cssSelector("input[aria-label='Postal Code']");
     private By roadName = By.cssSelector("input[aria-label='Road Name']");
@@ -121,6 +121,7 @@ public class pumpingSystemPage extends commonActionsPage {
 
     public void enterContractor() throws InterruptedException {
         eleUtil.waitForVisibilityOfElement(getContractor(), 30);
+        eleUtil.doClearUsingKeysLog(getContractor(), "Clear the Contractor field");
         eleUtil.doSendKeysWithWaitEnter(getContractor(), "QP Contractor" , 30);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
     }
