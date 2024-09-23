@@ -30,19 +30,34 @@ public class checkListPage extends commonCRMActions {
     private By remark3 = By.xpath("//div[@name='Question7'] //input[@aria-label='Remarks']");
 
     //WRN7NMB_DTSS1 Combing Photo and Shaft Inspection Checklist
-    private By unknownProjectSiteNonCompliance = By.xpath("//input[contains(@name,'Question11_sq') and @value='Yes']");
-    private By detailsObtained = By.cssSelector("input[aria-label=' If yes, state the details obtained']");
+    private By projectSiteNonComplianceCombingPhoto = By.xpath("//input[contains(@name,'Question11_sq') and @value='Yes']");
+    private By detailsObtained = By.xpath("//input[contains(@aria-label,' If yes, state the details obtained')]");
     private By photoForProjectSite = By.xpath("//input[contains(@aria-label,'Take Photo of the project site')]");
-    private By ableToAccess = By.xpath("//input[contains(@name,'Question4_sq') and @value='Yes']");
+    private By ableToAccessCombingPhoto = By.xpath("//input[contains(@name,'Question4_sq') and @value='Yes']");
     private By photoForUpstreamDirection = By.xpath("//input[contains(@aria-label,'Photo showing upstream direction')]");
     private By photoForDownstreamDirection = By.xpath("//input[contains(@aria-label,'Photo showing downstream direction')]");
     private By photoForShowingShaft = By.xpath("//input[contains(@aria-label,'Photo showing shaft')]");
     private By boltsTightened = By.cssSelector("select[aria-label='BOLTS/NUTS TIGHTENED?']");
     private By rustyCover = By.cssSelector("//select[contains(@aria-label,'RUSTY/CRACK COVER?')]");
-    private By roofSlab = By.cssSelector("s//select[contains(@aria-label,'CRACK ON ROOF SLAB?')]");
+    private By roofSlab = By.cssSelector("//select[contains(@aria-label,'CRACK ON ROOF SLAB?')]");
     private By concreteSlab = By.cssSelector("//select[contains(@aria-label,'HOLES IN SEALANT/BITUMEN LAYER AT CONCRETE SLAB?')]");
     private By manholeCover = By.cssSelector("//select[contains(@aria-label,'HOLES IN BITUMEN LAYER ON MANHOLE COVER?')]");
     private By odourDetected = By.xpath("//select[contains(@aria-label,'ODOUR DETECTED?')]");
+
+    //WRN7NMB_DTSS Combing virtual checklist for PUB Officer
+    private By ltaEMASCCTVCamera = By.xpath("//input[contains(@aria-label,'No. of LTA EMAS CCTV camera viewed')]");
+    private By pubCCTVCamera = By.xpath("//input[contains(@aria-label,'No. of PUB CCTV camera viewed')]");
+    private By unknownProjectSiteObserved = By.xpath("//input[contains(@name,'Question5_sq') and @value='Yes']");
+    private By cameraNumber1 = By.xpath("//input[contains(@aria-label,'Camera Number 1')]");
+    private By projectSite = By.xpath("//div[@name='Question12'] //input[contains(@aria-label,'Location of project site')]");
+    private By screenshotFromCamera = By.xpath("//div[@name='Question11'] //input[contains(@aria-label,'Screenshot from the camera')]");
+
+    //WRN7NMB_DTSS1 DTSS1 Shaft Inspection and Gas Reading Checklist for Contractor FIO
+    private By ableToAccessShaftInspection = By.xpath("//input[contains(@name,'Question2_sq') and @value='Yes']");
+    private By manholeCoverKeyhole = By.xpath("//input[contains(@aria-label,'H2S GAS READING AT MANHOLE COVER KEYHOLE')]");
+    private By concreteShaftReam = By.xpath("//input[contains(@aria-label,'H2S GAS READING AT CONCRETE SHAFT REAM')]");
+    private By projectSiteNonComplianceShaftInspection = By.xpath("//input[contains(@name,'Question1_sq') and @value='Yes']");
+
 
     public void checkListForWRN8IMB(String status, String checklistType, String checkListName) throws InterruptedException {
         crmActions.workOrderStatusFilter(status);
@@ -94,12 +109,12 @@ public class checkListPage extends commonCRMActions {
         String path = filePath + pngFilePath;
         Log.info("final path to upload " + path);
         if ("Non-Compliance".equals(checklistType)) {
-            eleUtil.waitForVisibilityOfElement(unknownProjectSiteNonCompliance, 30);
-            eleUtil.doClickLog(unknownProjectSiteNonCompliance, "Select Yes for Observed unknown project site?");
+            eleUtil.waitForVisibilityOfElement(projectSiteNonComplianceCombingPhoto, 30);
+            eleUtil.doClickLog(projectSiteNonComplianceCombingPhoto, "Select Yes for Observed unknown project site?");
             eleUtil.doSendKeysLog(detailsObtained, "WRN7 NMBNon-Compliance", "send value in If yes, state the details obtained");
             uploadFile(photoForProjectSite, path);
-            eleUtil.waitForVisibilityOfElement(ableToAccess, 30);
-            eleUtil.doClickLog(ableToAccess, "Select Yes for ABLE TO ACCESS?");
+            eleUtil.waitForVisibilityOfElement(ableToAccessCombingPhoto, 30);
+            eleUtil.doClickLog(ableToAccessCombingPhoto, "Select Yes for ABLE TO ACCESS?");
             uploadFile(photoForUpstreamDirection, path);
             uploadFile(photoForDownstreamDirection, path);
             uploadFile(photoForShowingShaft, path);
@@ -131,7 +146,49 @@ public class checkListPage extends commonCRMActions {
         String path = filePath + pngFilePath;
         Log.info("final path to upload " + path);
         if ("Non-Compliance".equals(checklistType)) {
+            eleUtil.waitForVisibilityOfElement(ltaEMASCCTVCamera, 40);
+            eleUtil.doSendKeysLog(ltaEMASCCTVCamera, "100", "send value in No. of LTA EMAS CCTV camera viewed");
+            eleUtil.doSendKeysLog(pubCCTVCamera, "100", "send value in No. of PUB CCTV camera viewed");
+            eleUtil.doClickLog(unknownProjectSiteObserved, "Select Yes for Are there any unknown project site observed?");
+            eleUtil.doSendKeysLog(cameraNumber1, "Test Camera", "send value in Camera Number 1");
+            eleUtil.doSendKeysLog(projectSite, "Test Project", "send value in Location of project site");
+            uploadFile(screenshotFromCamera, path);
+        } else {
+            // Write Compliance code
+        }
+    }
 
+    public void checkListForWRN7NMBShaftInspection(String status, String checklistType, String checkListName) throws InterruptedException {
+        crmActions.workOrderStatusFilter(status);
+        List<String> woNum = new ArrayList<>();
+        crmActions.fetchWorkOrderNumbers(woNum);
+        for (int i = 0; i < woNum.size(); i++) {
+            Thread.sleep(2000);
+            crmActions.openCheckList(woNum.get(i), checkListName, status);
+            WRN7NMBShaftInspectionChecklist(checklistType);
+            crmActions.saveChecklist();
+        }
+    }
+
+    public void WRN7NMBShaftInspectionChecklist(String checklistType) throws InterruptedException {
+        String path = filePath + pngFilePath;
+        Log.info("final path to upload " + path);
+        if ("Non-Compliance".equals(checklistType)) {
+            eleUtil.waitForVisibilityOfElement(ableToAccessShaftInspection, 40);
+            eleUtil.doClickLog(ableToAccessShaftInspection, "Select Yes for ABLE TO ACCESS?");
+            eleUtil.selectDropDownValue(rustyCover, "selectByVisibleText", "Yes", "Select Yes in RUSTY/CRACK COVER?");
+            eleUtil.selectDropDownValue(roofSlab, "selectByVisibleText", "Yes", "Select Yes in CRACK ON ROOF SLAB?");
+            eleUtil.selectDropDownValue(concreteSlab, "selectByVisibleText", "Yes", "Select Yes in HOLES IN SEALANT/BITUMEN LAYER AT CONCRETE SLAB?");
+            eleUtil.selectDropDownValue(manholeCover, "selectByVisibleText", "Yes", "Select Yes in HOLES IN BITUMEN LAYER ON MANHOLE COVER?");
+            eleUtil.selectDropDownValue(odourDetected, "selectByVisibleText", "Yes", "Select Yes in ODOUR DETECTED?");
+            eleUtil.doSendKeysLog(manholeCoverKeyhole, "100", "send value in H2S GAS READING AT MANHOLE COVER KEYHOLE");
+            eleUtil.doSendKeysLog(concreteShaftReam, "100", "send value in H2S GAS READING AT CONCRETE SHAFT REAM");
+            uploadFile(photoForUpstreamDirection, path);
+            uploadFile(photoForDownstreamDirection, path);
+            uploadFile(photoForShowingShaft, path);
+            eleUtil.doClickLog(projectSiteNonComplianceCombingPhoto, "Select Yes for Observed unknown project site?");
+            eleUtil.waitForVisibilityOfElement(detailsObtained, 30);
+            eleUtil.doSendKeysLog(detailsObtained, "WRN7 NMBNon-Compliance", "send value in If yes, state the details obtained");
         } else {
             // Write Compliance code
         }

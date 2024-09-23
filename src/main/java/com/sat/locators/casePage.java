@@ -76,6 +76,7 @@ public class casePage extends commonCRMActions {
 
     private By warningRecurrence = By.cssSelector("h1[aria-label='Warning']");
     private By recurrenceMessageLocator = By.cssSelector("span[data-id='dialogMessageText']");
+    private By soResponseOption = By.xpath("//select[@aria-label='SO Response']");
 
     // WRN11 Locators
     private By choosePhoto = By.cssSelector("input[aria-label='Please take a photo if non-compliance']");
@@ -648,6 +649,16 @@ public class casePage extends commonCRMActions {
         clickOnNextStageBtn();
         factory.clickOnSavingInProgressOkButton();
         eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
+    }
+
+    public void soReviewForWRN7NMB(String soValue) {
+        navigatingToStage("SO Review");
+        eleUtil.waitForVisibilityOfElement(soResponseOption, 10);
+        eleUtil.selectDropDownValue(soResponseOption, "selectByVisibleText", soValue, "Select " + soValue + " SO Response");
+        eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
+        navigatingToStage("SO Review");
+        eleUtil.doElementClickable(getNextStageBtn(), 10);
+        eleUtil.doClickLog(getNextStageBtn(), "Click on Next Stage button");
     }
 
 }

@@ -4,7 +4,7 @@ import com.sat.locators.casePage;
 import com.sat.locators.factoryPage;
 import org.openqa.selenium.WebDriver;
 
-public class originalCaseCreationPage extends commonActionsPage{
+public class originalCaseCreationPage extends commonActionsPage {
     public originalCaseCreationPage(WebDriver driver) {
         super(driver);
     }
@@ -168,6 +168,11 @@ public class originalCaseCreationPage extends commonActionsPage{
 
     public void completeReInspectionForWRN11() throws InterruptedException {
         cases.reInspectionForWRN11();
+    }
+
+    public void completeSOReviewForWRN7NMB(String soValue) throws InterruptedException {
+        cases.soReviewForWRN7NMB(soValue);
+        factory.clickOnSavingInProgressOkButton();
     }
 
 }
