@@ -9,6 +9,7 @@ public class WRN7NMB_Noncompliance {
 
     private checkListCreationPage checkListPage = new checkListCreationPage(TestBase.getDriver());
     private dtssCreationPage dtssPage = new dtssCreationPage(TestBase.getDriver());
+    private originalCaseCreationPage casePage = new originalCaseCreationPage(TestBase.getDriver());
 
     @And("create a DTSS with entity type {string}")
     public void createADTSSWithEntityType(String selectEntityType) {
@@ -48,5 +49,15 @@ public class WRN7NMB_Noncompliance {
     @And("open {string} WO and fill the {string} checklist for DTSS Combing virtual {string}")
     public void openWOAndFillTheChecklistForDTSSCombingVirtual(String status, String checklistType, String checkListName) throws InterruptedException {
         checkListPage.fillChecklistForWRN7IMBCombingVirtual(status, checklistType, checkListName);
+    }
+
+    @And("navigate to SO Review stage select SO Response as {string} and navigate to next stage")
+    public void navigateToSOReviewStageSelectSOResponseAsAndNavigateToNextStage(String soValue) throws InterruptedException {
+        casePage.completeSOReviewForWRN7NMB(soValue);
+    }
+
+    @And("open {string} WO and fill the {string} checklist for DTSS Shaft Inspection {string}")
+    public void openWOAndFillTheChecklistForDTSSShaftInspection(String status, String checklistType, String checkListName) throws InterruptedException {
+        checkListPage.fillChecklistForWRN7IMBShaftInspection(status, checklistType, checkListName);
     }
 }
