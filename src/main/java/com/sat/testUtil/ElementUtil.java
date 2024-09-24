@@ -511,7 +511,6 @@ public class ElementUtil {
     public WebElement waitVisibilityOfElement(By locator, int timeOut) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-
     }
 
     public void doClickWithWait(By locator, int timeOut) {

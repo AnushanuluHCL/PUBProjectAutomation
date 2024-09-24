@@ -155,6 +155,14 @@ public class factoryPage extends commonActionsPage {
 		return saveAndClose;
 	}
 
+	public By getUserAssessment() {
+		return userAssessment;
+	}
+
+	public By getSystemAssessment() {
+		return systemAssessment;
+	}
+
 	public void enterEntityName() {
 		eleUtil.waitTillElementIsDisplayed(entityName, 30);
 		eleUtil.doClickLog(entityName, "Clicked on Entity Name field");
@@ -416,8 +424,8 @@ public class factoryPage extends commonActionsPage {
 				Thread.sleep(1000); // Wait for 1 second before checking again
 			} else {
 				try {
-					eleUtil.textVerificationFormAttribute(userAssessment, "title", value);
-					eleUtil.textVerificationFormAttribute(systemAssessment, "title", value);
+					eleUtil.textVerificationFormAttribute(getUserAssessment(), "title", value);
+					eleUtil.textVerificationFormAttribute(getSystemAssessment(), "title", value);
 					break;
 				} catch (NoSuchElementException e) {
 					Log.error("System and User Assessment are empty: " + e.getMessage());

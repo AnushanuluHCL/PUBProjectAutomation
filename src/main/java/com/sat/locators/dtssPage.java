@@ -85,7 +85,7 @@ public class dtssPage extends commonActionsPage {
     }
 
     public void searchADTSS() throws InterruptedException {
-        commonActionsPage.dtssNumber = "DTSS190924113921";
+        commonActionsPage.dtssNumber = "DTSS2092024";
         eleUtil.waitForVisibilityOfElement(getSearchBoxForEntity(), 20);
         Thread.sleep(2000);
         eleUtil.doSendKeys(getSearchBoxForEntity(), commonActionsPage.dtssNumber);
@@ -113,6 +113,7 @@ public class dtssPage extends commonActionsPage {
         Log.info("selected the " + caseSubType + " record");
         eleUtil.doDoubleClick(openCaseSubType);
         Log.info("clicked on " + caseSubType + " record");
+        eleUtil.waitForVisibilityOfElement(factory.getUserAssessment(), 100);
         commonCRMActions.casenumber = crmActions.setPageTitle();
     }
 }
