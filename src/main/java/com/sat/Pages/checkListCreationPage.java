@@ -29,5 +29,8 @@ public class checkListCreationPage extends commonActionsPage {
     public void fillChecklistForWRN7IMBShaftInspection(String status, String checklistType, String checkListName) throws InterruptedException {
         checkList.checkListForWRN7NMBShaftInspection(status, checklistType, checkListName);
     }
+    public void fillChecklistForWRN6IMB(String allWorkComplete, String value) throws InterruptedException{
+        checkList.fillCheckListQuestionsForWRN6IMB(allWorkComplete, value);
+    }
 
 }

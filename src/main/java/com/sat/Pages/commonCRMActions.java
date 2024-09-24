@@ -809,7 +809,7 @@ public class commonCRMActions extends commonActionsPage {
 				WebElement WOalert = eleUtil.waitTillPresenceOfElementReturn(notificationIDCheck, 30);
 				if (WOalert != null && WOalert.isDisplayed()) {
 					WebElement tapToOpenBtn = driver.findElement(By.xpath("//p[contains(text(), '" + text
-							+ "')]/ancestor::div[contains(@class, 'ac-container')]//a[contains(text(),'Tap to Open Case')]"));
+							+ "')]/ancestor::div[contains(@class, 'ac-container')]//a[contains(text(),'Case')]"));
 					tapToOpenBtn.click();
 					ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
 					Log.info("open tabs: " + tabs.size());
