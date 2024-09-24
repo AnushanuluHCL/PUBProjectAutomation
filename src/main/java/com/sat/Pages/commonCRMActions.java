@@ -453,7 +453,6 @@ public class commonCRMActions extends commonActionsPage {
 			By bookingRecord = By.xpath("//div[@col-id='resource' and @role='gridcell']/descendant::a");
 			List<WebElement> bookingRecords = driver.findElements(bookingRecord);
 			System.out.println("no of booking records" + bookingRecords.size());
-
 			// Collecting all the bokking resource texts
 			List<String> bookingRecordTexts = new LinkedList<>();
 			for (WebElement record : bookingRecords) {
@@ -467,19 +466,15 @@ public class commonCRMActions extends commonActionsPage {
 				int rowIndex = k + 2;
 				String currEle = bookingRecordTexts.get(k);
 				bookingRecordTexts.add(eleUtil.doGetElementAttribute(bookingRecord, "aria-label"));
-				sortTheRecords(startTimeCol, oldToNewCol, AppConstants.LONG_DEFAULT_WAIT);
+				//sortTheRecords(startTimeCol, oldToNewCol, AppConstants.LONG_DEFAULT_WAIT);
 				WebElement dynamicElement = driver
 						.findElement(By.xpath("//div[@aria-rowindex='" + rowIndex + "']//a[@aria-label='" + currEle
 								+ "']/ancestor::div[@col-id='resource']/preceding-sibling::div"));
-				
 				Actions a = new Actions(driver);
 				a.moveToElement(dynamicElement).click().build().perform();
 				a.doubleClick(dynamicElement).build().perform();
-
 				eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
 				eleUtil.doClick(getMaximizeScreenBtn());
-				
-				
 				if (selectBookingStatus.equals("Scheduled")) {
 					eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
 					eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");
@@ -490,13 +485,10 @@ public class commonCRMActions extends commonActionsPage {
 					eleUtil.doElementClickable(saveOnBooking, 10);
 					eleUtil.doClick(saveOnBooking);
 				}
-
-				 signTheChecklist();
-
+				signTheChecklist();
 				eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
 				eleUtil.doElementClickable(saveNCloseOnBooking, 10);
 				eleUtil.doClick(saveNCloseOnBooking);
-
 				while (true) {
 					try {
 						eleUtil.doElementClickable(saveNContinueBtn, 10);

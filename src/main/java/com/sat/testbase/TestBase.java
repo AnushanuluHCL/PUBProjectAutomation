@@ -57,6 +57,7 @@ public class TestBase {
 			// driver = new ChromeDriver(optionsManager.getChromeOptions());
 			tldriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
 			// tldriver.set(new ChromeDriver());
+
 			break;
 
 		case "firefox":
