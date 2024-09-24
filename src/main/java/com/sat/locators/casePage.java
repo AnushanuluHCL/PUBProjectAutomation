@@ -94,9 +94,20 @@ public class casePage extends commonCRMActions {
     private By emailToCustomer = By.cssSelector("select[aria-label='Email To Customer Sent?']");
     private By approveAndResolveCase = By.cssSelector("select[aria-label='Approve and Resolve Case']");
     private By sendBackToFIO = By.cssSelector("select[aria-label='Send back to FIO']");
+    
+    
+
+
+ 	// Locators for ApproveWO
+ 	private By approveWOBtn = By.xpath("//button[@aria-label='Reject WO']");
+ 	private By remarksField = By.xpath("//textarea[@name='remarkComments']");
+ 	private By submitBtn = By.xpath("//input[@type='submit']");
 
     String todayDateTime = eleUtil.todayDateAndTime();
 
+    // WRN6IMB Locators
+    private By typeOfWO = By.xpath("//div[@aria-rowindex='2']//div[@col-id='pub_workordertype']//label");
+    
     public By getCaseType() {
         return caseType;
     }
@@ -660,5 +671,49 @@ public class casePage extends commonCRMActions {
         eleUtil.doElementClickable(getNextStageBtn(), 10);
         eleUtil.doClickLog(getNextStageBtn(), "Click on Next Stage button");
     }
+    
+    public void verifyWOType() {
+		navigatingToTab("Work Orders");
+		eleUtil.waitTillElementIsDisplayed(typeOfWO, 30);
+		String WOTypeVal=eleUtil.doGetElementAttributeLog(typeOfWO, "aria-label", "Selected WO type field value is : ");
+		if(WOTypeVal.equals("Recurring Inspection")) {
+			Log.info("Recurring Work order got created");
+		}
+		else {
+			Log.info("Recurring Work order not getting created");
+		}
+	}
+    
+    public void clickOnApproveWOBtn() {
+		eleUtil.waitForVisibilityOfElement(approveWOBtn, 40);
+		eleUtil.doClickLog(approveWOBtn, "Click on Approve WO button");
+	}
+
+	public void enterRemarks() {
+		eleUtil.waitTillElementIsDisplayed(remarksField, 30);
+		eleUtil.doClickLog(remarksField, "Clicked on SO Remarks field");
+		eleUtil.doClearUsingKeysLog(remarksField, "Clear the SO Remarks field");
+		eleUtil.doSendKeysLog(remarksField, "546", "Passing value to SO Remarks field");
+	}
+
+	public void clickOnSubmitBtn() {
+		eleUtil.waitForVisibilityOfElement(submitBtn, 40);
+		eleUtil.doClickLog(submitBtn, "Click on submit button");
+	}
+	public void approveWO(String WOstatus) {
+		navigatingToTab("Work Orders");
+		By status = By.xpath("//label[@aria-label='" + WOstatus + "']");
+		eleUtil.waitForVisibilityOfElement(status, 10);
+		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label",
+				"WO Status value from case home page is : ");
+		if(actualStatusval.equals(WOstatus)) {
+			selectFirstRecord();
+			getFirstRecord();
+			clickOnApproveWOBtn();
+			enterRemarks();
+			clickOnSubmitBtn();
+		}
+	}
+	
 
 }

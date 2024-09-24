@@ -125,7 +125,7 @@ public class pumpingMainStationLocatorsPage extends commonActionsPage {
 		eleUtil.doSendKeysLog(chamberName, commonActionsPage.chamberId.get(i), "Chamber Id is :");
 	}
 
-	public void selectChecklistForWRN7NMB(String complainceval) throws InterruptedException {
+	public void selectChecklistForWRN7IMB(String complainceval) throws InterruptedException {
 
 		eleUtil.waitTillElementIsDisplayed(takeChamber, 30);
 		eleUtil.doClickLog(takeChamber, "Clicked on Choose File for Take Chamber field");
@@ -189,7 +189,7 @@ public class pumpingMainStationLocatorsPage extends commonActionsPage {
 		}
 	}
 
-	public void fillCheckListQuestionsForWRN7NMB(String complainceval) throws InterruptedException {
+	public void fillCheckListQuestionsForWRN7IMB(String complainceval) throws InterruptedException {
 		commonActionsPage.WOnumber = crmActions.getWONumber();
 		List<String> woNum = commonActionsPage.WOnumber;
 		Thread.sleep(2000);
@@ -198,7 +198,7 @@ public class pumpingMainStationLocatorsPage extends commonActionsPage {
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
 			crmActions.openCheckList(woNum.get(i), "WRN7 IMB Pumping Main Alignment Walk", "In Progress");
-			selectChecklistForWRN7NMB(complainceval);
+			selectChecklistForWRN7IMB(complainceval);
 			crmActions.saveChecklist();
 		}
 	}

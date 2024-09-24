@@ -64,7 +64,7 @@ Feature: Testing WRN8 NMB - Noncomplaince - Reinspection
     ##When user click on entity link on case form
 	And change the Reinspection date value
 	And logout from the application
-	Given User navigates to powerapps cloud flow page in "SIT2" environemnt
+	Given User navigates to powerapps cloud flow page in "SIT1" environment
 	When Login to powerapp with "PAsit2_userid" and "PAsit2_pwd"
 	And Run the automatic cloudflow job for "SIES/WRN8 NMB/Creating WO for Reinspection BCA projects"
 	And logout from the powerapps application

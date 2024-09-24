@@ -37,7 +37,7 @@ public class WRN7_IMB_Noncomplaince {
 	}
 	@And("go to Service tasks tab and complete the checklist with {string}")
 	public void go_to_Service_tasks_tab_and_complete_the_checklist(String complainceVal) throws InterruptedException {
-		pumpPage.fillChecklistWRN7NMB(complainceVal);
+		pumpPage.fillChecklistWRN7IMB(complainceVal);
 	}
 	@And("verify SO get notified by alert for approval")
 	public void verify_SO_get_notified_by_alert_for_approval() throws InterruptedException {

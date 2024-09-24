@@ -52,7 +52,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	// Locators for cases entity
 	private By entitynameOnCaseForm = By.xpath("(//div[@col-id='customerid']//a)[1]");
 	private By caseidOnCaseForm = By.xpath("//div[@col-id='title']//a");
-	private By entitydropdown = By.xpath("(//div[@col-id='customerid'])[1]");
+	private By entitydropdown = By.xpath("(//div[@col-id='customerid' or @col-id='name'])[1]");
 
 	// Locators for checklist
 	private By constructionActivitiyFound = By
@@ -84,6 +84,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	// Loactors for manual project
 	private By accSubType = By.xpath("//select[@aria-label='Account Sub Type']");
 	private By architect = By.cssSelector("input[aria-label='Architect, Lookup']");
+	private By profengg = By.xpath("//input[@aria-label='Professional Engineer, Lookup']");
 
 	// Locators for new POWS Submission request
 	private By newPOWSSubBtn = By.xpath("//button[contains(@aria-label,'New POWS Submission')]");
@@ -97,12 +98,18 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	private By inspecScheduleDateField = By.xpath("//input[contains(@aria-label,'Date of Inspection Schedule Date')]");
 	private By powsApprovedField = By.xpath("//select[contains(@aria-label,'POWS Approved')]");
 
+	
+
 	public ConstructionLocatorsPage(WebDriver driver) {
 		super(driver);
 	}
 
 	public By getArchitect() {
 		return architect;
+	}
+
+	public By getProfEngg() {
+		return profengg;
 	}
 
 	public By getProjectSubNo() {
@@ -463,6 +470,13 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
 	}
 
+	public void enterProfEngg() throws InterruptedException {
+		eleUtil.waitForVisibilityOfElement(getProfEngg(), 30);
+		eleUtil.doClearUsingKeysLog(getProfEngg(), "Clear the Professional Engineer field");
+		eleUtil.doSendKeysWithWaitEnter(getProfEngg(), "Professional Engineer", 30);
+		eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
+	}
+
 	public void affectedByPumpingMainToggle(String value) {
 		By affectedByPumpingMainField = By.xpath("//button[contains(@aria-label,'" + value + "')]");
 		By projectDetailssection = By.xpath("//h2[@title='Project Details']");
@@ -520,11 +534,11 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	public void selectInspectionDate() throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(inspecDateFileld, 40);
 		eleUtil.doClickLog(inspecDateFileld, "Click on Calender Icon for Inspection Date Field");
-			Thread.sleep(2000);
-		
+		Thread.sleep(2000);
+
 		eleUtil.waitForVisibilityOfElement(crmActions.getSelectTodayDateAndTime(), 30);
 		eleUtil.doClickLog(crmActions.getSelectTodayDateAndTime(), "Select today's date");
-		
+
 	}
 
 	public void selectInsScheduleDate() throws InterruptedException {
@@ -539,5 +553,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		eleUtil.waitTillElementIsDisplayed(powsApprovedField, 30);
 		eleUtil.selectDropDownValue(powsApprovedField, "selectByVisibleText", "Yes", "select POWS Approved? field as");
 	}
+
+	
 
 }

@@ -53,8 +53,8 @@ public class pumpingMainStationsPage extends commonActionsPage {
 		clickOnApplyBtn();
 		constructionpage.caseCreationCheck(commonActionsPage.WRN7NMB_Projname);
 	}
-	public void fillChecklistWRN7NMB(String complainceVal) throws InterruptedException {
-		pumpingStation.fillCheckListQuestionsForWRN7NMB(complainceVal);
+	public void fillChecklistWRN7IMB(String complainceVal) throws InterruptedException {
+		pumpingStation.fillCheckListQuestionsForWRN7IMB(complainceVal);
 	}
 	
 }

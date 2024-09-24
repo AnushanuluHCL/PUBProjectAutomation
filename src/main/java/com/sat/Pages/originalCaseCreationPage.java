@@ -13,6 +13,8 @@ public class originalCaseCreationPage extends commonActionsPage {
     commonCRMActions crmActions = new commonCRMActions(driver);
     caseCreationPage caseCreation = new caseCreationPage(driver);
     factoryPage factory = new factoryPage(driver);
+	casePage casepage = new casePage(driver);
+
 
     public void createWRNCase(String wrpCatchment, String alertSource) throws InterruptedException {
         clickonNewBtn();
@@ -174,5 +176,12 @@ public class originalCaseCreationPage extends commonActionsPage {
         cases.soReviewForWRN7NMB(soValue);
         factory.clickOnSavingInProgressOkButton();
     }
+    public void verifyRecurringWOCreation() {
+		casepage.verifyWOType();
+	}
+    public void enterReworkComments(String WOstatus) {
+    	casepage.approveWO(WOstatus);
+    }
+    
 
 }

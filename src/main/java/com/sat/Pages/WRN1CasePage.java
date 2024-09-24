@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.sat.locators.WRN1CaseLocatorsPage;
+import com.sat.locators.casePage;
 import com.sat.locators.factoryPage;
 import com.sat.testUtil.Log;
 

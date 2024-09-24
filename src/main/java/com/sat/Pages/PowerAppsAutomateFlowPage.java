@@ -23,7 +23,8 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 	private By Done = By.xpath("//span[text()='Done']");
 	private By execTime = By.xpath("(//div[@role='rowheader']//span//span[@class='fl-StartTime-ago'])[1]");
 	private By refresh = By.xpath("//*[@data-icon-name='Refresh']");
-	private By successmessage = By.xpath("(//div[@data-automation-key='status'])[1]");
+	private By successmessage = By.xpath(" (//div[@data-automation-key='status'])[1]");
+	//div[contains(@class,'RunHistoryCard')] //div[@aria-rowindex='2'] //div[@data-automation-key='status']
 	private By running = By.xpath("//*[contains(@class,'fl-StatusInCell root')]//*[text()='Running']");
 
 	private By OtherAccount = By.xpath("//div[@id='otherTileText']");
@@ -79,15 +80,23 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
 		boolean condition = true;
 		while (condition) {
 			if (time.contains("sec")) {
+				jsutil.scrollIntoView(driver.findElement(successmessage));
 				String successMsg = eleUtil.doElementGetText(successmessage);
 				if (successMsg.equalsIgnoreCase("Succeeded")) {
 					Log.info(successMsg);
 					Assert.assertEquals("Succeeded", successMsg);
 					condition = false;
 				} else {
-					eleUtil.doClick(refresh);
-					eleUtil.waitForVisibilityOfElement(refresh, 50);
-				}
+					try {
+						eleUtil.doClick(refresh);
+						eleUtil.waitForVisibilityOfElement(refresh, 50);
+					}
+					catch(Exception e) {
+						eleUtil.doActionsClick(refresh);
+						eleUtil.waitForVisibilityOfElement(refresh, 50);
+					}
+					
+				}	
 
 			} else {
 				Log.info("Flow Execution Failed");

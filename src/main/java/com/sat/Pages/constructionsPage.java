@@ -5,12 +5,14 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 
 import com.sat.locators.ConstructionLocatorsPage;
 import com.sat.locators.factoryPage;
 import com.sat.locators.pumpingSystemPage;
+import com.sat.testUtil.Log;
 
 public class constructionsPage extends commonActionsPage {
 	String path = "\\src\\test\\resources\\testdata\\8NMB_ConstructionCreation.xlsx";
@@ -160,6 +162,7 @@ public class constructionsPage extends commonActionsPage {
 		pumpingSystem.enterProjectTitle();
 		pumpingSystem.enterContractor();
 		constructionpage.enterArchitect();
+		constructionpage.enterProfEngg();//Remove when we are executing in SIT1/SIT3
 		factory.selectCatchment();
 		pumpingSystem.enterHouseBlkNumber();
 		pumpingSystem.enterPostalCode();
@@ -175,6 +178,10 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void createAPOWSReq(String tab1, String diameterValue, String DCvalue) throws InterruptedException {
+		constructionpage.entitySelectionInCaseView();
+		filterView(commonActionsPage.WRN6NMB_Enttiyval);
+		selectFirstRecord();
+		getFirstRecord();
 		commonCRM.navigatingToTabInProject(tab1);
 		constructionpage.newPOWSSubBtn();
 		pumpingSystem.enterSubmissionNo();
@@ -190,7 +197,6 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.selectPOWSApprovedval();
 		clickOnSaveBtn();
 		clickonSaveAndCloseBtn();
-
 	}
 
 	public void verifyCaseCreatedFor6IMB() {
@@ -201,4 +207,6 @@ public class constructionsPage extends commonActionsPage {
 		filterView(commonActionsPage.WRN6NMB_Enttiyval);
 		constructionpage.caseCreationCheck(commonActionsPage.WRN6NMB_Enttiyval);
 	}
+	
+	
 }
