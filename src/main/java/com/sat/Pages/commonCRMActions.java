@@ -388,7 +388,7 @@ public class commonCRMActions extends commonActionsPage {
 			checkBookingsOrder();
 			selectFirstRecord();
 			getFirstRecord();
-			eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
+			eleUtil.doElementClickable(getMaximizeScreenBtn(), 30);
 			eleUtil.doClick(getMaximizeScreenBtn());
 			eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
 			eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");

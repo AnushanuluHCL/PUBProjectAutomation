@@ -85,7 +85,6 @@ public class dtssPage extends commonActionsPage {
     }
 
     public void searchADTSS() throws InterruptedException {
-        commonActionsPage.dtssNumber = "DTSS2092024";
         eleUtil.waitForVisibilityOfElement(getSearchBoxForEntity(), 20);
         Thread.sleep(2000);
         eleUtil.doSendKeys(getSearchBoxForEntity(), commonActionsPage.dtssNumber);

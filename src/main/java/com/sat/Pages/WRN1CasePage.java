@@ -162,8 +162,22 @@ public class WRN1CasePage extends commonActionsPage {
 	public void completeAssignmentStage() {
 		navigatingToStage("Assignment");
 		wrn1case.confirmDocuemntsReceived();
+		//wrn1case.confirmGenerateDraftEventPermit();
+		//wrn1case.confirmApplicationDetailsReviewed();
 		clickOnSaveBtn();
 		navigatingToStage("Assignment");
+		clickOnNextStageBtn();
+		//clickOnCloseIconOnBPF();
+		clickOnRefreshBtnOnHome();
+	}
+
+	public void completeProcessingStageBPF() {
+		navigatingToStage("Processing");
+		wrn1case.confirmDocuemntsReceived();
+		wrn1case.confirmGenerateDraftEventPermit();
+		wrn1case.confirmApplicationDetailsReviewed();
+		clickOnSaveBtn();
+		navigatingToStage("Processing");
 		clickOnNextStageBtn();
 		//clickOnCloseIconOnBPF();
 		clickOnRefreshBtnOnHome();

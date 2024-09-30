@@ -38,7 +38,7 @@ public class NEAListPage extends commonActionsPage {
     private By companyName = By.xpath("//input[@aria-label='Company']");
     private By vehicleNo = By.xpath("//input[@aria-label='Vehicle No']");
     private By vehicleType = By.xpath("//input[@aria-label='Vehicle Type']");
-    private By TankerCapacity = By.xpath("//input[contains(@aria-label,'Capacity(m3)')]");
+    private By TankerCapacity = By.xpath("//input[contains(@aria-label, \"Tanker's Capacity(m3)\")]");
     private By RegOrDeregfield = By.xpath("//input[@aria-label='Registration/Deregistration']");
     private By IUNumField = By.xpath("//input[@aria-label='IU Number']");
     private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
