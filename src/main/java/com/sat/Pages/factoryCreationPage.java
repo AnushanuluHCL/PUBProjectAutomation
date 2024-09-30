@@ -36,7 +36,7 @@ public class factoryCreationPage extends commonActionsPage {
 
     public void navigateToServiceTab() {
         clickOnRefreshBtn();
-        crmActions.navigateToTab("Services");
+        crmActions.navigateToTab("Inspection Cases");
     }
 
     public void verifyCaseCreatedWithStatus(String schedule) throws InterruptedException {

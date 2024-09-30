@@ -1,6 +1,7 @@
 package com.sat.locators;
 
 import com.sat.Pages.commonCRMActions;
+import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -99,10 +100,14 @@ public class casePage extends commonCRMActions {
 
 
  	// Locators for ApproveWO
- 	private By approveWOBtn = By.xpath("//button[@aria-label='Reject WO']");
+ 	private By rejectWOBtn = By.xpath("//button[@aria-label='Reject WO']");
  	private By remarksField = By.xpath("//textarea[@name='remarkComments']");
  	private By submitBtn = By.xpath("//input[@type='submit']");
 
+ 	private By startTimeCol = By.xpath("//div[text()='Start Time']");
+	private By NewToOldCol = By.xpath("//span[text()='Sort newer to older']");
+	private By oldToNewCol = By.xpath("//span[text()='Sort older to newer']");
+	
     String todayDateTime = eleUtil.todayDateAndTime();
 
     // WRN6IMB Locators
@@ -684,9 +689,9 @@ public class casePage extends commonCRMActions {
 		}
 	}
     
-    public void clickOnApproveWOBtn() {
-		eleUtil.waitForVisibilityOfElement(approveWOBtn, 40);
-		eleUtil.doClickLog(approveWOBtn, "Click on Approve WO button");
+    public void clickOnRejectWOBtn() {
+		eleUtil.waitForVisibilityOfElement(rejectWOBtn, 40);
+		eleUtil.doClickLog(rejectWOBtn, "Click on Approve WO button");
 	}
 
 	public void enterRemarks() {
@@ -700,20 +705,11 @@ public class casePage extends commonCRMActions {
 		eleUtil.waitForVisibilityOfElement(submitBtn, 40);
 		eleUtil.doClickLog(submitBtn, "Click on submit button");
 	}
-	public void approveWO(String WOstatus) {
-		navigatingToTab("Work Orders");
-		By status = By.xpath("//label[@aria-label='" + WOstatus + "']");
-		eleUtil.waitForVisibilityOfElement(status, 10);
-		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label",
-				"WO Status value from case home page is : ");
-		if(actualStatusval.equals(WOstatus)) {
-			selectFirstRecord();
-			getFirstRecord();
-			clickOnApproveWOBtn();
-			enterRemarks();
-			clickOnSubmitBtn();
-		}
+	
+	public void sortFromNewToOld() {
+		sortTheRecords(startTimeCol, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
 	}
 	
+
 
 }

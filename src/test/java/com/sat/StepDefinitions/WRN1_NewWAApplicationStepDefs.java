@@ -44,8 +44,8 @@ public class WRN1_NewWAApplicationStepDefs {
 		common.changeView(typeOfCases);
 	}
 
-	@And("verify the case form fields validation")
-	public void verify_the_case_form_fields_validation(String status) {
+	@And("verify the case form fields validation with {string} status")
+	public void verify_the_case_form_fields_validation_with_status(String status) {
 		wrn1casepage.caseFormFieldsValidation(status);
 	}
 

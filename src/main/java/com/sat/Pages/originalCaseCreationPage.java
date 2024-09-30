@@ -1,187 +1,238 @@
 package com.sat.Pages;
 
+import com.sat.constants.AppConstants;
 import com.sat.locators.casePage;
 import com.sat.locators.factoryPage;
+import com.sat.testUtil.Log;
+
+import static org.testng.Assert.assertEquals;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class originalCaseCreationPage extends commonActionsPage {
-    public originalCaseCreationPage(WebDriver driver) {
-        super(driver);
-    }
+	public originalCaseCreationPage(WebDriver driver) {
+		super(driver);
+	}
 
-    casePage cases = new casePage(driver);
-    commonCRMActions crmActions = new commonCRMActions(driver);
-    caseCreationPage caseCreation = new caseCreationPage(driver);
-    factoryPage factory = new factoryPage(driver);
+	casePage cases = new casePage(driver);
+	commonCRMActions crmActions = new commonCRMActions(driver);
+	caseCreationPage caseCreation = new caseCreationPage(driver);
+	factoryPage factory = new factoryPage(driver);
 	casePage casepage = new casePage(driver);
 
+	public void createWRNCase(String wrpCatchment, String alertSource) throws InterruptedException {
+		clickonNewBtn();
+		// cases.enableWRPSubType();
+		cases.caseCreationForWRP(wrpCatchment, alertSource);
+		clickOnSaveBtn();
+	}
 
-    public void createWRNCase(String wrpCatchment, String alertSource) throws InterruptedException {
-        clickonNewBtn();
-        //cases.enableWRPSubType();
-        cases.caseCreationForWRP(wrpCatchment, alertSource);
-        clickOnSaveBtn();
-    }
+	public void verifyWRNCase(String wrpCatchment, String alertSource) throws InterruptedException {
+		cases.checkCaseCreationForWRP(wrpCatchment, alertSource);
+	}
 
-    public void verifyWRNCase(String wrpCatchment, String alertSource) throws InterruptedException {
-        cases.checkCaseCreationForWRP(wrpCatchment, alertSource);
-    }
+	public void verifyWorkOrderCreated() throws InterruptedException {
+		cases.checkWorkOrderCreated();
+	}
 
-    public void verifyWorkOrderCreated() throws InterruptedException {
-        cases.checkWorkOrderCreated();
-    }
+	public void searchAndOpenCase(String listView) throws InterruptedException {
+		cases.selectListOfActiveCases(listView);
+		caseCreation.searchACase();
+	}
 
-    public void searchAndOpenCase(String listView) throws InterruptedException {
-        cases.selectListOfActiveCases(listView);
-        caseCreation.searchACase();
-    }
+	public void workOrderCountAfterSplit() {
+		cases.workOrderCount();
+	}
 
-    public void workOrderCountAfterSplit() {
-        cases.workOrderCount();
-    }
+	public void verifyChildCase() throws InterruptedException {
+		cases.childCaseVerification();
+		cases.openChildCaseOrCase();
+	}
 
-    public void verifyChildCase() throws InterruptedException {
-        cases.childCaseVerification();
-        cases.openChildCaseOrCase();
-    }
+	public void verifyChildCaseWorkOrder() throws InterruptedException {
+		cases.childCaseWorkOrderVerification();
+	}
 
-    public void verifyChildCaseWorkOrder() throws InterruptedException {
-        cases.childCaseWorkOrderVerification();
-    }
+	public void verifyNotificationForChildCaseAndWorkOrder() throws InterruptedException {
+		cases.childCaseNotification();
+		cases.childCaseWorkOrderNotification();
+	}
 
-    public void verifyNotificationForChildCaseAndWorkOrder() throws InterruptedException {
-        cases.childCaseNotification();
-        cases.childCaseWorkOrderNotification();
-    }
+	public void navigateToParentCase() {
+		clickonSaveAndCloseBtn();
+	}
 
-    public void navigateToParentCase() {
-        clickonSaveAndCloseBtn();
-    }
+	public void applyWorkOrderStatusFilter(String status) throws InterruptedException {
+		crmActions.workOrderStatusFilter(status);
+	}
 
-    public void applyWorkOrderStatusFilter(String status) throws InterruptedException {
-        crmActions.workOrderStatusFilter(status);
-    }
+	public void fillChecklistForMHWRP(String status, String checkListName, String level) throws InterruptedException {
+		cases.fillCheckListForMHWRP(status, checkListName, level);
+	}
 
-    public void fillChecklistForMHWRP(String status, String checkListName, String level) throws InterruptedException {
-        cases.fillCheckListForMHWRP(status, checkListName, level);
-    }
+	public void waitForWorkOrder(int time) throws InterruptedException {
+		cases.hardWaitForWorkOrder(time);
+		clickOnRefreshBtn();
+	}
 
-    public void waitForWorkOrder(int time) throws InterruptedException {
-        cases.hardWaitForWorkOrder(time);
-        clickOnRefreshBtn();
-    }
+	public void verifyScenario1(String riskCategory, String catchment) {
+		cases.checkScenario1(riskCategory, catchment);
+	}
 
-    public void verifyScenario1(String riskCategory, String catchment) {
-        cases.checkScenario1(riskCategory, catchment);
-    }
+	public void verifyWorkOrderCountAfterL2(int workOrderCountL2) {
+		cases.checkWorkOrderCountAfterL2(workOrderCountL2);
+	}
 
-    public void verifyWorkOrderCountAfterL2(int workOrderCountL2) {
-        cases.checkWorkOrderCountAfterL2(workOrderCountL2);
-    }
+	public void verifyParentIdNotBlank() throws InterruptedException {
+		cases.checkParentIdNotBlank();
+	}
 
-    public void verifyParentIdNotBlank() throws InterruptedException {
-        cases.checkParentIdNotBlank();
-    }
+	public void verifyCaseBusinessFunction(String wrn3) {
+		cases.checkCaseBusinessFunction(wrn3);
+	}
 
-    public void verifyCaseBusinessFunction(String wrn3) {
-        cases.checkCaseBusinessFunction(wrn3);
-    }
+	public void verifyChildCaseSubType(String caseSubType) {
+		cases.checkChildCaseSubType(caseSubType);
+	}
 
-    public void verifyChildCaseSubType(String caseSubType) {
-        cases.checkChildCaseSubType(caseSubType);
-    }
+	public void verifyTimeDurationAndStartTime(String durationTime) throws InterruptedException {
+		cases.checkTimeDurationAndStartTime(durationTime);
+	}
 
-    public void verifyTimeDurationAndStartTime(String durationTime) throws InterruptedException {
-        cases.checkTimeDurationAndStartTime(durationTime);
-    }
+	public void pumpingSystemChecklist(String status, String checkListName, String systemAssessment)
+			throws InterruptedException {
+		cases.fillCheckListForPumpingSystem(status, checkListName, systemAssessment);
+	}
 
-    public void pumpingSystemChecklist(String status, String checkListName, String systemAssessment) throws InterruptedException {
-        cases.fillCheckListForPumpingSystem(status, checkListName, systemAssessment);
-    }
+	public void verifyLastInspectedOn() throws InterruptedException {
+		cases.checkLastInspectedOn();
+	}
 
-    public void verifyLastInspectedOn() throws InterruptedException {
-        cases.checkLastInspectedOn();
-    }
+	public void wrn9AOReviewStage(String recurrence, String frequency) throws InterruptedException {
+		cases.completeWRN9AOReviewStage(recurrence, frequency);
+		factory.clickOnSavingInProgressOkButton();
+	}
 
-    public void wrn9AOReviewStage(String recurrence, String frequency) throws InterruptedException {
-        cases.completeWRN9AOReviewStage(recurrence, frequency);
-        factory.clickOnSavingInProgressOkButton();
-    }
+	public void verifyNextBookingDate(int days) throws InterruptedException {
+		cases.checkNextBookingDate(days);
+	}
 
-    public void verifyNextBookingDate(int days) throws InterruptedException {
-        cases.checkNextBookingDate(days);
-    }
+	public void wrn9ResolveCaseStage(String resolveCase) throws InterruptedException {
+		cases.CompleteWRN9ResolveCaseStage(resolveCase);
+	}
 
-    public void wrn9ResolveCaseStage(String resolveCase) throws InterruptedException {
-        cases.CompleteWRN9ResolveCaseStage(resolveCase);
-    }
+	public void verifyRecurrenceMessage(String recurrenceMessage) {
+		cases.checkRecurrenceMessage(recurrenceMessage);
+	}
 
-    public void verifyRecurrenceMessage(String recurrenceMessage) {
-        cases.checkRecurrenceMessage(recurrenceMessage);
-    }
+	public void refreshRecordPage() {
+		clickOnRefreshBtn();
+	}
 
-    public void refreshRecordPage() {
-        clickOnRefreshBtn();
-    }
+	public void createManualBooking(String status) throws InterruptedException {
+		crmActions.openWOCreateManualBooking(status);
+	}
 
-    public void createManualBooking(String status) throws InterruptedException {
-        crmActions.openWOCreateManualBooking(status);
-    }
+	public void verifyWorkOrderNotification(String tabName) throws InterruptedException {
+		cases.checkWorkOrderNotification(tabName);
+	}
 
-    public void verifyWorkOrderNotification(String tabName) throws InterruptedException {
-        cases.checkWorkOrderNotification(tabName);
-    }
+	public void fillChecklist(String status, String checklistType, String checkListName) throws InterruptedException {
+		cases.fillCheckListForWRN11AuditInspection(status, checklistType, checkListName);
+	}
 
-    public void fillChecklist(String status, String checklistType, String checkListName) throws InterruptedException {
-        cases.fillCheckListForWRN11AuditInspection(status, checklistType, checkListName);
-    }
+	public void verifyCaseNotification(String tabName) throws InterruptedException {
+		cases.checkCaseNotification(tabName);
+	}
 
-    public void verifyCaseNotification(String tabName) throws InterruptedException {
-        cases.checkCaseNotification(tabName);
-    }
+	public void completeSOReviewForWRN11() throws InterruptedException {
+		cases.soReviewForWRN11();
+	}
 
-    public void completeSOReviewForWRN11() throws InterruptedException {
-        cases.soReviewForWRN11();
-    }
+	public void clickInOrderNNotInOrderButton() {
+		cases.inOrderNNotInOrderButton();
+	}
 
-    public void clickInOrderNNotInOrderButton() {
-        cases.inOrderNNotInOrderButton();
-    }
+	public void verifyDocument(String subjectName) throws InterruptedException {
+		crmActions.documentCheck(subjectName);
+	}
 
-    public void verifyDocument(String subjectName) throws InterruptedException {
-        crmActions.documentCheck(subjectName);
-    }
+	public void navigateToTab(String tab) {
+		crmActions.navigateToTab(tab);
+	}
 
-    public void navigateToTab(String tab) {
-        crmActions.navigateToTab(tab);
-    }
+	public void completeSOReviewForWRN11ReInspection() {
+		cases.soReviewForWRN11ReInspection();
+	}
 
-    public void completeSOReviewForWRN11ReInspection() {
-        cases.soReviewForWRN11ReInspection();
-    }
+	public void createManualWOWRN11() {
+		cases.manualWOWRN11();
+	}
 
-    public void createManualWOWRN11() {
-        cases.manualWOWRN11();
-    }
+	public void clickHydroTestLowPressureAirTest() {
+		cases.hydroTestLowPressureAirTest();
+	}
 
-    public void clickHydroTestLowPressureAirTest() {
-        cases.hydroTestLowPressureAirTest();
-    }
+	public void completeReInspectionForWRN11() throws InterruptedException {
+		cases.reInspectionForWRN11();
+	}
 
-    public void completeReInspectionForWRN11() throws InterruptedException {
-        cases.reInspectionForWRN11();
-    }
+	public void completeSOReviewForWRN7NMB(String soValue) throws InterruptedException {
+		cases.soReviewForWRN7NMB(soValue);
+		factory.clickOnSavingInProgressOkButton();
+	}
 
-    public void completeSOReviewForWRN7NMB(String soValue) throws InterruptedException {
-        cases.soReviewForWRN7NMB(soValue);
-        factory.clickOnSavingInProgressOkButton();
-    }
-    public void verifyRecurringWOCreation() {
+	public void verifyRecurringWOCreation() {
 		casepage.verifyWOType();
 	}
-    public void enterReworkComments(String WOstatus) {
-    	casepage.approveWO(WOstatus);
-    }
-    
 
+	public void rejectWO(String WOstatus) {
+		navigatingToTab("Work Orders");
+		By status = By.xpath("//label[@aria-label='" + WOstatus + "']");
+		eleUtil.waitForVisibilityOfElement(status, 10);
+		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label",
+				"WO Status value from case home page is : ");
+		if (actualStatusval.equals(WOstatus)) {
+			selectFirstRecord();
+			getFirstRecord();
+			casepage.clickOnRejectWOBtn();
+			casepage.enterRemarks();
+			casepage.clickOnSubmitBtn();
+			clickOnSaveBtn();
+		}
+	}
+
+	public void verifyNewBooking(String bookingStatus, String WOStatus) throws InterruptedException {
+		eleUtil.waitForVisibilityOfElement(crmActions.getBookingTab(), 30);
+		eleUtil.staleElementRefExecClickCRM(crmActions.getBookingTab());
+		eleUtil.doClick(crmActions.getBookingTab());
+		Thread.sleep(2000);
+		By bookingRecord = By.xpath("//div[@col-id='bookingstatus' and @role='gridcell']//a");
+		List<WebElement> bookingRecords = driver.findElements(bookingRecord);
+		System.out.println("no of booking records bA" + bookingRecords.size());
+		// Collecting all the booking resource texts
+		for (WebElement record : bookingRecords) {
+			String ariaLabel = record.getAttribute("aria-label");
+			casepage.sortFromNewToOld();
+			if (ariaLabel.equals(bookingStatus)) {
+				Log.info("New Booking created after Reject");
+			} else {
+				Log.info("New Booking is not created after Reject");
+			}
+		}
+		crmActions.clickOnSaveNCloseButton();
+		crmActions.navigateToTab("Sumamry");
+		By WOstatusInWOform = By.xpath(
+				"//select[@aria-label='WO Status']//ancestor::div[@data-lp-id='MscrmControls.FieldControls.OptionSet|msdyn_systemstatus.fieldControl|msdyn_workorder']//select");
+		eleUtil.waitForVisibilityOfElement(WOstatusInWOform, 10);
+		String actualStatusval = eleUtil.doGetElementAttributeLog(WOstatusInWOform, "aria-label",
+				"WO Status value from case home page is : ");
+		assertEquals(actualStatusval, WOStatus, "WO status is not same");
+	}
+	
 }

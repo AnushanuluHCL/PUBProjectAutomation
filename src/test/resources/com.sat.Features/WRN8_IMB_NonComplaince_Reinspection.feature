@@ -20,7 +20,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	Then verify Case created in Project
 	Then verify Work Order created
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "IMB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"
@@ -39,14 +39,14 @@ Feature: Testing WRN8 IMB-Noncompliance
 	Then go to "All Activities" and verify the email for "NOTICE UNDER REGULATION"
 	Then go to "Documents" and verify the Document for "Inspection_Report"
 	And logout from the application
-	When Login to app with "SO_userid" and "SO_pwd"
+	When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
 	And user selects App "IMB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
-	When Login to app with "AO_userid" and "AO_pwd"
+	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "IMB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"
@@ -70,7 +70,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	#And logout from the powerapps application
     
  # Re inspection work order
-	#When Login to app with "FIO_userid" and "FIO_pwd"
+	#When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	#And user selects App "NMB Case Management"
 	#And search for the case to open it
 	#And go to "Work Orders" tab
@@ -81,7 +81,7 @@ Feature: Testing WRN8 IMB-Noncompliance
     #And go to Service tasks tab and fill and complete the checklist as "Non-Compliance"
     #And verify Booking status is "Completed" and WO status field is "Completed"
     #Then verify System Assessment and User Assessment are marked as "Compliance" in case form
-    #When Login to app with "SO_userid" and "SO_pwd"
+    #When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
     #And user selects App "NMB Case Management"
     #And search for the case to open it
     #And verify SO/AO get notified by alert for approve

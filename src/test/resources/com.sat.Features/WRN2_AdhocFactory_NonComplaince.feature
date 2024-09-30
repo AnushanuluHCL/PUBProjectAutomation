@@ -3,7 +3,7 @@ Feature: Testing WRN2- Adhoc factory inspection for non-compliance
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 
   Scenario: Creating new ad hoc factories inspection for non-compliance
@@ -27,7 +27,7 @@ Feature: Testing WRN2- Adhoc factory inspection for non-compliance
 	# Lab result value(s) are higher than expected range
 	Then verify notification for lab result
  	And logout from the application
-	When Login to app with "AO_userid" and "AO_pwd"
+	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "DQB Case Management"
 	When user change the changearea to "Factories"
 	And user selects entity as "Factories"
@@ -36,13 +36,13 @@ Feature: Testing WRN2- Adhoc factory inspection for non-compliance
 	Then verify the status reason is "WA Pending"
 	Then verify notification for factory added to AO
 	And logout from the application
-	When Login to app with "SO_userid" and "SO_pwd"
+	When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
 	And user selects App "DQB Case Management"
 	# Validate SO notification and move to next stage
 	And search for the case to open it
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
-	When Login to app with "AO_userid" and "AO_pwd"
+	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "DQB Case Management"
 	# Validate SO notification and move to next stage
 	And search for the case to open it
