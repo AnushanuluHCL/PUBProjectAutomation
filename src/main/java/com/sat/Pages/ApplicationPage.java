@@ -471,7 +471,7 @@ public class ApplicationPage extends commonActionsPage {
 		eleUtil.doClickWithWait(cretecaseBtn, AppConstants.LONG_DEFAULT_WAIT);
 		// eleUtil.doActionsClick(cretecaseBtn);
 		eleUtil.isPageLoaded(100);
-		eleUtil.acceptJSAlert(50);
+		eleUtil.acceptJSAlert(150);
 		System.out.println("Alert clicked successfully");
 	}
 

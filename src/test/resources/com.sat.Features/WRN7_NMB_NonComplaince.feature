@@ -3,7 +3,10 @@ Feature: Testing WRN7 NMB Noncompliance
 
   Background: Test CRM Login with valid credentials
     Given User navigates to CRM login page
-    When Login to app with "sit2_AO_userid" and "sit2_AO_pwd"
+    #SIT2
+    #When Login to app with "sit2_AO_userid" and "sit2_AO_pwd"
+    #SIT3
+    When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
     And user selects App "NMB Case Management"
 
   Scenario: Validate 6 Inspection cases are created and map is working for tunnel and shaft.
@@ -11,7 +14,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And user selects entity as "DTSS"
     And create a DTSS with entity type "DTSS"
     And go to "DTSS Shafts" tab and create a DTSS Shafts with type "Shaft"
-    Given User navigates to powerapps cloud flow page in "SIT2" environment
+    Given User navigates to powerapps cloud flow page in "SIT3" environment
     And Run the automatic cloudflow job for "SIES/WRN7/NMB/CreateCaseWOBooking"
     Given User navigates to CRM login page
     And user selects App "NMB Case Management"

@@ -27,6 +27,7 @@ public class pumpingSystemCreationPage extends commonActionsPage{
         pumpingSystem.clickBPUSubmissionButton();
         pumpingSystem.enterSubmissionNo();
         pumpingSystem.selectSubmissionType(submissionType);
+        pumpingSystem.selectInspectionRequired();
         pumpingSystem.enterBPDOfficer();
         pumpingSystem.enterMESystem();
         pumpingSystem.selectPumpedSystem();

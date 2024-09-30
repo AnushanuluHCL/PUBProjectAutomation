@@ -1,6 +1,7 @@
 package com.sat.StepDefinitions;
 
 import java.awt.AWTException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Properties;
 
@@ -271,26 +272,26 @@ public class GWComplaintStepdefs {
         casepage.createActualQuantity(typeOfTankersdata);
     }
 
-    @Then("Verify the payment validation after creating actual quantities for {int}, {int} and {int}")
-    public void verifyThePaymentValidationAfterCreatingActualQuantitiesForGWPerMonthOSSPerMonthAndOSIPerMonth(int GWPerMonth,int OSSPerMonth, int OSIPerMonth) throws InterruptedException {
+    @Then("Verify the payment validation after creating actual quantities for {int}, {int}, {int} {int} and {int}")
+    public void verify_the_payment_validation_after_creating_actual_quantities_for_and(int GWPerMonth,int OSSPerMonth, int OSIPerMonth, int GWActual, int OSActual) throws InterruptedException {
         casepage.paymentWasteTypeValidation();
-        casepage.paymentRecordAfterActualQuantitiesValidation(GWPerMonth, OSSPerMonth, OSIPerMonth);
+        casepage.paymentRecordAfterActualQuantitiesValidation(GWPerMonth, OSSPerMonth, OSIPerMonth, GWActual, OSActual);
     }
 
     @And("Update excel with GIRO value as {string} for Deposit Amount calculation")
-    public void updateExcelGIROForDepositAmountCalculation(String giro) {
+    public void updateExcelGIROForDepositAmountCalculation(String giro) throws IOException {
         casepage.updateExcelForDepositAmountCal(giro);
     }
 
-    @And("Upload excel file for Deposit Amount calculation with deposit amount as {string} and giro as {string}")
-    public void uploadExcelFileForDepositAmountCalculationWithDepositAmountAsAndGiroAs(String deposit, String giro) throws InterruptedException {
+    @And("Upload excel file for Deposit Amount calculation with deposit amount as {int} and giro as {string}")
+    public void uploadExcelFileForDepositAmountCalculationWithDepositAmountAsAndGiroAs(int deposit, String giro) throws InterruptedException {
         casepage.importExcelForDeposit(deposit, giro);
     }
 
-    @Then("Verify the payment validation after creating deposit quantities for {int}, {int} and {int}")
-    public void verifyThePaymentValidationAfterCreatingDepositQuantitiesForAnd(int GWPerMonth,int OSSPerMonth, int OSIPerMonth) throws InterruptedException {
+    @Then("Verify the payment validation after creating deposit quantities for {int}, {int}, {int} {int}, {int} and {int}")
+    public void verifyThePaymentValidationAfterCreatingDepositQuantitiesForAnd(int GWPerMonth,int OSSPerMonth, int OSIPerMonth, int GWActual, int OSActual, int expectedDepositAmount) throws InterruptedException {
         casepage.paymentWasteTypeValidation();
-        casepage.paymentRecordAfterDepositQuantitiesValidation(GWPerMonth, OSSPerMonth, OSIPerMonth);
+        casepage.paymentRecordAfterDepositQuantitiesValidation(GWPerMonth, OSSPerMonth, OSIPerMonth, GWActual, OSActual, expectedDepositAmount);
     }
 
     @And("verify reregistering with new company as {string}")

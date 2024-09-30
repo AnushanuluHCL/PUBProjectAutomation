@@ -37,6 +37,7 @@ public class pumpingSystemPage extends commonActionsPage {
     private By qualifiedPerson = By.cssSelector("input[aria-label='Qualified Person (QP/LP/CP), Lookup']");
     private By bpuSubmissionButton = By.cssSelector("button[aria-label='New 1BPU Submission. Add New 1BPU Submission']");
     private By submissionDate = By.cssSelector("input[data-id='pub_submissiondate.fieldControl-date-time-input']");
+    private By inspectionRequired = By.cssSelector("select[aria-label='Inspection Required']");
 
     //Open related Entity
     private By relatedCase = By.cssSelector("div[aria-label='Cases Related - Common']");
@@ -156,7 +157,12 @@ public class pumpingSystemPage extends commonActionsPage {
         eleUtil.waitTillElementIsDisplayed(getSubmissionNo(), 30);
         eleUtil.doClickLog(getSubmissionNo(), "Clicked on Road Name field");
         eleUtil.doClearUsingKeysLog(getSubmissionNo(), "Clear the Road Name field");
-        eleUtil.doSendKeysLog(getSubmissionNo(),"ES"+eleUtil.currentDateTime("yyyyddMM"), " Submission No :ES"+eleUtil.currentDateTime("yyyyddMM"));
+        eleUtil.doSendKeysLog(getSubmissionNo(),"ES"+eleUtil.currentDateTime("yyyyMMdd"), " Submission No :ES"+eleUtil.currentDateTime("yyyyddMM"));
+    }
+
+    public void selectInspectionRequired() {
+        eleUtil.waitTillElementIsDisplayed(inspectionRequired, 30);
+        eleUtil.selectDropDownValue(inspectionRequired, "selectByVisibleText", "Yes", "select Inspection Required as Yes" );
     }
 
     public void enterBPDOfficer() throws InterruptedException {
@@ -192,7 +198,7 @@ public class pumpingSystemPage extends commonActionsPage {
             } else {
                 // If the element is displayed, execute the else block logic
                 try {
-                    Assert.assertEquals(submissionDateValue, eleUtil.todayDate("dd/MM/yyyy"), "Submission Date not matched");
+                    Assert.assertEquals(submissionDateValue, eleUtil.todayDate("dd/M/yyyy"), "Submission Date not matched");
                     Log.info("Submission Date is " + submissionDateValue);
                     return; // Exit the method if the case number is verified
                 } catch (NoSuchElementException e) {

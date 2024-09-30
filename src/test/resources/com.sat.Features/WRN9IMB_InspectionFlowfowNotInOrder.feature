@@ -3,7 +3,10 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#Sit1
+	#When Login to app with "FIO_userid" and "FIO_pwd"
+	#Sit3
+	When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
 	And user selects App "IMB Case Management"
 
   Scenario: Create Project for Pumping System Inspection flow for Not-In-Order Recurring WO
@@ -28,7 +31,10 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 	And go to "Work Orders" tab
 	And open "In Progress" WO and fill the Booking details and select "Completed" status
 	And logout from the application
-	When Login to app with "AO_userid" and "AO_pwd"
+	#SIT1
+	#When Login to app with "AO_userid" and "AO_pwd"
+	#SIT3
+	When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
 	And user selects App "IMB Case Management"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
@@ -63,7 +69,10 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 	And go to "Work Orders" tab
 	And open "In Progress" WO and fill the Booking details and select "Completed" status
 	And logout from the application
-	When Login to app with "AO_userid" and "AO_pwd"
+	#SIT1
+	#When Login to app with "AO_userid" and "AO_pwd"
+	#SIT3
+	When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
 	And user selects App "IMB Case Management"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case

@@ -24,7 +24,7 @@ public class casePage extends commonCRMActions {
 
     commonCRMActions crmActions = new commonCRMActions(driver);
     factoryPage factory = new factoryPage(driver);
-    String filePath = System.getProperty("user.dir");
+    public String filePath = System.getProperty("user.dir");
     String pngFilePath = "\\src\\main\\resources\\documents\\PumpingSystemsInspection.png";
 
     // Create creation fields for WRN

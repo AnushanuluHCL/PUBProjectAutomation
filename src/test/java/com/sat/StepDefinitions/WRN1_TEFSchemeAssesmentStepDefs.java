@@ -63,4 +63,8 @@ public class WRN1_TEFSchemeAssesmentStepDefs {
 		wrn1casepage.selectDepositValue(consumptionval, number);
 	}
 
+    @And("navigate to Processing stage and fill all the details and navigate to next stage")
+    public void navigateToProcessingStageAndFillAllTheDetailsAndNavigateToNextStage() {
+		wrn1casepage.completeProcessingStageBPF();
+    }
 }

@@ -97,7 +97,7 @@ public class commonActionsPage {
 	// Locators for file import
 	String filePath = System.getProperty("user.dir");
 
-	private By moreAction = By.cssSelector("button[aria-label='More commands for Entity']");
+	private By moreAction = By.xpath("//button[contains(@aria-label,'More commands for')]");
 	private By importExcel = By.cssSelector("li[aria-label='Import from Excel']");
 	private By fileUpload = By.cssSelector("input[aria-label='File Upload']");
 	private By nextButton = By.cssSelector("button[aria-label='Next']");
@@ -569,7 +569,7 @@ public class commonActionsPage {
 		eleUtil.doClickWithWait(moreAction, 30);
 		eleUtil.doClickWithWait(importExcel, 30);
 		eleUtil.waitForVisibilityOfElement(fileUpload, 50);
-		eleUtil.doSendKeysWithWait(fileUpload, filePath + path, 50);
+		uploadFile(fileUpload, filePath + path);
 		eleUtil.doClickWithWait(nextButton, 30);
 		eleUtil.doClickWithWait(allowDuplicate, 30);
 		eleUtil.doClickWithWait(finishImport, 30);
