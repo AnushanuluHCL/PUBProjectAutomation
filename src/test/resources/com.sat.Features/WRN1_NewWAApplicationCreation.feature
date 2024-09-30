@@ -44,7 +44,7 @@ Feature: Testing WRN1-New WA Application creation functionality
     And user selects entity as "Cases"
     And change the view to "Active Cases"
     And search and open the case
-    And verify the case form fields validation
+    And verify the case form fields validation with "Scheduled" status
     And Validate the system triggered "WA Application Received" email to the applicant
     And navigate to Processing stage and navigate to next stage
     And navigate to Assignment stage and update all documents received data and navigate to next stage

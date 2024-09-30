@@ -3,7 +3,7 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
 
   Background: Test CRM Login with valid credentials
     Given User navigates to CRM login page
-    When Login to app with "FIO_userid" and "FIO_pwd"
+    When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
     And user selects App "DQB Case Management"
 
   Scenario Outline: Performing TEF Scheme Assesment
@@ -48,15 +48,15 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
     And Create a new lab report by filling "<Report_Type>","<Substance_ChemicalName>","300" details
     And verify the lab report result as "Compliance"
     And navigate to Inspection stage and fill the respective details and navigate to next stage
-    When Login to app with "SO_userid" and "SO_pwd"
+    When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
     And navigate to SO Review stage and fill the respective details and navigate to next stage
-    When Login to app with "AO_userid" and "AO_pwd"
+    When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
     And navigate to AO Review stage and fill the respective details and navigate to next stage
-    When Login to app with "FIO_userid" and "FIO_pwd"
+    When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
     And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
@@ -84,18 +84,18 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
     Then go to "All Activities" and verify the email for "TEF Scheme Assesment"
     And update the consumption details as "123","476"
     And navigate to Inspection stage and fill the respective details and navigate to next stage
-    When Login to app with "SO_userid" and "SO_pwd"
+    When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
     And validate that SO get notified to Review WA application
     Then go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review"
     And navigate to SO Review stage and fill the respective details and navigate to next stage
-    When Login to app with "AO_userid" and "AO_pwd"
+    When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
     And validate that AO get notified to Review WA application
     And navigate to AO Review stage and fill the respective details and navigate to next stage
-    When Login to app with "FIO_userid" and "FIO_pwd"
+    When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
     Then go to "All Activities" and verify the email for Request for "Inspection Case has been Submitted for Review" and "Monthly return form and GIRO form to compan"

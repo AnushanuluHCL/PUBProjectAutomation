@@ -15,6 +15,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
 public class commonCRMActions extends commonActionsPage {
+	
 
 	public commonCRMActions(WebDriver driver) {
 		super(driver);
@@ -61,6 +62,7 @@ public class commonCRMActions extends commonActionsPage {
 	private By documentRefreshButton = By.xpath("//button[contains(@id,'document') and @aria-label='Refresh']");
 	private By moreButtonDocument = By.cssSelector("button[aria-label='More commands for SIES Document']");
 	private By workOrderStatusGridHeader = By.xpath("//div[@role='columnheader' and @col-id='msdyn_systemstatus']");
+	private By workOrderTypeGridHeader = By.xpath("//div[@role='columnheader' and @col-id='pub_workordertype']");
 	private By moreButtonOnWorkOrder = By.cssSelector("button[aria-label='More commands for Work Order']");
 	private By workOrderGridRefresh = By.xpath("//ul[@data-id='OverflowFlyout'] //button[@aria-label='Refresh']");
 	private By nextButtonOnWorkOrder = By
@@ -90,10 +92,15 @@ public class commonCRMActions extends commonActionsPage {
 	private By startTimeCol = By.xpath("//div[text()='Start Time']");
 	private By NewToOldCol = By.xpath("//span[text()='Sort newer to older']");
 	private By oldToNewCol = By.xpath("//span[text()='Sort older to newer']");
+	private By bookingSsatusGridHeader = By.xpath("//div[@role='columnheader' and @col-id='bookingstatus']");
 
 	// Locators on case home page
 	private By systemAssesmentField = By.xpath("//select[@aria-label='System Assessment']");
 	private By userAssesmentField = By.xpath("//select[@aria-label='User Assessment']");
+
+	// Locators on checklist page
+	private By clearResponseBtn = By.xpath("//button[@aria-label='Clear Responses']");
+	private By okBtn = By.xpath("//span[text()='OK']");
 
 	public By getBookingTab() {
 		return bookingTab;
@@ -466,7 +473,7 @@ public class commonCRMActions extends commonActionsPage {
 				int rowIndex = k + 2;
 				String currEle = bookingRecordTexts.get(k);
 				bookingRecordTexts.add(eleUtil.doGetElementAttribute(bookingRecord, "aria-label"));
-				//sortTheRecords(startTimeCol, oldToNewCol, AppConstants.LONG_DEFAULT_WAIT);
+				sortTheRecords(startTimeCol, oldToNewCol, AppConstants.LONG_DEFAULT_WAIT);
 				WebElement dynamicElement = driver
 						.findElement(By.xpath("//div[@aria-rowindex='" + rowIndex + "']//a[@aria-label='" + currEle
 								+ "']/ancestor::div[@col-id='resource']/preceding-sibling::div"));
@@ -479,8 +486,7 @@ public class commonCRMActions extends commonActionsPage {
 					eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
 					eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");
 					By selectAnOption = By.cssSelector("button[title='In Progress']");
-					By bookingStatus = By
-							.xpath("//div[@aria-label='Booking Status Control' and @title='In Progress']");
+					By bookingStatus = By.xpath("//div[@aria-label='Booking Status Control' and @title='In Progress']");
 					eleUtil.doClickWithWait(selectAnOption, 40);
 					eleUtil.doElementClickable(saveOnBooking, 10);
 					eleUtil.doClick(saveOnBooking);
@@ -842,4 +848,77 @@ public class commonCRMActions extends commonActionsPage {
 			}
 		} while (nextButton.contains("false"));
 	}
+
+	public void clearResponseInChecklist() {
+
+		eleUtil.waitForVisibilityOfElement(clearResponseBtn, 10);
+		eleUtil.doClickLog(clearResponseBtn, "Click on Clear Response button");
+		eleUtil.waitForVisibilityOfElement(okBtn, 10);
+		eleUtil.doClickLog(okBtn, "Click on Ok button");
+	}
+
+	public void workOrderTypeFilter(String WOType) throws InterruptedException {
+		eleUtil.isPageLoaded(50);
+		eleUtil.waitForVisibilityOfElement(workOrderTypeGridHeader, 50);
+		eleUtil.doClickLog(workOrderTypeGridHeader, "Click on Work Order type Column");
+		filterViewForStatus(WOType);
+		eleUtil.isPageLoaded(30);
+	}
+
+	public void bookingStatusFilter(String bookingStatus) throws InterruptedException {
+		eleUtil.isPageLoaded(50);
+		eleUtil.waitForVisibilityOfElement(bookingSsatusGridHeader, 50);
+		eleUtil.doClickLog(bookingSsatusGridHeader, "Click on Booking status Column");
+		filterViewForStatus(bookingStatus);
+		eleUtil.isPageLoaded(30);
+	}
+
+	public void selectWOBasedOnType(String WOType)
+			throws InterruptedException {
+		// workOrderTypeFilter(WOType);
+		commonCRMActions.WOnumber = getWONumber();
+		List<String> woNum = new ArrayList<>();
+		String nextButton;
+		woNum.addAll(commonCRMActions.WOnumber);
+		Thread.sleep(2000);
+		Log.info("print wo number " + woNum);
+		Log.info("size is: " + woNum.size());
+		// Check if there is a next button and click it if enabled
+		nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled",
+				"Check next button is true/false");
+		while (nextButton.contains("false")) {
+			eleUtil.doClickLog(getNextButtonOnWorkOrder(), "click on next button on Work Order");
+			Thread.sleep(2000);
+			// Store all WOs from the next page
+			commonCRMActions.WOnumber = getWONumber();
+			woNum.addAll(commonCRMActions.WOnumber);
+			Log.info("print wo number " + woNum);
+			Log.info("size is: " + woNum.size());
+			// Check the next button status again
+			nextButton = eleUtil.doGetElementAttributeLog(getNextButtonOnWorkOrder(), "aria-disabled",
+					"Check next button is true/false");
+		}
+		// Process all collected WOs
+		for (int i = 0; i < woNum.size(); i++) {
+			Thread.sleep(2000);
+			if (!isFirstRun.get()) {
+				workOrderTypeFilter(WOType);
+			} else {
+				isFirstRun.set(Boolean.FALSE); // Set the flag to false after the first run
+			}
+			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + woNum.get(i) + "']");
+			eleUtil.waitForVisibilityOfElement(woele, 50);
+			eleUtil.doActionsClick(woele);
+			
+			
+			
+			
+			
+			
+		}
+
+		resetFirstRunFlag();
+
+	}
+
 }

@@ -3,7 +3,7 @@ Feature: Testing WRN5-New pemit complaince Functionality
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
-	When Login to app with "Admin_userid" and "Admin_pwd"
+	When Login to app with "sit3_Admin_userid" and "sit3_Admin_pwd"
 	And user selects App "DQB Case Management"
 
   Scenario Outline: Generating a permit by creating a new permit application
@@ -19,7 +19,7 @@ Feature: Testing WRN5-New pemit complaince Functionality
 	  | WasteType        |
 	  | Human Wastewater |
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 	And user change the changearea to "GWC Tanker"
 	And user selects entity as "Applications"
@@ -38,19 +38,19 @@ Feature: Testing WRN5-New pemit complaince Functionality
 	And verify permit is generated for the tanker
 	And verify "Permit" letter is generated
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
-	When Login to app with "SO_userid" and "SO_pwd"
+	When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
 	And user selects App "DQB Case Management"
 	And search for the case to open it
 	And Validate that AO or SO get notified by Case or WO complaint notification
 	And Validate that SO get notified to approve the case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
-	When Login to app with "AO_userid" and "AO_pwd"
+	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "DQB Case Management"
 	And search for the case to open it
 	And Validate that AO or SO get notified by Case or WO complaint notification
 	And Validate that AO get notified to approve the case
 	And navigate to AO Review stage and fill the respective details and navigate to next stage
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 	And search for the case to open it
 	And validate the system triggered email "Permit generation" to tankercompany once tanker is approved for disposing waste
@@ -76,7 +76,7 @@ Feature: Testing WRN5-New pemit complaince Functionality
 	  | WasteType        |
 	  | Human Wastewater |
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 	And user change the changearea to "GWC Tanker"
 	And user selects entity as "Applications"

@@ -39,10 +39,10 @@ public class WRN6IMB_Noncomplaince_Rework {
 		constructPage.verifyCaseCreatedFor6IMB();
 	}
 
-	@And("go to Service tasks tab and complete the checklist by selecting {string} selcted is as {string}")
-	public void go_to_Service_tasks_tab_and_complete_the_checklist_by_selecting_selcted_is_as(String allWorkComplete,
-			String value) throws InterruptedException {
-		checklistpage.fillChecklistForWRN6IMB(allWorkComplete, value);
+	@And("go to Service tasks tab and complete the checklist as {string} by selecting {string} selcted is as {string}")
+	public void go_to_Service_tasks_tab_and_complete_the_checklist_as_by_selecting_selcted_is_as(
+			String complainceStatus, String allWorkComplete, String value) throws InterruptedException {
+		checklistpage.fillChecklistForWRN6IMB(complainceStatus, allWorkComplete, value);
 	}
 
 	@And("verify FIO get notified by non-complaince notification")
@@ -57,7 +57,19 @@ public class WRN6IMB_Noncomplaince_Rework {
 
 	@And("open {string} WO and able to provide the rework comments")
 	public void open_WO_and_able_to_provide_the_rework_comments(String WOstatus) {
-		casepage.enterReworkComments(WOstatus);
-		}
+		casepage.rejectWO(WOstatus);
+	}
+
+	@Then("verify new booking is created with {string} status and WO status also changed to {string}")
+	public void verify_new_booking_is_created_with_status_and_WO_status_also_changed_to(String WOStatus,
+			String bookingStatus) throws InterruptedException {
+		casepage.verifyNewBooking(WOStatus, bookingStatus);
+	}
+
+	@And("open {string} WO and open the checklist and perform the amendments as {string} by selecting {string} selcted is as {string}")
+	public void open_WO_and_open_the_checklist_and_perform_the_amendments_as_by_selecting_selcted_is_as(String WOType,
+			String complainceStatus, String allWorkComplete, String value) throws InterruptedException {
+		checklistpage.performAmendmentFor6IMB(WOType, complainceStatus, allWorkComplete, value);
+	}
 
 }
