@@ -3,21 +3,23 @@ Feature: Testing WRN7 IMB - Noncomplaince
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
-	When Login to app with "Admin_userid" and "Admin_pwd"
+	When Login to app with "PAsit2_userid" and "PAsit2_pwd"
 	And user selects App "IMB Case Management"
 
   Scenario: Inspecting Pumping Main Station- Noncomplaince flow
 	When user selects entity as "Pumping Main Stations"
-	And create a new pumping station by giving "Pumping Main Stations","Bedok","October"
+	#And create a new pumping station by giving "Pumping Main Stations","Bedok","October"
+	And create a new pumping station by giving "Pumping Main Stations","October"
 	And creating 2 chambers
-	Given User navigates to powerapps cloud flow page in "SIT1" environment
+	Given User navigates to powerapps cloud flow page in "SIT2" environment
 	And Run the automatic cloudflow job for "SIES/WRN7/IMB/Pumping Main Station Inspection Case"
 	And logout from the powerapps application
 	Given User navigates to CRM login page
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "sit2_FIO_userid" and "sit2_FIO_pwd"
 	And user selects App "IMB Case Management"
 	Then verify whether case is created after the job run
+	
 	And change the view "All Cases" and search a case
 	And Verify that created case starts with "IMB/PC/I" with status "In Progress"
 	And go to "Work Orders" tab
@@ -27,7 +29,7 @@ Feature: Testing WRN7 IMB - Noncomplaince
 	Then verify System Assessment and User Assessment are marked as "Non-Compliance" in case form
 	And verify that "Inspection Report" is generated
 	And logout from the application
-	When Login to app with "SO_userid" and "SO_pwd"
+	When Login to app with "sit2_SO_userid" and "sit2_SO_pwd"
 	And user selects App "IMB Case Management"
 	And search for the case to open it
     #And verify SO get notified by alert for approval

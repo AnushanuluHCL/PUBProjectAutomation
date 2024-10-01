@@ -23,12 +23,12 @@ public class pumpingMainStationsPage extends commonActionsPage {
 		super(driver);
 	}
 
-	public void entityCreation(String entityVal, String catchmentValue, String month) {
+	public void entityCreation(String entityVal,  String month) {
 		clickonNewBtn();
 		pumpingStation.entityTypeselection(entityVal);
 		pumpingStation.entityName();
 		pumpingStation.pumpingStationId();
-		waapp.catchment(catchmentValue);
+		//waapp.catchment(catchmentValue);
 		pumpingStation.selectMonth(month);
 		clickOnSaveBtn();
 	}
@@ -48,6 +48,7 @@ public class pumpingMainStationsPage extends commonActionsPage {
 	public void verifyWRN7NMBCaseCreated() throws InterruptedException {
 		changeAreaSelection("Inspection");
 		selectEntity("Cases");
+		changeView("All Cases");
 		constructionpage.entitySelectionInCaseView();
 		filterView(commonActionsPage.WRN7NMB_Projname);
 		clickOnApplyBtn();

@@ -9,6 +9,7 @@ import com.sat.testbase.TestBase;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class WRN6IMB_Noncomplaince_Rework {
 
@@ -70,6 +71,22 @@ public class WRN6IMB_Noncomplaince_Rework {
 	public void open_WO_and_open_the_checklist_and_perform_the_amendments_as_by_selecting_selcted_is_as(String WOType,
 			String complainceStatus, String allWorkComplete, String value) throws InterruptedException {
 		checklistpage.performAmendmentFor6IMB(WOType, complainceStatus, allWorkComplete, value);
+	}
+
+	@When("AO is able to update deviation remarks")
+	public void ao_is_able_to_update_deviation_remarks() {
+		casepage.updateDeviationRemarks();
+	}
+
+	@And("go to {string} and open the project which is closed above and create a new POWS submission request with {string}, {string}")
+	public void go_to_and_open_the_project_which_is_closed_above_and_create_a_new_POWS_submission_request_with(
+			String tab1, String diameter, String DCvalue) throws InterruptedException {
+		constructPage.createAPOWSReq(tab1, diameter, DCvalue);
+	}
+
+	@Then("verify a new case is created")
+	public void verify_a_new_case_is_created() {
+
 	}
 
 }
