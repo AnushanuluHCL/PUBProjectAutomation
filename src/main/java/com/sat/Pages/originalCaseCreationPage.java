@@ -1,18 +1,16 @@
 package com.sat.Pages;
 
-import com.sat.constants.AppConstants;
-import com.sat.locators.casePage;
-import com.sat.locators.factoryPage;
-import com.sat.testUtil.Log;
-
 import static org.testng.Assert.assertEquals;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import com.sat.locators.casePage;
+import com.sat.locators.factoryPage;
+import com.sat.testUtil.Log;
 
 public class originalCaseCreationPage extends commonActionsPage {
 	public originalCaseCreationPage(WebDriver driver) {
@@ -193,46 +191,21 @@ public class originalCaseCreationPage extends commonActionsPage {
 
 	public void rejectWO(String WOstatus) {
 		navigatingToTab("Work Orders");
-		By status = By.xpath("//label[@aria-label='" + WOstatus + "']");
-		eleUtil.waitForVisibilityOfElement(status, 10);
-		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label",
-				"WO Status value from case home page is : ");
-		if (actualStatusval.equals(WOstatus)) {
-			selectFirstRecord();
-			getFirstRecord();
-			casepage.clickOnRejectWOBtn();
-			casepage.enterRemarks();
-			casepage.clickOnSubmitBtn();
-			clickOnSaveBtn();
-		}
+		casepage.rejectingWO(WOstatus);
+		clickOnSaveBtn();
 	}
 
 	public void verifyNewBooking(String bookingStatus, String WOStatus) throws InterruptedException {
-		eleUtil.waitForVisibilityOfElement(crmActions.getBookingTab(), 30);
-		eleUtil.staleElementRefExecClickCRM(crmActions.getBookingTab());
-		eleUtil.doClick(crmActions.getBookingTab());
-		Thread.sleep(2000);
-		By bookingRecord = By.xpath("//div[@col-id='bookingstatus' and @role='gridcell']//a");
-		List<WebElement> bookingRecords = driver.findElements(bookingRecord);
-		System.out.println("no of booking records bA" + bookingRecords.size());
-		// Collecting all the booking resource texts
-		for (WebElement record : bookingRecords) {
-			String ariaLabel = record.getAttribute("aria-label");
-			casepage.sortFromNewToOld();
-			if (ariaLabel.equals(bookingStatus)) {
-				Log.info("New Booking created after Reject");
-			} else {
-				Log.info("New Booking is not created after Reject");
-			}
-		}
-		crmActions.clickOnSaveNCloseButton();
-		crmActions.navigateToTab("Sumamry");
-		By WOstatusInWOform = By.xpath(
-				"//select[@aria-label='WO Status']//ancestor::div[@data-lp-id='MscrmControls.FieldControls.OptionSet|msdyn_systemstatus.fieldControl|msdyn_workorder']//select");
-		eleUtil.waitForVisibilityOfElement(WOstatusInWOform, 10);
-		String actualStatusval = eleUtil.doGetElementAttributeLog(WOstatusInWOform, "aria-label",
-				"WO Status value from case home page is : ");
-		assertEquals(actualStatusval, WOStatus, "WO status is not same");
+		casepage.verifyNewBookingCreated(bookingStatus, WOStatus);
 	}
-	
+
+	public void updateDeviationRemarks() {
+		casepage.updateSystemAssesmentVal();
+		casepage.updateDeviationRemarks();
+		clickOnSaveBtn();
+	}
+	public void verifyIfNewCaseCreated() {
+		casepage.newCaseCheck();
+	}
+
 }

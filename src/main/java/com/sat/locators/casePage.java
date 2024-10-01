@@ -6,6 +6,7 @@ import com.sat.testUtil.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.time.LocalTime;
@@ -14,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class casePage extends commonCRMActions {
@@ -96,9 +98,6 @@ public class casePage extends commonCRMActions {
     private By approveAndResolveCase = By.cssSelector("select[aria-label='Approve and Resolve Case']");
     private By sendBackToFIO = By.cssSelector("select[aria-label='Send back to FIO']");
     
-    
-
-
  	// Locators for ApproveWO
  	private By rejectWOBtn = By.xpath("//button[@aria-label='Reject WO']");
  	private By remarksField = By.xpath("//textarea[@name='remarkComments']");
@@ -112,6 +111,15 @@ public class casePage extends commonCRMActions {
 
     // WRN6IMB Locators
     private By typeOfWO = By.xpath("//div[@aria-rowindex='2']//div[@col-id='pub_workordertype']//label");
+    
+    // Locators for deviation remarks
+    private By systemAssesmentval = By.xpath("//select[@aria-label='User Assessment']");
+	private By deviationRemarks = By.xpath("//input[@aria-label='Deviation Remarks']");
+	
+	// Locators for verify new case is created?
+	private By casenumber = By.xpath("(//div[@col-id='statuscode' and @role='gridcell']//span)[1]");
+	private By caseStatus = By.xpath("(//div[@col-id='statecode']//label)[2]");
+			
     
     public By getCaseType() {
         return caseType;
@@ -710,6 +718,70 @@ public class casePage extends commonCRMActions {
 		sortTheRecords(startTimeCol, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
 	}
 	
-
-
+	public void rejectingWO(String WOstatus) {
+		By status = By.xpath("//label[@aria-label='" + WOstatus + "']");
+		eleUtil.waitForVisibilityOfElement(status, 10);
+		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label",
+				"WO Status value from case home page is : ");
+		if (actualStatusval.equals(WOstatus)) {
+			selectFirstRecord();
+			getFirstRecord();
+			clickOnRejectWOBtn();
+			enterRemarks();
+			clickOnSubmitBtn();
+			clickOnSaveBtn();
+		}
+	}
+	public void verifyNewBookingCreated(String bookingStatus, String WOStatus) throws InterruptedException {
+		eleUtil.waitForVisibilityOfElement(crmActions.getBookingTab(), 30);
+		eleUtil.staleElementRefExecClickCRM(crmActions.getBookingTab());
+		eleUtil.doClick(crmActions.getBookingTab());
+		Thread.sleep(2000);
+		By bookingRecord = By.xpath("//div[@col-id='bookingstatus' and @role='gridcell']//a");
+		List<WebElement> bookingRecords = driver.findElements(bookingRecord);
+		System.out.println("no of booking records bA" + bookingRecords.size());
+		// Collecting all the booking resource texts
+		for (WebElement record : bookingRecords) {
+			String ariaLabel = record.getAttribute("aria-label");
+			sortFromNewToOld();
+			if (ariaLabel.equals(bookingStatus)) {
+				Log.info("New Booking created after Reject");
+			} else {
+				Log.info("New Booking is not created after Reject");
+			}
+		}
+		crmActions.clickOnSaveNCloseButton();
+		crmActions.navigateToTab("Sumamry");
+		By WOstatusInWOform = By.xpath(
+				"//select[@aria-label='WO Status']//ancestor::div[@data-lp-id='MscrmControls.FieldControls.OptionSet|msdyn_systemstatus.fieldControl|msdyn_workorder']//select");
+		eleUtil.waitForVisibilityOfElement(WOstatusInWOform, 10);
+		String actualStatusval = eleUtil.doGetElementAttributeLog(WOstatusInWOform, "aria-label",
+				"WO Status value from case home page is : ");
+		assertEquals(actualStatusval, WOStatus, "WO status is not same");
+	}
+	
+	public void updateSystemAssesmentVal() {
+		eleUtil.waitForVisibilityOfElement(systemAssesmentval, 20);
+		String SystemAssesmentVal = eleUtil.doGetElementAttributeLog(systemAssesmentval, "title",
+				"Displayed System Assesment is : ");
+        eleUtil.selectDropDownValue(systemAssesmentval, "selectByVisibleText", "Compliance",
+				"Select Compliance in User Assesment field");
+		
+	}
+	public void updateDeviationRemarks() {
+		eleUtil.waitForVisibilityOfElement(deviationRemarks, 20);
+		eleUtil.doSendKeysLog(deviationRemarks, "Remarks entered", "Sending value to the Deviation Remarks filed : ");
+	}
+	public void newCaseCheck() {
+		String caseNo = eleUtil.doElementGetTextLog(casenumber, "case number is : ");
+		String Status = eleUtil.doElementGetTextLog(caseStatus, "Status reason is : ");
+		if(caseNo.contains("IMB/RP/I") && Status.equals("Active")) {
+			Log.info("New case got created");
+		}
+		else {
+			Log.info("New case is not created");
+			
+		}
+	}
+	
 }
