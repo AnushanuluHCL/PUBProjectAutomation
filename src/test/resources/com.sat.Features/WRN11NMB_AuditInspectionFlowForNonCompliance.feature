@@ -24,6 +24,8 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	Then verify Work Order created
 	And logout from the application
 	When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
+	#SIT 3
+	#When Login to app with "FIO_userid" and "FIO_pwd"
 	And user selects App "NMB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"

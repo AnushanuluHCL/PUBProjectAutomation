@@ -681,6 +681,7 @@ public class commonCRMActions extends commonActionsPage {
 			eleUtil.doSendKeysLog(getClickOnProposedInspectionDateCalender(),
 					eleUtil.todayDatePlusDays("MM/dd/yyyy", 2), "Enter today's date + 2");
 			eleUtil.doClickLog(getSaveAndCloseOnManualBooking(), "click on save and close button on Manual Booking");
+			Thread.sleep(2000);
 			eleUtil.waitForVisibilityOfElement(getRefreshBtn(), 100);
 			eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
 			long endTime = System.currentTimeMillis() + 5 * 60 * 1000; // 5 minutes from now
