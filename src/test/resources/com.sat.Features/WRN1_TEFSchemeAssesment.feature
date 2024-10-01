@@ -52,13 +52,16 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
     And user selects App "DQB Case Management"
     And search for the case to open it
     And navigate to SO Review stage and fill the respective details and navigate to next stage
-    When Login to app with "AO_userid" and "AO_pwd"
+    #When Login to app with "AO_userid" and "AO_pwd"
+    When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
     And user selects App "DQB Case Management"
-    And search for the case to open it
+    And user selects entity as "Cases"
+    And user selects "Active Cases" list view, search and open the case
     And navigate to AO Review stage and fill the respective details and navigate to next stage
     When Login to app with "FIO_userid" and "FIO_pwd"
     And user selects App "DQB Case Management"
-    And search for the case to open it
+    And user selects entity as "Cases"
+    And user selects "Active Cases" list view, search and open the case
     And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
     And Validate the system triggered "Written Approval Documents" email to the applicant
     And navigate to Close stage and fill the respective details and navigate to next stage
@@ -73,7 +76,7 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
     And navigate to Assignment stage and fill the respective details and navigate to next stage
     And go to "Work Orders" tab
     And verify the WO status "Scheduled"
-	  And open "Scheduled" WO and fill the Booking details and select "In Progress" status
+    And open "Scheduled" WO and fill the Booking details and select "In Progress" status
     And go to Checklist tab create sample for lab analysis details and fill the required checklist
     And verify that "COC Document" is generated
     Then go to "All Activities" and verify the email for "Request for Lab report result of samples"
@@ -86,18 +89,22 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
     And navigate to Inspection stage and fill the respective details and navigate to next stage
     When Login to app with "SO_userid" and "SO_pwd"
     And user selects App "DQB Case Management"
-    And search for the case to open it
+    And user selects entity as "Cases"
+    And user selects "Active Cases" list view, search and open the case
     And validate that SO get notified to Review WA application
     Then go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review"
     And navigate to SO Review stage and fill the respective details and navigate to next stage
-    When Login to app with "AO_userid" and "AO_pwd"
+    #When Login to app with "AO_userid" and "AO_pwd"
+    When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
     And user selects App "DQB Case Management"
-    And search for the case to open it
+    And user selects entity as "Cases"
+    And user selects "Active Cases" list view, search and open the case
     And validate that AO get notified to Review WA application
     And navigate to AO Review stage and fill the respective details and navigate to next stage
     When Login to app with "FIO_userid" and "FIO_pwd"
     And user selects App "DQB Case Management"
-    And search for the case to open it
+    And user selects entity as "Cases"
+    And user selects "Active Cases" list view, search and open the case
     Then go to "All Activities" and verify the email for Request for "Inspection Case has been Submitted for Review" and "Monthly return form and GIRO form to compan"
     And navigate to Close stage and fill the respective details and navigate to next stage
 

@@ -62,6 +62,7 @@ public class commonActionsPage {
 	protected static Map<String, String> permitnums = new TreeMap<>();
 	protected static Map<Integer, String> chamberId = new TreeMap<>();
 
+
 	private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
 	private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
 	private By refreshBtn = By.xpath("//button[contains(@aria-label,'Refresh')]");
@@ -105,6 +106,7 @@ public class commonActionsPage {
 	private By finishImport = By.cssSelector("button[aria-label='Finish Import']");
 	private By doneButton = By.cssSelector("button[aria-label='Done']");
 	private By uploadBtn = By.xpath("//span[text()='Upload']/ancestor::button");
+	private By selectLookUp = By.cssSelector("ul[tabindex='0']");
 
 	public commonActionsPage(WebDriver driver) {
 		this.driver = driver;
@@ -539,6 +541,8 @@ public class commonActionsPage {
 		} else {
 			System.out.println(commonActionsPage.WRN1_factoryname);
 			eleUtil.doSendKeysLog(entityLookupField, commonActionsPage.WRN1_factoryname, "Entered text is : ");
+			eleUtil.waitTillElementIsDisplayed(selectLookUp, 30);
+			eleUtil.doClickLog(selectLookUp, "Select Look-up value");
 			// eleUtil.doSendKeysLog(entityLookupField, "Testcomp020924094446", "Entered
 			// text is : ");
 		}
