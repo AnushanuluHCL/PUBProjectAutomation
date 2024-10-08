@@ -23,11 +23,12 @@ public class GWComplaintStepdefs{
     private Properties prop;
     private TestBase testbase = new TestBase();
 
-    
+
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
     private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
     private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
     private loginPage loginpage = new loginPage(TestBase.getDriver());
+    factoryPage factory = new factoryPage(TestBase.getDriver());
 
     @And("fill the details in application form for greasy waste type details {string},{string}")
     public void fill_the_details_in_application_form_for_greasy_waste_type_details(String GWSelected, String GWPerMomnth) {

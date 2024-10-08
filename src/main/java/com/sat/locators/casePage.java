@@ -399,6 +399,9 @@ public class casePage extends commonCRMActions {
             nextButton = eleUtil.doGetElementAttributeLog(crmActions.getNextButtonOnWorkOrder(), "aria-disabled", "Check next button is true/false");
         }
         for (int i = 0; i < woNum.size(); i++) {
+            eleUtil.waitTillElementIsDisplayed(getMoreButtonOnWorkOrder(), 30);
+            eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
+            eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
             Thread.sleep(2000);
             crmActions.openCheckList(woNum.get(i), checkListName, status);
             if (i < woNum.size() - 1 || level.equals("L2")) {
@@ -474,8 +477,9 @@ public class casePage extends commonCRMActions {
             Thread.sleep(2000);
             selectFirstRecord();
             getFirstRecord();
-            eleUtil.doElementClickable(crmActions.getMaximizeScreenBtn(), 10);
-            eleUtil.doClick(crmActions.getMaximizeScreenBtn());
+            // Uncomment below code while running in SIT3
+            //eleUtil.doElementClickable(crmActions.getMaximizeScreenBtn(), 10);
+            //eleUtil.doClick(crmActions.getMaximizeScreenBtn());
         }
     }
 
@@ -539,7 +543,7 @@ public class casePage extends commonCRMActions {
     public void checkLastInspectedOn() throws InterruptedException {
         eleUtil.scrollDownTillElementVisible(getLastInspectedDate());
         String inspectedDate = eleUtil.doGetElementAttributeLog(getLastInspectedDate(), "value", "get Last Inspected Date ");
-        Assert.assertEquals(eleUtil.todayDate("MM/dd/yyyy"), inspectedDate, "Last Inspected Date not matched with today's date");
+        Assert.assertEquals(eleUtil.todayDate("M/d/yyyy"), inspectedDate, "Last Inspected Date not matched with today's date");
     }
 
     public void completeWRN9AOReviewStage(String recurrence, String frequency) {
@@ -559,9 +563,10 @@ public class casePage extends commonCRMActions {
     }
 
     public void checkNextBookingDate(int days) throws InterruptedException {
+        clickOnRefreshBtn();
         eleUtil.scrollDownTillElementVisible(getNextBookingDate());
         String nextBooking = eleUtil.doGetElementAttributeLog(getNextBookingDate(), "value", "get Next Booking Date ");
-        Assert.assertEquals(eleUtil.todayDatePlusDays("MM/dd/yyyy", days), nextBooking, "Next Booking Date not matched ");
+        Assert.assertEquals(eleUtil.todayDatePlusDays("M/d/yyyy", days), nextBooking, "Next Booking Date not matched ");
     }
 
     public void CompleteWRN9ResolveCaseStage(String resolveCase) throws InterruptedException {

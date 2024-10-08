@@ -10,6 +10,7 @@ import java.util.List;
 import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.openqa.selenium.*;
 
 import org.openqa.selenium.interactions.Actions;
@@ -45,8 +46,10 @@ public class commonCRMActions extends commonActionsPage {
 			.xpath("//div[@class='ms-Dropdown-container'] //div[contains(@data-id,'BookingStatusControl')]");
 	private By saveNCloseOnBooking = By
 			.xpath("//span[text()='Save and close this Bookable Resource Booking.']/preceding-sibling::button");
+	private By bookingSavedStatus = By.xpath("//span[text()='Bookable Resource Booking']/ancestor::div[contains(@class, 'flexbox')]//span[@aria-label='Save status - Saved']");
 	private By saveOnBooking = By
 			.xpath("//span[text()='Save this Bookable Resource Booking.']/preceding-sibling::button");
+	private By loadingWithSaving = By.xpath("//span[text()='Saving...']");
 	private By notesTab = By.xpath("//li[@aria-label='Notes']");
 	private By signature_box = By.xpath("//div[contains(@data-id,'msdyn_signature')]//canvas");
 	private By confirmBtn = By.xpath("//span[text()='Confirm']");
@@ -299,6 +302,9 @@ public class commonCRMActions extends commonActionsPage {
 		eleUtil.doClick(confirmBtn);
 		eleUtil.waitForVisibilityOfElement(nameOfAssignee, 30);
 		eleUtil.doSendKeys(nameOfAssignee, "FIO");
+		eleUtil.doElementClickable(saveOnBooking, 100);
+		eleUtil.doClick(saveOnBooking);
+		eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 100);
 	}
 
 	public List<String> getWONumber() {
@@ -327,7 +333,6 @@ public class commonCRMActions extends commonActionsPage {
 		}
 		By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + woNumber + "']");
 		eleUtil.waitForVisibilityOfElement(woele, 50);
-
 		eleUtil.doActionsClick(woele);
 		eleUtil.waitForVisibilityOfElement(getWorkOrderText(), 30);
 		String actualWO = eleUtil.doGetElementAttribute(getWorkOrderText(), "value");
@@ -378,6 +383,9 @@ public class commonCRMActions extends commonActionsPage {
 		}
 		// Process all collected WOs
 		for (int i = 0; i < woNum.size(); i++) {
+			eleUtil.waitTillElementIsDisplayed(getMoreButtonOnWorkOrder(), 30);
+			eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
+			eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
 			Thread.sleep(2000);
 			processWorkOrder(woNum.get(i), status);
 			// Validation on Booking tab
@@ -388,20 +396,25 @@ public class commonCRMActions extends commonActionsPage {
 			checkBookingsOrder();
 			selectFirstRecord();
 			getFirstRecord();
-			eleUtil.doElementClickable(getMaximizeScreenBtn(), 30);
-			eleUtil.doClick(getMaximizeScreenBtn());
+			// SIT1 code- Uncomment getMaximizeScreenBtn while running in SIT3
+			/*eleUtil.doElementClickable(getMaximizeScreenBtn(), 30);
+			eleUtil.doClick(getMaximizeScreenBtn());*/
+			Thread.sleep(4000);
 			eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
-			eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");
+			//eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");
+			attemptsDifferentClicks(bookingStatusField);
 			By selectAnOption = By.cssSelector("button[title='" + selectBookingStatus + "']");
 			By bookingStatus = By
 					.xpath("//div[@aria-label='Booking Status Control' and @title='" + selectBookingStatus + "']");
 			eleUtil.doClickWithWait(selectAnOption, 40);
 			eleUtil.doElementClickable(saveOnBooking, 10);
 			eleUtil.doClick(saveOnBooking);
+			eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 100);
 			eleUtil.waitForVisibilityOfElement(bookingStatus, 100);
 			if (status.equals("Scheduled")) {
 				signTheChecklist();
 			}
+			eleUtil.waitForVisibilityOfElement(bookingSavedStatus, 100);
 			eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
 			eleUtil.doElementClickable(saveNCloseOnBooking, 10);
 			eleUtil.doClick(saveNCloseOnBooking);
@@ -490,6 +503,7 @@ public class commonCRMActions extends commonActionsPage {
 					eleUtil.doClickWithWait(selectAnOption, 40);
 					eleUtil.doElementClickable(saveOnBooking, 10);
 					eleUtil.doClick(saveOnBooking);
+					eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 100);
 				}
 				signTheChecklist();
 				eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
@@ -612,8 +626,9 @@ public class commonCRMActions extends commonActionsPage {
 
 	public void workOrderStatusFilter(String status) throws InterruptedException {
 		eleUtil.isPageLoaded(50);
-		eleUtil.waitForVisibilityOfElement(workOrderStatusGridHeader, 50);
-		eleUtil.doClickLog(workOrderStatusGridHeader, "Click on Work Order Status Column");
+		eleUtil.waitForVisibilityOfElement(workOrderStatusGridHeader, 100);
+		Thread.sleep(3000);
+		attemptsDifferentClicks(workOrderStatusGridHeader);
 		filterViewForStatus(status);
 		eleUtil.isPageLoaded(30);
 	}
@@ -910,16 +925,9 @@ public class commonCRMActions extends commonActionsPage {
 			By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + woNum.get(i) + "']");
 			eleUtil.waitForVisibilityOfElement(woele, 50);
 			eleUtil.doActionsClick(woele);
-			
-			
-			
-			
-			
-			
+
 		}
-
 		resetFirstRunFlag();
-
 	}
 
 }

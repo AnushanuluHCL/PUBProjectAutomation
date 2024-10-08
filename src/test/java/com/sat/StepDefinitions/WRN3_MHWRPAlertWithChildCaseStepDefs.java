@@ -114,4 +114,13 @@ public class WRN3_MHWRPAlertWithChildCaseStepDefs {
         casePage.verifyTimeDurationAndStartTime(durationTime);
     }
 
+    @And("user selects {string} list view, search and open the child case")
+    public void userSelectsListViewSearchAndOpenTheChildCase(String listView) throws InterruptedException {
+        casePage.searchAndOpenChildCase(listView);
+    }
+
+    @And("Validate that AO or SO get notified by Child Case")
+    public void validateThatAOOrSOGetNotifiedByChildCase() throws InterruptedException {
+        factoryPage.verifyApprovalChildCaseNotification();
+    }
 }

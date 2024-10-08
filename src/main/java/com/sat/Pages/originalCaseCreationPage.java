@@ -27,6 +27,7 @@ public class originalCaseCreationPage extends commonActionsPage {
 		clickonNewBtn();
 		// cases.enableWRPSubType();
 		cases.caseCreationForWRP(wrpCatchment, alertSource);
+		Thread.sleep(2000);
 		clickOnSaveBtn();
 	}
 
@@ -41,6 +42,11 @@ public class originalCaseCreationPage extends commonActionsPage {
 	public void searchAndOpenCase(String listView) throws InterruptedException {
 		cases.selectListOfActiveCases(listView);
 		caseCreation.searchACase();
+	}
+
+	public void searchAndOpenChildCase(String listView) throws InterruptedException {
+		cases.selectListOfActiveCases(listView);
+		caseCreation.searchChildCase();
 	}
 
 	public void workOrderCountAfterSplit() {

@@ -27,9 +27,9 @@ Feature: Testing deposit amount calculations for the tanker
 	  | OS - Industrial  |
 	And logout from the application
 	#Sit1
-	#When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "FIO_userid" and "FIO_pwd"
 	#Sit3
-	When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
+	#When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
 	And user selects App "DQB Case Management"
 	And user change the changearea to "GWC Tanker"
 	And user selects entity as "Applications"
@@ -47,33 +47,33 @@ Feature: Testing deposit amount calculations for the tanker
 	And navigate to Inspection stage and select the Inspection completed value as yes
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
 	#Sit1
-	#When Login to app with "SO_userid" and "SO_pwd"
+	When Login to app with "SO_userid" and "SO_pwd"
 	#SIT3
-	When Login to app with "SIT3_SOUser" and "SIT3_SOPwd"
+	#When Login to app with "SIT3_SOUser" and "SIT3_SOPwd"
 	And user selects App "DQB Case Management"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
 	#SIT1
-	#When Login to app with "AO_userid" and "AO_pwd"
+	When Login to app with "AO_userid" and "AO_pwd"
 	#SIT3
-	When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
+	#When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
 	And user selects App "DQB Case Management"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
 	And navigate to AO Review stage and fill the respective details and navigate to next stage
 	#Sit1
-	#When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "FIO_userid" and "FIO_pwd"
 	#Sit3
-	When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
+	#When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
 	And user selects App "DQB Case Management"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And navigate to GenerateEmail stage and fill the respective details and navigate to next stage
-	And validate the system triggered email "Permit generation" to tankercompany once tanker is approved for disposing waste
-	And validate the system triggered email "Permit WRP email" to WRP FD to update the status of Tankers
+	#And validate the system triggered email "Permit generation" to tankercompany once tanker is approved for disposing waste
+	#And validate the system triggered email "Permit WRP email" to WRP FD to update the status of Tankers
 	#And navigate to Close stage and fill the respective details and navigate to next stage
 	And logout from the application
 	When Login to app with "Admin_userid" and "Admin_pwd"

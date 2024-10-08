@@ -678,6 +678,21 @@ public class caseCreationPage extends commonActionsPage {
         getFirstRecord();
     }
 
+    public void searchChildCase() throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(searchbox, 20);
+        Thread.sleep(2000);
+        eleUtil.doSendKeys(searchbox, commonActionsPage.childCaseNumber);
+
+        //eleUtil.doSendKeys(searchbox, "IMB/PC/I/2024/26335");
+        eleUtil.isPageLoaded(50);
+        Thread.sleep(2000);
+
+        driver.findElement(searchbox).sendKeys(Keys.ENTER);
+        Thread.sleep(3000);
+        selectFirstRecord();
+        getFirstRecord();
+    }
+
     public void navigatingToTab(String tabName) {
 
         By loc = By.xpath("//ul[@aria-label='Case Form']//li[@aria-label='" + tabName + "']");

@@ -20,6 +20,9 @@ Feature: Testing WRN8 IMB-Noncompliance
 	Then verify Case created in Project
 	Then verify Work Order created
 	And logout from the application
+	#SIT1
+	When Login to app with "FIO_userid" and "FIO_pwd"
+	#SIT3
 	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "IMB Case Management"
 	Then user change the changearea to "Inspection"
@@ -39,6 +42,9 @@ Feature: Testing WRN8 IMB-Noncompliance
 	Then go to "All Activities" and verify the email for "NOTICE UNDER REGULATION"
 	Then go to "Documents" and verify the Document for "Inspection_Report"
 	And logout from the application
+	#SIT1
+	When Login to app with "SO_userid" and "SO_pwd"
+	#SIT3
 	When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
 	And user selects App "IMB Case Management"
 	Then user change the changearea to "Inspection"
@@ -46,6 +52,9 @@ Feature: Testing WRN8 IMB-Noncompliance
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
+	#SIT1
+	When Login to app with "AO_userid" and "AO_pwd"
+	#SIT3
 	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "IMB Case Management"
 	Then user change the changearea to "Inspection"
