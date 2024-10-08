@@ -16,21 +16,18 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 
-public class GWComplaintStepdefs extends commonActionsPage{
+public class GWComplaintStepdefs{
 
     // public static String tankercompanyname;
 
     private Properties prop;
     private TestBase testbase = new TestBase();
 
-    public GWComplaintStepdefs(WebDriver driver) {
-        super(driver);
-    }
+    
     private ApplicationPage apppage = new ApplicationPage(TestBase.getDriver());
     private commonActionsPage common = new commonActionsPage(TestBase.getDriver());
     private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
     private loginPage loginpage = new loginPage(TestBase.getDriver());
-    factoryPage factory = new factoryPage(driver);
 
     @And("fill the details in application form for greasy waste type details {string},{string}")
     public void fill_the_details_in_application_form_for_greasy_waste_type_details(String GWSelected, String GWPerMomnth) {
@@ -216,7 +213,7 @@ public class GWComplaintStepdefs extends commonActionsPage{
     @And("navigate to AO Review stage and fill the respective details and navigate to next stage")
     public void navigate_to_AO_Review_stage_and_fill_the_respective_details_and_navigate_to_next_stage() throws InterruptedException {
         casepage.completeAOReviewStage();
-        factory.clickOnSavingInProgressOkButton();
+        //factory.clickOnSavingInProgressOkButton();
         loginpage.signoutApp();
     }
 

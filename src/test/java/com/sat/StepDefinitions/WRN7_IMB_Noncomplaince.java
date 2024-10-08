@@ -19,11 +19,7 @@ public class WRN7_IMB_Noncomplaince {
 
 	@And("create a new pumping station by giving {string},{string},{string}")
 	public void create_a_new_pumping_station_by_giving_(String entityVal, String catchmentValue, String month) {
-		//pumpPage.entityCreation(entityVal, catchmentValue, month);
-	}
-	@And("create a new pumping station by giving {string},{string}")
-	public void create_a_new_pumping_station_by_giving(String entityVal, String month) {
-		pumpPage.entityCreation(entityVal, month);
+		pumpPage.entityCreation(entityVal, catchmentValue, month);
 	}
 
 	@And("creating {int} chambers")

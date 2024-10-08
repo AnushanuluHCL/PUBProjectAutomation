@@ -23,12 +23,12 @@ public class pumpingMainStationsPage extends commonActionsPage {
 		super(driver);
 	}
 
-	public void entityCreation(String entityVal,  String month) {
+	public void entityCreation(String entityVal, String catchmentValue, String month) {
 		clickonNewBtn();
 		pumpingStation.entityTypeselection(entityVal);
 		pumpingStation.entityName();
 		pumpingStation.pumpingStationId();
-		//waapp.catchment(catchmentValue);
+		waapp.catchment(catchmentValue);
 		pumpingStation.selectMonth(month);
 		clickOnSaveBtn();
 	}

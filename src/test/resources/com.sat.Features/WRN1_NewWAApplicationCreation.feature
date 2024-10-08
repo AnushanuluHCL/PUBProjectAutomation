@@ -71,6 +71,7 @@ Feature: Testing WRN1-New WA Application creation functionality
     And verify the WA status once AO approved is "Approved"
     And search for the case to open it
     And navigate to Close stage and fill the respective details and navigate to next stage
+    Then verify case is "Completed" and in read only mode
 
     Examples: 
       | Report_Type | Substance_ChemicalName            | Result_Concentration |

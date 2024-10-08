@@ -52,7 +52,7 @@ public class WRN8IMB_Noncompliance_ReInspection {
     }
 
     @And("navigate to AO Review stage and fill the respective details")
-    public void navigateToAOReviewStageAndFillTheRespectiveDetails() {
+    public void navigateToAOReviewStageAndFillTheRespectiveDetails() throws InterruptedException {
         casepage.completeAOReviewStage();
     }
 
