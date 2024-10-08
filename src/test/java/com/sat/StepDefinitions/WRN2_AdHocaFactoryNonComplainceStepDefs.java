@@ -114,7 +114,7 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
     }
 
     @And("navigate to AO Review stage and fill the details and navigate to next stage")
-    public void navigateToAOReviewStageAndFillTheDetailsAndNavigateToNextStage() {
+    public void navigateToAOReviewStageAndFillTheDetailsAndNavigateToNextStage() throws InterruptedException {
         casepage.completeAOReviewStage();
     }
 

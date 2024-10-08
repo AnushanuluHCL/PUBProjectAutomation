@@ -816,8 +816,10 @@ public class caseCreationPage extends commonActionsPage {
             Thread.sleep(2000);
             selectFirstRecord();
             getFirstRecord();
-            eleUtil.doElementClickable(maximizescreenBtn, 10);
-            eleUtil.doClick(maximizescreenBtn);
+            
+            // commented this code for change in booking form - Anusha - 04/10
+            /*eleUtil.doElementClickable(maximizescreenBtn, 10);
+            eleUtil.doClick(maximizescreenBtn);*/
             eleUtil.doClickWithWait(bookingStatusField, 100);
             By selectAnOption = By.xpath("//button[@title='In Progress']");
             // eleUtil.staleElementRefExecClickCRM(selectAnOption);
@@ -2275,7 +2277,7 @@ public class caseCreationPage extends commonActionsPage {
         eleUtil.doClick(nextstageBtn);
     }
 
-    public void completeAOReviewStage() {
+    public void completeAOReviewStage() throws InterruptedException {
         navigatingToStage("AO Review");
         eleUtil.waitForVisibilityOfElement(AOresponseOption, 10);
         eleUtil.createSelect(AOresponseOption);
@@ -2304,6 +2306,8 @@ public class caseCreationPage extends commonActionsPage {
         } catch (InterruptedException e) {
             System.out.println("An error occured while executin the loop");
         }
+        factory.clickOnSavingInProgressOkButton();
+
     }
 
     public void completeGenerateEmailStage() {

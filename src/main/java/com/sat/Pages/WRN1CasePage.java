@@ -160,20 +160,32 @@ public class WRN1CasePage extends commonActionsPage {
 	}
 
 	public void completeAssignmentStage() {
-		//navigatingToStage("Assignment");
-		//wrn1case.confirmDocuemntsReceived();
-		//wrn1case.confirmGenerateDraftEventPermit();
-		//wrn1case.confirmApplicationDetailsReviewed();
-		//clickOnSaveBtn();
+		// SIT1	
+		navigatingToStage("Assignment");
+		wrn1case.confirmDocuemntsReceived();
+		clickOnSaveBtn();
 		navigatingToStage("Assignment");
 		clickOnNextStageBtn();
 		clickOnSaveBtn();
-		//clickOnCloseIconOnBPF();
 		clickOnRefreshBtnOnHome();
+
+		// SIT3
+		//wrn1case.confirmGenerateDraftEventPermit();
+		//wrn1case.confirmApplicationDetailsReviewed();
+		//clickOnSaveBtn();
+	/*	navigatingToStage("Assignment");
+		clickOnNextStageBtn();
+		clickOnSaveBtn();*/
 	}
 
 	public void completeProcessingStageBPF() {
+		// SIT1
 		navigatingToStage("Processing");
+		clickOnNextStageBtn();
+		clickOnRefreshBtnOnHome();
+		
+		// SIT3
+	/*	navigatingToStage("Processing");
 		wrn1case.confirmDocuemntsReceived();
 		wrn1case.confirmGenerateDraftEventPermit();
 		wrn1case.confirmApplicationDetailsReviewed();
@@ -181,7 +193,7 @@ public class WRN1CasePage extends commonActionsPage {
 		navigatingToStage("Processing");
 		clickOnNextStageBtn();
 		//clickOnCloseIconOnBPF();
-		clickOnRefreshBtnOnHome();
+		clickOnRefreshBtnOnHome(); */
 	}
 
 	public void createNewLabReport(String reportTypeval, String chemicalval, String concentrationval)

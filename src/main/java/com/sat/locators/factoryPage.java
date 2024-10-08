@@ -58,6 +58,7 @@ public class factoryPage extends commonActionsPage {
 			.xpath("//select[@aria-label='A.Premise’s Check: 1.Is the housekeeping of the premises satisfactory?']");
 	private By spillageOfChemicals = By.xpath(
 			"//select[@aria-label='A.Premise’s Check: 2.Is there any spillages of chemicals / oil found in the premises?']");
+	private By objToMeetTheVisitField = By.xpath("//textarea[contains(@aria-label,'Objectives to meet for the visit: ')]");
 	private By selectLookUp = By.cssSelector("ul[tabindex='0']");
 	private By calender = By.xpath("//div[contains(@id,'DatePicker-Callout')]");
 
@@ -606,6 +607,8 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.waitTillElementIsDisplayed(spillageOfChemicals, 30);
 		eleUtil.selectDropDownValue(spillageOfChemicals, "selectByVisibleText", "No",
 				"Select No spillages of chemicals / oil found in the premises");
+		eleUtil.waitTillElementIsDisplayed(objToMeetTheVisitField, 20);
+		eleUtil.doSendKeysLog(objToMeetTheVisitField, "Test", "Passes value to the Objectives to meet for the visit fiedl");
 	}
 
 	public void fillCheckListQuestionsForWRN1TEF() throws InterruptedException {
