@@ -34,9 +34,9 @@ public class factoryCreationPage extends commonActionsPage {
         factory.getStatusReason(status);
     }
 
-    public void navigateToServiceTab() {
+    public void navigateToServiceTab(String tabName) {
         clickOnRefreshBtn();
-        crmActions.navigateToTab("Inspection Cases");
+        crmActions.navigateToTab(tabName);
     }
 
     public void verifyCaseCreatedWithStatus(String schedule) throws InterruptedException {
@@ -44,8 +44,8 @@ public class factoryCreationPage extends commonActionsPage {
         factory.verifyCaseStatus(schedule);
     }
 
-    public void verifyCaseNotification() throws InterruptedException {
-        factory.caseNotification();
+    public void verifyCaseNotification(String tabName) throws InterruptedException {
+        factory.caseNotification(tabName);
     }
 
     public void verifyWorkOrderCreatedWithStatus(String schedule) throws InterruptedException {
@@ -53,8 +53,8 @@ public class factoryCreationPage extends commonActionsPage {
         factory.verifyWorkOrderStatus(schedule);
     }
 
-    public void verifyWorkOrderNotification() throws InterruptedException {
-        factory.workOrderNotification();
+    public void verifyWorkOrderNotification(String tabName) throws InterruptedException {
+        factory.workOrderNotification(tabName);
     }
 
     public void fillChecklist() throws InterruptedException {
@@ -113,6 +113,10 @@ public class factoryCreationPage extends commonActionsPage {
 
     public void verifyApprovalNotification() throws InterruptedException {
         factory.approvalNotification();
+    }
+
+    public void verifyApprovalChildCaseNotification() throws InterruptedException {
+        factory.approvalChildNotification();
     }
 
     public void verifyCaseStatus(String status) throws InterruptedException {

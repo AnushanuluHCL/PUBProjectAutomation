@@ -277,8 +277,13 @@ public class commonActionsPage {
 
 	public void navigatingToTab(String tabName) {
 		By loc = By.xpath("//ul[@aria-label='Case Form']//li[@aria-label='" + tabName + "']");
-		eleUtil.doElementClickableLog(loc, 100, "Wait for Tab to be clickable " + tabName);
-		eleUtil.doClickLog(loc, "Clicked on " + tabName);
+		eleUtil.waitForVisibilityOfElementLog(loc, 90, "wait for "+ tabName);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        eleUtil.doClickLog(loc, "Clicked on " + tabName);
 	}
 
 	public void navigatingToStage(String stageName) {
@@ -306,7 +311,7 @@ public class commonActionsPage {
 
 	}
 
-	private boolean attemptStandardClick(By locator) {
+	public boolean attemptStandardClick(By locator) {
 		try {
 			eleUtil.doElementClickable(locator, 30);
 			eleUtil.doClickLog(locator, "Clicked the element");
@@ -318,7 +323,7 @@ public class commonActionsPage {
 		}
 	}
 
-	private void attemptActionsClick(By locator) {
+	public void attemptActionsClick(By locator) {
 		try {
 			eleUtil.doActionsClickLog(locator, "Clicked the element");
 			Log.info("Actions click succeeded");
@@ -329,7 +334,7 @@ public class commonActionsPage {
 		}
 	}
 
-	private boolean attemptJavaScriptClick(By locator) {
+	public boolean attemptJavaScriptClick(By locator) {
 		try {
 			jsutil.clickElementByJSLog(driver.findElement(locator), "Clicked the element");
 			Log.info("JavaScript click succeeded");
@@ -426,9 +431,9 @@ public class commonActionsPage {
 	}
 
 	public void filterViewForStatus(String value) throws InterruptedException {
-		eleUtil.isPageLoaded(20);
+		eleUtil.isPageLoaded(90);
 		eleUtil.waitForVisibilityOfElement(filterBy, 50);
-		eleUtil.staleElementRefExecClickCRM(filterBy);
+		Thread.sleep(3000);
 		eleUtil.doClickLog(filterBy, "click on Filter By");
 		Thread.sleep(2000);
 		eleUtil.doClickLog(filterbyinputbox, "click on filter selection");
@@ -587,6 +592,26 @@ public class commonActionsPage {
 		By loc = By.xpath("//li[contains(@aria-label,'" + tabName + "') and @role='tab']");
 		eleUtil.waitForVisibilityOfElement(loc, 30);
 		eleUtil.doClickLog(loc, "Clicked on " + tabName);
+	}
+
+	public void attemptsDifferentClicks(By locator) {
+		try {
+			// Attempt standard click
+			if (attemptStandardClick(locator)) {
+				return; // Exit if standard click is successful
+			}
+			// Attempt JavaScript click
+			if (attemptJavaScriptClick(locator)) {
+				return; // Exit if JavaScript click is successful
+			}
+			// Attempt Actions click
+			attemptActionsClick(locator);
+
+		} catch (java.util.NoSuchElementException e) {
+			Log.error("Element not found: " + e.getMessage());
+		} catch (Exception e) {
+			Log.error("Unexpected error: " + e.getMessage());
+		}
 	}
 
 }

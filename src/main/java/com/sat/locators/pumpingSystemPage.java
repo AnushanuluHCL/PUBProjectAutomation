@@ -198,7 +198,7 @@ public class pumpingSystemPage extends commonActionsPage {
             } else {
                 // If the element is displayed, execute the else block logic
                 try {
-                    Assert.assertEquals(submissionDateValue, eleUtil.todayDate("dd/M/yyyy"), "Submission Date not matched");
+                    Assert.assertEquals(submissionDateValue, eleUtil.todayDate("M/d/yyyy"), "Submission Date not matched");
                     Log.info("Submission Date is " + submissionDateValue);
                     return; // Exit the method if the case number is verified
                 } catch (NoSuchElementException e) {

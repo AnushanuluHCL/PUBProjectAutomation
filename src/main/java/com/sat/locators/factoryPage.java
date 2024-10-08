@@ -54,6 +54,8 @@ public class factoryPage extends commonActionsPage {
 	private By oilInterceptorCheck = By
 			.xpath("//select[@aria-label='C.Oil Interceptor’s Check: 2.Is there any abnormality observed? "
 					+ "If yes, state details in Observation section. ']");
+	private By meetForVisit = By
+			.xpath("//textarea[contains(@aria-label,'Objectives to meet for the visit')]");
 	private By housekeepingPremise = By
 			.xpath("//select[@aria-label='A.Premise’s Check: 1.Is the housekeeping of the premises satisfactory?']");
 	private By spillageOfChemicals = By.xpath(
@@ -233,9 +235,9 @@ public class factoryPage extends commonActionsPage {
 		}
 	}
 
-	public void caseNotification() throws InterruptedException {
+	public void caseNotification(String tabName) throws InterruptedException {
 		commonActionsPage.casenumber = getCaseNumber();
-		crmActions.notificationForTabToOpen(commonActionsPage.casenumber, "Services");
+		crmActions.notificationForTabToOpen(commonActionsPage.casenumber, tabName);
 	}
 
 	public void workOrderVerification() throws InterruptedException {
@@ -278,8 +280,8 @@ public class factoryPage extends commonActionsPage {
 		}
 	}
 
-	public void workOrderNotification() throws InterruptedException {
-		crmActions.notificationForTabToOpen(getWorkOrderNumber(), "Services");
+	public void workOrderNotification(String tabName) throws InterruptedException {
+		crmActions.notificationForTabToOpen(getWorkOrderNumber(), tabName);
 	}
 
 	public void fillCheckListQuestions() throws InterruptedException {
@@ -300,6 +302,7 @@ public class factoryPage extends commonActionsPage {
 
 	public void sampleLabForAnalysis() throws InterruptedException {
 		eleUtil.waitTillElementIsDisplayed(toolboxBriefingConducted, 30);
+		eleUtil.waitTillElementIsDisplayed(sampleForLab, 30);
 		eleUtil.doClickLog(sampleForLab, "Click on New Sample For Lab Analysis button");
 		eleUtil.waitTillElementIsDisplayed(dateAndTime, 30);
 		eleUtil.doSendKeysWithWaitEnter(dateAndTime, todayDate, 100);
@@ -331,6 +334,9 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.waitTillElementIsDisplayed(oilInterceptorCheck, 30);
 		eleUtil.selectDropDownValue(oilInterceptorCheck, "selectByVisibleText", "No",
 				"Select No in Oil Interceptor’s Check");
+
+		// SIT1
+		eleUtil.doSendKeysLog(meetForVisit, "Enter To conduct sewer and last IC inspections.", "Enter value for others");
 	}
 
 	public void openCase() {
@@ -508,6 +514,12 @@ public class factoryPage extends commonActionsPage {
 		// CommonActionsPage.casenumber= getCaseNumber();
 		eleUtil.isPageLoaded(60);
 		crmActions.notificationForTabToOpen(commonActionsPage.casenumber, "Inspection Case Information");
+	}
+
+	public void approvalChildNotification() throws InterruptedException {
+		// CommonActionsPage.casenumber= getCaseNumber();
+		eleUtil.isPageLoaded(60);
+		crmActions.notificationForTabToOpen(commonActionsPage.childCaseNumber, "Inspection Case Information");
 	}
 
 	public void clickOnSavingInProgressOkButton() throws InterruptedException { // remove this code once issue is

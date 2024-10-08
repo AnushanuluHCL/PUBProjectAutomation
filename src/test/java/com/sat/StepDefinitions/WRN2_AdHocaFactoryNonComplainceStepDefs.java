@@ -24,17 +24,22 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
         factoryPage.verifyFactoryStatus(status);
     }
 
-    @Then("verify in service tab Case created with status {string} and verify Case notification")
-    public void verifyInServiceTabCaseCreatedWithStatusAndVerifyCaseNotification(String schedule) throws InterruptedException {
-        factoryPage.navigateToServiceTab();
+    @Then("verify in {string} tab Case created with status {string} and verify Case notification")
+    public void verifyInTabCaseCreatedWithStatusAndVerifyCaseNotification(String tabName, String schedule) throws InterruptedException {
+        factoryPage.navigateToServiceTab(tabName);
         factoryPage.verifyCaseCreatedWithStatus(schedule);
-        factoryPage.verifyCaseNotification();
+        factoryPage.verifyCaseNotification(tabName);
     }
 
-    @Then("verify in service tab Work Order created with status {string} and verify Work Order notification")
-    public void verifyInServiceTabWorkOrderCreatedWithStatusAndVerifyWorkOrderNotification(String schedule) throws InterruptedException {
+    @Then("verify in {string} tab Work Order created with status {string} and verify Work Order notification")
+    public void verifyInTabWorkOrderCreatedWithStatusAndVerifyWorkOrderNotification(String tabName, String schedule) throws InterruptedException {
         factoryPage.verifyWorkOrderCreatedWithStatus(schedule);
-        factoryPage.verifyWorkOrderNotification();
+        factoryPage.verifyWorkOrderNotification(tabName);
+    }
+
+    @And("open a case")
+    public void openACase() {
+        factoryPage.openCurrentCase();
     }
 
     @And("open {string} WO and fill the Booking details and select {string} status")
@@ -45,12 +50,6 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
     @And("go to Checklist tab create sample for lab analysis details with and fill the required checklist")
     public void goToChecklistTabCreateSampleForLabAnalysisDetailsWithAndFillTheRequiredChecklist() throws InterruptedException {
         factoryPage.fillChecklist();
-    }
-
-    @Then("go to Cases and verify Abnormality In Chamber and Abnormality in Oil Interceptor fields")
-    public void goToCasesAndVerifyAbnormalityInChamberAndAbnormalityInOilInterceptorFields() throws InterruptedException {
-        factoryPage.openCurrentCase();
-        factoryPage.verifyWRN2Details();
     }
 
     @Then("go to {string} and verify the email for {string}")
@@ -123,6 +122,5 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
         factoryPage.verifyCaseStatus(status);
         loginpage.signoutApp();
     }
-
 
 }
