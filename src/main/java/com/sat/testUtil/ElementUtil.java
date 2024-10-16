@@ -1250,4 +1250,12 @@ public class ElementUtil {
         return randomNumber;
     }
 
+    public void scrollDownNotification(By notificationsPanel) {
+        Actions actions = new Actions(driver);
+        for (int i = 0; i < 5; i++) {
+            WebElement notificationSection = getElement(notificationsPanel);
+            actions.moveToElement(notificationSection).sendKeys(Keys.PAGE_DOWN).perform();
+            Log.info("Scroll down execute");
+        }
+    }
 }

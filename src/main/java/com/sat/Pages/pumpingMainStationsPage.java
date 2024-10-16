@@ -33,7 +33,7 @@ public class pumpingMainStationsPage extends commonActionsPage {
 		clickOnSaveBtn();
 	}
 
-	public void chamberCreation(int numberOfRecords) {
+	public void chamberCreation(int numberOfRecords) throws InterruptedException {
 		navigatingToTabInProject("Chambers");
 		for (int i = 1; i <= numberOfRecords; i++) {
 			pumpingStation.clickonNewBtnInChamber();

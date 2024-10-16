@@ -45,6 +45,7 @@ public class casePage extends commonCRMActions {
 
     private By listViewOfCases = By.xpath("//h1[contains(@title,'Cases')] //span[@data-automationid='splitbuttonprimary']");
     private By workOrderCount = By.xpath("//div[@data-id='WorkOrders-pcf_grid_control_container'] //span[contains(@class,'statusContainer')]");
+    private By bookingCount = By.xpath("//div[@data-id='bookings-pcf_grid_control_container'] //span[contains(@class,'statusContainer')]");
     private By noDataAvailableInSingleGrid = By.xpath("//span[text()='No data available']");
     private By childCaseWorkOrderRefresh = By.xpath("//div[@id='dataSetRoot_WorkOrders'] //button[@aria-label='Refresh']");
 
@@ -120,11 +121,11 @@ public class casePage extends commonCRMActions {
 	// Locators for verify new case is created?
 	private By casenumber = By.xpath("(//div[@col-id='statuscode' and @role='gridcell']//span)[1]");
 	private By caseStatus = By.xpath("(//div[@col-id='statecode']//label)[2]");
-	
+
 	// Locators for WRN4
 	private By noOfWOs = By.xpath("//div[contains(@data-id,'WorkOrders-pcf_grid')]//span[contains(@class,'statusContainer')]");
 
-			
+
     
     public By getCaseType() {
         return caseType;
@@ -132,6 +133,10 @@ public class casePage extends commonCRMActions {
 
     public By getWorkOrderCount() {
         return workOrderCount;
+    }
+
+    public By getBookingCount() {
+        return bookingCount;
     }
 
     public By getCaseSubType() {
@@ -711,7 +716,6 @@ public class casePage extends commonCRMActions {
 		eleUtil.waitForVisibilityOfElement(rejectWOBtn, 40);
 		eleUtil.doClickLog(rejectWOBtn, "Click on Reject WO button");
 	}
-    
 
 	public void enterRemarks() {
 		eleUtil.waitTillElementIsDisplayed(remarksField, 30);
@@ -719,7 +723,7 @@ public class casePage extends commonCRMActions {
 		eleUtil.doClearUsingKeysLog(remarksField, "Clear the SO Remarks field");
 		eleUtil.doSendKeysLog(remarksField, "546", "Passing value to SO Remarks field");
 	}
-	
+
 	public void clickOnAccepttWOBtn() {
 		eleUtil.waitForVisibilityOfElement(approveWOBtn, 40);
 		eleUtil.doClickLog(approveWOBtn, "Click on Approve WO button");
@@ -761,7 +765,7 @@ public class casePage extends commonCRMActions {
 			clickOnSaveBtn();
 		}
 	}
-	
+
 	public void verifyNewBookingCreated(String bookingStatus, String WOStatus) throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(crmActions.getBookingTab(), 30);
 		eleUtil.staleElementRefExecClickCRM(crmActions.getBookingTab());
@@ -813,6 +817,19 @@ public class casePage extends commonCRMActions {
 			
 		}
 	}
+
+    public int bookingCount() {
+        eleUtil.waitForVisibilityOfElement(getBookingCount(), 40);
+        String booking = eleUtil.doElementGetText(getBookingCount());
+        Log.info("print work order " + booking);
+        Log.info("After extract " + eleUtil.extractLastValue(booking));
+        return eleUtil.extractLastValue(booking);
+    }
+
+    public void checkBookingCount(int bookingCount) {
+        Assert.assertEquals(bookingCount(), bookingCount, "Count is not matched " + bookingCount);
+        eleUtil.doClickLog(crmActions.getSaveNCloseBtn(), "Click on Save & Close button");
+    }
 	public String getTheNoOfWOs() {
 		eleUtil.waitForVisibilityOfElement(noOfWOs, 50);
 		String totalWOs=eleUtil.doElementGetTextLog(noOfWOs, "Text in the application is : ");
@@ -820,5 +837,5 @@ public class casePage extends commonCRMActions {
 		Log.info("Total Number of WOs created is :"+totalcount);
 		return totalcount;
 	}
-	
+
 }

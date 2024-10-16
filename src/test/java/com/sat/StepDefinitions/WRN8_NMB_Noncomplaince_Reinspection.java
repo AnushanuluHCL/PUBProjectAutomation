@@ -46,13 +46,13 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 
 	@And("go to {string} tab and update the Mukim number as {string} and Lot number {string}")
 	public void go_to_tab_and_update_the_Mukim_number_as_and_Lot_number(String tab, String mukimValue,
-			String lotValue) {
+			String lotValue) throws InterruptedException {
 		constructPage.updateMukimLotValues(tab, mukimValue, lotValue);
 	}
 
 	@And("go to {string} tab and update the {string},{string},{string}, {string} and {string} GERI response values")
 	public void go_to_tab_and_update_the_and_GERI_response_values(String tab, String projMukimLotValue,
-			String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
+			String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) throws InterruptedException {
 		constructPage.GERIResponse(tab, projMukimLotValue, diameterValue, DTSSValue, sewerValue, pumpingMain);
 	}
 
@@ -121,7 +121,7 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 	}
 
 	@And("change the Reinspection date value")
-	public void change_the_Reinspection_date_value() throws ParseException {
+	public void change_the_Reinspection_date_value() throws ParseException, InterruptedException {
 		constructPage.updateReInspectionDate();
 	}
 

@@ -29,6 +29,8 @@ public class factoryPage extends commonActionsPage {
 	// Service Tab verification
 	private By checkCaseCreated = By
 			.xpath("//div[contains(@data-id,'pcf_grid_control_container')]//span[text()='No data available']");
+	private By checkCaseCreatedInEntity = By
+			.xpath("//div[@data-id='Subgrid_new_3-pcf_grid_control_container'] //span[text()='No data available']");
 	private static By caseNumberVerify = By.xpath("//div[@col-id='title']//a");
 	private By caseStatusUnscheduled = By.xpath("//div[@col-id='statuscode'] //label[@aria-label='Unscheduled']");
 	private By caseStatusVerify = By.xpath("//div[@col-id='statuscode']//label[@aria-label]");
@@ -56,6 +58,11 @@ public class factoryPage extends commonActionsPage {
 					+ "If yes, state details in Observation section. ']");
 	private By meetForVisit = By
 			.xpath("//textarea[contains(@aria-label,'Objectives to meet for the visit')]");
+	private By housekeepingPremise = By
+			.xpath("//select[@aria-label='A.Premise’s Check: 1.Is the housekeeping of the premises satisfactory?']");
+	private By spillageOfChemicals = By.xpath(
+			"//select[@aria-label='A.Premise’s Check: 2.Is there any spillages of chemicals / oil found in the premises?']");
+	private By objToMeetTheVisitField = By.xpath("//textarea[contains(@aria-label,'Objectives to meet for the visit: ')]");
 	private By selectLookUp = By.cssSelector("ul[tabindex='0']");
 	private By calender = By.xpath("//div[contains(@id,'DatePicker-Callout')]");
 
@@ -233,6 +240,28 @@ public class factoryPage extends commonActionsPage {
 					commonActionsPage.casenumber = getCaseNumber();
 					assertTrue(commonActionsPage.casenumber.startsWith(caseNumber),
 							"Case number format is not expected");
+					Log.info(commonActionsPage.casenumber);
+					return; // Exit the method if the case number is verified
+				} catch (NoSuchElementException e) {
+					Log.error("Case number element not found: " + e.getMessage());
+				}
+			}
+		}
+	}
+
+	public void caseVerificationInEntity(String caseNumber) throws InterruptedException {
+		eleUtil.waitTillElementIsDisplayed(caseGridRefresh, 30);
+		eleUtil.doClickLog(caseGridRefresh, "Clicked on case grid refresh button");
+		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+		while (System.currentTimeMillis() < endTime) {
+			if (eleUtil.elementIsDisplayed(checkCaseCreatedInEntity, "No data available")) {
+				Thread.sleep(3000);
+				eleUtil.doClickLog(caseGridRefresh, "Case is not created, click on case grid refresh button");
+			} else {
+				// If the element is not displayed, execute the else block logic
+				try {
+					commonActionsPage.casenumber = getCaseNumber();
+					assertTrue(commonActionsPage.casenumber.startsWith(caseNumber), "Case number format is not expected");
 					Log.info(commonActionsPage.casenumber);
 					return; // Exit the method if the case number is verified
 				} catch (NoSuchElementException e) {
@@ -632,7 +661,7 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.doClickLog(entitySelection, "Click on Entity/Proj Reference No field in view");
 	}
 
-	
+
 
 	public void uploadReportInPubLabtef(String path) throws InterruptedException {
 		Thread.sleep(2000);

@@ -228,4 +228,8 @@ public class originalCaseCreationPage extends commonActionsPage {
 		Assert.assertEquals(countFromCasepage, common.WRN4_GTscount ,"Count is not matching");
 	}
 
+	public void verifyBookingCounts(int bookingCount) {
+		cases.checkBookingCount(bookingCount);
+	}
+
 }

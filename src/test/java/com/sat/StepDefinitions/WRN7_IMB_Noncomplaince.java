@@ -16,14 +16,13 @@ public class WRN7_IMB_Noncomplaince {
 	private pumpingMainStationsPage pumpPage = new pumpingMainStationsPage(TestBase.getDriver());
 	private factoryPage factory = new factoryPage(TestBase.getDriver());
 
-
 	@And("create a new pumping station by giving {string},{string},{string}")
 	public void create_a_new_pumping_station_by_giving_(String entityVal, String catchmentValue, String month) {
 		pumpPage.entityCreation(entityVal, catchmentValue, month);
 	}
 
 	@And("creating {int} chambers")
-	public void creating_chambers(int numberOfRecords) {
+	public void creating_chambers(int numberOfRecords) throws InterruptedException {
 		pumpPage.chamberCreation(numberOfRecords);
 	}
 

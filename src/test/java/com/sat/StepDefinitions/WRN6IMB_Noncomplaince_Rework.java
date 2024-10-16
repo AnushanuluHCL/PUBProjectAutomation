@@ -21,11 +21,11 @@ public class WRN6IMB_Noncomplaince_Rework {
 	@And("create a manual project where Entity Type as {string} and Account Sub Type as {string}")
 	public void create_a_manual_project_where_Entity_Type_as_and_Account_Sub_Type_as_(String entityType, String acctype)
 			throws InterruptedException {
-		constructPage.createmanualProject(entityType, acctype);
+		constructPage.createManualProject(entityType, acctype);
 	}
 
 	@Then("go to {string} tab and enable the {string} field")
-	public void go_to_tab_and_enable_the_field(String tab, String value) {
+	public void go_to_tab_and_enable_the_field(String tab, String value) throws InterruptedException {
 		constructPage.enableAffectedByPumpingMain(tab, value);
 	}
 
