@@ -58,7 +58,7 @@ public class WRN8IMB_Noncompliance_ReInspection {
 
     @And("go to {string} tab and update the {string},{string},{string}, {string} and {string} GERI response values for IMB")
     public void goToTabAndUpdateTheAndGERIResponseValuesForIMB(String tab, String projMukimLotValue,
-                                                               String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) {
+                                                               String diameterValue, String DTSSValue, String sewerValue, String pumpingMain) throws InterruptedException {
         constructPage.GERIResponseForIMB(tab, projMukimLotValue, diameterValue, DTSSValue, sewerValue, pumpingMain);
     }
 }

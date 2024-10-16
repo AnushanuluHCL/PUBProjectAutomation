@@ -5,14 +5,12 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 
 import com.sat.locators.ConstructionLocatorsPage;
 import com.sat.locators.factoryPage;
 import com.sat.locators.pumpingSystemPage;
-import com.sat.testUtil.Log;
 
 public class constructionsPage extends commonActionsPage {
 	String path = "\\src\\test\\resources\\testdata\\8NMB_ConstructionCreation.xlsx";
@@ -51,7 +49,7 @@ public class constructionsPage extends commonActionsPage {
 		commonCRM.emailCheckAtProject(subject);
 	}
 
-	public void updateMukimLotValues(String tab, String mukimValue, String lotValue) {
+	public void updateMukimLotValues(String tab, String mukimValue, String lotValue) throws InterruptedException {
 		commonCRM.navigatingToTabInProject(tab);
 		constructionpage.mukimVal(mukimValue);
 		constructionpage.lotVal(lotValue);
@@ -59,7 +57,7 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void GERIResponse(String tab, String projMukimLotValue, String diameterValue, String DTSSValue,
-			String sewerValue, String pumpingMain) {
+			String sewerValue, String pumpingMain) throws InterruptedException {
 		commonCRM.navigatingToTabInProject(tab);
 		constructionpage.newGERIResponseBtn();
 		constructionpage.projMukimLotNo(projMukimLotValue);
@@ -99,7 +97,7 @@ public class constructionsPage extends commonActionsPage {
 		commonCRM.notificationForTabToOpenCase(commonActionsPage.casenumber, "Inspection Case Information");
 	}
 
-	public void updateReInspectionDate() throws ParseException {
+	public void updateReInspectionDate() throws ParseException, InterruptedException {
 		navigatingToTab("Inspection Case Information");
 		clickOnEntityOnCaseForm();
 		commonCRM.navigatingToTabInProject("System related information");
@@ -131,7 +129,7 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void GERIResponseForIMB(String tab, String projMukimLotValue, String diameterValue, String DTSSValue,
-			String sewerValue, String pumpingMain) {
+			String sewerValue, String pumpingMain) throws InterruptedException {
 		commonCRM.navigatingToTabInProject(tab);
 		constructionpage.newGERIResponseBtn();
 		constructionpage.projMukimLotNo(projMukimLotValue);
@@ -151,7 +149,7 @@ public class constructionsPage extends commonActionsPage {
 		clickOnSaveBtn();
 	}
 
-	public void createmanualProject(String entityType, String accType) throws InterruptedException {
+	public void createManualProject(String entityType, String accType) throws InterruptedException {
 		clickonNewBtn();
 		pumpingSystem.selectEntityType(entityType);
 		constructionpage.selectAccountSubTypeVal(accType);
@@ -159,7 +157,7 @@ public class constructionsPage extends commonActionsPage {
 		pumpingSystem.enterProjectTitle();
 		pumpingSystem.enterContractor();
 		constructionpage.enterArchitect();
-		constructionpage.enterProfEngg();//Remove when we are executing in SIT1/SIT3
+		//constructionpage.enterProfEngg();//Remove when we are executing in SIT1/SIT3
 		factory.selectCatchment();
 		pumpingSystem.enterHouseBlkNumber();
 		pumpingSystem.enterPostalCode();
@@ -168,7 +166,7 @@ public class constructionsPage extends commonActionsPage {
 		clickOnSaveBtn();
 	}
 
-	public void enableAffectedByPumpingMain(String tab, String value) {
+	public void enableAffectedByPumpingMain(String tab, String value) throws InterruptedException {
 		commonCRM.navigatingToTabInProject(tab);
 		constructionpage.affectedByPumpingMainToggle(value);
 		clickOnSaveBtn();
@@ -205,5 +203,46 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.caseCreationCheck(commonActionsPage.WRN6NMB_Enttiyval);
 	}
 	
-	
+	public void openPOWSSubmission(String tabName) throws InterruptedException {
+		commonCRM.navigatingToTabInProject(tabName);
+		selectFirstRecord();
+		getFirstRecord();
+	}
+
+	public void createNewPOWSSubCorridor(String corridorType, String zoneType) throws InterruptedException {
+		constructionpage.newPOWSSubCorridorBtn();
+		constructionpage.enterCorridorType(corridorType);
+		constructionpage.enterZoneType(zoneType);
+		clickOnSaveBtn();
+		clickonSaveAndCloseBtn();
+		constructionpage.waitForPOWSContactsTab();
+		clickonSaveAndCloseBtn();
+	}
+
+	public void checkCaseCreated(String caseNumber) throws InterruptedException {
+		factory.caseVerificationInEntity(caseNumber);
+	}
+
+	public void createAPOWSReqForWRN6NMB(String tabName, String diameterValue, String DCvalue) throws InterruptedException {
+		constructionpage.entitySelectionInCaseView();
+		filterView(commonActionsPage.WRN6NMB_Enttiyval);
+		selectFirstRecord();
+		getFirstRecord();
+		commonCRM.navigatingToTabInProject(tabName);
+		constructionpage.newPOWSSubBtn();
+		pumpingSystem.enterSubmissionNo();
+		constructionpage.selectApprovalDate();
+		constructionpage.diameterVal(diameterValue);
+		constructionpage.setPowsSubApprovalStatus();
+		commonCRM.navigatingToTabInProject("System related information (Hidden)");
+		constructionpage.enterSewerPipeType();
+		constructionpage.enterSewerDepth();
+		constructionpage.enterNearestDistance();
+		constructionpage.selectDCStatus(DCvalue);
+		constructionpage.selectInspectionDate();
+		constructionpage.selectInsScheduleDate();
+		clickOnSaveBtn();
+		constructionpage.waitForPOWSContactsTab();
+		clickonSaveAndCloseBtn();
+	}
 }

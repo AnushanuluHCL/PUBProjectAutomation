@@ -183,6 +183,4 @@ public class JavaScriptUtil {
         //driver.switchTo().window(tabs.get(tabs.size() - 1));
         driver.switchTo().window(tabs.get(0));
     }
-
-
 }

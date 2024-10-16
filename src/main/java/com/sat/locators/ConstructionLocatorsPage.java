@@ -46,6 +46,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	private By contractor = By.cssSelector("input[aria-label='Contractor, Lookup']");
 	private By affectByPumping = By.cssSelector("select[aria-label='Affected Pumping Main']");
 
+
 	// Locators for shortlist view
 	private By approveBtn = By.xpath("//button[contains(@aria-label,'Approve')]");
 
@@ -97,8 +98,12 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	private By inspecDateFileld = By.xpath("//input[contains(@aria-label,'Date of Inspection Date')]");
 	private By inspecScheduleDateField = By.xpath("//input[contains(@aria-label,'Date of Inspection Schedule Date')]");
 	private By powsApprovedField = By.xpath("//select[contains(@aria-label,'POWS Approved')]");
+	private By powsSubApprovalStatus = By.cssSelector("input[aria-label='POWS Submission Approval Status']");
 
-	
+	private By newPOWSSubCorridorBtn = By.xpath("//button[contains(@aria-label,'New POWS Submission Corridor')]");
+	private By corridorValue = By.cssSelector("input[aria-label='Corridor Type']");
+	private By zoneValue = By.cssSelector("input[aria-label='Zone Type']");
+	private By powsContacts = By.cssSelector("li[aria-label='POWS Contacts']");
 
 	public ConstructionLocatorsPage(WebDriver driver) {
 		super(driver);
@@ -200,6 +205,13 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		eleUtil.doClickLog(diameter, "Clicked on Diameter field");
 		eleUtil.doClearUsingKeysLog(diameter, "Clear the Diameter field");
 		eleUtil.doSendKeysLog(diameter, value, "Diameter is :");
+	}
+
+	public void setPowsSubApprovalStatus() {
+		eleUtil.waitForVisibilityOfElement(powsSubApprovalStatus, 10);
+		eleUtil.doClickLog(powsSubApprovalStatus, "Clicked on Diameter field");
+		eleUtil.doClearUsingKeysLog(powsSubApprovalStatus, "Clear the Diameter field");
+		eleUtil.doSendKeysLog(powsSubApprovalStatus, "Approved", "Diameter is :");
 	}
 
 	public void affectedByDTSSVal(String value) {
@@ -554,6 +566,26 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		eleUtil.selectDropDownValue(powsApprovedField, "selectByVisibleText", "Yes", "select POWS Approved? field as");
 	}
 
-	
+	public void newPOWSSubCorridorBtn() {
+		eleUtil.waitForVisibilityOfElement(newPOWSSubCorridorBtn, 10);
+		eleUtil.doClickLog(newPOWSSubCorridorBtn, "Clicked on New POWS Submission Corridor button");
+	}
 
+	public void enterCorridorType(String corridorType) {
+		eleUtil.waitTillElementIsDisplayed(corridorValue, 30);
+		eleUtil.doClickLog(corridorValue, "Clicked on Corridor Type");
+		eleUtil.doClearUsingKeysLog(corridorValue, "Clear the Corridor Type field");
+		eleUtil.doSendKeysLog(corridorValue, corridorType, "Passing value to Corridor Type field");
+	}
+
+	public void enterZoneType(String zoneType) {
+		eleUtil.waitTillElementIsDisplayed(zoneValue, 30);
+		eleUtil.doClickLog(zoneValue, "Clicked on Zone Type field");
+		eleUtil.doClearUsingKeysLog(zoneValue, "Clear the Zone Type field");
+		eleUtil.doSendKeysLog(zoneValue, zoneType, "Passing value to Zone Type field");
+	}
+
+	public void waitForPOWSContactsTab() {
+		eleUtil.waitForVisibilityOfElement(powsContacts, 50);
+	}
 }

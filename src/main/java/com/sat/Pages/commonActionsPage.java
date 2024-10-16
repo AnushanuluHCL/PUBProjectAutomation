@@ -587,8 +587,8 @@ public class commonActionsPage {
 		clickOnRefreshBtnOnHome();
 	}
 
-	public void navigatingToTabInProject(String tabName) {
-
+	public void navigatingToTabInProject(String tabName) throws InterruptedException {
+		Thread.sleep(3000);
 		By loc = By.xpath("//li[contains(@aria-label,'" + tabName + "') and @role='tab']");
 		eleUtil.waitForVisibilityOfElement(loc, 30);
 		eleUtil.doClickLog(loc, "Clicked on " + tabName);
