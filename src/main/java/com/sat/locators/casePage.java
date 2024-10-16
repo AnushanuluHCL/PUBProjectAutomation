@@ -102,6 +102,7 @@ public class casePage extends commonCRMActions {
  	private By rejectWOBtn = By.xpath("//button[@aria-label='Reject WO']");
  	private By remarksField = By.xpath("//textarea[@name='remarkComments']");
  	private By submitBtn = By.xpath("//input[@type='submit']");
+ 	private By approveWOBtn = By.xpath("//button[@aria-label='Accept WO']");
 
  	private By startTimeCol = By.xpath("//div[text()='Start Time']");
 	private By NewToOldCol = By.xpath("//span[text()='Sort newer to older']");
@@ -119,6 +120,10 @@ public class casePage extends commonCRMActions {
 	// Locators for verify new case is created?
 	private By casenumber = By.xpath("(//div[@col-id='statuscode' and @role='gridcell']//span)[1]");
 	private By caseStatus = By.xpath("(//div[@col-id='statecode']//label)[2]");
+	
+	// Locators for WRN4
+	private By noOfWOs = By.xpath("//div[contains(@data-id,'WorkOrders-pcf_grid')]//span[contains(@class,'statusContainer')]");
+
 			
     
     public By getCaseType() {
@@ -704,14 +709,20 @@ public class casePage extends commonCRMActions {
     
     public void clickOnRejectWOBtn() {
 		eleUtil.waitForVisibilityOfElement(rejectWOBtn, 40);
-		eleUtil.doClickLog(rejectWOBtn, "Click on Approve WO button");
+		eleUtil.doClickLog(rejectWOBtn, "Click on Reject WO button");
 	}
+    
 
 	public void enterRemarks() {
 		eleUtil.waitTillElementIsDisplayed(remarksField, 30);
 		eleUtil.doClickLog(remarksField, "Clicked on SO Remarks field");
 		eleUtil.doClearUsingKeysLog(remarksField, "Clear the SO Remarks field");
 		eleUtil.doSendKeysLog(remarksField, "546", "Passing value to SO Remarks field");
+	}
+	
+	public void clickOnAccepttWOBtn() {
+		eleUtil.waitForVisibilityOfElement(approveWOBtn, 40);
+		eleUtil.doClickLog(approveWOBtn, "Click on Approve WO button");
 	}
 
 	public void clickOnSubmitBtn() {
@@ -737,6 +748,20 @@ public class casePage extends commonCRMActions {
 			clickOnSaveBtn();
 		}
 	}
+	public void acceptingWO(String WOstatus) {
+		By status = By.xpath("//label[@aria-label='" + WOstatus + "']");
+		eleUtil.waitForVisibilityOfElement(status, 10);
+		String actualStatusval = eleUtil.doGetElementAttributeLog(status, "aria-label",
+				"WO Status value from case home page is : ");
+		if (actualStatusval.equals(WOstatus)) {
+			selectFirstRecord();
+			getFirstRecord();
+			clickOnAccepttWOBtn();
+			clickOnSubmitBtn();
+			clickOnSaveBtn();
+		}
+	}
+	
 	public void verifyNewBookingCreated(String bookingStatus, String WOStatus) throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(crmActions.getBookingTab(), 30);
 		eleUtil.staleElementRefExecClickCRM(crmActions.getBookingTab());
@@ -787,6 +812,13 @@ public class casePage extends commonCRMActions {
 			Log.info("New case is not created");
 			
 		}
+	}
+	public String getTheNoOfWOs() {
+		eleUtil.waitForVisibilityOfElement(noOfWOs, 50);
+		String totalWOs=eleUtil.doElementGetTextLog(noOfWOs, "Text in the application is : ");
+		String totalcount = totalWOs.substring(9, 10);
+		Log.info("Total Number of WOs created is :"+totalcount);
+		return totalcount;
 	}
 	
 }

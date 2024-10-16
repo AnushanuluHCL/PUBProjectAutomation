@@ -415,6 +415,7 @@ public class commonCRMActions extends commonActionsPage {
 				signTheChecklist();
 			}
 			eleUtil.waitForVisibilityOfElement(bookingSavedStatus, 100);
+			
 			eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
 			eleUtil.doElementClickable(saveNCloseOnBooking, 10);
 			eleUtil.doClick(saveNCloseOnBooking);
@@ -929,5 +930,7 @@ public class commonCRMActions extends commonActionsPage {
 		}
 		resetFirstRunFlag();
 	}
+	
+	
 
 }

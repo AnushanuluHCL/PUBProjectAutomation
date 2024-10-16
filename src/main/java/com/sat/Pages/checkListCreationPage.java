@@ -35,5 +35,12 @@ public class checkListCreationPage extends commonActionsPage {
     public void performAmendmentFor6IMB(String WOType, String complainceStatus, String allWorkComplete, String value) throws InterruptedException {
     	checkList.amendChecklistFor6IMB(WOType,  complainceStatus,  allWorkComplete,  value);
     }
+    public void fillChecklistforWRN1TEF() throws InterruptedException {
+    	checkList.fillCheckListQuestionsForWRN1TEF();
+    }
+
+	public void fillChecklistWRN8NMB() throws InterruptedException {
+		checkList.fillCheckListQuestionsForWRN8NMB();
+	}
 
 }

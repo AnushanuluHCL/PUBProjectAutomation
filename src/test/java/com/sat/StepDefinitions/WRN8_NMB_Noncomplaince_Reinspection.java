@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import com.sat.Pages.PowerAppsAutomateFlowPage;
 import com.sat.Pages.WRN1CasePage;
+import com.sat.Pages.checkListCreationPage;
 import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.commonCRMActions;
 import com.sat.Pages.constructionsPage;
@@ -21,6 +22,7 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 	private WRN1CasePage wrn1casepage = new WRN1CasePage(TestBase.getDriver());
 	private factoryPage factory = new factoryPage(TestBase.getDriver());
 	private PowerAppsAutomateFlowPage powerapppage = new PowerAppsAutomateFlowPage(TestBase.getDriver());
+	private checkListCreationPage chklist = new checkListCreationPage(TestBase.getDriver());
 
 	@And("Update excel with Project title as {string}")
 	public void Update_excel_with_Project_title_as(String project_title) {
@@ -84,7 +86,7 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 
 	@And("go to Service tasks tab and fill and complete the checklist")
 	public void go_to_Service_tasks_tab_and_fill_and_complete_the_checklist() throws InterruptedException {
-		constructPage.fillChecklistWRN8NMB();
+		chklist.fillChecklistWRN8NMB();
 	}
 
 	@And("verify Booking status is {string} and WO status field is {string}")

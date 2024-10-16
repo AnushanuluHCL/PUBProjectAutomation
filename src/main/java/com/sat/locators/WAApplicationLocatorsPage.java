@@ -69,6 +69,13 @@ public class WAApplicationLocatorsPage extends commonActionsPage {
 	public WAApplicationLocatorsPage(WebDriver driver) {
 		super(driver);
 	}
+	
+	public By getCaseId() {
+		return caseIdField;
+	}
+	public By clickOnRefreshBtnOnSubGrid() {
+		return refreshBtnSubgrid;
+	}
 
 	public String companyName() {
 
@@ -288,16 +295,16 @@ public class WAApplicationLocatorsPage extends commonActionsPage {
 		while (!flag && (System.currentTimeMillis() - startTime) < 150000) {
 			try {
 				// eleUtil.doClickWithWait(refreshBtnSubgrid, AppConstants.SHORT_DEFAULT_WAIT);
-				eleUtil.waitForVisibilityOfElement(refreshBtnSubgrid, 10);
-				eleUtil.doClickLog(refreshBtnSubgrid, "clicked on refresh button");
-				eleUtil.waitForVisibilityOfElement(caseIdField, AppConstants.SHORT_DEFAULT_WAIT);
-				if (driver.findElement(caseIdField).isDisplayed()) {
+				eleUtil.waitForVisibilityOfElement(clickOnRefreshBtnOnSubGrid(), 10);
+				eleUtil.doClickLog(clickOnRefreshBtnOnSubGrid(), "clicked on refresh button");
+				eleUtil.waitForVisibilityOfElement(getCaseId(), AppConstants.SHORT_DEFAULT_WAIT);
+				if (driver.findElement(getCaseId()).isDisplayed()) {
 					flag = true;
 				}
 			} catch (Exception e) {
 				Log.error("Case is not created. So clicking on refresh button again");
 			}
 		}
-		commonActionsPage.casenumber=eleUtil.doElementGetTextLog(caseIdField, "Case id is ");
+		commonActionsPage.casenumber=eleUtil.doElementGetTextLog(getCaseId(), "Case id is ");
 	}
 }

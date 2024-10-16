@@ -46,9 +46,6 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
       When Login to app with "FIO_userid" and "FIO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
-    #Then user change the changearea to "Inspection"
-    #And user selects entity as "Cases"
-    #And user selects "Active Cases" list view, search and open the case
     And navigate to Processing stage and fill all the details and navigate to next stage
     And navigate to Assignment stage and update all documents received data and navigate to next stage
     And Create a new lab report by filling "<Report_Type>","<Substance_ChemicalName>","300" details

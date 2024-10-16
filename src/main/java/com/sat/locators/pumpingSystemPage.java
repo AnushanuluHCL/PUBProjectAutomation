@@ -138,7 +138,7 @@ public class pumpingSystemPage extends commonActionsPage {
         eleUtil.waitTillElementIsDisplayed(getPostalCode(), 30);
         eleUtil.doClickLog(getPostalCode(), "Clicked on Postal Code field");
         eleUtil.doClearUsingKeysLog(getPostalCode(), "Clear the Postal Code field");
-        eleUtil.doSendKeysLog(getPostalCode(), "491821", " Postal Code is :491821");
+        eleUtil.doSendKeysLog(getPostalCode(), "491821", " Postal Code is : ");
     }
 
     public void enterRoadName() {

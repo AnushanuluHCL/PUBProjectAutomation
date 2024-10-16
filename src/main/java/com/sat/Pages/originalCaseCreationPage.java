@@ -1,16 +1,10 @@
 package com.sat.Pages;
 
-import static org.testng.Assert.assertEquals;
-
-import java.util.List;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 import com.sat.locators.casePage;
 import com.sat.locators.factoryPage;
-import com.sat.testUtil.Log;
 
 public class originalCaseCreationPage extends commonActionsPage {
 	public originalCaseCreationPage(WebDriver driver) {
@@ -19,9 +13,11 @@ public class originalCaseCreationPage extends commonActionsPage {
 
 	casePage cases = new casePage(driver);
 	commonCRMActions crmActions = new commonCRMActions(driver);
+	commonActionsPage common= new commonActionsPage(driver);
 	caseCreationPage caseCreation = new caseCreationPage(driver);
 	factoryPage factory = new factoryPage(driver);
 	casePage casepage = new casePage(driver);
+	eatingEstablishmentPage eepage = new eatingEstablishmentPage(driver);
 
 	public void createWRNCase(String wrpCatchment, String alertSource) throws InterruptedException {
 		clickonNewBtn();
@@ -200,6 +196,12 @@ public class originalCaseCreationPage extends commonActionsPage {
 		casepage.rejectingWO(WOstatus);
 		clickOnSaveBtn();
 	}
+	
+	public void acceptWO(String WOstatus) {
+		navigatingToTab("Work Orders");
+		casepage.acceptingWO(WOstatus);
+		clickOnSaveBtn();
+	}
 
 	public void verifyNewBooking(String bookingStatus, String WOStatus) throws InterruptedException {
 		casepage.verifyNewBookingCreated(bookingStatus, WOStatus);
@@ -212,6 +214,18 @@ public class originalCaseCreationPage extends commonActionsPage {
 	}
 	public void verifyIfNewCaseCreated() {
 		casepage.newCaseCheck();
+	}
+	public void verifyWOsCount() {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		crmActions.getMoreButtonOnWorkOrder();
+		crmActions.getWorkOrderGridRefresh();
+		String countFromCasepage=casepage.getTheNoOfWOs();
+		Assert.assertEquals(countFromCasepage, common.WRN4_GTscount ,"Count is not matching");
 	}
 
 }

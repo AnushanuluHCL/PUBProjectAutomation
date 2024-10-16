@@ -28,7 +28,7 @@ public class factoryPage extends commonActionsPage {
 
 	// Service Tab verification
 	private By checkCaseCreated = By
-			.xpath("//div[@data-id='cases-pcf_grid_control_container'] //span[text()='No data available']");
+			.xpath("//div[contains(@data-id,'pcf_grid_control_container')]//span[text()='No data available']");
 	private static By caseNumberVerify = By.xpath("//div[@col-id='title']//a");
 	private By caseStatusUnscheduled = By.xpath("//div[@col-id='statuscode'] //label[@aria-label='Unscheduled']");
 	private By caseStatusVerify = By.xpath("//div[@col-id='statuscode']//label[@aria-label]");
@@ -56,11 +56,6 @@ public class factoryPage extends commonActionsPage {
 					+ "If yes, state details in Observation section. ']");
 	private By meetForVisit = By
 			.xpath("//textarea[contains(@aria-label,'Objectives to meet for the visit')]");
-	private By housekeepingPremise = By
-			.xpath("//select[@aria-label='A.Premise’s Check: 1.Is the housekeeping of the premises satisfactory?']");
-	private By spillageOfChemicals = By.xpath(
-			"//select[@aria-label='A.Premise’s Check: 2.Is there any spillages of chemicals / oil found in the premises?']");
-	private By objToMeetTheVisitField = By.xpath("//textarea[contains(@aria-label,'Objectives to meet for the visit: ')]");
 	private By selectLookUp = By.cssSelector("ul[tabindex='0']");
 	private By calender = By.xpath("//div[contains(@id,'DatePicker-Callout')]");
 
@@ -131,7 +126,8 @@ public class factoryPage extends commonActionsPage {
 
 	public void selectEntityType(String selectEntityType) {
 		eleUtil.waitTillElementIsDisplayed(entityType, 30);
-		eleUtil.selectDropDownValue(entityType, "selectByVisibleText", selectEntityType, "select entity type as " + selectEntityType);
+		eleUtil.selectDropDownValue(entityType, "selectByVisibleText", selectEntityType,
+				"select entity type as " + selectEntityType);
 	}
 
 	public By setLookUp() {
@@ -164,6 +160,34 @@ public class factoryPage extends commonActionsPage {
 
 	public By getSystemAssessment() {
 		return systemAssessment;
+	}
+
+	public By clickOnNewSampleLab() {
+		return sampleForLab;
+	}
+
+	public By selectDateAndTime() {
+		return dateAndTime;
+	}
+
+	public By clickOnParametersAnalysed() {
+		return parametersAnalysed;
+	}
+
+	public By clickOnLab() {
+		return lab;
+	}
+	public By getToolboxConducted() {
+		return toolboxBriefingConducted;
+	}
+	public By selectWrittenApprovalNumber() {
+		return writtenApprovalNumber;
+	}
+	public By selectLastInspectionChamber() {
+		return lastInspectionChamber;
+	}
+	public By selectOilInterceptorCheck() {
+		return oilInterceptorCheck;
 	}
 
 	public void enterEntityName() {
@@ -207,7 +231,8 @@ public class factoryPage extends commonActionsPage {
 				// If the element is not displayed, execute the else block logic
 				try {
 					commonActionsPage.casenumber = getCaseNumber();
-					assertTrue(commonActionsPage.casenumber.startsWith(caseNumber), "Case number format is not expected");
+					assertTrue(commonActionsPage.casenumber.startsWith(caseNumber),
+							"Case number format is not expected");
 					Log.info(commonActionsPage.casenumber);
 					return; // Exit the method if the case number is verified
 				} catch (NoSuchElementException e) {
@@ -292,7 +317,7 @@ public class factoryPage extends commonActionsPage {
 		Log.info("size is:" + woNum.size());
 		for (int i = 0; i < woNum.size(); i++) {
 			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection", "In Progress");
+			crmActions.openCheckList(woNum.get(i), "Trade Effluent Inspection", "In Progress");
 			sampleLabForAnalysis();
 			selectChecklistForWRN2Report();
 			crmActions.saveChecklist();
@@ -301,7 +326,7 @@ public class factoryPage extends commonActionsPage {
 	}
 
 	public void sampleLabForAnalysis() throws InterruptedException {
-		eleUtil.waitTillElementIsDisplayed(toolboxBriefingConducted, 30);
+		eleUtil.waitTillElementIsDisplayed(getToolboxConducted(), 30);
 		eleUtil.waitTillElementIsDisplayed(sampleForLab, 30);
 		eleUtil.doClickLog(sampleForLab, "Click on New Sample For Lab Analysis button");
 		eleUtil.waitTillElementIsDisplayed(dateAndTime, 30);
@@ -322,21 +347,22 @@ public class factoryPage extends commonActionsPage {
 	}
 
 	public void selectChecklistForWRN2Report() {
-		eleUtil.waitTillElementIsDisplayed(toolboxBriefingConducted, 30);
-		eleUtil.selectDropDownValue(toolboxBriefingConducted, "selectByVisibleText", "Yes",
+		eleUtil.waitTillElementIsDisplayed(getToolboxConducted(), 30);
+		eleUtil.selectDropDownValue(getToolboxConducted(), "selectByVisibleText", "Yes",
 				"Select Yes Toolbox Briefing Conducted");
-		eleUtil.waitTillElementIsDisplayed(writtenApprovalNumber, 30);
-		eleUtil.selectDropDownValue(writtenApprovalNumber, "selectByVisibleText", "Yes",
+		eleUtil.waitTillElementIsDisplayed(selectWrittenApprovalNumber(), 30);
+		eleUtil.selectDropDownValue(selectWrittenApprovalNumber(), "selectByVisibleText", "Yes",
 				"Select Yes Written Approval Number");
-		eleUtil.waitTillElementIsDisplayed(lastInspectionChamber, 30);
-		eleUtil.selectDropDownValue(lastInspectionChamber, "selectByVisibleText", "No",
+		eleUtil.waitTillElementIsDisplayed(selectLastInspectionChamber(), 30);
+		eleUtil.selectDropDownValue(selectLastInspectionChamber(), "selectByVisibleText", "No",
 				"Select No Last Inspection Chamber");
-		eleUtil.waitTillElementIsDisplayed(oilInterceptorCheck, 30);
-		eleUtil.selectDropDownValue(oilInterceptorCheck, "selectByVisibleText", "No",
+		eleUtil.waitTillElementIsDisplayed(selectOilInterceptorCheck(), 30);
+		eleUtil.selectDropDownValue(selectOilInterceptorCheck(), "selectByVisibleText", "No",
 				"Select No in Oil Interceptor’s Check");
 
 		// SIT1
-		eleUtil.doSendKeysLog(meetForVisit, "Enter To conduct sewer and last IC inspections.", "Enter value for others");
+		eleUtil.doSendKeysLog(meetForVisit, "Enter To conduct sewer and last IC inspections.",
+				"Enter value for others");
 	}
 
 	public void openCase() {
@@ -538,7 +564,7 @@ public class factoryPage extends commonActionsPage {
 						// Refresh the list of elements after each click
 						okButtons = driver.findElements(savingInProgressOkButton);
 					} catch (Exception e) {
-						Log.error("Error clicking on Ok button: {}"+ e.getMessage());
+						Log.error("Error clicking on Ok button: {}" + e.getMessage());
 					}
 				}
 			}
@@ -606,37 +632,7 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.doClickLog(entitySelection, "Click on Entity/Proj Reference No field in view");
 	}
 
-	public void selectChecklistForWRN1TEF() {
-		eleUtil.waitTillElementIsDisplayed(toolboxBriefingConducted, 30);
-		eleUtil.selectDropDownValue(toolboxBriefingConducted, "selectByVisibleText", "Yes",
-				"Select Yes Toolbox Briefing Conducted");
-		eleUtil.waitTillElementIsDisplayed(writtenApprovalNumber, 30);
-		eleUtil.selectDropDownValue(writtenApprovalNumber, "selectByVisibleText", "Yes",
-				"Select Yes Written Approval Number");
-		eleUtil.waitTillElementIsDisplayed(housekeepingPremise, 30);
-		eleUtil.selectDropDownValue(housekeepingPremise, "selectByVisibleText", "No",
-				"Select No housekeeping of the premises");
-		eleUtil.waitTillElementIsDisplayed(spillageOfChemicals, 30);
-		eleUtil.selectDropDownValue(spillageOfChemicals, "selectByVisibleText", "No",
-				"Select No spillages of chemicals / oil found in the premises");
-		eleUtil.waitTillElementIsDisplayed(objToMeetTheVisitField, 20);
-		eleUtil.doSendKeysLog(objToMeetTheVisitField, "Test", "Passes value to the Objectives to meet for the visit fiedl");
-	}
-
-	public void fillCheckListQuestionsForWRN1TEF() throws InterruptedException {
-		commonActionsPage.WOnumber = crmActions.getWONumber();
-		List<String> woNum = commonActionsPage.WOnumber;
-		Thread.sleep(2000);
-		Log.info("print wo number " + woNum);
-		Log.info("size is:" + woNum.size());
-		for (int i = 0; i < woNum.size(); i++) {
-			Thread.sleep(2000);
-			crmActions.openCheckList(woNum.get(i),"Trade Effluent Inspection", "In Progress");
-			sampleLabForAnalysis();
-			selectChecklistForWRN1TEF();
-			crmActions.saveChecklist();
-		}
-	}
+	
 
 	public void uploadReportInPubLabtef(String path) throws InterruptedException {
 		Thread.sleep(2000);
