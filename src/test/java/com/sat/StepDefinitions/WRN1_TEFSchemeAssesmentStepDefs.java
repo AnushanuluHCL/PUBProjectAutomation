@@ -2,6 +2,7 @@ package com.sat.StepDefinitions;
 
 import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.WRN1CasePage;
+import com.sat.Pages.checkListCreationPage;
 import com.sat.Pages.commonCRMActions;
 import com.sat.Pages.factoryCreationPage;
 import com.sat.testbase.TestBase;
@@ -14,6 +15,7 @@ public class WRN1_TEFSchemeAssesmentStepDefs {
 	private factoryCreationPage factoryCreaPage = new factoryCreationPage(TestBase.getDriver());
 	private WRN1CasePage wrn1casepage = new WRN1CasePage(TestBase.getDriver());
 	private commonCRMActions commoncrm = new commonCRMActions(TestBase.getDriver());
+	private checkListCreationPage chklist = new checkListCreationPage(TestBase.getDriver());
 
 	@And("verify the factory is fulfilled with the details as {string},{string},{string}")
 	public void verify_the_factory_is_fulfilled_with_the_details_as(String tradeGrp, String fpeVal, String WAnumVal) {
@@ -36,7 +38,7 @@ public class WRN1_TEFSchemeAssesmentStepDefs {
 	@And("go to Checklist tab create sample for lab analysis details and fill the required checklist")
 	public void go_to_Checklist_tab_create_sample_for_lab_analysis_details_and_fill_the_required_checklist()
 			throws InterruptedException {
-		factoryCreaPage.fillChecklistforWRN1TEF();
+		chklist.fillChecklistforWRN1TEF();
 	}
 
 	@And("go to {string} and upload lab report {string} in Prohibited Organic Heavy Metal Compounds section")

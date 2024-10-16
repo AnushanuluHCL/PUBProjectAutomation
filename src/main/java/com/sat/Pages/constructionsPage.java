@@ -93,9 +93,6 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.caseCreationCheck(commonActionsPage.WRN8NMB_Projname);
 	}
 
-	public void fillChecklistWRN8NMB() throws InterruptedException {
-		constructionpage.fillCheckListQuestionsForWRN8NMB();
-	}
 
 	public void POWSapprovalNotification() throws InterruptedException {
 		eleUtil.isPageLoaded(60);

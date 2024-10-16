@@ -53,7 +53,7 @@ public class commonActionsPage {
 	public static List<String> WOnumber;
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
 			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO, oldSealNumber, newSealNumber,
-			resealReason, WRN1_factoryname, WRN8NMB_Projname, childCaseNumber, projectRefNumber, WRN7NMB_Projname, dtssNumber, WRN6NMB_Enttiyval;
+			resealReason, WRN1_factoryname, WRN8NMB_Projname, childCaseNumber, projectRefNumber, WRN7NMB_Projname, dtssNumber, WRN6NMB_Enttiyval, WRN4_GTscount;
 	private static Map<String, String> sharedValues = new HashMap<>();
 	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
 	protected static Map<Integer, String> tankerNumber = new HashMap<>();
