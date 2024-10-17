@@ -7,14 +7,16 @@ import java.util.Properties;
 
 import com.sat.Pages.ApplicationPage;
 import com.sat.Pages.caseCreationPage;
-import com.sat.Pages.loginPage;
+import com.sat.Pages.checkListCreationPage;
 import com.sat.Pages.commonActionsPage;
+import com.sat.Pages.loginPage;
 import com.sat.locators.factoryPage;
 import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class GWComplaintStepdefs{
 
@@ -29,6 +31,7 @@ public class GWComplaintStepdefs{
     private caseCreationPage casepage = new caseCreationPage(TestBase.getDriver());
     private loginPage loginpage = new loginPage(TestBase.getDriver());
     factoryPage factory = new factoryPage(TestBase.getDriver());
+    private checkListCreationPage chklist = new checkListCreationPage(TestBase.getDriver());
 
     @And("fill the details in application form for greasy waste type details {string},{string}")
     public void fill_the_details_in_application_form_for_greasy_waste_type_details(String GWSelected, String GWPerMomnth) {
@@ -86,7 +89,7 @@ public class GWComplaintStepdefs{
 
     @And("go to Service tasks tab and fill and complete the checklist as {string}")
     public void go_to_Service_tasks_tab_and_fill_and_complet_the_checklist_as(String outcome) throws InterruptedException {
-        casepage.fillTheChecklistquestions(outcome);
+        chklist.fillTheChecklistquestionsWRN5(outcome);
     }
 
     @And("verify the WO status field is {string} and verify tanker Iscomplaint? field value as {string} in work order form")
@@ -264,7 +267,7 @@ public class GWComplaintStepdefs{
 
     @And("open the checklist and perform the amendments")
     public void open_the_checklist_and_perform_the_amendments() {
-        casepage.amendChecklist();
+        chklist.amendChecklistForWRN5();
     }
 
     @Then("verify the payment validation before creating actual quantities for {int}, {int} and {int}")

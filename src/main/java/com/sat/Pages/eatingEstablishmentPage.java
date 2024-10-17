@@ -69,7 +69,7 @@ public class eatingEstablishmentPage extends commonActionsPage {
 		commonCRM.navigateToTab("Inspection Cases");
 		factory.caseVerification("DQB/GT/I");
 	}
-	public void getTheGTsCountFromEntity() {
+	public void getTheGTsCountFromEntity() throws InterruptedException {
 		commonCRM.navigatingToTabInProject("GT Details");
 		eepage.clickRefreshBtnOnHome();
 		String totalWOs = eepage.getTheCreatedGTsCount();

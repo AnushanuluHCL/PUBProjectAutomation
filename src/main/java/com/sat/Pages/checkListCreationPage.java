@@ -42,5 +42,11 @@ public class checkListCreationPage extends commonActionsPage {
 	public void fillChecklistWRN8NMB() throws InterruptedException {
 		checkList.fillCheckListQuestionsForWRN8NMB();
 	}
+	public void fillTheChecklistquestionsWRN5(String outcome) throws InterruptedException {
+		checkList.fillTheChecklistquestions(outcome);
+	}
+	public void amendChecklistForWRN5() {
+		checkList.amendChecklist();
+	}
 
 }

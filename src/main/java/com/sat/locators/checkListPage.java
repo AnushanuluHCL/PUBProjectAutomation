@@ -2,9 +2,11 @@ package com.sat.locators;
 
 import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.commonCRMActions;
+import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -12,6 +14,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class checkListPage extends commonCRMActions {
 	public checkListPage(WebDriver driver) {
@@ -122,12 +125,13 @@ public class checkListPage extends commonCRMActions {
 	private By innerCoreCoverHandleMissing = By.xpath(
 			"//h5[contains(@aria-label,'Inner core cover handle missing?')]/../following-sibling::div//input[@Value='"
 					+ value + "']");
-	private By conditionInInnerCore = By.xpath(
-			"//h5[contains(@aria-label,'Condition in inner core')]/../following-sibling::div//input[@Value='"+value+"']");
+	private By conditionInInnerCore = By
+			.xpath("//h5[contains(@aria-label,'Condition in inner core')]/../following-sibling::div//input[@Value='"
+					+ value + "']");
 	private By GTObstrcuted = By
 			.xpath("//h5[contains(@aria-label,'GT access is obstructed')]/../following-sibling::div//input[@Value='"
 					+ value + "']");
-	
+
 	// Locators for WRN1 TEF
 	private By housekeepingPremise = By
 			.xpath("//select[@aria-label='A.Premise’s Check: 1.Is the housekeeping of the premises satisfactory?']");
@@ -136,28 +140,43 @@ public class checkListPage extends commonCRMActions {
 	private By objToMeetTheVisitField = By
 			.xpath("//textarea[contains(@aria-label,'Objectives to meet for the visit: ')]");
 
-	
 	// Locators for WRN8 NMB
-		private By constructionActivitiyFound = By
-				.xpath("//select[@aria-label='Is there any construction activity found?']");
-		private By repName = By.xpath("//input[@aria-label='Contractor’s Rep Name']");
-		private By repEmail = By.xpath("//input[contains(@aria-label,\"Contractor's Rep Email Address\")]");
-		private By repTelNo = By.xpath("//input[contains(@aria-label,\"Contractor's Rep Tel No\")]");
-		private By qpName = By.xpath("//input[@aria-label='QP Rep Name']");
-		private By qpEmail = By.xpath("//input[contains(@aria-label,\"QP Rep Email Address\")]");
-		private By qpTelNo = By.xpath("//input[contains(@aria-label,\"QP Rep Tel No\")]");
-		private By sewerId = By.xpath("//input[@aria-label='Sewer ID']");
-		private By sewerDiameter = By.xpath("//input[contains(@aria-label,'Sewer Diameter')]");
-		private By sewerOutsideHoarding = By.xpath("//select[contains(@aria-label,'Sewer outside project hoarding?')]");
-		private By typeOfActivity = By.xpath("//select[contains(@aria-label,'Type of Specified Activity')]");
-		private By depth = By.xpath("//input[contains(@aria-label,'Depth')]");
-		private By distance = By.xpath("//input[contains(@aria-label,'Distance')]");
-		private By statusOfActivity = By.xpath("//select[contains(@aria-label,'Status of specified activity ')]");
-		private By activityCovered = By.xpath("//select[contains(@aria-label,'activity covered in POWS')]");
-		private By attachReport = By.xpath("//input[@aria-label='Attach report']/..");// input[@aria-label='Attach
-		// report']/..//span[contains(text(),'Choose
-		// file')]
-		private By sendfileToReport = By.xpath("//input[@aria-label='Attach report']");
+	private By constructionActivitiyFound = By
+			.xpath("//select[@aria-label='Is there any construction activity found?']");
+	private By repName = By.xpath("//input[@aria-label='Contractor’s Rep Name']");
+	private By repEmail = By.xpath("//input[contains(@aria-label,\"Contractor's Rep Email Address\")]");
+	private By repTelNo = By.xpath("//input[contains(@aria-label,\"Contractor's Rep Tel No\")]");
+	private By qpName = By.xpath("//input[@aria-label='QP Rep Name']");
+	private By qpEmail = By.xpath("//input[contains(@aria-label,\"QP Rep Email Address\")]");
+	private By qpTelNo = By.xpath("//input[contains(@aria-label,\"QP Rep Tel No\")]");
+	private By sewerId = By.xpath("//input[@aria-label='Sewer ID']");
+	private By sewerDiameter = By.xpath("//input[contains(@aria-label,'Sewer Diameter')]");
+	private By sewerOutsideHoarding = By.xpath("//select[contains(@aria-label,'Sewer outside project hoarding?')]");
+	private By typeOfActivity = By.xpath("//select[contains(@aria-label,'Type of Specified Activity')]");
+	private By depth = By.xpath("//input[contains(@aria-label,'Depth')]");
+	private By distance = By.xpath("//input[contains(@aria-label,'Distance')]");
+	private By statusOfActivity = By.xpath("//select[contains(@aria-label,'Status of specified activity ')]");
+	private By activityCovered = By.xpath("//select[contains(@aria-label,'activity covered in POWS')]");
+	private By attachReport = By.xpath("//input[@aria-label='Attach report']/..");// input[@aria-label='Attach
+	// report']/..//span[contains(text(),'Choose
+	// file')]
+	private By sendfileToReport = By.xpath("//input[@aria-label='Attach report']");
+
+	// Locators for WRN5
+	private By servicetasksTab = By.xpath("//li[text()='Checklist']");// li[text()='Service Tasks']
+	private By oldSealnumField = By.xpath("//td[@title='Old Seal Number']");
+	private By newSealnumField = By.xpath("//input[@aria-label='New Seal Number']");
+	private By photosTakendropdownField = By.xpath("//select[@aria-label='Photos taken']"); // visible text Yes/No
+	private By markcompleteBtn = By.xpath("//button[contains(@title,'Set Task as fully completed')]");
+	private By saveBtnInChklsit = By.xpath("//button[contains(@title,'Save this Work Order Service Task.')]");
+	private By saveNCloseBtnInChklsit = By
+			.xpath("//button[contains(@title,'Save and close this Work Order Service Task.')]");
+	// Locators on service tasks home page
+	private By checklisttypeField = By.xpath("//div[@col-id='msdyn_inspection']/descendant::a");
+	private By checklistNameField = By.xpath("//div[@col-id='msdyn_name']/descendant::a");
+	private By maximizescreenBtn = By.xpath("//button[@aria-label='Enter full screen mode']");
+	private By tankerregno = By.xpath("//label[text()='Tanker Registration No.']");
+
 	public By getSamplingConducted(String val) {
 		return samplingConducted;
 	}
@@ -189,6 +208,7 @@ public class checkListPage extends commonCRMActions {
 	public By getConditionInInnerCore(String val) {
 		return conditionInInnerCore;
 	}
+
 	public By getGTObstrcuted(String val) {
 		return GTObstrcuted;
 	}
@@ -535,8 +555,8 @@ public class checkListPage extends commonCRMActions {
 
 	public void selectChecklistForWRN4_GTNotMaintained_Advisroy_Combi2(String complainceStatus, String checklistName) {
 		selectEERegStatus();
-		
-		eleUtil.waitForVisibilityOfElement(getDoesEEHaveAGT(yesval),40);
+
+		eleUtil.waitForVisibilityOfElement(getDoesEEHaveAGT(yesval), 40);
 		eleUtil.doClickLog(getDoesEEHaveAGT(yesval),
 				"Clicked on Does EE have a GT / Grease Separator / Grease Interceptor (Portable)? field : ");
 
@@ -552,17 +572,19 @@ public class checkListPage extends commonCRMActions {
 				"Clicked on GT cover secured to the ground? (Hence can't access GT internals) field : ");
 
 		eleUtil.waitForVisibilityOfElement(getUnableToRemoveInnerCoreCover(noval), 40);
-		eleUtil.doClickLog(getUnableToRemoveInnerCoreCover(noval), "Clicked on Unable to remove inner core cover? field : ");
+		eleUtil.doClickLog(getUnableToRemoveInnerCoreCover(noval),
+				"Clicked on Unable to remove inner core cover? field : ");
 
 		eleUtil.waitForVisibilityOfElement(getInnerCoreCoverHandleMissing(noval), 40);
-		eleUtil.doClickLog(getInnerCoreCoverHandleMissing(noval), "Clicked on Inner core cover handle missing? field : ");
+		eleUtil.doClickLog(getInnerCoreCoverHandleMissing(noval),
+				"Clicked on Inner core cover handle missing? field : ");
 
 		eleUtil.waitForVisibilityOfElement(getConditionInInnerCore("Dry"), 40);
 		eleUtil.doClickLog(getConditionInInnerCore("Dry"), "Clicked on Condition in inner core field : ");
 	}
 
 	public void selectChecklistForWRN4_GTNotMaintained_Advisroy_Combi3(String complainceStatus, String checklistName) {
-		selectEERegStatus();		
+		selectEERegStatus();
 
 		eleUtil.waitForVisibilityOfElement(getDoesEEHaveAGT(yesval), 40);
 		eleUtil.doClickLog(getDoesEEHaveAGT(yesval),
@@ -594,10 +616,12 @@ public class checkListPage extends commonCRMActions {
 				"Clicked on GT cover secured to the ground? (Hence can't access GT internals) field : ");
 
 		eleUtil.waitForVisibilityOfElement(getUnableToRemoveInnerCoreCover(noval), 40);
-		eleUtil.doClickLog(getUnableToRemoveInnerCoreCover(noval), "Clicked on Unable to remove inner core cover? field : ");
+		eleUtil.doClickLog(getUnableToRemoveInnerCoreCover(noval),
+				"Clicked on Unable to remove inner core cover? field : ");
 
 		eleUtil.waitForVisibilityOfElement(getInnerCoreCoverHandleMissing(noval), 40);
-		eleUtil.doClickLog(getInnerCoreCoverHandleMissing(noval), "Clicked on Inner core cover handle missing? field : ");
+		eleUtil.doClickLog(getInnerCoreCoverHandleMissing(noval),
+				"Clicked on Inner core cover handle missing? field : ");
 
 		eleUtil.waitForVisibilityOfElement(getConditionInInnerCore("Hardened grease"), 40);
 		eleUtil.doClickLog(getConditionInInnerCore("Hardened grease"), "Clicked on Condition in inner core field : ");
@@ -606,7 +630,6 @@ public class checkListPage extends commonCRMActions {
 
 	public void selectChecklistForWRN4_GTDamaged_Combination1(String complainceStatus, String checklistName) {
 		selectEERegStatus();
-		
 
 		eleUtil.waitForVisibilityOfElement(getDoesEEHaveAGT(yesval), 40);
 		eleUtil.doClickLog(getDoesEEHaveAGT(yesval),
@@ -626,7 +649,6 @@ public class checkListPage extends commonCRMActions {
 
 	public void selectChecklistForWRN4_GTDamaged_Combination2(String complainceStatus, String checklistName) {
 		selectEERegStatus();
-	
 
 		eleUtil.waitForVisibilityOfElement(getDoesEEHaveAGT(yesval), 40);
 		eleUtil.doClickLog(getDoesEEHaveAGT(yesval),
@@ -692,7 +714,7 @@ public class checkListPage extends commonCRMActions {
 			crmActions.saveChecklist();
 		}
 	}
-	
+
 	public void selectChecklistForWRN1TEF() {
 		eleUtil.waitTillElementIsDisplayed(factory.getToolboxConducted(), 30);
 		eleUtil.selectDropDownValue(factory.getToolboxConducted(), "selectByVisibleText", "Yes",
@@ -725,7 +747,7 @@ public class checkListPage extends commonCRMActions {
 			crmActions.saveChecklist();
 		}
 	}
-	
+
 	public void selectChecklistForWRN8NMB() {
 		eleUtil.waitTillElementIsDisplayed(constructionActivitiyFound, 30);
 		eleUtil.selectDropDownValue(constructionActivitiyFound, "selectByVisibleText", "Yes",
@@ -823,5 +845,229 @@ public class checkListPage extends commonCRMActions {
 		}
 	}
 
-	
+	public void fillTheChecklistquestions(String outcome) throws InterruptedException {
+		eleUtil.isPageLoaded(50);
+		String yesval = "Yes";
+		String noval = "No";
+		Thread.sleep(2000);
+		List<WebElement> elements = driver.findElements(By.xpath("//label[@aria-label='In Progress']"));
+		System.out.println("checklist size is" + elements.size());
+		for (int i = 2; i <= elements.size() + 1; i++) {
+			try {
+				eleUtil.waitForVisibilityOfElement(By.xpath("//label[@aria-label='In Progress']"), 20);
+				WebElement refreshedElement = driver
+						.findElement(By.xpath("//div[@aria-rowindex='" + i + "']//div[@aria-colindex='5']"));
+				String status = refreshedElement.getText();
+				if (status.trim().equalsIgnoreCase("In Progress")) {
+					refreshedElement.click();
+					eleUtil.doDoubleClick(By.xpath("//div[@aria-rowindex='" + i + "']//div[@aria-colindex='5']"));
+					eleUtil.waitForVisibilityOfElement(servicetasksTab, 30);
+					eleUtil.doClick(servicetasksTab);
+					Thread.sleep(2000);
+
+					String actualname = eleUtil.doGetElementAttribute(checklistNameField, "aria-label");
+					assertTrue(actualname.contains("Tanker Permit Inspection"), "Checklist name is not matching");
+
+					eleUtil.doElementClickable(checklistNameField, 20);
+					eleUtil.doClick(checklistNameField);
+					eleUtil.doElementClickable(maximizescreenBtn, 10);
+					eleUtil.doClick(maximizescreenBtn);
+
+					if (outcome.equalsIgnoreCase("Compliance")) {
+						By chklistQ1 = By.xpath("//input[contains(@name,'Q1_sq_') and @value='" + yesval + "']");
+						By chklistQ2 = By.xpath("//input[contains(@name,'Q2_sq_') and @value='" + yesval + "']");
+						By chklistQ3 = By.xpath("//input[contains(@name,'Q3_sq_') and @value='" + yesval + "']");
+						By chklistQ4 = By.xpath("//input[contains(@name,'Q4_sq_') and @value='" + yesval + "']");
+						By chklistQ5 = By.xpath("//input[contains(@name,'Q5_sq_') and @value='" + yesval + "']");
+						By chklistQ6 = By.xpath("//input[contains(@name,'Q6_sq_') and @value='" + yesval + "']");
+						By chklistQ7 = By.xpath("//input[contains(@name,'Q7_sq_') and @value='" + yesval + "']");
+						By chklistQ8 = By.xpath("//input[contains(@name,'Q8_sq_') and @value='" + yesval + "']");
+						By chklistQ9 = By.xpath("//input[contains(@name,'Q9_sq_') and @value='" + yesval + "']");
+						By chklistQ10 = By.xpath("//input[contains(@name,'Q10_sq_') and @value='" + yesval + "']");
+						By chklistQ11 = By.xpath("//input[contains(@name,'Q11_sq_') and @value='" + yesval + "']");
+						By chklistQ12 = By.xpath("//input[contains(@name,'Q12_sq_') and @value='" + yesval + "']");
+						By chklistQ13 = By.xpath("//input[contains(@name,'Q13_sq_') and @value='" + yesval + "']");
+						By chklistQ14 = By.xpath("//input[contains(@name,'Q14_sq_') and @value='" + yesval + "']");
+						By chklistQ15 = By.xpath("//input[contains(@name,'Q15_sq_') and @value='" + yesval + "']");
+						By chklistQ16 = By.xpath("//input[contains(@name,'Q16_sq_') and @value='" + yesval + "']");
+						By chklistQ17 = By.xpath("//input[contains(@name,'Q17_sq_') and @value='" + yesval + "']");
+
+						eleUtil.waitForVisibilityOfElement(chklistQ1, 20);
+						eleUtil.doClick(chklistQ1);
+						eleUtil.doClick(chklistQ2);
+						eleUtil.doClick(chklistQ3);
+						eleUtil.doClick(chklistQ4);
+						eleUtil.doClick(chklistQ5);
+						eleUtil.doClick(chklistQ6);
+						eleUtil.doClick(chklistQ7);
+						eleUtil.doClick(chklistQ8);
+						eleUtil.doClick(chklistQ9);
+						eleUtil.doClick(chklistQ10);
+						eleUtil.doClick(chklistQ11);
+						eleUtil.doClick(chklistQ12);
+						eleUtil.doClick(chklistQ13);
+						eleUtil.doClick(chklistQ14);
+						eleUtil.doClick(chklistQ15);
+						eleUtil.doClick(chklistQ16);
+						eleUtil.doClick(chklistQ17);
+
+					} else {
+						By chklistQ1 = By.xpath("//input[contains(@name,'Q1_sq_') and @value='" + yesval + "']");
+						By chklistQ2 = By.xpath("//input[contains(@name,'Q2_sq_') and @value='" + yesval + "']");
+						By chklistQ3 = By.xpath("//input[contains(@name,'Q3_sq_') and @value='" + yesval + "']");
+						By chklistQ4 = By.xpath("//input[contains(@name,'Q4_sq_') and @value='" + yesval + "']");
+						By chklistQ5 = By.xpath("//input[contains(@name,'Q5_sq_') and @value='" + yesval + "']");
+						By chklistQ6 = By.xpath("//input[contains(@name,'Q6_sq_') and @value='" + yesval + "']");
+						By chklistQ7 = By.xpath("//input[contains(@name,'Q7_sq_') and @value='" + yesval + "']");
+						By chklistQ8 = By.xpath("//input[contains(@name,'Q8_sq_') and @value='" + noval + "']");
+						By chklistQ9 = By.xpath("//input[contains(@name,'Q9_sq_') and @value='" + yesval + "']");
+						By chklistQ10 = By.xpath("//input[contains(@name,'Q10_sq_') and @value='" + yesval + "']");
+						By chklistQ11 = By.xpath("//input[contains(@name,'Q11_sq_') and @value='" + yesval + "']");
+						By chklistQ12 = By.xpath("//input[contains(@name,'Q12_sq_') and @value='" + noval + "']");
+						By chklistQ13 = By.xpath("//input[contains(@name,'Q13_sq_') and @value='" + yesval + "']");
+						By chklistQ14 = By.xpath("//input[contains(@name,'Q14_sq_') and @value='" + yesval + "']");
+						By chklistQ15 = By.xpath("//input[contains(@name,'Q15_sq_') and @value='" + yesval + "']");
+						By chklistQ16 = By.xpath("//input[contains(@name,'Q16_sq_') and @value='" + yesval + "']");
+						By chklistQ17 = By.xpath("//input[contains(@name,'Q17_sq_') and @value='" + yesval + "']");
+
+						eleUtil.waitForVisibilityOfElement(chklistQ1, 20);
+						eleUtil.doClick(chklistQ1);
+						eleUtil.doClick(chklistQ2);
+						eleUtil.doClick(chklistQ3);
+						eleUtil.doClick(chklistQ4);
+						eleUtil.doClick(chklistQ5);
+						eleUtil.doClick(chklistQ6);
+						eleUtil.doClick(chklistQ7);
+						eleUtil.doClick(chklistQ8);
+						eleUtil.doClick(chklistQ9);
+						eleUtil.doClick(chklistQ10);
+						eleUtil.doClick(chklistQ11);
+						eleUtil.doClick(chklistQ12);
+						eleUtil.doClick(chklistQ13);
+						eleUtil.doClick(chklistQ14);
+						eleUtil.doClick(chklistQ15);
+						eleUtil.doClick(chklistQ16);
+						eleUtil.doClick(chklistQ17);
+
+					}
+
+					int number = ThreadLocalRandom.current().nextInt();
+					System.out.println("random  number before absolute:" + number);
+					int randomNumber = Math.abs(number);
+					String strform = String.valueOf(randomNumber);
+					System.out.println("random number is:" + strform);
+					jsutil.scrollIntoView(driver.findElement(newSealnumField));
+					eleUtil.doSendKeys(newSealnumField, strform);
+					By acknowledmentOption = By
+							.xpath("//input[contains(@name,'Question2_sq_') and @value='" + yesval + "']");
+					eleUtil.doClick(acknowledmentOption);
+					eleUtil.doClick(saveBtnInChklsit);
+					System.out.println("clicked on save button");
+					Thread.sleep(3000);
+					eleUtil.doElementClickable(markcompleteBtn, 40);
+					try {
+						eleUtil.doClick(markcompleteBtn);
+					} catch (Exception e) {
+						eleUtil.doActionsClick(markcompleteBtn);
+					}
+					Thread.sleep(2000);
+					eleUtil.doClick(saveNCloseBtnInChklsit);
+
+					boolean tankerRegNoDisplayed = false;
+					long startTime = System.currentTimeMillis();
+					while (!tankerRegNoDisplayed && (System.currentTimeMillis() - startTime) < 180000) {
+						try {
+							clickOnRefreshBtnOnHome();
+							eleUtil.waitForVisibilityOfElement(tankerregno, AppConstants.SHORT_DEFAULT_WAIT);
+							// If tankerregno is displayed, set the flag to true to exit the loop
+							if (driver.findElement(tankerregno).isDisplayed()) {
+								tankerRegNoDisplayed = true;
+							}
+						} catch (StaleElementReferenceException e) {
+							System.out.println("catching the exception");
+						} catch (Exception e) {
+							System.out.println("Button is not present");
+						}
+					}
+					eleUtil.isPageLoaded(30);
+					clickonSaveAndCloseBtn();
+
+				}
+
+			} catch (StaleElementReferenceException e) {
+				System.out.println("StaleElementReferenceException occurred: " + e.getMessage()); // elements =
+			}
+
+			eleUtil.isPageLoaded(30);
+		}
+
+	}
+
+	public void amendChecklist() {
+
+		eleUtil.isPageLoaded(30);
+		eleUtil.waitForVisibilityOfElement(servicetasksTab, 30);
+		eleUtil.doElementClickable(servicetasksTab, 40);
+		eleUtil.doClick(servicetasksTab);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		eleUtil.doElementClickable(checklistNameField, 20);
+		eleUtil.doClick(checklistNameField);
+		eleUtil.doElementClickable(maximizescreenBtn, 10);
+		eleUtil.doClick(maximizescreenBtn);
+
+		// String xpathForNoRadioButtons =
+		// "//div[contains(@id,'sq_')]//label[@class='sv_q_radiogroup_label
+		// ms-RadioButton-field is-checked']/input[@Value='No']";
+
+		// Find all radio buttons selected as "No"
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<WebElement> noRadioButtons = driver.findElements(By.xpath(
+				"//div[contains(@name,'Q')]//label[@class='sv_q_radiogroup_label ms-RadioButton-field is-checked']/input[@Value='No']"));
+		System.out.println("size is" + noRadioButtons.size());
+		// Iterate through each radio button selected as "No"
+		for (int i = 0; i < noRadioButtons.size(); i++) {
+			System.out.println("entered for loop");
+			WebElement yesRadioButton = driver.findElement(By.xpath(
+					"//div[contains(@name,'Q')]//label[@class='sv_q_radiogroup_label ms-RadioButton-field']/input[@Value='Yes']"));
+
+			if (noRadioButtons.get(i).isSelected() && noRadioButtons.get(i).getAttribute("Value").equals("No"))
+				System.out.println("entered if loop");
+			yesRadioButton.click();
+		}
+
+		eleUtil.doClick(saveBtnInChklsit);
+		System.out.println("clicked on save button");
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		eleUtil.doElementClickable(markcompleteBtn, 40);
+		try {
+			eleUtil.doClick(markcompleteBtn);
+		} catch (Exception e) {
+			eleUtil.doActionsClick(markcompleteBtn);
+		}
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		eleUtil.doClick(saveNCloseBtnInChklsit);
+
+		clickonSaveAndCloseBtn();
+
+	}
+
 }
