@@ -108,6 +108,8 @@ public class commonActionsPage {
 	private By uploadBtn = By.xpath("//span[text()='Upload']/ancestor::button");
 	private By selectLookUp = By.cssSelector("ul[tabindex='0']");
 
+	private By newCase = By.cssSelector("button[aria-label='New Case. Add New Case']");
+
 	public commonActionsPage(WebDriver driver) {
 		this.driver = driver;
 		eleUtil = new ElementUtil(this.driver);
@@ -612,6 +614,11 @@ public class commonActionsPage {
 		} catch (Exception e) {
 			Log.error("Unexpected error: " + e.getMessage());
 		}
+	}
+
+	public void newCaseButton() {
+		eleUtil.doElementClickable(newCase, 30);
+		eleUtil.doClickLog(newCase, "Clicked on new Case button");
 	}
 
 }

@@ -232,4 +232,13 @@ public class originalCaseCreationPage extends commonActionsPage {
 		cases.checkBookingCount(bookingCount);
 	}
 
+	public void createPumpingMainCase(String caseSubType) throws InterruptedException {
+		newCaseButton();
+		cases.caseCreationForPumpingMain(caseSubType);
+		Thread.sleep(2000);
+		clickOnSaveBtn();
+		cases.waitCaseSaveStatus();
+	}
+
+
 }

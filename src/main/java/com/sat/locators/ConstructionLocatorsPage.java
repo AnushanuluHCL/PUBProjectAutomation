@@ -485,7 +485,7 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	public void enterProfEngg() throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(getProfEngg(), 30);
 		eleUtil.doClearUsingKeysLog(getProfEngg(), "Clear the Professional Engineer field");
-		eleUtil.doSendKeysWithWaitEnter(getProfEngg(), "Professional Engineer", 30);
+		eleUtil.doSendKeysWithWaitEnter(getProfEngg(), "Pro", 30);
 		eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
 	}
 
