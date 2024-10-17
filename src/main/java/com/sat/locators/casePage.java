@@ -59,6 +59,8 @@ public class casePage extends commonCRMActions {
     private By startTime = By.cssSelector("input[aria-label='Time of Start Time']");
     private By endTime = By.cssSelector("input[aria-label='Time of End Time']");
     private By moreCommandButton = By.cssSelector("button[aria-label='More commands for Case']");
+    private By caseRemarksField = By.cssSelector("textarea[aria-label='Remarks']");
+    private By caseSaved = By.cssSelector("span[aria-label='Save status - Saved']");
 
     //Pumping System Inspection
     private By pumpingEquipmentAncillariesNA = By.xpath("//input[contains(@name,'Q1_sq_') and @aria-label='NA']");
@@ -838,4 +840,17 @@ public class casePage extends commonCRMActions {
 		return totalcount;
 	}
 
+    public void caseCreationForPumpingMain(String caseSubType) throws InterruptedException {
+        eleUtil.isPageLoaded(50);
+        eleUtil.waitForVisibilityOfElement(getCaseSubType(), 30);
+        eleUtil.selectDropDownValue(getCaseSubType(), "selectByVisibleText", caseSubType, "select Case sub type " +  caseSubType);
+        eleUtil.scrollDownTillElementVisible(caseRemarksField);
+        eleUtil.doClearUsingKeysLog(caseRemarksField, "Clear Remarks field");
+        eleUtil.doSendKeysLog(caseRemarksField, caseSubType + " Case", "send any value for remarks field");
+    }
+
+    public void waitCaseSaveStatus() {
+        eleUtil.waitForVisibilityOfElement(caseSaved, 200);
+        commonCRMActions.casenumber = crmActions.setPageTitle();
+    }
 }

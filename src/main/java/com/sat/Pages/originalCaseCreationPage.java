@@ -219,7 +219,6 @@ public class originalCaseCreationPage extends commonActionsPage {
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		crmActions.getMoreButtonOnWorkOrder();
@@ -231,5 +230,14 @@ public class originalCaseCreationPage extends commonActionsPage {
 	public void verifyBookingCounts(int bookingCount) {
 		cases.checkBookingCount(bookingCount);
 	}
+
+	public void createPumpingMainCase(String caseSubType) throws InterruptedException {
+		newCaseButton();
+		cases.caseCreationForPumpingMain(caseSubType);
+		Thread.sleep(2000);
+		clickOnSaveBtn();
+		cases.waitCaseSaveStatus();
+	}
+
 
 }

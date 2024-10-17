@@ -92,7 +92,7 @@ public class pumpingSystemPage extends commonActionsPage {
     }
 
     public void selectEntityType(String type) {
-        eleUtil.waitTillElementIsDisplayed(entityType, 30);
+        eleUtil.waitTillElementIsDisplayed(entityType, 100);
         eleUtil.selectDropDownValue(entityType, "selectByVisibleText", type, "select entity type as" + type);
     }
 
