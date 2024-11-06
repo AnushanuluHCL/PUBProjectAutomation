@@ -94,7 +94,7 @@ public class factoryCreationPage extends commonActionsPage {
 	}
 
 	public void verifySystemAndUserAssessment(String value) throws InterruptedException {
-		factory.checkSystemAndUserAssessment(value);
+		crmActions.checkSystemAndUserAssessment(value);
 	}
 
 	public void verifyNotificationForLabReport() throws InterruptedException {

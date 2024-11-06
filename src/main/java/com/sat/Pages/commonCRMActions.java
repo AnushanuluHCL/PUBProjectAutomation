@@ -14,6 +14,7 @@ import org.apache.poi.ss.formula.functions.T;
 import org.openqa.selenium.*;
 
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 
 public class commonCRMActions extends commonActionsPage {
 
@@ -39,6 +40,12 @@ public class commonCRMActions extends commonActionsPage {
     // Locators on work order form
     private By bookingTab = By.xpath("//li[text()='Bookings']");
     private By checklistTab = By.xpath("//li[text()='Checklist']");
+    private By emptyUserAssessment = By.xpath("//select[@aria-label='User Assessment' and @title='---']");
+    private By emptySystemAssessment = By
+            .xpath("//div[@data-id='pub_systemassessment'] //select[@aria-label='System Assessment' and @title='---']");
+    private By userAssessment = By.xpath("//select[@aria-label='User Assessment']");
+    private By systemAssessment = By
+            .xpath("//div[@data-id='pub_systemassessment'] //select[@aria-label='System Assessment']");
 
     // Locators on Bookings home page
     private By checkListNameField = By.xpath("//div[@col-id='msdyn_name']/descendant::a");
@@ -108,6 +115,14 @@ public class commonCRMActions extends commonActionsPage {
 
     //This code can be removed after Booking Issue is fixed
     private By bookingDuration = By.cssSelector("input[aria-label='Duration']");
+
+    public By getUserAssessment() {
+        return userAssessment;
+    }
+
+    public By getSystemAssessment() {
+        return systemAssessment;
+    }
 
     public By getBookingTab() {
         return bookingTab;
@@ -396,7 +411,7 @@ public class commonCRMActions extends commonActionsPage {
             eleUtil.waitTillElementIsDisplayed(getMoreButtonOnWorkOrder(), 30);
             eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
             eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
-            Thread.sleep(2000);
+            Thread.sleep(4000);
             processWorkOrder(woNum.get(i), status);
             // Validation on Booking tab
             eleUtil.waitForVisibilityOfElement(getBookingTab(), 30);
@@ -417,7 +432,7 @@ public class commonCRMActions extends commonActionsPage {
             By bookingStatus = By
                     .xpath("//div[@aria-label='Booking Status Control' and @title='" + selectBookingStatus + "']");
             eleUtil.doClickWithWait(selectAnOption, 40);
-            bookingIssue(); // This method can be removed once Booking issue is resolved
+            //bookingIssue(); // This method can be removed once Booking issue is resolved
             eleUtil.doElementClickable(saveOnBooking, 10);
             eleUtil.doClick(saveOnBooking);
             eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 100);
@@ -641,7 +656,10 @@ public class commonCRMActions extends commonActionsPage {
         Thread.sleep(3000);
         attemptsDifferentClicks(workOrderStatusGridHeader);
         filterViewForStatus(status);
+        eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
+        eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
         eleUtil.isPageLoaded(30);
+        Thread.sleep(2000);
     }
 
     public void searchRecord(String recordNumber) throws InterruptedException {
@@ -955,5 +973,62 @@ public class commonCRMActions extends commonActionsPage {
         attemptsDifferentClicks(bookingDuration);
         eleUtil.doClearUsingKeysLog(bookingDuration, "Clear Booking value");
         eleUtil.doSendKeysWithWait(bookingDuration, "2 hours", 30);
+    }
+
+    public void checkWOStatus(String completeStatus) throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(WOstatusInWOform, 10);
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            String actualStatusVal = eleUtil.doGetElementAttribute(WOstatusInWOform, "title");
+            if (actualStatusVal.equals(completeStatus)) {
+                break;
+            } else {
+                eleUtil.doClick(refreshBtn);
+            }
+        }
+        String finalStatusVal = eleUtil.doGetElementAttribute(WOstatusInWOform, "title");
+        Assert.assertEquals(finalStatusVal, completeStatus, "Status Not Matched");
+    }
+
+    public void checkSystemAndUserAssessment(String value) throws InterruptedException {
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            if (eleUtil.elementIsDisplayed(emptyUserAssessment, "User Assessment is empty")
+                    && eleUtil.elementIsDisplayed(emptySystemAssessment, "System Assessment is empty")) {
+                eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
+                Thread.sleep(1000); // Wait for 1 second before checking again
+            } else {
+                try {
+                    eleUtil.textVerificationFormAttribute(getUserAssessment(), "title", value);
+                    eleUtil.textVerificationFormAttribute(getSystemAssessment(), "title", value);
+                    break;
+                } catch (NoSuchElementException e) {
+                    Log.error("System and User Assessment are empty: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void newSaveChecklist(String completeStatus, String value) throws InterruptedException {
+        eleUtil.doClick(getSaveBtnInChklist());
+        System.out.println("clicked on save button");
+        Thread.sleep(3000);
+        eleUtil.doElementClickable(getMarkCompleteBtn(), 40);
+        try {
+            eleUtil.doClick(getMarkCompleteBtn());
+        } catch (Exception e) {
+            eleUtil.doActionsClick(getMarkCompleteBtn());
+        }
+        eleUtil.staleElementRefExecClickCRM(getSaveNCloseBtnInChklist());
+        Thread.sleep(2000);
+        eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
+        navigateToTab("Summary");
+        checkWOStatus(completeStatus);
+        checkSystemAndUserAssessment(value);
+        try {
+            clickOnSaveNCloseButton();
+        } catch (Exception e) {
+            eleUtil.doActionsClick(getSaveNCloseBtn());
+        }
     }
 }

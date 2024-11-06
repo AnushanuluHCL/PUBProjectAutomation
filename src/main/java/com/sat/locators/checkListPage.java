@@ -177,6 +177,13 @@ public class checkListPage extends commonCRMActions {
 	private By maximizescreenBtn = By.xpath("//button[@aria-label='Enter full screen mode']");
 	private By tankerregno = By.xpath("//label[text()='Tanker Registration No.']");
 
+	// Locator for WRN10
+	private By pumpingInstallation = By.cssSelector("input[aria-label='Pumping Installation']");
+	private By pumpingMain = By.cssSelector("input[aria-label='Pumping Main #1/2/3*']");
+	private By complianceMethodStatement = By.xpath("//select[contains(@aria-label,'Compliance to Method Statement')]");
+	private By passPressureCOP = By.xpath("//select[contains(@aria-label,'Pass Pressure Test according to COP')]");
+	private By defect = By.cssSelector("input[aria-label='Defects (if any):']");
+
 	public By getSamplingConducted(String val) {
 		return samplingConducted;
 	}
@@ -1070,4 +1077,52 @@ public class checkListPage extends commonCRMActions {
 
 	}
 
+	public void checkListForWRN10IMBPressureTestPostDLP(String status, String checkListName, String checkListType, String completeStatus)
+			throws InterruptedException {
+		crmActions.workOrderStatusFilter(status);
+		List<String> woNum = new ArrayList<>();
+		crmActions.fetchWorkOrderNumbers(woNum);
+		for (int i = 0; i < woNum.size(); i++) {
+			Thread.sleep(2000);
+			crmActions.openCheckList(woNum.get(i), checkListName, status);
+			if(checkListName.equals("WRN 10 IMB Pumping Main Handing Over Inspection Checklist - Pressure Test")) {
+				WRN11IMNPressureTestPostDLPChecklist(checkListType);
+			}
+			else {
+				WRN11IMNCommissioningTestPreDLPChecklist(checkListType);
+			}
+			crmActions.newSaveChecklist(completeStatus, checkListType);
+		}
+	}
+
+	public void WRN11IMNPressureTestPostDLPChecklist(String checklistType) {
+		if ("In Order".equals(checklistType)) {
+			eleUtil.waitForVisibilityOfElement(pumpingInstallation, 30);
+			eleUtil.doSendKeysLog(pumpingInstallation, "PumpingValue", "Enter Pumping Installation");
+			eleUtil.selectDropDownValue(complianceMethodStatement, "selectByVisibleText", "Yes", "select Compliance to Method Statement");
+			eleUtil.selectDropDownValue(passPressureCOP, "selectByVisibleText", "Yes", "select Pass Pressure Test according to COP");
+			eleUtil.doSendKeysLog(pumpingMain, "PumpingMail", "Enter Pumping Main");
+			eleUtil.doSendKeysLog(defect, "No", "Enter Defect");
+		} else {
+			// Write Compliance code
+		}
+	}
+
+	public void WRN11IMNCommissioningTestPreDLPChecklist(String checklistType) {
+		if ("In Order".equals(checklistType)) {
+			eleUtil.waitForVisibilityOfElement(pumpingInstallation, 30);
+			eleUtil.doSendKeysLog(pumpingInstallation, "PumpingValue", "Enter Pumping Installation");
+			eleUtil.doSendKeysLog(pumpingMain, "PumpingMail", "Enter Pumping Main");
+			eleUtil.doSendKeysLog(defect, "No", "Enter Defect");
+			// Combine all relevant questions into one loop
+			for (int i = 1; i <= 23; i++) {
+				if (i != 21 && i != 22) {
+					By wrn10DropDown = By.xpath("//div[@name='Question" + i + "']//select");
+					eleUtil.selectDropDownValue(wrn10DropDown, "selectByVisibleText", "Yes", "select Yes");
+				}
+			}
+		} else {
+			// Write Compliance code
+		}
+	}
 }

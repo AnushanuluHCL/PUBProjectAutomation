@@ -96,10 +96,6 @@ public class factoryPage extends commonActionsPage {
 	private By emptyUserAssessment = By.xpath("//select[@aria-label='User Assessment' and @title='---']");
 	private By emptySystemAssessment = By
 			.xpath("//div[@data-id='pub_systemassessment'] //select[@aria-label='System Assessment' and @title='---']");
-	private By userAssessment = By.xpath("//select[@aria-label='User Assessment']");
-	private By systemAssessment = By
-			.xpath("//div[@data-id='pub_systemassessment'] //select[@aria-label='System Assessment']");
-
 	private By caseTitle = By.cssSelector("h1[data-id='header_title']");
 
 	private By listOfFactoryListView = By
@@ -159,14 +155,6 @@ public class factoryPage extends commonActionsPage {
 
 	public By getSaveAndClose() {
 		return saveAndClose;
-	}
-
-	public By getUserAssessment() {
-		return userAssessment;
-	}
-
-	public By getSystemAssessment() {
-		return systemAssessment;
 	}
 
 	public By clickOnNewSampleLab() {
@@ -475,25 +463,6 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.waitForVisibilityOfElement(uploadLabReportSwitch, 30);
 		eleUtil.doClickLog(uploadLabReportSwitch, "Click on Lab Report Switch button");
 		crmActions.clickOnSaveButton();
-	}
-
-	public void checkSystemAndUserAssessment(String value) throws InterruptedException {
-		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
-		while (System.currentTimeMillis() < endTime) {
-			if (eleUtil.elementIsDisplayed(emptyUserAssessment, "User Assessment is empty")
-					&& eleUtil.elementIsDisplayed(emptySystemAssessment, "System Assessment is empty")) {
-				eleUtil.doClickLog(crmActions.getRefreshBtn(), "Click on Refresh button");
-				Thread.sleep(1000); // Wait for 1 second before checking again
-			} else {
-				try {
-					eleUtil.textVerificationFormAttribute(getUserAssessment(), "title", value);
-					eleUtil.textVerificationFormAttribute(getSystemAssessment(), "title", value);
-					break;
-				} catch (NoSuchElementException e) {
-					Log.error("System and User Assessment are empty: " + e.getMessage());
-				}
-			}
-		}
 	}
 
 	public void labResultNotification() throws InterruptedException {

@@ -853,4 +853,49 @@ public class casePage extends commonCRMActions {
         eleUtil.waitForVisibilityOfElement(caseSaved, 200);
         commonCRMActions.casenumber = crmActions.setPageTitle();
     }
+
+    public void workOrderVerificationOnCase() throws InterruptedException {
+        eleUtil.waitTillElementIsDisplayed(getMoreButtonOnWorkOrder(), 30);
+        eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
+        eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
+        Thread.sleep(2000);
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            if (eleUtil.elementIsDisplayed(checkWOCreated, "No data available")) {
+                Thread.sleep(3000);
+                eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
+                eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
+            } else {
+                // If the element is not displayed, execute the else block logic
+                try {
+                    Log.info("Work Order Number " + factory.getWorkOrderNumber());
+                    return; // Exit the method if the case number is verified
+                } catch (NoSuchElementException e) {
+                    Log.error("Work Order not Created: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public int workOrderCountForWRN10(int woCount) throws InterruptedException {
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        eleUtil.waitForVisibilityOfElement(getWorkOrderCount(), 40);
+        String workOrder = eleUtil.doElementGetText(getWorkOrderCount());
+        Log.info("print work order " + workOrder);
+        int extractedValue = eleUtil.extractLastValue(workOrder);
+        Log.info("After extract " + extractedValue);
+        while (System.currentTimeMillis() < endTime) {
+            if (woCount != extractedValue) {
+                Thread.sleep(3000);
+                eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
+                eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
+                workOrder = eleUtil.doElementGetText(getWorkOrderCount());
+                extractedValue = eleUtil.extractLastValue(workOrder);
+            } else {
+                break;
+            }
+        }
+        return extractedValue;
+    }
+
 }

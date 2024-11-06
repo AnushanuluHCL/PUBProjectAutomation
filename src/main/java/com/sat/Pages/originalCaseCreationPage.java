@@ -239,5 +239,11 @@ public class originalCaseCreationPage extends commonActionsPage {
 		cases.waitCaseSaveStatus();
 	}
 
+	public void verifyWorkOrderVerificationOnCase() throws InterruptedException {
+		cases.workOrderVerificationOnCase();
+	}
 
+	public void workOrderCountAfterSplitForWRN10(int woCount) throws InterruptedException {
+		cases.workOrderCountForWRN10(woCount);
+	}
 }

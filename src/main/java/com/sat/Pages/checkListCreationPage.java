@@ -49,4 +49,8 @@ public class checkListCreationPage extends commonActionsPage {
 		checkList.amendChecklist();
 	}
 
+    public void fillChecklistForWRN10(String status, String checkListName, String checkListType, String completeStatus) throws InterruptedException {
+        checkList.checkListForWRN10IMBPressureTestPostDLP(status, checkListName, checkListType, completeStatus);
+    }
+
 }

@@ -112,7 +112,7 @@ public class dtssPage extends commonActionsPage {
         Log.info("selected the " + caseSubType + " record");
         eleUtil.doDoubleClick(openCaseSubType);
         Log.info("clicked on " + caseSubType + " record");
-        eleUtil.waitForVisibilityOfElement(factory.getUserAssessment(), 100);
+        eleUtil.waitForVisibilityOfElement(crmActions.getUserAssessment(), 100);
         commonCRMActions.casenumber = crmActions.setPageTitle();
     }
 }
