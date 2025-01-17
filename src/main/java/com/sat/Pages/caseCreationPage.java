@@ -50,6 +50,7 @@ public class caseCreationPage extends commonActionsPage {
 
 	factoryPage factory = new factoryPage(driver);
 	casePage cases = new casePage(driver);
+	commonCRMActions crmActions = new commonCRMActions(driver);
 	String depositFilePath = "\\src\\main\\resources\\documents\\ActiveDeposits.xlsx";
 
 	private By createdApp = By.xpath("(//div[@col-id='pub_gwccompany']//descendant::a)[2]"); // (//div[@col-id='pub_gwccompany'])[2]
@@ -224,8 +225,6 @@ public class caseCreationPage extends commonActionsPage {
 	private By browseBtn = By.xpath("//span[text()='Browse']/ancestor::button");
 	private By browsefield = By.xpath("(//span[text()='Browse']/ancestor::div[@style])[3]//input");
 	private By uploadBtn = By.xpath("//span[text()='Upload']/ancestor::button");
-
-	private By okBtn = By.xpath("//button[@aria-label='OK']");
 
 	// Locators for inspection report
 	private By morecommands = By.xpath("//button[@title='More commands for SIES Document']");
@@ -536,7 +535,7 @@ public class caseCreationPage extends commonActionsPage {
 
 	}
 
-	public void openACase() {
+	public void openACase() throws InterruptedException {
 		changeAreaSelection("Inspection");
 		selectEntity("Cases");
 	}
@@ -544,10 +543,10 @@ public class caseCreationPage extends commonActionsPage {
 	public void searchACase() throws InterruptedException {
 		eleUtil.waitForVisibilityOfElement(searchbox, 20);
 		Thread.sleep(2000);
-		eleUtil.doSendKeys(searchbox, commonActionsPage.casenumber);
+		eleUtil.doSendKeysLog(searchbox, commonActionsPage.casenumber, commonActionsPage.casenumber);
+		//eleUtil.doSendKeysLog(searchbox, "IFA/PE/I/2025/531", "IFA/PE/I/2025/531");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
-
 		driver.findElement(searchbox).sendKeys(Keys.ENTER);
 		Thread.sleep(3000);
 		selectFirstRecord();
@@ -558,9 +557,9 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.waitForVisibilityOfElement(searchbox, 20);
 		Thread.sleep(2000);
 		eleUtil.doSendKeys(searchbox, commonActionsPage.childCaseNumber);
+		//eleUtil.doSendKeys(searchbox, "IFA/WA/I/2024/36405");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
-
 		driver.findElement(searchbox).sendKeys(Keys.ENTER);
 		Thread.sleep(3000);
 		selectFirstRecord();
@@ -1646,8 +1645,8 @@ public class caseCreationPage extends commonActionsPage {
 		try {
 			if (eleUtil.elementIsDisplayed(By.cssSelector("div[id='modalDialogContentContainer_1']"),
 					"Saving in Progress Pop Up")) {
-				eleUtil.waitForVisibilityOfElement(okBtn, 10);
-				eleUtil.doClickLog(okBtn, "Click on ok button");
+				eleUtil.waitForVisibilityOfElement(cases.getOkBtn(), 10);
+				eleUtil.doClickLog(cases.getOkBtn(), "Click on ok button");
 			} else {
 				System.out.println("There in no OK button");
 			}
@@ -1682,8 +1681,8 @@ public class caseCreationPage extends commonActionsPage {
 		clickOnNextStageBtn();
 		while (true) {
 			try {
-				eleUtil.waitForVisibilityOfElement(okBtn, 10);
-				eleUtil.doClick(okBtn);
+				eleUtil.waitForVisibilityOfElement(cases.getOkBtn(), 10);
+				eleUtil.doClick(cases.getOkBtn());
 			} catch (org.openqa.selenium.NoSuchElementException e) {
 				break;
 			}
@@ -2067,7 +2066,7 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.isPageLoaded(30);
 	}
 
-	public void emailsFromEmailmessages() {
+	public void emailsFromEmailmessages() throws InterruptedException {
 		changeAreaSelection("Inspection");
 
 		selectEntity("Email Messages");
@@ -2135,7 +2134,7 @@ public class caseCreationPage extends commonActionsPage {
 
 	}
 
-	public void tpConfigChangeForAudit() {
+	public void tpConfigChangeForAudit() throws InterruptedException {
 		changeAreaSelection("Settings");
 
 		selectEntity("TP Configurations");
@@ -2158,7 +2157,7 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.doClick(saveCloseBtn);
 	}
 
-	public void verifyingCreatedCases() {
+	public void verifyingCreatedCases() throws InterruptedException {
 		selectEntity("Cases");
 		changeView("Tanker Audit Inspection Cases");
 		eleUtil.isPageLoaded(30);
@@ -2203,7 +2202,7 @@ public class caseCreationPage extends commonActionsPage {
 		return val;
 	}
 
-	public void depoitAmountRecotrdCreation() {
+	public void depoitAmountRecotrdCreation() throws InterruptedException {
 		changeAreaSelection("GWC Tanker");
 		selectEntity("Deposits");
 
@@ -2975,7 +2974,7 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.doClick(applyBtn);
 		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
-			if (eleUtil.elementIsDisplayed(cases.getNoDataAvailableInSingleGrid(), "No data available")) {
+			if (eleUtil.elementIsDisplayed(crmActions.getNoDataAvailableInSingleGrid(), "No data available")) {
 				Thread.sleep(3000);
 				eleUtil.doClickWithWait(refreshBtn, 30);
 			}
@@ -3032,8 +3031,8 @@ public class caseCreationPage extends commonActionsPage {
 		}
 	}
 
-	public void processingStageToNextStage() {
-		navigatingToStage("Processing");
+	public void processingStageToNextStage(String stageName) {
+		navigatingToStage(stageName);
 		clickOnNextStageBtn();
 	}
 }

@@ -4,9 +4,10 @@ import com.sat.locators.ConstructionLocatorsPage;
 import com.sat.locators.eatingEstablishmentLocatorsPage;
 import com.sat.locators.factoryPage;
 import com.sat.locators.pumpingSystemPage;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
-public class pumpingSystemCreationPage extends commonActionsPage{
+public class pumpingSystemCreationPage extends commonActionsPage {
     public pumpingSystemCreationPage(WebDriver driver) {
         super(driver);
     }
@@ -70,6 +71,8 @@ public class pumpingSystemCreationPage extends commonActionsPage{
         clickOnSaveBtn();
     }
 
-
+    public void searchPumpingMain() throws InterruptedException {
+        pumpingSystem.searchAPumpingMain();
+    }
 
 }

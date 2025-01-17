@@ -27,9 +27,9 @@ Feature: Testing deposit amount calculations for the tanker
 	  | OS - Industrial  |
 	And logout from the application
 	#Sit1
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#When Login to app with "FIO_userid" and "FIO_pwd"
 	#Sit3
-	#When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 	And user change the changearea to "GWC Tanker"
 	And user selects entity as "Applications"
@@ -46,28 +46,29 @@ Feature: Testing deposit amount calculations for the tanker
 	And navigate to Assignment stage and fill the respective details and navigate to next stage
 	And navigate to Inspection stage and select the Inspection completed value as yes
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
+	And logout from the application
 	#Sit1
-	When Login to app with "SO_userid" and "SO_pwd"
+	#When Login to app with "SO_userid" and "SO_pwd"
 	#SIT3
-	#When Login to app with "SIT3_SOUser" and "SIT3_SOPwd"
+	When Login to app with "SIT3_SOUser" and "SIT3_SOPwd"
 	And user selects App "DQB Case Management"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
 	#SIT1
-	When Login to app with "AO_userid" and "AO_pwd"
+	#When Login to app with "AO_userid" and "AO_pwd"
 	#SIT3
-	#When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
+	When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
 	And user selects App "DQB Case Management"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
 	And navigate to AO Review stage and fill the respective details and navigate to next stage
 	#Sit1
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#When Login to app with "FIO_userid" and "FIO_pwd"
 	#Sit3
-	#When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case

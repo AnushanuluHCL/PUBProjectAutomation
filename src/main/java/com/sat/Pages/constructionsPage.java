@@ -6,6 +6,7 @@ import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 import java.text.ParseException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.sat.locators.ConstructionLocatorsPage;
@@ -45,12 +46,12 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void verifyEmailAtProject(String tab, String subject) throws InterruptedException {
-		commonCRM.navigatingToTabInProject(tab);
+		commonCRM.navigatingToTabInEntity(tab);
 		commonCRM.emailCheckAtProject(subject);
 	}
 
 	public void updateMukimLotValues(String tab, String mukimValue, String lotValue) throws InterruptedException {
-		commonCRM.navigatingToTabInProject(tab);
+		commonCRM.navigatingToTabInEntity(tab);
 		constructionpage.mukimVal(mukimValue);
 		constructionpage.lotVal(lotValue);
 		clickOnSaveBtn();
@@ -58,16 +59,16 @@ public class constructionsPage extends commonActionsPage {
 
 	public void GERIResponse(String tab, String projMukimLotValue, String diameterValue, String DTSSValue,
 			String sewerValue, String pumpingMain) throws InterruptedException {
-		commonCRM.navigatingToTabInProject(tab);
+		commonCRM.navigatingToTabInEntity(tab);
 		constructionpage.newGERIResponseBtn();
 		constructionpage.projMukimLotNo(projMukimLotValue);
 		constructionpage.diameterVal(diameterValue);
 		constructionpage.affectedByDTSSVal(DTSSValue);
 		constructionpage.affectedBySewerVal(sewerValue);
 		constructionpage.affectedByPumpingMain(pumpingMain);
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 		clickOnSaveBtn();
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 	}
 
 	public void searchForAProject() {
@@ -83,7 +84,7 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.approveProj();
 	}
 
-	public void verifyCaseCreated() {
+	public void verifyCaseCreated() throws InterruptedException {
 		changeAreaSelection("Inspection");
 		selectEntity("Cases");
 		constructionpage.entitySelectionInCaseView();
@@ -100,7 +101,7 @@ public class constructionsPage extends commonActionsPage {
 	public void updateReInspectionDate() throws ParseException, InterruptedException {
 		navigatingToTab("Inspection Case Information");
 		clickOnEntityOnCaseForm();
-		commonCRM.navigatingToTabInProject("System related information");
+		commonCRM.navigatingToTabInEntity("System related information");
 		constructionpage.verifyReInspectionValue();
 		constructionpage.verifyReInspectionDate();
 		constructionpage.updateReInspectionDateVal();
@@ -124,20 +125,20 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void updateContractorValues(String tab) throws InterruptedException {
-		commonCRM.navigatingToTabInProject(tab);
+		commonCRM.navigatingToTabInEntity(tab);
 		constructionpage.enterContractor();
 	}
 
 	public void GERIResponseForIMB(String tab, String projMukimLotValue, String diameterValue, String DTSSValue,
 			String sewerValue, String pumpingMain) throws InterruptedException {
-		commonCRM.navigatingToTabInProject(tab);
+		commonCRM.navigatingToTabInEntity(tab);
 		constructionpage.newGERIResponseBtn();
 		constructionpage.projMukimLotNo(projMukimLotValue);
 		constructionpage.diameterVal(diameterValue);
 		constructionpage.affectedByDTSSVal(DTSSValue);
 		constructionpage.affectedBySewerVal(sewerValue);
 		constructionpage.affectedByPumpingMain(pumpingMain);
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 		clickOnSaveBtn();
 	}
 
@@ -167,7 +168,7 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void enableAffectedByPumpingMain(String tab, String value) throws InterruptedException {
-		commonCRM.navigatingToTabInProject(tab);
+		commonCRM.navigatingToTabInEntity(tab);
 		constructionpage.affectedByPumpingMainToggle(value);
 		clickOnSaveBtn();
 	}
@@ -177,12 +178,12 @@ public class constructionsPage extends commonActionsPage {
 		filterView(commonActionsPage.WRN6NMB_Enttiyval);
 		selectFirstRecord();
 		getFirstRecord();
-		commonCRM.navigatingToTabInProject(tab1);
+		commonCRM.navigatingToTabInEntity(tab1);
 		constructionpage.newPOWSSubBtn();
 		pumpingSystem.enterSubmissionNo();
 		constructionpage.selectApprovalDate();
 		constructionpage.diameterVal(diameterValue);
-		commonCRM.navigatingToTabInProject("System related information (Hidden)");
+		commonCRM.navigatingToTabInEntity("System related information (Hidden)");
 		constructionpage.enterSewerPipeType();
 		constructionpage.enterSewerDepth();
 		constructionpage.enterNearestDistance();
@@ -191,10 +192,10 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.selectInsScheduleDate();
 		constructionpage.selectPOWSApprovedval();
 		clickOnSaveBtn();
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 	}
 
-	public void verifyCaseCreatedFor6IMB() {
+	public void verifyCaseCreatedFor6IMB() throws InterruptedException {
 		changeAreaSelection("Inspection");
 		selectEntity("Cases");
 		changeView("All Cases");
@@ -204,7 +205,7 @@ public class constructionsPage extends commonActionsPage {
 	}
 	
 	public void openPOWSSubmission(String tabName) throws InterruptedException {
-		commonCRM.navigatingToTabInProject(tabName);
+		commonCRM.navigatingToTabInEntity(tabName);
 		selectFirstRecord();
 		getFirstRecord();
 	}
@@ -214,9 +215,9 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.enterCorridorType(corridorType);
 		constructionpage.enterZoneType(zoneType);
 		clickOnSaveBtn();
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 		constructionpage.waitForPOWSContactsTab();
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 	}
 
 	public void checkCaseCreated(String caseNumber) throws InterruptedException {
@@ -228,13 +229,13 @@ public class constructionsPage extends commonActionsPage {
 		filterView(commonActionsPage.WRN6NMB_Enttiyval);
 		selectFirstRecord();
 		getFirstRecord();
-		commonCRM.navigatingToTabInProject(tabName);
+		commonCRM.navigatingToTabInEntity(tabName);
 		constructionpage.newPOWSSubBtn();
 		pumpingSystem.enterSubmissionNo();
 		constructionpage.selectApprovalDate();
 		constructionpage.diameterVal(diameterValue);
 		constructionpage.setPowsSubApprovalStatus();
-		commonCRM.navigatingToTabInProject("System related information (Hidden)");
+		commonCRM.navigatingToTabInEntity("System related information (Hidden)");
 		constructionpage.enterSewerPipeType();
 		constructionpage.enterSewerDepth();
 		constructionpage.enterNearestDistance();
@@ -243,6 +244,27 @@ public class constructionsPage extends commonActionsPage {
 		constructionpage.selectInsScheduleDate();
 		clickOnSaveBtn();
 		constructionpage.waitForPOWSContactsTab();
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
+	}
+
+	public void createManualConstruction(String entityType, String accountType, String projectTitle) throws InterruptedException {
+		clickonNewBtn();
+		pumpingSystem.selectEntityType(entityType);
+		constructionpage.selectAccountSubTypeVal(accountType);
+		pumpingSystem.enterProjectReferenceNumber();
+		pumpingSystem.parameterizedProjectTitle(projectTitle);
+		pumpingSystem.enterContractorForCWD2();
+		constructionpage.enterArchitect();
+		constructionpage.enterProfEngg();
+		factory.selectCatchment();
+		pumpingSystem.enterHouseBlkNumber();
+		pumpingSystem.enterPostalCode();
+		pumpingSystem.enterRoadName();
+		commonActionsPage.CWD2_ConstructionSide=eleUtil.doGetElementAttributeLog(pumpingSystem.getProjectReferenceNumber(), "title", "Displayed value is : ");
+		clickOnSaveBtn();
+	}
+
+	public void approveEntity(String buttonName) {
+		constructionpage.entityApprove(buttonName);
 	}
 }

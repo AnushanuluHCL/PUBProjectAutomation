@@ -4,9 +4,9 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
 	#Sit1
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#When Login to app with "FIO_userid" and "FIO_pwd"
 	#Sit3
-	#When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
+	When Login to app with "SIT3_FIOUser" and "SIT3_FIOPwd"
 	And user selects App "IMB Case Management"
 
   Scenario: Create Project for Pumping System Inspection flow for Not-In-Order Recurring WO
@@ -32,9 +32,9 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 	And open "In Progress" WO and fill the Booking details and select "Completed" status
 	And logout from the application
 	#SIT1
-	When Login to app with "AO_userid" and "AO_pwd"
+	#When Login to app with "AO_userid" and "AO_pwd"
 	#SIT3
-	#When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
+	When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
 	And user selects App "IMB Case Management"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
@@ -70,9 +70,9 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 	And open "In Progress" WO and fill the Booking details and select "Completed" status
 	And logout from the application
 	#SIT1
-	When Login to app with "AO_userid" and "AO_pwd"
+	#When Login to app with "AO_userid" and "AO_pwd"
 	#SIT3
-	#When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
+	When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
 	And user selects App "IMB Case Management"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
@@ -81,3 +81,4 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 	And Validate that AO or SO get notified by Case
 	And navigate to Close stage and set Resolve Case as "Yes"
 	Then verify case is "Completed" and in read only mode
+	And logout from the application

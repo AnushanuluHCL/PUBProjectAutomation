@@ -36,4 +36,31 @@ public class WRN10IMB_EndDLP {
         casePage.workOrderCountAfterSplitForWRN10(woCount);
         casePage.verifyWorkOrderCountAfterL2(woCount);
     }
+
+    @And("navigate to SO Review stage select SO Response as {string}")
+    public void navigateToSOReviewStageSelectSOResponseAs(String soValue) throws InterruptedException {
+        casePage.completeSOReviewForWRN10IMBDLPPumping(soValue);
+    }
+
+    @Then("search and open the Pumping Main")
+    public void searchAndOpenThePumpingMain() throws InterruptedException {
+        pumpingSystem.searchPumpingMain();
+    }
+
+    @And("open {string} WO fill the checklist for Abandonment {string} for {string} and verify WO status as {string}")
+    public void openWOFillTheChecklistForAbandonmentForAndVerifyWOStatusAs(String status, String checkListName, String checkListType, String completeStatus) throws InterruptedException {
+        checkListPage.fillChecklistForWRN10Abandonment(status, checkListName, checkListType, completeStatus);
+    }
+
+    @And("navigate to SO Review stage and click on Next Stage button")
+    public void navigateToSOReviewStageAndClickOnNextStageButton() throws InterruptedException {
+        casePage.completeSOReviewForWRN10IMBAbandonmentCase();
+
+    }
+
+    @And("select {string} Case and open the case")
+    public void selectCaseAndOpenTheCase(String caseStatus) throws InterruptedException {
+        casePage.caseStatusReasonFilter(caseStatus);
+
+    }
 }

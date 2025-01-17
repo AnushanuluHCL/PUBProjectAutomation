@@ -1,10 +1,8 @@
 package com.sat.Pages;
 
+import com.sat.locators.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-
-import com.sat.locators.casePage;
-import com.sat.locators.factoryPage;
 
 public class originalCaseCreationPage extends commonActionsPage {
 	public originalCaseCreationPage(WebDriver driver) {
@@ -16,8 +14,6 @@ public class originalCaseCreationPage extends commonActionsPage {
 	commonActionsPage common= new commonActionsPage(driver);
 	caseCreationPage caseCreation = new caseCreationPage(driver);
 	factoryPage factory = new factoryPage(driver);
-	casePage casepage = new casePage(driver);
-	eatingEstablishmentPage eepage = new eatingEstablishmentPage(driver);
 
 	public void createWRNCase(String wrpCatchment, String alertSource) throws InterruptedException {
 		clickonNewBtn();
@@ -36,12 +32,12 @@ public class originalCaseCreationPage extends commonActionsPage {
 	}
 
 	public void searchAndOpenCase(String listView) throws InterruptedException {
-		cases.selectListOfActiveCases(listView);
+		cases.selectCasesListView(listView);
 		caseCreation.searchACase();
 	}
 
 	public void searchAndOpenChildCase(String listView) throws InterruptedException {
-		cases.selectListOfActiveCases(listView);
+		cases.selectCasesListView(listView);
 		caseCreation.searchChildCase();
 	}
 
@@ -49,8 +45,8 @@ public class originalCaseCreationPage extends commonActionsPage {
 		cases.workOrderCount();
 	}
 
-	public void verifyChildCase() throws InterruptedException {
-		cases.childCaseVerification();
+	public void verifyChildCase(String childCaseRefNumber) throws InterruptedException {
+		cases.childCaseVerification(childCaseRefNumber);
 		cases.openChildCaseOrCase();
 	}
 
@@ -58,13 +54,16 @@ public class originalCaseCreationPage extends commonActionsPage {
 		cases.childCaseWorkOrderVerification();
 	}
 
-	public void verifyNotificationForChildCaseAndWorkOrder() throws InterruptedException {
+	public void verifyNotificationForChildCase() throws InterruptedException {
 		cases.childCaseNotification();
+	}
+
+	public void verifyNotificationForChildCaseWorkOrder() throws InterruptedException {
 		cases.childCaseWorkOrderNotification();
 	}
 
 	public void navigateToParentCase() {
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 	}
 
 	public void applyWorkOrderStatusFilter(String status) throws InterruptedException {
@@ -170,8 +169,8 @@ public class originalCaseCreationPage extends commonActionsPage {
 		cases.soReviewForWRN11ReInspection();
 	}
 
-	public void createManualWOWRN11() {
-		cases.manualWOWRN11();
+	public void createManualWO(String workOrderType) {
+		cases.manualWOCreation(workOrderType);
 	}
 
 	public void clickHydroTestLowPressureAirTest() {
@@ -188,32 +187,32 @@ public class originalCaseCreationPage extends commonActionsPage {
 	}
 
 	public void verifyRecurringWOCreation() {
-		casepage.verifyWOType();
+		cases.verifyWOType();
 	}
 
 	public void rejectWO(String WOstatus) {
 		navigatingToTab("Work Orders");
-		casepage.rejectingWO(WOstatus);
+		cases.rejectingWO(WOstatus);
 		clickOnSaveBtn();
 	}
 	
 	public void acceptWO(String WOstatus) {
 		navigatingToTab("Work Orders");
-		casepage.acceptingWO(WOstatus);
+		cases.acceptingWO(WOstatus);
 		clickOnSaveBtn();
 	}
 
 	public void verifyNewBooking(String bookingStatus, String WOStatus) throws InterruptedException {
-		casepage.verifyNewBookingCreated(bookingStatus, WOStatus);
+		cases.verifyNewBookingCreated(bookingStatus, WOStatus);
 	}
 
 	public void updateDeviationRemarks() {
-		casepage.updateSystemAssesmentVal();
-		casepage.updateDeviationRemarks();
+		cases.updateSystemAssesmentVal();
+		cases.updateDeviationRemarks();
 		clickOnSaveBtn();
 	}
 	public void verifyIfNewCaseCreated() {
-		casepage.newCaseCheck();
+		cases.newCaseCheck();
 	}
 	public void verifyWOsCount() {
 		try {
@@ -223,7 +222,7 @@ public class originalCaseCreationPage extends commonActionsPage {
 		}
 		crmActions.getMoreButtonOnWorkOrder();
 		crmActions.getWorkOrderGridRefresh();
-		String countFromCasepage=casepage.getTheNoOfWOs();
+		String countFromCasepage=cases.getTheNoOfWOs();
 		Assert.assertEquals(countFromCasepage, common.WRN4_GTscount ,"Count is not matching");
 	}
 
@@ -236,7 +235,7 @@ public class originalCaseCreationPage extends commonActionsPage {
 		cases.caseCreationForPumpingMain(caseSubType);
 		Thread.sleep(2000);
 		clickOnSaveBtn();
-		cases.waitCaseSaveStatus();
+		cases.waitForCaseFormToSaveNGetCaseNumber();
 	}
 
 	public void verifyWorkOrderVerificationOnCase() throws InterruptedException {
@@ -245,5 +244,98 @@ public class originalCaseCreationPage extends commonActionsPage {
 
 	public void workOrderCountAfterSplitForWRN10(int woCount) throws InterruptedException {
 		cases.workOrderCountForWRN10(woCount);
+	}
+
+	public void completeSOReviewForWRN10IMBDLPPumping(String soValue) throws InterruptedException {
+		cases.soReviewForWRN10IMBDLPPumping(soValue);
+	}
+
+	public void completeSOReviewForWRN10IMBAbandonmentCase() throws InterruptedException {
+		cases.soReviewForWRN10IMBAbandonmentCase();
+	}
+
+	public void caseStatusReasonFilter(String caseStatus) throws InterruptedException {
+		cases.caseStatusFilter(caseStatus);
+		Thread.sleep(3000);
+		selectFirstRecord();
+		getFirstRecord();
+	}
+
+	public void checkCaseCreation(String caseRefNumber) throws InterruptedException {
+		factory.caseVerification(caseRefNumber);
+	}
+
+	public void completeProcessingStage() {
+		navigatingToStage("Processing");
+		cases.confirmApplicationDetailsReviewed();
+		cases.confirmDocumentsReceived();
+		cases.confirmGenerateDraftEventPermit();
+	}
+
+	public void clickGeneratePermitLetterYesButton() {
+		cases.clickOnGeneratePermitLetterYesButton();
+	}
+
+	public void verifyEventPermitWarningMessage(String warningMessage) {
+		cases.eventPermitWarningMessage(warningMessage);
+	}
+
+	public void clickAcknowledgmentConfirmationYesButton() throws InterruptedException {
+		cases.clickOnAcknowledgmentConfirmationYesButton();
+	}
+
+	public void selectRectificationDueDate() throws InterruptedException {
+		cases.rectificationDueDate();
+	}
+
+	public void selectRectificationRequired() {
+		cases.rectificationRequired();
+	}
+
+	public void createNewFormSG() {
+		cases.newFormSG();
+	}
+
+	public void selectFormSGApproveAndReject(String buttonName) {
+		cases.formSGApproveAndReject(buttonName);
+	}
+
+	public void checkRectificationSubmissionStatus(String rectificationStatus) {
+		cases.verifyRectificationSubmissionStatus(rectificationStatus);
+	}
+
+	public void checkRectificationDetails(String rectificationDocuments, String rectificationRequired) {
+		cases.verifyRectificationDetails(rectificationDocuments, rectificationRequired);
+	}
+
+	public void openWorkOrderForReInspection(String checkListName) throws InterruptedException {
+		cases.openWorkOrder(checkListName);
+	}
+
+	public void createReInspectionWorkOrder() {
+		cases.clickReInspectionButton();
+		cases.createReInspection();
+	}
+
+	public void clickResultDialogOkButton() {
+		cases.clickOnResultDialogOkButton();
+	}
+
+	public void createVesselInspection(String caseSubType, String entityValue) throws InterruptedException {
+		newCaseButton();
+		cases.enterCaseSubType(caseSubType);
+		cases.selectEntityOnCase(entityValue);
+		clickOnSaveBtn();
+		Thread.sleep(2000);
+		cases.waitForCaseFormToSaveNGetCaseNumber();
+	}
+
+	public void createReInspectionWorkOrderWithOutReInspectionPopup() {
+		cases.clickReInspectionButton();
+		cases.waitForReInspectionWorkOrderCreated();
+	}
+
+	public void getNStoreCaseNumber() {
+		cases.waitForCaseFormToSaveNGetCaseNumber();
 	}
 }

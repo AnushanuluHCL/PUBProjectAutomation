@@ -4,9 +4,9 @@ Feature: Testing WRN2- Adhoc factory inspection for non-compliance
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
 	#SIT1
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#When Login to app with "FIO_userid" and "FIO_pwd"
 	#SIT3
-	#When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 
   Scenario: Creating new ad hoc factories inspection for non-compliance
@@ -66,3 +66,4 @@ Feature: Testing WRN2- Adhoc factory inspection for non-compliance
 	And Validate that AO or SO get notified by Case
 	And navigate to AO Review stage and fill the details and navigate to next stage
 	Then verify case is "Completed" and in read only mode
+	And logout from the application

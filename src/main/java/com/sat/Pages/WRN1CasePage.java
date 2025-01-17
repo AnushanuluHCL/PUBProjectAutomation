@@ -5,12 +5,12 @@ import static org.testng.Assert.assertTrue;
 
 import java.text.ParseException;
 
+import com.sat.locators.casePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.sat.locators.WRN1CaseLocatorsPage;
-import com.sat.locators.casePage;
 import com.sat.locators.factoryPage;
 import com.sat.testUtil.Log;
 
@@ -23,6 +23,7 @@ public class WRN1CasePage extends commonActionsPage {
 	WRN1CaseLocatorsPage wrn1case = new WRN1CaseLocatorsPage(driver);
 	commonCRMActions crmActions = new commonCRMActions(driver);
 	factoryPage factoryloc = new factoryPage(driver);
+	casePage cases = new casePage(driver);
 
 	public void caseFormFieldsValidation(String status) {
 		assertEquals(verifyBUField(), "WA& TEF", "Business Function is not same");
@@ -162,7 +163,7 @@ public class WRN1CasePage extends commonActionsPage {
 	public void completeAssignmentStage() {
 		// SIT1	
 		navigatingToStage("Assignment");
-		wrn1case.confirmDocuemntsReceived();
+		cases.confirmDocumentsReceived();
 		clickOnSaveBtn();
 		navigatingToStage("Assignment");
 		clickOnNextStageBtn();

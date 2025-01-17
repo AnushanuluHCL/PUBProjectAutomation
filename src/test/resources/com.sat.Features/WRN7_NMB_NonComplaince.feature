@@ -6,7 +6,7 @@ Feature: Testing WRN7 NMB Noncompliance
     #SIT1
     When Login to app with "Admin_userid" and "Admin_pwd"
     #SIT3
-    #When Login to app with "SIT3_AOUser" and "SIT3_AOPwd"
+    #When Login to app with "sit3_AO_userid3" and "sit3_AO_pwd3"
     And user selects App "NMB Case Management"
 
   Scenario: Validate 6 Inspection cases are created and map is working for tunnel and shaft.
@@ -47,6 +47,7 @@ Feature: Testing WRN7 NMB Noncompliance
     Then go to "Documents" and verify the Document for "Inspection_Report"
     And navigate to Inspection stage and select the Inspection completed value as yes
     And navigate to Inspection stage and fill the respective details and navigate to next stage
+    And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
     Then user change the changearea to "Inspection"
@@ -79,6 +80,7 @@ Feature: Testing WRN7 NMB Noncompliance
     Then go to "Documents" and verify the Document for "Inspection_Report"
     And navigate to Inspection stage and select the Inspection completed value as yes
     And navigate to Inspection stage and fill the respective details and navigate to next stage
+    And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
     Then user change the changearea to "Inspection"
@@ -110,6 +112,7 @@ Feature: Testing WRN7 NMB Noncompliance
     Then go to "Documents" and verify the Document for "Inspection_Report"
     And navigate to Inspection stage and select the Inspection completed value as yes
     And navigate to Inspection stage and fill the respective details and navigate to next stage
+    And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
     Then user change the changearea to "Inspection"
@@ -141,6 +144,7 @@ Feature: Testing WRN7 NMB Noncompliance
     Then go to "Documents" and verify the Document for "Inspection_Report"
     And navigate to Inspection stage and select the Inspection completed value as yes
     And navigate to Inspection stage and fill the respective details and navigate to next stage
+    And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
     Then user change the changearea to "Inspection"
@@ -170,6 +174,7 @@ Feature: Testing WRN7 NMB Noncompliance
     Then go to "Documents" and verify the Document for "Inspection_Report"
     And navigate to Inspection stage and select the Inspection completed value as yes
     And navigate to Inspection stage and fill the respective details and navigate to next stage
+    And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
     Then user change the changearea to "Inspection"
@@ -199,6 +204,7 @@ Feature: Testing WRN7 NMB Noncompliance
     Then go to "Documents" and verify the Document for "Inspection_Report"
     And navigate to Inspection stage and select the Inspection completed value as yes
     And navigate to Inspection stage and fill the respective details and navigate to next stage
+    And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
     Then user change the changearea to "Inspection"

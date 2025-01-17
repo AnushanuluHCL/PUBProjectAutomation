@@ -26,7 +26,7 @@ public class dtssCreationPage extends commonActionsPage{
         crmActions.navigateToTab(tab);
         dtss.clickDTSSShaftButton();
         dtss.enterDTSSShaft(shaftType);
-        eleUtil.doClickLog(crmActions.getSaveNCloseBtn(), "Click on Save & Close button");
+        clickOnSaveNCloseBtn();
     }
 
     public void veryCaseCount(int caseCountAfterJob) {

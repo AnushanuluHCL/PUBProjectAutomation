@@ -6,28 +6,16 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Properties;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 
 import com.sat.constants.AppConstants;
-import com.sat.testUtil.ElementUtil;
-import com.sat.testUtil.JavaScriptUtil;
-import com.sat.testbase.TestBase;
 
 import io.cucumber.datatable.DataTable;
 
@@ -388,7 +376,7 @@ public class ApplicationPage extends commonActionsPage {
 		try {
 			Thread.sleep(2000);
 			// eleUtil.doActionsClick(saveCloseBtn);
-			clickonSaveAndCloseBtn();
+			clickOnSaveNCloseBtn();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -430,7 +418,7 @@ public class ApplicationPage extends commonActionsPage {
 		eleUtil.isPageLoaded(30);
 		try {
 			Thread.sleep(2000);
-			clickonSaveAndCloseBtn();
+			clickOnSaveNCloseBtn();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -19,7 +19,10 @@ Feature: Testing WRN5-New pemit complaince Functionality
 	  | WasteType        |
 	  | Human Wastewater |
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#Sit1
+	#When Login to app with "FIO_userid" and "FIO_pwd"
+	#Sit3
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "DQB Case Management"
 	And user change the changearea to "GWC Tanker"
 	And user selects entity as "Applications"
@@ -38,6 +41,7 @@ Feature: Testing WRN5-New pemit complaince Functionality
 	And verify permit is generated for the tanker
 	And verify "Permit" letter is generated
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
+	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "DQB Case Management"
 	And search for the case to open it

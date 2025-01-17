@@ -75,7 +75,7 @@ public class pumpingMainStationLocatorsPage extends commonActionsPage {
 		eleUtil.waitForVisibilityOfElement(projName, 10);
 		eleUtil.doClickLog(projName, "Clicked on Pumping Main Station Name field");
 		eleUtil.doClearUsingKeysLog(projName, "Clear the Pumping Main Station Name field");
-		commonActionsPage.WRN7NMB_Projname = "Proj7nmb_" + eleUtil.todayDateAndTime();
+		commonActionsPage.WRN7NMB_Projname = "Proj7imb_" + eleUtil.todayDateAndTime();
 		eleUtil.doSendKeysLog(projName, commonActionsPage.WRN7NMB_Projname, "Pumping Main Station Name is :");
 		Log.info("project is : " + commonActionsPage.WRN7NMB_Projname);
 	}

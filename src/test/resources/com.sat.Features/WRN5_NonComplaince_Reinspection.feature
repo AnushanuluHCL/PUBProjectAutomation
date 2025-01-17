@@ -46,6 +46,7 @@ Feature: Testing Non-Compalince end to end flow
 	And verify permit is generated for the tanker
 	And verify "Permit" letter is generated
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
+	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "DQB Case Management"
 	And search for the case to open it

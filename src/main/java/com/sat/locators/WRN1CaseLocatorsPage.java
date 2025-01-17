@@ -2,29 +2,19 @@ package com.sat.locators;
 
 import static org.testng.Assert.assertTrue;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import com.sat.Pages.commonActionsPage;
-import com.sat.Pages.commonCRMActions;
 import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 
 public class WRN1CaseLocatorsPage extends commonActionsPage {
 
-	// Locators for BPF
-	private By allDocsReceived = By.xpath("//select[@aria-label='All Documents Received']");
-	private By generateDraftEventPermit = By.cssSelector("select[aria-label='Generate Draft Event Permit']");
-	private By applicationDetailsReviewed = By.cssSelector("select[aria-label='Application Details Reviewed']");
 
-	// Locators for Lab report
+
+		// Locators for Lab report
 	private By newLabReportBtn = By.xpath("//button[contains(@aria-label,'New Lab Report')]");
 	private By sampleRefNoFieldSearchsymbol = By
 			.xpath("//button[contains(@aria-label,'Search records for  Lab Sample Ref No')]");
@@ -54,21 +44,6 @@ public class WRN1CaseLocatorsPage extends commonActionsPage {
 
 	public WRN1CaseLocatorsPage(WebDriver driver) {
 		super(driver);
-	}
-
-	public void confirmDocuemntsReceived() {
-		eleUtil.waitForVisibilityOfElementLog(allDocsReceived, 30, "Waiting for the All Documents Received element");
-		eleUtil.selectDropDownValue(allDocsReceived, "selectByVisibleText", "Yes", "Selected dropdown value is :");
-	}
-
-	public void confirmGenerateDraftEventPermit() {
-		eleUtil.waitForVisibilityOfElementLog(generateDraftEventPermit, 30, "Waiting for the Generate Draft Event Permit");
-		eleUtil.selectDropDownValue(generateDraftEventPermit, "selectByVisibleText", "Yes", "select Yes for Generate Draft Event Permit");
-	}
-
-	public void confirmApplicationDetailsReviewed() {
-		eleUtil.waitForVisibilityOfElementLog(applicationDetailsReviewed, 30, "Waiting for the Application Details Reviewed");
-		eleUtil.selectDropDownValue(applicationDetailsReviewed, "selectByVisibleText", "Yes", "select Yes Application Details Reviewed");
 	}
 
 	public void clickOnNewLabReport() {

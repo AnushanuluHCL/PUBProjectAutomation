@@ -14,18 +14,22 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	And go to "Work Orders" tab
 	Then verify work orders are created
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#SIT1
+	#When Login to app with "FIO_userid" and "FIO_pwd"
+	#SIT3
+	When Login to app with "sit3_SO_userid" and "sit3_SO_pwdd"
 	And user selects App "DQB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And go to "Child Cases" tab
-	Then verify whether case is created and open child Case
+	Then verify whether case is created with reference number "DQB/TE/I" and open child Case
 	# Verify Scenario 1
 	Then verify the new child cases are created for "High" Risk Factories under "Ulu Pandan" catchment.
 	And go to "Work Orders" tab
 	Then verify whether child case work order are created
-	Then Verify FIO receives alert notification for child case and work order.
+	Then Verify FIO receives alert notification for child case
+	Then Verify FIO receives alert notification for child case work order
 	And navigate back to parent case
 	And go to "Child Cases" tab
 	And go to "Work Orders" tab
@@ -44,7 +48,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	And get the count of Work Orders
 	Then verify count of work order should be 0
 	And go to "Child Cases" tab
-	And verify whether case is created and open child Case
+	Then verify whether case is created with reference number "DQB/TE/I" and open child Case
 	And go to "Work Orders" tab
 	And open "Scheduled" WO and fill the Booking details and select "In Progress" status
 	And go to Checklist tab create sample for lab analysis details with and fill the required checklist
@@ -61,9 +65,9 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	Then go to "All Activities" and verify the email for Request for "Non-compliance Case" and "Inspection Case has been Submitted for Review"
 	And logout from the application
 	#SIT1
-	When Login to app with "SO_userid" and "SO_pwd"
+	#When Login to app with "SO_userid" and "SO_pwd"
 	#SIT3
-	#When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
+	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "DQB Case Management"
 	# Validate SO notification and move to next stage
 	And user selects entity as "Cases"
@@ -73,9 +77,9 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	Then verify notification for lab result
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
 	#SIT1
-	When Login to app with "AO_userid" and "AO_pwd"
+	#When Login to app with "AO_userid" and "AO_pwd"
 	#SIT3
-	#When Login to app with "sit3_AO_userid3" and "sit3_AO_pwd3"
+	When Login to app with "sit3_AO_userid3" and "sit3_AO_pwd3"
 	And user selects App "DQB Case Management"
 	# Validate AO notification and move to next stage
 	And user selects entity as "Cases"
@@ -83,6 +87,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	And Validate that AO or SO get notified by Child Case
 	And navigate to AO Review stage and fill the details and navigate to next stage
 	Then verify case is "Completed" and in read only mode
+	And logout from the application
 
 	#parent case closer we cannot automate
 
@@ -97,13 +102,16 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	And go to "Work Orders" tab
 	Then verify work orders are created
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#SIT1
+	#When Login to app with "FIO_userid" and "FIO_pwd"
+	#SIT3
+	When Login to app with "sit3_SO_userid" and "sit3_SO_pwdd"
 	And user selects App "DQB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And go to "Child Cases" tab
-	Then verify whether case is created and open child Case
+	Then verify whether case is created with reference number "DQB/TE/I" and open child Case
 	Then verify the new child cases are created for "High" Risk Factories under "Kranji" catchment.
 	Then verify Parent Case ID is not blank
 	Then new child case gets created under the "WRN3" parent case.
@@ -118,13 +126,16 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	And go to "Work Orders" tab
 	Then verify work orders are created
 	And logout from the application
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#SIT1
+	#When Login to app with "FIO_userid" and "FIO_pwd"
+	#SIT3
+	When Login to app with "sit3_SO_userid" and "sit3_SO_pwdd"
 	And user selects App "DQB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And go to "Child Cases" tab
-	Then verify whether case is created and open child Case
+	Then verify whether case is created with reference number "DQB/TE/I" and open child Case
 	Then verify the new child cases are created for "High" Risk Factories under "Kranji" catchment.
 	Then verify Case sub type is "Trade Effluent Inspection".
 	And go to "Work Orders" tab

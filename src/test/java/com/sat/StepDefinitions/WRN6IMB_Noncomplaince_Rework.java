@@ -36,7 +36,7 @@ public class WRN6IMB_Noncomplaince_Rework {
 	}
 
 	@Then("verify whether case is created after POWS submisison request is approved")
-	public void verify_whether_case_is_created_after_POWS_submisison_request_is_approved() {
+	public void verify_whether_case_is_created_after_POWS_submisison_request_is_approved() throws InterruptedException {
 		constructPage.verifyCaseCreatedFor6IMB();
 	}
 

@@ -95,7 +95,7 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
     }
 
     public void logoutPowerApp() {
-        driver.navigate().refresh();
+        setRefresh();
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -114,4 +114,7 @@ public class PowerAppsAutomateFlowPage extends commonActionsPage {
         //eleUtil.doClick(OtherAccount);
     }
 
+    public void setRefresh() {
+        driver.navigate().refresh();
+    }
 }

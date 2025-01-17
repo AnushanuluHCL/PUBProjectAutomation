@@ -14,6 +14,7 @@ import java.io.IOException;
 import static org.testng.Assert.assertTrue;
 
 public class projectPage extends commonActionsPage {
+
     public projectPage(WebDriver driver) {
         super(driver);
     }
@@ -40,7 +41,6 @@ public class projectPage extends commonActionsPage {
     private By projectRefNumber = By.xpath("//div[@col-id='pub_projectreferencenumber']//a");
 
     private By importFromExcelErrorDialog = By.xpath("//div[contains(@id,'modalDialogContentContainer')]");
-    private By okButton = By.cssSelector("button[aria-label='OK']");
     private By backButton = By.cssSelector("button[aria-label='Back']");
 
     // BPU Submission and verification
@@ -78,10 +78,6 @@ public class projectPage extends commonActionsPage {
         return importFromExcelErrorDialog;
     }
 
-    public By getOkButton() {
-        return okButton;
-    }
-
     public By getBackButton() {
         return backButton;
     }
@@ -99,8 +95,8 @@ public class projectPage extends commonActionsPage {
         uploadFile(getFileUpload(), path);
         eleUtil.doClickLog(getNextButton(), "Click on Next button");
         if (eleUtil.elementIsDisplayed(getImportFromExcelErrorDialog(), "Excel import Dialog box is visible")) {
-            eleUtil.waitForVisibilityOfElement(getOkButton(), 40);
-            eleUtil.doClickLog(getOkButton(), "Click on OK button");
+            eleUtil.waitForVisibilityOfElement(cases.getOkButton(), 40);
+            eleUtil.doClickLog(cases.getOkButton(), "Click on OK button");
             eleUtil.waitForVisibilityOfElement(getBackButton(), 40);
             eleUtil.doClickLog(getBackButton(), "Click on Back button");
             eleUtil.waitForVisibilityOfElement(getNextButton(), 40);
@@ -150,8 +146,8 @@ public class projectPage extends commonActionsPage {
         uploadFile(getFileUpload(), path);
         eleUtil.doClickLog(getNextButton(), "Click on Next button");
         if (eleUtil.elementIsDisplayed(getImportFromExcelErrorDialog(), "Excel import Dialog box is visible")) {
-            eleUtil.waitForVisibilityOfElement(getOkButton(), 40);
-            eleUtil.doClickLog(getOkButton(), "Click on OK button");
+            eleUtil.waitForVisibilityOfElement(cases.getOkButton(), 40);
+            eleUtil.doClickLog(cases.getOkButton(), "Click on OK button");
             eleUtil.waitForVisibilityOfElement(getBackButton(), 40);
             eleUtil.doClickLog(getBackButton(), "Click on Back button");
             eleUtil.waitForVisibilityOfElement(getNextButton(), 40);
@@ -187,7 +183,7 @@ public class projectPage extends commonActionsPage {
         eleUtil.doClickLog(bpuSubmissionGridRefresh, "Clicked on case grid refresh button");
         long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         while (System.currentTimeMillis() < endTime) {
-            if (eleUtil.elementIsDisplayed(cases.getNoDataAvailableInSingleGrid(), "No data available")) {
+            if (eleUtil.elementIsDisplayed(crmAction.getNoDataAvailableInSingleGrid(), "No data available")) {
                 Thread.sleep(3000);
                 eleUtil.doClickLog(bpuSubmissionGridRefresh, "BPU Submission is not created, click on BPU Submission grid refresh button");
             } else {
@@ -208,7 +204,7 @@ public class projectPage extends commonActionsPage {
         selectFirstRecord();
         getFirstRecord();
         pumpingSystem.enterQualifiedPerson();
-        crmAction.clickOnSaveNCloseButton();
+        clickOnSaveNCloseBtn();
     }
 
     public void checkCaseCreated() throws InterruptedException {

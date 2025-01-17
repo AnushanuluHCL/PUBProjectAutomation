@@ -10,7 +10,6 @@ import java.util.List;
 import com.sat.constants.AppConstants;
 import com.sat.testUtil.Log;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.openqa.selenium.*;
 
 import org.openqa.selenium.interactions.Actions;
@@ -25,25 +24,26 @@ public class commonCRMActions extends commonActionsPage {
 
     ThreadLocal<Boolean> isFirstRun = ThreadLocal.withInitial(() -> Boolean.TRUE);
 
-    private static By saveNCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
     private static By refreshBtn = By.xpath("//button[@aria-label='Refresh']");
     private By notificationIcon = By.xpath("//button[@aria-label='Notifications']");
     private static By cancelBtn = By.xpath("//button[@title='Close']");
     private static By pageTitle = By.cssSelector("h1[data-id='header_title']");
     private By workOrderText = By.xpath("//input[@aria-label='Work Order Number']");
     private By notificationSection = By.xpath("//div[contains(@class,'ms-Panel-main main')]");
+    private By timelineRefresh = By.cssSelector("button[title='Refresh timeline']");
 
     // Locators on WorkOrder tab
-    private By saveNContinueBtn = By.xpath("//span[text()='Save and continue']");
+    private By saveNContinueBtn = By.cssSelector("button[aria-label='Save and continue']");
+    private By discardChangesBtn = By.cssSelector("button[aria-label='Discard changes']");
     private By durationFieldOnBooking = By.xpath("//input[@aria-label='Duration']");
 
     // Locators on work order form
     private By bookingTab = By.xpath("//li[text()='Bookings']");
-    private By checklistTab = By.xpath("//li[text()='Checklist']");
+    private By checklistTab = By.cssSelector("li[aria-label='Checklist']");
     private By emptyUserAssessment = By.xpath("//select[@aria-label='User Assessment' and @title='---']");
     private By emptySystemAssessment = By
             .xpath("//div[@data-id='pub_systemassessment'] //select[@aria-label='System Assessment' and @title='---']");
-    private By userAssessment = By.xpath("//select[@aria-label='User Assessment']");
+    private By userAssessment = By.cssSelector("select[aria-label='User Assessment']");
     private By systemAssessment = By
             .xpath("//div[@data-id='pub_systemassessment'] //select[@aria-label='System Assessment']");
 
@@ -54,9 +54,11 @@ public class commonCRMActions extends commonActionsPage {
             .xpath("//div[@class='ms-Dropdown-container'] //div[contains(@data-id,'BookingStatusControl')]");
     private By saveNCloseOnBooking = By
             .xpath("//span[text()='Save and close this Bookable Resource Booking.']/preceding-sibling::button");
+    private By workOrderForm = By.cssSelector("ul[aria-label='Work Order Form']");
     private By bookingSavedStatus = By.xpath("//span[text()='Bookable Resource Booking']/ancestor::div[contains(@class, 'flexbox')]//span[@aria-label='Save status - Saved']");
     private By saveOnBooking = By
-            .xpath("//span[text()='Save this Bookable Resource Booking.']/preceding-sibling::button");
+            .xpath("//button[contains(@title,'Save this Bookable Resource Booking.')]");
+    private By unsavedChangesPopup = By.cssSelector("h1[title='Unsaved changes']");
     private By loadingWithSaving = By.xpath("//span[text()='Saving...']");
     private By notesTab = By.xpath("//li[@aria-label='Notes']");
     private By signature_box = By.xpath("//div[contains(@data-id,'msdyn_signature')]//canvas");
@@ -73,25 +75,24 @@ public class commonCRMActions extends commonActionsPage {
     private By documentRefreshButton = By.xpath("//button[contains(@id,'document') and @aria-label='Refresh']");
     private By moreButtonDocument = By.cssSelector("button[aria-label='More commands for SIES Document']");
     private By workOrderStatusGridHeader = By.xpath("//div[@role='columnheader' and @col-id='msdyn_systemstatus']");
+    private By bookingStatusGridHeader = By.xpath("//div[@role='columnheader' and @col-id='bookingstatus']");
+    private By workOrderIncidentTypeGridHeader = By.xpath("//div[@role='columnheader' and @col-id='msdyn_primaryincidenttype']");
     private By workOrderTypeGridHeader = By.xpath("//div[@role='columnheader' and @col-id='pub_workordertype']");
     private By moreButtonOnWorkOrder = By.cssSelector("button[aria-label='More commands for Work Order']");
     private By workOrderGridRefresh = By.xpath("//ul[@data-id='OverflowFlyout'] //button[@aria-label='Refresh']");
     private By nextButtonOnWorkOrder = By
-            .xpath("//div[contains(@id,'dataSetRoot_WorkOrders')] //button[@aria-label='Next page']");
+            .xpath("//div[contains(@id,'WorkOrders')] //button[@aria-label='Next page']");
     private By searchBox = By.cssSelector("input[placeholder='Filter by keyword']");
     private By noRecord = By.xpath("//div[contains(text(),'anything to show here')]");
+    private By noDataAvailableInSingleGrid = By.xpath("//span[text()='No data available']");
     private By acknowledgeButton = By.cssSelector("button[aria-label='Acknowledge']");
     private By clickOnProposedInspectionDateCalender = By
             .xpath("//div[contains(@data-id,'pub_proposedinspectiondate.fieldControl.')] //input[@role='combobox']");
-    private By saveAndCloseOnManualBooking = By
+    private By saveAndCloseWOAcknowledgePopup = By
             .xpath("//div[contains(@id,'dialogPageContainer')] //button[@aria-label='Save & Close']");
     private By selectTodayDateAndTime = By.cssSelector("td[aria-selected='true']");
 
     // Locators on Bookings tab
-    private By resourceField = By.xpath("//div[@col-id='resource']/descendant::a");
-    private By starttimeField = By.xpath("(//div[@col-id='starttime']/descendant::label)[2]"); // (//div[@col-id='starttime'])[2]
-    private By endtimeField = By.xpath("(//div[@col-id='endtime'])[2]");
-    private By durationField = By.xpath("(//div[@col-id='duration'])[2]");
     private By WOstatusInWOform = By.xpath(
             "//select[@aria-label='WO Status']//ancestor::div[@data-lp-id='MscrmControls.FieldControls.OptionSet|msdyn_systemstatus.fieldControl|msdyn_workorder']//select");
     private By checkBOCreated = By
@@ -106,8 +107,7 @@ public class commonCRMActions extends commonActionsPage {
     private By bookingSsatusGridHeader = By.xpath("//div[@role='columnheader' and @col-id='bookingstatus']");
 
     // Locators on case home page
-    private By systemAssesmentField = By.xpath("//select[@aria-label='System Assessment']");
-    private By userAssesmentField = By.xpath("//select[@aria-label='User Assessment']");
+    private By systemAssessmentField = By.xpath("//select[@aria-label='System Assessment']");
 
     // Locators on checklist page
     private By clearResponseBtn = By.xpath("//button[@aria-label='Clear Responses']");
@@ -115,6 +115,8 @@ public class commonCRMActions extends commonActionsPage {
 
     //This code can be removed after Booking Issue is fixed
     private By bookingDuration = By.cssSelector("input[aria-label='Duration']");
+    private By recordFormPageToSaved = By.cssSelector("span[aria-label='Save status - Saved']");
+    private By checklistPageToSaved = By.cssSelector("//span[text()='Work Order Service Task']/ancestor::div[contains(@class, 'flexbox')]//span[@aria-label='Save status - Saved']");
 
     public By getUserAssessment() {
         return userAssessment;
@@ -192,12 +194,12 @@ public class commonCRMActions extends commonActionsPage {
         return cancelBtn;
     }
 
-    public static By getSaveNCloseBtn() {
-        return saveNCloseBtn;
-    }
-
     public By getNoRecord() {
         return noRecord;
+    }
+
+    public By getNoDataAvailableInSingleGrid() {
+        return noDataAvailableInSingleGrid;
     }
 
     public By getAcknowledgeButton() {
@@ -208,8 +210,8 @@ public class commonCRMActions extends commonActionsPage {
         return clickOnProposedInspectionDateCalender;
     }
 
-    public By getSaveAndCloseOnManualBooking() {
-        return saveAndCloseOnManualBooking;
+    public By getSaveAndCloseWOAcknowledgePopup() {
+        return saveAndCloseWOAcknowledgePopup;
     }
 
     public void resetFirstRunFlag() {
@@ -226,11 +228,6 @@ public class commonCRMActions extends commonActionsPage {
 
     public By getBookingRefreshButton() {
         return bookingRefreshButton;
-    }
-
-    public static void clickOnSaveNCloseButton() {
-        eleUtil.waitTillElementIsDisplayed(getSaveNCloseBtn(), 150);
-        eleUtil.doClickLog(getSaveNCloseBtn(), "Click on Save & Close button");
     }
 
     public void clickOnSaveButton() {
@@ -260,7 +257,7 @@ public class commonCRMActions extends commonActionsPage {
                     if (WOalert == null || !WOalert.isDisplayed()) {
                         eleUtil.doClickLog(getCancelBtn(), "Click on Cancel button");
                         eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
-                        navigateToTab(tab);
+                        navigatingToTab(tab);
                         Log.error("Actual Case number is not matched with the open Case number");
                         continue; // Restart the while loop
                     }
@@ -277,7 +274,7 @@ public class commonCRMActions extends commonActionsPage {
                 Log.info("afterTapToOpenBtn: " + afterTapToOpenBtn);
                 assertTrue(afterTapToOpenBtn.contains(text),
                         "Record is not the same after clicking on tap to open button");
-                clickOnSaveNCloseButton();
+                clickOnSaveNCloseBtn();
                 driver.switchTo().window(tabs.get(0));
                 eleUtil.doClick(getCancelBtn());
                 break;
@@ -320,16 +317,12 @@ public class commonCRMActions extends commonActionsPage {
         eleUtil.waitForVisibilityOfElement(notesTab, 100);
         jsutil.clickElementByJS(driver.findElement(notesTab));
         eleUtil.doElementClickable(signature_box, 20);
-        // eleUtil.doActionsClick(notesTab);
         Actions actions = new Actions(driver);
         actions.dragAndDropBy(driver.findElement(signature_box), 135, 0).build().perform();
         eleUtil.doElementClickable(confirmBtn, 30);
-        eleUtil.doClick(confirmBtn);
+        eleUtil.doClickLog(confirmBtn, "Click on Confirm button");
         eleUtil.waitForVisibilityOfElement(nameOfAssignee, 30);
-        eleUtil.doSendKeys(nameOfAssignee, "FIO");
-        eleUtil.doElementClickable(saveOnBooking, 100);
-        eleUtil.doClick(saveOnBooking);
-        eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 100);
+        eleUtil.doSendKeysLog(nameOfAssignee, "FIO", "Enter Name of Assignee");
     }
 
     public List<String> getWONumber() {
@@ -419,44 +412,55 @@ public class commonCRMActions extends commonActionsPage {
             eleUtil.doClick(getBookingTab());
             Thread.sleep(2000);
             checkBookingsOrder();
+            bookingsStatusFilter(status);
             selectFirstRecord();
             getFirstRecord();
-            // SIT1 code- Uncomment getMaximizeScreenBtn while running in SIT3
-			/*eleUtil.doElementClickable(getMaximizeScreenBtn(), 30);
-			eleUtil.doClick(getMaximizeScreenBtn());*/
+            //SIT1 code-Comment getMaximizeScreenBtn while running in SIT3
+            //eleUtil.doElementClickable(getMaximizeScreenBtn(), 30);
+            //eleUtil.doClick(getMaximizeScreenBtn());
             Thread.sleep(4000);
             eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
-            //eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");
             attemptsDifferentClicks(bookingStatusField);
             By selectAnOption = By.cssSelector("button[title='" + selectBookingStatus + "']");
-            By bookingStatus = By
-                    .xpath("//div[@aria-label='Booking Status Control' and @title='" + selectBookingStatus + "']");
             eleUtil.doClickWithWait(selectAnOption, 40);
             //bookingIssue(); // This method can be removed once Booking issue is resolved
-            eleUtil.doElementClickable(saveOnBooking, 10);
-            eleUtil.doClick(saveOnBooking);
-            eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 100);
-            eleUtil.waitForVisibilityOfElement(bookingStatus, 100);
             if (status.equals("Scheduled")) {
                 signTheChecklist();
             }
-            eleUtil.waitForVisibilityOfElement(bookingSavedStatus, 100);
-            eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
-            eleUtil.doElementClickable(saveNCloseOnBooking, 10);
-            eleUtil.doClick(saveNCloseOnBooking);
-            while (true) {
-                try {
-                    eleUtil.doElementClickable(saveNContinueBtn, 10);
-                    eleUtil.doClick(saveNContinueBtn);
-                } catch (org.openqa.selenium.NoSuchElementException e) {
-                    break;
+            Log.info("------Booking Saving Process Started-------");
+            while (!eleUtil.elementIsDisplayed(bookingSavedStatus, "Booking is not in Saved status")) {
+                try { // Comment the below code once this issue got resolved
+                    Thread.sleep(2000);
+                    if (eleUtil.elementIsDisplayed(unsavedChangesPopup, "Unsaved Changes popup")) {
+                        eleUtil.waitForVisibilityOfElement(saveNContinueBtn, 30);
+                        while (true) {
+                            List<WebElement> saveNContinueButtons = driver.findElements(saveNContinueBtn);
+                            if (saveNContinueButtons .isEmpty()) {
+                                break;
+                            }
+                            for (WebElement button : saveNContinueButtons) {
+                                try {
+                                    button.click();
+                                    Log.info("Popup Closed");
+                                    // Refresh the list of elements after each click
+                                    saveNContinueButtons = driver.findElements(saveNContinueBtn);
+                                } catch (Exception e) {
+                                    Log.error("Error clicking on Save and Continue button: {}" + e.getMessage());
+                                }
+                            }
+                        }
+                    } else {
+                        eleUtil.doClickLog(saveOnBooking, "Click on Save button");
+                        eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 30);
+                    }
+                } catch (Exception e) {
+                    Log.error("An unexpected error occurred");
                 }
             }
-            try {
-                clickOnSaveNCloseButton();
-            } catch (Exception e) {
-                eleUtil.doActionsClick(getSaveNCloseBtn());
-            }
+            eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 30);
+            eleUtil.doClickLog(saveNCloseOnBooking, "Click on Save and Close button on Bookings page");
+            eleUtil.waitForVisibilityOfElement(workOrderForm, 40);
+            clickOnSaveNCloseBtn();
         }
         resetFirstRunFlag();
     }
@@ -519,8 +523,8 @@ public class commonCRMActions extends commonActionsPage {
                 Actions a = new Actions(driver);
                 a.moveToElement(dynamicElement).click().build().perform();
                 a.doubleClick(dynamicElement).build().perform();
-                eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
-                eleUtil.doClick(getMaximizeScreenBtn());
+                //eleUtil.doElementClickable(getMaximizeScreenBtn(), 10);
+                //eleUtil.doClick(getMaximizeScreenBtn());
                 if (selectBookingStatus.equals("Scheduled")) {
                     eleUtil.waitForVisibilityOfElement(bookingStatusField, 100);
                     eleUtil.doClickLog(bookingStatusField, "Click on Booking Status");
@@ -532,6 +536,7 @@ public class commonCRMActions extends commonActionsPage {
                     eleUtil.waitForInVisibilityOfElement(loadingWithSaving, 100);
                 }
                 signTheChecklist();
+                Thread.sleep(5000);
                 eleUtil.waitForVisibilityOfElement(saveNCloseOnBooking, 100);
                 eleUtil.doElementClickable(saveNCloseOnBooking, 10);
                 eleUtil.doClick(saveNCloseOnBooking);
@@ -544,11 +549,7 @@ public class commonCRMActions extends commonActionsPage {
                     }
                 }
             }
-            try {
-                clickOnSaveNCloseButton();
-            } catch (Exception e) {
-                eleUtil.doActionsClick(getSaveNCloseBtn());
-            }
+            clickOnSaveNCloseBtn();
         }
         resetFirstRunFlag();
     }
@@ -556,7 +557,9 @@ public class commonCRMActions extends commonActionsPage {
     public void openCheckList(String woNumber, String checkListName, String status) throws InterruptedException {
         Thread.sleep(2000);
         processWorkOrder(woNumber, status);
-        eleUtil.doClick(getChecklistTab());
+        eleUtil.waitForVisibilityOfElement(getChecklistTab(), 30);
+        eleUtil.staleElementRefExecClickCRM(getChecklistTab());
+        eleUtil.doClickLog(getChecklistTab(), "Click on Checklist tab");
         String actualName = eleUtil.doGetElementAttribute(getCheckListNameField(), "aria-label");
         assertTrue(actualName.contains(checkListName), "Checklist name is not matching");
         eleUtil.doElementClickable(getCheckListNameField(), 20);
@@ -578,11 +581,7 @@ public class commonCRMActions extends commonActionsPage {
         eleUtil.staleElementRefExecClickCRM(getSaveNCloseBtnInChklist());
         Thread.sleep(2000);
         eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
-        try {
-            clickOnSaveNCloseButton();
-        } catch (Exception e) {
-            eleUtil.doActionsClick(getSaveNCloseBtn());
-        }
+        clickOnSaveNCloseBtn();
     }
 
     public void emailCheck(String subjectName) throws InterruptedException {
@@ -636,7 +635,7 @@ public class commonCRMActions extends commonActionsPage {
                 Log.info("afterTapToOpenBtn: " + afterTapToOpenBtn);
                 assertTrue(afterTapToOpenBtn.contains(titleOnParentPage),
                         "Record is not the same after clicking on tap to open button");
-                clickOnSaveNCloseButton();
+                clickOnSaveNCloseBtn();
                 driver.switchTo().window(tabs.get(0));
                 eleUtil.waitForVisibilityOfElement(getCancelBtn(), 30);
                 eleUtil.doClick(getCancelBtn());
@@ -671,7 +670,8 @@ public class commonCRMActions extends commonActionsPage {
         driver.findElement(getSearchBox()).sendKeys(Keys.ENTER);
         long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         while (System.currentTimeMillis() < endTime) {
-            if (eleUtil.elementIsDisplayed(getNoRecord(), "No data available")) {
+            if (eleUtil.elementIsDisplayed(getNoRecord(), "Nothing to Show here ") ||
+                    eleUtil.elementIsDisplayed(getNoDataAvailableInSingleGrid(), "No data available ")) {
                 Thread.sleep(3000);
                 eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
             } else {
@@ -719,13 +719,7 @@ public class commonCRMActions extends commonActionsPage {
             Thread.sleep(2000);
             processWorkOrder(woNum.get(i), status);
             // create Booking Manually
-            eleUtil.waitForVisibilityOfElement(getAcknowledgeButton(), 30);
-            eleUtil.doClickLog(getAcknowledgeButton(), "click on Acknowledge button");
-            eleUtil.waitForVisibilityOfElement(getClickOnProposedInspectionDateCalender(), 30);
-            eleUtil.doSendKeysLog(getClickOnProposedInspectionDateCalender(),
-                    eleUtil.todayDatePlusDays("MM/dd/yyyy", 2), "Enter today's date + 2");
-            eleUtil.doClickLog(getSaveAndCloseOnManualBooking(), "click on save and close button on Manual Booking");
-            Thread.sleep(2000);
+            acknowledgeWorkOrder("MM/dd/yyyy");
             eleUtil.waitForVisibilityOfElement(getRefreshBtn(), 100);
             eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
             long endTime = System.currentTimeMillis() + 5 * 60 * 1000; // 5 minutes from now
@@ -736,7 +730,7 @@ public class commonCRMActions extends commonActionsPage {
                         eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
                     } else {
                         // If the element is not displayed, execute the else block logic
-                        clickOnSaveNCloseButton();
+                        clickOnSaveNCloseBtn();
                         return; // Exit the method
                     }
                 } catch (NoSuchElementException e) {
@@ -795,7 +789,7 @@ public class commonCRMActions extends commonActionsPage {
             // "aria-label", "WO Status value is : ");
             assertEquals(actualStatusval, WOstatus, "WO status is not same");
             Log.info("Booking sttaus is : " + actualStatusval);
-            clickOnSaveNCloseButton();
+            clickOnSaveNCloseBtn();
         }
     }
 
@@ -815,9 +809,8 @@ public class commonCRMActions extends commonActionsPage {
         long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         while (System.currentTimeMillis() < endTime) {
             if (!eleUtil.elementIsDisplayed(loc, subjectName)) {
-                eleUtil.waitForVisibilityOfElement(getRefreshBtn(), 50);
-                eleUtil.doClickLog(getRefreshBtn(), "Clicked on refresh button");
-                navigateToTab("All Activities");
+                eleUtil.waitForVisibilityOfElement(timelineRefresh, 50);
+                eleUtil.doClickLog(timelineRefresh, "Clicked on refresh timeline button");
                 Thread.sleep(1000); // Wait for 1 second before checking again
             } else {
                 Log.info("Email is visible " + subjectName);
@@ -826,16 +819,16 @@ public class commonCRMActions extends commonActionsPage {
         }
     }
 
-    public void verifySystemAssesmentOnCaseHome(String asses) {
+    public void verifySystemAssessmentOnCaseHome(String asses) {
         navigatingToTab("Inspection Case Information");
         clickOnRefreshBtnOnHome();
-        eleUtil.waitForVisibilityOfElement(systemAssesmentField, 30);
-        String SystemAssesmentVal = eleUtil.doGetElementAttributeLog(systemAssesmentField, "title",
+        eleUtil.waitForVisibilityOfElement(systemAssessmentField, 30);
+        String SystemAssesmentVal = eleUtil.doGetElementAttributeLog(systemAssessmentField, "title",
                 "Displayed System Assesment is : ");
         assertEquals(SystemAssesmentVal, asses, "System Assesment is not same");
 
-        eleUtil.waitForVisibilityOfElement(userAssesmentField, 0);
-        String UserAssesmentVal = eleUtil.doGetElementAttributeLog(userAssesmentField, "title",
+        eleUtil.waitForVisibilityOfElement(getUserAssessment(), 0);
+        String UserAssesmentVal = eleUtil.doGetElementAttributeLog(getUserAssessment(), "title",
                 "Displayed User Assesment is : ");
         assertEquals(UserAssesmentVal, asses, "System Assesment is not same");
     }
@@ -862,7 +855,7 @@ public class commonCRMActions extends commonActionsPage {
                     Log.info("afterTapToOpenBtn: " + afterTapToOpenBtn);
                     assertTrue(afterTapToOpenBtn.contains(text),
                             "Record is not the same after clicking on tap to open button");
-                    clickOnSaveNCloseButton();
+                    clickOnSaveNCloseBtn();
                     driver.switchTo().window(tabs.get(0));
                     eleUtil.doClick(getCancelBtn());
                     break;
@@ -959,7 +952,7 @@ public class commonCRMActions extends commonActionsPage {
         resetFirstRunFlag();
     }
 
-    public void goToBookings() {
+    public void openWOGoToBookings() {
         selectFirstRecord();
         getFirstRecord();
         eleUtil.waitForVisibilityOfElement(getBookingTab(), 30);
@@ -983,6 +976,7 @@ public class commonCRMActions extends commonActionsPage {
             if (actualStatusVal.equals(completeStatus)) {
                 break;
             } else {
+                Thread.sleep(2000);
                 eleUtil.doClick(refreshBtn);
             }
         }
@@ -1009,26 +1003,100 @@ public class commonCRMActions extends commonActionsPage {
         }
     }
 
-    public void newSaveChecklist(String completeStatus, String value) throws InterruptedException {
+    public void saveAndMarkCompleteChecklist() throws InterruptedException {
         eleUtil.doClick(getSaveBtnInChklist());
-        System.out.println("clicked on save button");
         Thread.sleep(3000);
-        eleUtil.doElementClickable(getMarkCompleteBtn(), 40);
-        try {
-            eleUtil.doClick(getMarkCompleteBtn());
-        } catch (Exception e) {
-            eleUtil.doActionsClick(getMarkCompleteBtn());
-        }
+        waitForChecklistPageToSaved();
+        eleUtil.doElementClickable(getMarkCompleteBtn(), 50);
+        attemptsDifferentClicks(getMarkCompleteBtn());
         eleUtil.staleElementRefExecClickCRM(getSaveNCloseBtnInChklist());
         Thread.sleep(2000);
         eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
+    }
+
+    public void checkWOSystemAndUserDetails(String completeStatus, String value) throws InterruptedException {
         navigateToTab("Summary");
         checkWOStatus(completeStatus);
         checkSystemAndUserAssessment(value);
+    }
+
+    public void workOrderIncidentTypeFilter(String checkListName) throws InterruptedException {
+        eleUtil.isPageLoaded(50);
+        eleUtil.waitForVisibilityOfElement(workOrderIncidentTypeGridHeader, 100);
+        Thread.sleep(3000);
+        attemptsDifferentClicks(workOrderIncidentTypeGridHeader);
+        filterViewForTextValueType(checkListName);
+        eleUtil.doClickLog(getMoreButtonOnWorkOrder(), "Clicked on work order grid refresh button");
+        eleUtil.doClickLog(getWorkOrderGridRefresh(), "Work Order not created click on work order grid refresh button");
+        eleUtil.isPageLoaded(30);
+        Thread.sleep(2000);
+    }
+
+    public void clickSaveNContinueBtn() {
         try {
-            clickOnSaveNCloseButton();
-        } catch (Exception e) {
-            eleUtil.doActionsClick(getSaveNCloseBtn());
+            eleUtil.waitForVisibilityOfElement(saveNContinueBtn, 90);
+            eleUtil.doClick(saveNContinueBtn);
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            // Handle the exception, for example, log the error or take some other action
+            Log.error("Element not found: " + e.getMessage());
         }
+    }
+
+    public void clickDiscardChanges() {
+        try {
+            eleUtil.waitForVisibilityOfElement(discardChangesBtn, 90);
+            eleUtil.doClick(discardChangesBtn);
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            // Handle the exception, for example, log the error or take some other action
+            Log.error("Element not found: " + e.getMessage());
+        }
+    }
+
+    public void bookingsStatusFilter(String status) throws InterruptedException {
+        eleUtil.isPageLoaded(50);
+        eleUtil.waitForVisibilityOfElement(bookingStatusGridHeader, 100);
+        Thread.sleep(3000);
+        attemptsDifferentClicks(bookingStatusGridHeader);
+        filterViewForTextValueType(status);
+        eleUtil.waitTillElementIsDisplayed(getBookingRefreshButton(), 30);
+        eleUtil.doClickLog(getBookingRefreshButton(),
+                "Booking not created click on Booking grid refresh button");
+        eleUtil.isPageLoaded(30);
+        Thread.sleep(2000);
+    }
+
+    public void waitForRecordFormPageToSaved() {
+        eleUtil.waitForVisibilityOfElement(recordFormPageToSaved, 200);
+    }
+
+    public void waitForChecklistPageToSaved() {
+        eleUtil.waitForVisibilityOfElement(checklistPageToSaved, 200);
+    }
+
+    public void checkUserAssessment(String value) throws InterruptedException {
+        long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
+        while (System.currentTimeMillis() < endTime) {
+            if (eleUtil.elementIsDisplayed(emptyUserAssessment, "User Assessment is empty")) {
+                eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
+                Thread.sleep(1000); // Wait for 1 second before checking again
+            } else {
+                try {
+                    eleUtil.textVerificationFormAttribute(getUserAssessment(), "title", value);
+                    break;
+                } catch (NoSuchElementException e) {
+                    Log.error("System and User Assessment are empty: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void acknowledgeWorkOrder(String format) throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(getAcknowledgeButton(), 30);
+        eleUtil.doClickLog(getAcknowledgeButton(), "click on Acknowledge button");
+        eleUtil.waitForVisibilityOfElement(getClickOnProposedInspectionDateCalender(), 30);
+        eleUtil.doSendKeysLog(getClickOnProposedInspectionDateCalender(),
+                eleUtil.todayDatePlusDays(format, 2), "Enter today's date + 2");
+        eleUtil.doClickLog(getSaveAndCloseWOAcknowledgePopup(), "click on save and close button on Manual Booking");
+        Thread.sleep(2000);
     }
 }

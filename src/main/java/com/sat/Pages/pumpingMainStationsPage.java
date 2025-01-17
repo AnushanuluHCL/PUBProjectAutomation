@@ -3,13 +3,10 @@ package com.sat.Pages;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.text.ParseException;
-
 import org.openqa.selenium.WebDriver;
 
 import com.sat.locators.ConstructionLocatorsPage;
 import com.sat.locators.WAApplicationLocatorsPage;
-import com.sat.locators.factoryPage;
 import com.sat.locators.pumpingMainStationLocatorsPage;
 
 public class pumpingMainStationsPage extends commonActionsPage {
@@ -23,26 +20,26 @@ public class pumpingMainStationsPage extends commonActionsPage {
 		super(driver);
 	}
 
-	public void entityCreation(String entityVal, String catchmentValue, String month) {
+	public void entityCreation(String entityVal, String catchmentValue) {
 		clickonNewBtn();
 		pumpingStation.entityTypeselection(entityVal);
 		pumpingStation.entityName();
 		pumpingStation.pumpingStationId();
 		waapp.catchment(catchmentValue);
-		pumpingStation.selectMonth(month);
+		pumpingStation.selectMonth(eleUtil.getNextMonthName());
 		clickOnSaveBtn();
 	}
 
 	public void chamberCreation(int numberOfRecords) throws InterruptedException {
-		navigatingToTabInProject("Chambers");
+		navigatingToTabInEntity("Chambers");
 		for (int i = 1; i <= numberOfRecords; i++) {
 			pumpingStation.clickonNewBtnInChamber();
 			pumpingStation.chamberID();
 			pumpingStation.chamberName();
 			clickOnSaveBtn();
-			clickonSaveAndCloseBtn();
+			clickOnSaveNCloseBtn();
 		}
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 		
 	}
 	public void verifyWRN7NMBCaseCreated() throws InterruptedException {

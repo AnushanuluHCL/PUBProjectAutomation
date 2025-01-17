@@ -4,6 +4,7 @@ import com.sat.Pages.commonActionsPage;
 import com.sat.Pages.commonCRMActions;
 import com.sat.testUtil.Log;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -18,6 +19,7 @@ public class pumpingSystemPage extends commonActionsPage {
 
     commonCRMActions crmActions = new commonCRMActions(driver);
     factoryPage factory = new factoryPage(driver);
+    dtssPage dtss = new dtssPage(driver);
 
     //Pumping System with Entity Type as Pumping System
     private By entityType = By.cssSelector("select[aria-label='Entity Type']");
@@ -111,6 +113,7 @@ public class pumpingSystemPage extends commonActionsPage {
         eleUtil.doClickLog(getProjectReferenceNumber(), "Clicked on Project Reference Number field");
         eleUtil.doClearUsingKeysLog(getProjectReferenceNumber(), "Clear the Project Reference Number field");
         eleUtil.doSendKeysLog(getProjectReferenceNumber(),"A" +eleUtil.currentDateTime("ddMMyyyy"), " Project Reference Number is : A" +eleUtil.currentDateTime("ddMMyyyy"));
+        commonCRMActions.pumpingMain = crmActions.setPageTitle();
     }
 
     public void enterProjectTitle() {
@@ -167,7 +170,7 @@ public class pumpingSystemPage extends commonActionsPage {
 
     public void enterBPDOfficer() throws InterruptedException {
         eleUtil.waitForVisibilityOfElement(getBPDOfficer(), 30);
-        eleUtil.doClearUsingKeyswithWait(getBPDOfficer(), 30);
+        eleUtil.doClearUsingKeysWithWait(getBPDOfficer(), 30);
         eleUtil.doSendKeysWithWaitEnter(getBPDOfficer(), "BPD SANITY" , 30);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
     }
@@ -181,7 +184,7 @@ public class pumpingSystemPage extends commonActionsPage {
 
     public void enterQualifiedPerson() throws InterruptedException {
         eleUtil.waitForVisibilityOfElement(getQualifiedPerson(), 30);
-        eleUtil.doClearUsingKeyswithWait(getQualifiedPerson(), 30);
+        eleUtil.doClearUsingKeysWithWait(getQualifiedPerson(), 30);
         eleUtil.doSendKeysWithWaitEnter(getQualifiedPerson(), "QP Contractor" , 40);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
     }
@@ -225,4 +228,28 @@ public class pumpingSystemPage extends commonActionsPage {
         commonActionsPage.casenumber = crmActions.setPageTitle();
     }
 
+    public void searchAPumpingMain() throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(dtss.getSearchBoxForEntity(), 20);
+        Thread.sleep(2000);
+        eleUtil.doSendKeys(dtss.getSearchBoxForEntity(), commonActionsPage.pumpingMain);
+        eleUtil.isPageLoaded(50);
+        Thread.sleep(2000);
+        driver.findElement(dtss.getSearchBoxForEntity()).sendKeys(Keys.ENTER);
+        Thread.sleep(3000);
+        selectFirstRecord();
+        getFirstRecord();
+    }
+
+    public void parameterizedProjectTitle(String projectTitle) {
+        eleUtil.waitTillElementIsDisplayed(getProjectTitle(), 30);
+        eleUtil.doClickLog(getProjectTitle(), "Clicked on Project Title field");
+        eleUtil.doClearUsingKeysLog(getProjectTitle(), "Clear the Project Title Number field");
+        eleUtil.doSendKeysLog(getProjectTitle(),projectTitle, "Enter Project Title");
+    }
+
+    public void enterContractorForCWD2() throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(getContractor(), 30);
+        eleUtil.doClearUsingKeysLog(getContractor(), "Clear the Contractor field");
+        eleUtil.doSendKeysWithWaitEnter(getContractor(), "Zhang Jie" , 30);
+    }
 }

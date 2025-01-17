@@ -1,5 +1,6 @@
 package com.sat.Pages;
 
+import com.sat.locators.casePage;
 import com.sat.locators.factoryPage;
 
 import static org.testng.Assert.assertEquals;
@@ -14,6 +15,7 @@ public class factoryCreationPage extends commonActionsPage {
 
 	factoryPage factory = new factoryPage(driver);
 	commonCRMActions crmActions = new commonCRMActions(driver);
+	casePage cases = new casePage(driver);
 
 	// String WQPath = "\\src\\test\\resources\\testdata\\SIT_WQ 2 3 1 2.xlsx";
 	// String tefFilePath ="\\src\\test\\resources\\testdata\\WQ_Sample_NC.xlsx";
@@ -121,7 +123,7 @@ public class factoryCreationPage extends commonActionsPage {
 
 	public void verifyCaseStatus(String status) throws InterruptedException {
 		factory.clickOnSavingInProgressOkButton();
-		factory.checkCaseStatus(status);
+		cases.checkCaseStatus(status);
 	}
 
 	public void verifyWAStatus(String status) {
@@ -139,7 +141,7 @@ public class factoryCreationPage extends commonActionsPage {
 		factory.tradeGrpVal(tradeGrp);
 		factory.fpeVal(fpeVal);
 		factory.WANumberVal(WAnumVal);
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 	}
 
 	public void uploadTEFReport(String tefFilePath) throws InterruptedException {

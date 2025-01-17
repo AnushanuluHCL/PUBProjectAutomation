@@ -67,7 +67,7 @@ public class dtssPage extends commonActionsPage {
         eleUtil.doClickLog(dtssShaftName, "Clicked on Shaft Name field");
         eleUtil.doClearUsingKeysLog(dtssShaftName, "Clear the Shaft Name field");
         eleUtil.doSendKeysLog(dtssShaftName, shaftName, "Shaft Name is :");
-        eleUtil.doClearUsingKeyswithWait(zone, 30);
+        eleUtil.doClearUsingKeysWithWait(zone, 30);
         eleUtil.doSendKeysWithWaitEnter(zone, "West", 30);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
     }

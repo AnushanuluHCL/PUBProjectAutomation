@@ -38,7 +38,7 @@ public class WRN6NMB_Noncomplaince_Rework {
 
     @And("open work order and go to Bookings tab")
     public void openWorkOrderAndGoToBookingsTab() {
-        crmActions.goToBookings();
+        crmActions.openWOGoToBookings();
     }
 
     @Then("verify {int} bookings are created")

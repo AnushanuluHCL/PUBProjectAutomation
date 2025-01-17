@@ -100,9 +100,9 @@ public class NEAListPage extends commonActionsPage {
     public void creationOfNEAListRecord(String companyname, String VehicleNum, String Vehicletype, String Capacity, String RegOrDereg, String iteration) throws InterruptedException {
         // eleUtil.clickElementWhenReady(newBtn, AppConstants.SHORT_DEFAULT_WAIT);
         eleUtil.doClickWithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
-        eleUtil.doClearUsingKeyswithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
+        eleUtil.doClearUsingKeysWithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
         eleUtil.doSendKeysWithWait(companyName, getRandomTankercompanyName(iteration), AppConstants.LONG_DEFAULT_WAIT);
-        eleUtil.doClearUsingKeyswithWait(vehicleNo, AppConstants.LONG_DEFAULT_WAIT);
+        eleUtil.doClearUsingKeysWithWait(vehicleNo, AppConstants.LONG_DEFAULT_WAIT);
         eleUtil.doSendKeysWithWait(vehicleNo, getRandomTankerName(), AppConstants.LONG_DEFAULT_WAIT);
         eleUtil.doClearUsingKeys(vehicleType);
         eleUtil.doSendKeys(vehicleType, Vehicletype);
@@ -144,7 +144,7 @@ public class NEAListPage extends commonActionsPage {
          * System.out.println("value is :" + SIESGWCCompanyfieldval);
          */
         // eleUtil.doClick(saveCloseBtn);
-        clickonSaveAndCloseBtn();
+        clickOnSaveNCloseBtn();
         System.out.println("NEA Record created successfully");
         newrecord();
 
@@ -188,9 +188,9 @@ public class NEAListPage extends commonActionsPage {
             clickNewButton();
             Thread.sleep(3000);
             eleUtil.doClickWithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
-            eleUtil.doClearUsingKeyswithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
+            eleUtil.doClearUsingKeysWithWait(companyName, AppConstants.LONG_DEFAULT_WAIT);
             eleUtil.doSendKeysWithWait(companyName, company.get(x), AppConstants.LONG_DEFAULT_WAIT);
-            eleUtil.doClearUsingKeyswithWait(vehicleNo, AppConstants.LONG_DEFAULT_WAIT);
+            eleUtil.doClearUsingKeysWithWait(vehicleNo, AppConstants.LONG_DEFAULT_WAIT);
             eleUtil.doSendKeysWithWait(vehicleNo, tanker.get(x), AppConstants.LONG_DEFAULT_WAIT);
             eleUtil.doClearUsingKeys(vehicleType);
             eleUtil.doSendKeys(vehicleType, vehicle_type);
@@ -223,7 +223,7 @@ public class NEAListPage extends commonActionsPage {
                 }
             }
 
-            clickonSaveAndCloseBtn();
+            clickOnSaveNCloseBtn();
             System.out.println("NEA Record created successfully");
             sortTheRecords(createdonCol, NewToOldCol, AppConstants.LONG_DEFAULT_WAIT);
             commonActionsPage.Tankercompanyname = getTankercompName();
