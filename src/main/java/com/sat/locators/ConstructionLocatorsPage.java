@@ -588,4 +588,10 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 	public void waitForPOWSContactsTab() {
 		eleUtil.waitForVisibilityOfElement(powsContacts, 50);
 	}
+
+	public void entityApprove(String buttonName) {
+		By button = By.xpath("//button[contains(@aria-label,'" + buttonName + "')]");
+		eleUtil.waitForVisibilityOfElement(button, 40);
+		eleUtil.doClickLog(button, "Click on " + buttonName + " button");
+	}
 }

@@ -21,7 +21,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	Then verify Work Order created
 	And logout from the application
 	#SIT1
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#When Login to app with "FIO_userid" and "FIO_pwd"
 	#SIT3
 	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "IMB Case Management"
@@ -43,7 +43,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	Then go to "Documents" and verify the Document for "Inspection_Report"
 	And logout from the application
 	#SIT1
-	When Login to app with "SO_userid" and "SO_pwd"
+	#When Login to app with "SO_userid" and "SO_pwd"
 	#SIT3
 	When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
 	And user selects App "IMB Case Management"
@@ -53,7 +53,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage and fill the respective details and navigate to next stage
 	#SIT1
-	When Login to app with "AO_userid" and "AO_pwd"
+	#When Login to app with "AO_userid" and "AO_pwd"
 	#SIT3
 	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "IMB Case Management"
@@ -64,6 +64,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	Then go to "All Activities" and verify the email for "Inspection Case has been Submitted for Review"
 	And navigate to AO Review stage and fill the respective details
 	Then verify case is "Completed" and in read only mode
+	And logout from the application
 	Examples:
 	  | Project_Mukim_Lot_No. | Diameter | Affected by DTSS | Affected by Sewer | Affected Pumping Main |
 	  | 4536456               | 1000     | No               | No                | Yes                   |

@@ -31,11 +31,11 @@ public class AuditinspectionStepdefs {
 		powerapppage.runCloudFlow(job);
 	}
 	@And("change the configuration to create cases today")
-	public void change_the_configuration_to_create_cases_today() {
+	public void change_the_configuration_to_create_cases_today() throws InterruptedException {
 		casepage.tpConfigChangeForAudit();
 	}
 	@And("verify that tanker audit cases are created")
-	public void verify_that_tanker_audit_cases_are_created() {
+	public void verify_that_tanker_audit_cases_are_created() throws InterruptedException {
 		casepage.verifyingCreatedCases();
 	}
 

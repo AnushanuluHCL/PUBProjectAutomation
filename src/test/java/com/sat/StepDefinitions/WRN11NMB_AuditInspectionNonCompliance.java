@@ -107,9 +107,9 @@ public class WRN11NMB_AuditInspectionNonCompliance {
         casePage.completeSOReviewForWRN11ReInspection();
     }
 
-    @And("create manual Work Order")
-    public void createManualWorkOrder() {
-        casePage.createManualWOWRN11();
+    @And("create manual Work Order of Work Order Type {string}")
+    public void createManualWorkOrderOfWorkOrderType(String workOrderType) {
+        casePage.createManualWO(workOrderType);
     }
 
     @And("select Yes for Hydro Test & Low Pressure Air Test Submitted in Case")
@@ -121,4 +121,5 @@ public class WRN11NMB_AuditInspectionNonCompliance {
     public void navigateToInspectionStageAndFillTheRespectiveDetails() throws InterruptedException {
         casePage.completeReInspectionForWRN11();
     }
+
 }

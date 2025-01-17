@@ -45,7 +45,7 @@ public class LoginStepdefs{
     }
 
     @And("user selects entity as {string}")
-    public void user_selects_entity_as(String entityname) {
+    public void user_selects_entity_as(String entityname) throws InterruptedException {
         common.selectEntity(entityname);
     }
 

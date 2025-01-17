@@ -29,7 +29,7 @@ public class PermitRevocationStepdefs {
 		casepage.balcklistACompany(blacklistperiod);
 	}
 	@And("navigate to email messages and verify the cancellation email and blacklist emails are generated")
-	public void navigate_to_email_messages_and_verify_the_cancellation_email_and_blacklist_emails_are_generated() {
+	public void navigate_to_email_messages_and_verify_the_cancellation_email_and_blacklist_emails_are_generated() throws InterruptedException {
 		casepage.emailsFromEmailmessages();
 	}
 	

@@ -3,10 +3,6 @@ package com.sat.Pages;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 
 import com.sat.constants.AppConstants;
@@ -70,7 +66,7 @@ public class eatingEstablishmentPage extends commonActionsPage {
 		factory.caseVerification("DQB/GT/I");
 	}
 	public void getTheGTsCountFromEntity() throws InterruptedException {
-		commonCRM.navigatingToTabInProject("GT Details");
+		commonCRM.navigatingToTabInEntity("GT Details");
 		eepage.clickRefreshBtnOnHome();
 		String totalWOs = eepage.getTheCreatedGTsCount();
 		common.WRN4_GTscount = totalWOs.substring(9, 10);

@@ -27,9 +27,9 @@ public class WRN3_MHWRPAlertWithChildCaseStepDefs {
         casePage.verifyWorkOrderCreated();
     }
 
-    @Then("verify whether case is created and open child Case")
-    public void verifyWhetherCaseIsCreatedAndOpenChildCase() throws InterruptedException {
-        casePage.verifyChildCase();
+    @Then("verify whether case is created with reference number {string} and open child Case")
+    public void verifyWhetherCaseIsCreatedWithReferenceNumberAndOpenChildCase(String childCaseRefNumber) throws InterruptedException {
+        casePage.verifyChildCase(childCaseRefNumber);
     }
 
     @Then("verify the new child cases are created for {string} Risk Factories under {string} catchment.")
@@ -47,9 +47,14 @@ public class WRN3_MHWRPAlertWithChildCaseStepDefs {
         casePage.searchAndOpenCase(listView);
     }
 
-    @Then("Verify FIO receives alert notification for child case and work order.")
-    public void verifyFIOReceivesAlertNotificationForChildCaseAndWorkOrder() throws InterruptedException {
-        casePage.verifyNotificationForChildCaseAndWorkOrder();
+    @Then("Verify FIO receives alert notification for child case")
+    public void verifyFIOReceivesAlertNotificationForChildCase() throws InterruptedException {
+        casePage.verifyNotificationForChildCase();
+    }
+
+    @Then("Verify FIO receives alert notification for child case work order")
+    public void verifyFIOReceivesAlertNotificationForChildCaseWorkOrder() throws InterruptedException {
+        casePage.verifyNotificationForChildCaseWorkOrder();
     }
 
     @And("navigate back to parent case")
@@ -123,4 +128,5 @@ public class WRN3_MHWRPAlertWithChildCaseStepDefs {
     public void validateThatAOOrSOGetNotifiedByChildCase() throws InterruptedException {
         factoryPage.verifyApprovalChildCaseNotification();
     }
+
 }

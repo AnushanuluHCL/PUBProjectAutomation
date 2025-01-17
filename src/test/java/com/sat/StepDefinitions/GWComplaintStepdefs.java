@@ -135,7 +135,7 @@ public class GWComplaintStepdefs{
     @And("navigate to Inspection stage and fill the respective details and navigate to next stage")
     public void navigate_to_Inspection_stage_and_fill_the_respective_details_and_navigate_to_next_stage() throws InterruptedException {
         casepage.completeInspectionStage();
-        loginpage.signoutApp();
+        //loginpage.signoutApp();
     }
 
     @And("verify that {string} mail is generated once Iscomplaint? field value updated to No")

@@ -74,7 +74,7 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 	}
 
 	@And("verify whether case is created once project is approved")
-	public void verify_whether_case_is_created_once_project_is_approved() {
+	public void verify_whether_case_is_created_once_project_is_approved() throws InterruptedException {
 		constructPage.verifyCaseCreated();
 	}
 
@@ -97,7 +97,7 @@ public class WRN8_NMB_Noncomplaince_Reinspection {
 
 	@And("verify System Assessment and User Assessment are marked as {string} in case form")
 	public void verify_System_Assessment_and_User_Assessment_are_marked_as_in_case_form(String assesment) {
-		commoncrm.verifySystemAssesmentOnCaseHome(assesment);
+		commoncrm.verifySystemAssessmentOnCaseHome(assesment);
 	}
 
 	@And("verify SO\\/AO get notified by alert for approval")

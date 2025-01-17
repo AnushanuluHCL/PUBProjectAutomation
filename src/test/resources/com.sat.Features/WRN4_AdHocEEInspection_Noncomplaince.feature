@@ -221,6 +221,7 @@ Feature: Testing WRN4-Noncomplaince functionality
     
     
     And navigate to Inspection stage and fill the respective details and navigate to next stage
+    And logout from the application
     When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
     And user selects App "DQB Case Management"
     And search for the case to open it
@@ -231,6 +232,7 @@ Feature: Testing WRN4-Noncomplaince functionality
     And navigate to AO Review stage and fill the respective details and navigate to next stage
     And navigate to Close stage and fill the respective details and navigate to next stage
     Then verify case is "Completed" and in read only mode
+    And logout from the application
 
     Examples: 
       | Number_of_Gts | Report_Type | Substance_ChemicalName         | Result_Concentration |

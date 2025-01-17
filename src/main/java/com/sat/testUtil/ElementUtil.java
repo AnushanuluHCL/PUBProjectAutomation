@@ -12,7 +12,10 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import com.google.gson.Gson;
 
+import com.sat.Pages.commonActionsPage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
@@ -76,6 +79,7 @@ public class ElementUtil {
     }
 
     public void doSendKeysLog(By locator, String value, String printConsoleVal) {
+        waitForVisibilityOfElement(locator, 30);
         try {
             getElement(locator).sendKeys(value);
             Log.info(printConsoleVal + " " + value);
@@ -833,7 +837,7 @@ public class ElementUtil {
         }
     }
 
-    public void doClearUsingKeyswithWait(By locator, int timeOut) {
+    public void doClearUsingKeysWithWait(By locator, int timeOut) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -1030,6 +1034,16 @@ public class ElementUtil {
         }
     }
 
+    public String getSelectedValueFromDropdown(By locator) throws InterruptedException {
+        Select select = createSelect(locator);
+        WebElement selectedOption = select.getFirstSelectedOption();
+        // Get the text of the selected option
+        String selectedText = selectedOption.getText();
+        Log.info("Selected option text: " + selectedText);
+        waitForVisibilityOfElement(locator, 30);
+        return selectedText;
+    }
+
     /**
      * Generate current date and time
      */
@@ -1067,12 +1081,6 @@ public class ElementUtil {
      * @param format
      * @param days
      */
-    /*public static String todayDatePlusDays(String format, int days) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
-        calendar.add(Calendar.DAY_OF_YEAR, days);
-        return formatDate(calendar.getTime(), format);
-    }*/
     public static String todayDatePlusDays(String format, int days) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
@@ -1258,4 +1266,95 @@ public class ElementUtil {
             Log.info("Scroll down execute");
         }
     }
+
+    public static String getNextMonthName() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate nextMonthDate = currentDate.plusMonths(1);
+        return nextMonthDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+    }
+
+    public void action(By interactableElement) {
+        WebElement element = getElement(interactableElement);
+        waitForVisibilityOfElement(interactableElement, 40);
+        Actions action = new Actions(driver);
+        action.moveToElement(element).build().perform();
+    }
+
+    /**
+     * This is a code to execute the JAVAScript
+     */
+
+    public void createApplication() {
+        commonActionsPage.applicationNumber = "App" + todayDate("yyyy/MM/dd") + "EP" + randomNumber();
+        Map<String, String> record = new HashMap<>();
+        record.put("pub_name", commonActionsPage.applicationNumber);
+        record.put("pub_applicantname", "Jane Doe");
+        record.put("pub_app_nricpassportfincompanyregistrationn", "453Y");
+        record.put("pub_app_contactnumber", "86041235");
+        record.put("pub_organisationname", "Contoso Pvt Ltd");
+        record.put("pub_app_registeredaddressoforganisation", "31 International Business Park, #05-02, 05-06/07, Singapore 609921");
+        record.put("pub_app_emailaddress", "jane.doe@contoso.com");
+        record.put("pub_titleofevent", "Fire Work Display and Setup Event");
+        record.put("pub_eventdatestiming", "12/11/2024 1000 hrs to 16/10/2024 1800 hrs");
+        record.put("pub_watersetupdatestiming", "N/A");
+        record.put("pub_waterteardowndatestiming", "N/A");
+        record.put("pub_landsetupdatestiming", "11/11/2024 0800 hrs to 16/10/2024 1000 hrs");
+        record.put("pub_landteardowndatestiming", "16/11/2024 1800 hrs to 17/11/2024 2200 hrs");
+        record.put("pub_eventlocation", "2,3,4");
+        record.put("pub_descriptiondetailsofeventlocationsite", "Contoso Pvt Ltd - 2 2024 at Jurong Lake");
+        record.put("pub_noofparticipants", "200");
+        record.put("pub_guestofhonour", "N/A");
+        record.put("pub_con_one_nameofpersonincharge", "Mike Tan");
+        record.put("pub_con_one_nricpassportfincomregno", "356X");
+        record.put("pub_con_one_mobilenumber", "86005678");
+        record.put("pub_con_one_nameofcompany", "Fabrikam Inc.");
+        record.put("pub_con_one_registeredaddressofcompany", "31 International Business Park, #05-02, 05-06/07, Singapore 609921");
+        record.put("pub_con_one_emailaddress", "Mike.tan@fabrikam.com");
+        record.put("pub_con_two_nameofpersonincharge", "N/A");
+        record.put("pub_con_two_nricpassportfincomregno", "N/A");
+        record.put("pub_con_two_mobilenumber", "N/A");
+        record.put("pub_con_two_nameofcompany", "N/A");
+        record.put("pub_con_two_registeredaddressofcompany", "N/A");
+        record.put("pub_con_two_emailaddress", "N/A");
+        record.put("pub_eventcategoryid@odata.bind", "/pub_eventcategories(dd816915-6760-ef11-bfe4-6045bd1ce588)");
+
+        // Convert the record map to JSON
+        String jsonRecord = new Gson().toJson(record);
+
+        // Use JavaScript to send the fetch request
+        String script = "fetch(Xrm.Utility.getGlobalContext().getClientUrl() + \"/api/data/v9.2/pub_eventpermitapplicationmasters\", {" +
+                "method: \"POST\"," +
+                "headers: {" +
+                "\"OData-MaxVersion\": \"4.0\"," +
+                "\"OData-Version\": \"4.0\"," +
+                "\"Content-Type\": \"application/json; charset=utf-8\"," +
+                "\"Accept\": \"application/json\"," +
+                "\"Prefer\": \"odata.include-annotations=*\"" +
+                "}," +
+                "body: JSON.stringify(" + jsonRecord + ")" +
+                "}).then(" +
+                "function success(response) {" +
+                "console.log('Response status: ' + response.status);" +
+                "return response.json().then((json) => {" +
+                "console.log('Response JSON: ' + JSON.stringify(json));" +
+                "if (response.ok) {" +
+                "var uri = response.headers.get(\"OData-EntityId\");" +
+                "var regExp = /\\(([^)]+)\\)/;" +
+                "var matches = regExp.exec(uri);" +
+                "var newId = matches[1];" +
+                "console.log('New record ID: ' + newId);" +
+                "} else {" +
+                "throw json.error;" +
+                "}" +
+                "});" +
+                "}" +
+                ").catch(function (error) {" +
+                "console.log('Error: ' + error.message);" +
+                "});";
+
+        // Execute the script
+        ((JavascriptExecutor) driver).executeScript(script);
+    }
+
+
 }

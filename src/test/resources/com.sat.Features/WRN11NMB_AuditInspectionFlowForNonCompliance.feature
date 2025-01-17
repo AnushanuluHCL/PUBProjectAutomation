@@ -23,9 +23,9 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	Then verify Case created
 	Then verify Work Order created
 	And logout from the application
-	When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
+	#When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
 	#SIT 3
-	#When Login to app with "FIO_userid" and "FIO_pwd"
+	When Login to app with "FIO_userid" and "FIO_pwd"
 	And user selects App "NMB Case Management"
 	Then user change the changearea to "Inspection"
 	And user selects entity as "Cases"
@@ -46,6 +46,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	Then go to "All Activities" and verify the email for "Project Reference No."
 	Then go to "Documents" and verify the Document for "Not_In-Order_Letter_"
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
+	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
 	Then user change the changearea to "Inspection"
@@ -54,6 +55,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage fill the respective details and navigate to next stage
 	Then verify case is "Completed" and in read only mode
+	And logout from the application
 
   Scenario: Create Project for Audit Inspection flow for non-compliance when Account Sub Type as New Development Inspection
 	Then user change the changearea to "Inspection"
@@ -94,6 +96,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	Then go to "All Activities" and verify the email for "Project Reference No."
 	Then go to "Documents" and verify the Document for "Not_In-Order_Letter_"
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
+	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
 	Then user change the changearea to "Inspection"
@@ -102,6 +105,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage fill the respective details and navigate to next stage
 	Then verify case is "Completed" and in read only mode
+	And logout from the application
 
 	# Re Inspection Test Cases
   Scenario: Audit Inspection flow for non-compliance. Verify Re inspection Work Order creation when Account Sub Type as New Development Inspection
@@ -144,6 +148,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	Then go to "All Activities" and verify the email for "Project Reference No."
 	Then go to "Documents" and verify the Document for "Not_In-Order_Letter_"
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
+	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
 	Then user change the changearea to "Inspection"
@@ -159,7 +164,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab
-	And create manual Work Order
+	And create manual Work Order of Work Order Type "Re-Inspection"
 	And go to "Work Orders" tab
 	And open "Unscheduled" WO and create the manual Booking
 	And open "Scheduled" WO and fill the Booking details and select "In Progress" status
@@ -174,6 +179,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And go to "Inspection Case Information" tab
 	Then verify System Assessment and User Assessment are marked as "In Order"
 	Then verify case is "Completed" and in read only mode
+	And logout from the application
 
 	# Re Inspection Test Cases
   Scenario: Audit Inspection flow for non-compliance. Verify Re inspection Work Order creation when Account Sub Type as Minor Works Inspection
@@ -214,6 +220,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	Then go to "All Activities" and verify the email for "Project Reference No."
 	Then go to "Documents" and verify the Document for "Not_In-Order_Letter_"
 	And navigate to Inspection stage and fill the respective details and navigate to next stage
+	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
 	Then user change the changearea to "Inspection"
@@ -229,7 +236,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab
-	And create manual Work Order
+	And create manual Work Order of Work Order Type "Re-Inspection"
 	And go to "Work Orders" tab
 	And open "Unscheduled" WO and create the manual Booking
 	And open "Scheduled" WO and fill the Booking details and select "In Progress" status
@@ -243,3 +250,4 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And go to "Inspection Case Information" tab
 	Then verify System Assessment and User Assessment are marked as "In Order"
 	Then verify case is "Completed" and in read only mode
+	And logout from the application

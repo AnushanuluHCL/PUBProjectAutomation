@@ -5,10 +5,7 @@ import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,26 +13,20 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import com.sat.locators.factoryPage;
 import com.sat.testUtil.Log;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
 import com.sat.constants.AppConstants;
 import com.sat.testUtil.ElementUtil;
 import com.sat.testUtil.ExcelUtil;
 import com.sat.testUtil.JavaScriptUtil;
-import com.sat.testUtil.Log;
 import com.sat.testbase.TestBase;
 
 import static org.testng.Assert.assertTrue;
@@ -53,7 +44,8 @@ public class commonActionsPage {
 	public static List<String> WOnumber;
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
 			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO, oldSealNumber, newSealNumber,
-			resealReason, WRN1_factoryname, WRN8NMB_Projname, childCaseNumber, projectRefNumber, WRN7NMB_Projname, dtssNumber, WRN6NMB_Enttiyval, WRN4_GTscount;
+			resealReason, WRN1_factoryname, WRN8NMB_Projname, childCaseNumber, projectRefNumber, WRN7NMB_Projname, dtssNumber, WRN6NMB_Enttiyval, WRN4_GTscount,
+			pumpingMain, applicationNumber, CWD2_ConstructionSide;
 	private static Map<String, String> sharedValues = new HashMap<>();
 	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
 	protected static Map<Integer, String> tankerNumber = new HashMap<>();
@@ -64,7 +56,7 @@ public class commonActionsPage {
 
 
 	private By saveBtn = By.xpath("//button[@aria-label='Save (CTRL+S)']");
-	private By saveCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
+	private static By saveNCloseBtn = By.xpath("//button[@aria-label='Save & Close']");
 	private By refreshBtn = By.xpath("//button[contains(@aria-label,'Refresh')]");
 	private By changeAreaLocatoin = By.id("areaSwitcherId");
 
@@ -90,7 +82,7 @@ public class commonActionsPage {
 
 	// Locators for View
 	private By filterBy = By.xpath("//span[text()='Filter by']");
-	private By filterbyinputbox = By.cssSelector("[aria-label='Filter by value']");
+	private By filterInputBox = By.cssSelector("[aria-label='Filter by value']");
 	private By pageTitle = By.cssSelector("h1[data-id='header_title']");
 	private By applyButton = By.cssSelector("button[type='submit']");
 	private By applyBtn = By.xpath("//span[text()='Apply']");
@@ -108,7 +100,7 @@ public class commonActionsPage {
 	private By uploadBtn = By.xpath("//span[text()='Upload']/ancestor::button");
 	private By selectLookUp = By.cssSelector("ul[tabindex='0']");
 
-	private By newCase = By.cssSelector("button[aria-label='New Case. Add New Case']");
+	private By newCase = By.xpath("//button[contains(@aria-label,'New Case')]");
 
 	public commonActionsPage(WebDriver driver) {
 		this.driver = driver;
@@ -161,21 +153,20 @@ public class commonActionsPage {
 	}
 
 	public void clickOnSaveBtn() {
-		eleUtil.doElementClickable(saveBtn, 30);
+		eleUtil.doElementClickable(saveBtn, 40);
 		try {
-			eleUtil.doClickLog(saveBtn, "Save button clciked using click");
+			eleUtil.doClickLog(saveBtn, "Click on Save button");
 		} catch (Exception e) {
-			eleUtil.doActionsClickLog(saveBtn, "Save button clciked using actions click");
+			eleUtil.doActionsClickLog(saveBtn, "Click on Save button using actions click");
 		}
 	}
 
-	public void clickonSaveAndCloseBtn() {
-		eleUtil.waitForVisibilityOfElement(saveCloseBtn, 40);
-		eleUtil.doElementClickable(saveCloseBtn, 30);
+	public static void clickOnSaveNCloseBtn() {
+		eleUtil.waitTillElementIsDisplayed(saveNCloseBtn, 40);
 		try {
-			eleUtil.doClickLog(saveCloseBtn, "Save & Close button clciked using click");
+			eleUtil.doClickLog(saveNCloseBtn, "Click on Save & Close button");
 		} catch (Exception e) {
-			eleUtil.doActionsClickLog(saveCloseBtn, "Save & Close button clciked using actions click");
+			eleUtil.doActionsClickLog(saveNCloseBtn, "Click on Save & Close button using actions click");
 		}
 	}
 
@@ -233,17 +224,13 @@ public class commonActionsPage {
 		Log.info("selected the first record");
 	}
 
-	public void selectEntity(String entityname) {
+	public void selectEntity(String entityName) throws InterruptedException {
 		clickOnRefreshBtnOnHome();
 		eleUtil.isPageLoaded(30);
-		By nameoftheentity = By.xpath("//div[@title='" + entityname + "']");
-		/*
-		 * try { Thread.sleep(3000); } catch (InterruptedException e) { // TODO
-		 * Auto-generated catch block e.getMessage(); }
-		 */
-		eleUtil.waitForVisibilityOfElement(nameoftheentity, 40);
-		eleUtil.doElementClickable(nameoftheentity, 30);
-		eleUtil.doClickLog(nameoftheentity, "Entity selected is " + entityname);
+		By nameOfTheEntity = By.xpath("//div[@title='" + entityName + "']");
+		//eleUtil.scrollDownTillElementVisible(nameOfTheEntity);
+		eleUtil.waitForVisibilityOfElement(nameOfTheEntity, 40);
+		eleUtil.doClickLog(nameOfTheEntity, "Entity selected is " + entityName);
 	}
 
 	public void clickonNewBtn() {
@@ -251,7 +238,7 @@ public class commonActionsPage {
 		eleUtil.doClickLog(newBtn, "Clicked on new button");
 	}
 
-	public void openACase() {
+	public void openACase() throws InterruptedException {
 		changeAreaSelection("Inspection");
 		selectEntity("Cases");
 	}
@@ -417,14 +404,14 @@ public class commonActionsPage {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		eleUtil.doSendKeys(filterbyinputbox, value);
+		eleUtil.doSendKeys(filterInputBox, value);
 		try {
 			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		driver.findElement(filterbyinputbox).sendKeys(Keys.ALT, Keys.ENTER);
+		driver.findElement(filterInputBox).sendKeys(Keys.ALT, Keys.ENTER);
 	}
 
 	public void clickOnApplyBtn() {
@@ -438,7 +425,7 @@ public class commonActionsPage {
 		Thread.sleep(3000);
 		eleUtil.doClickLog(filterBy, "click on Filter By");
 		Thread.sleep(2000);
-		eleUtil.doClickLog(filterbyinputbox, "click on filter selection");
+		eleUtil.doClickLog(filterInputBox, "click on filter selection");
 		By filterValue = By.xpath("//div[@title='" + value + "']");
 		Log.info("filter value " + filterValue);
 		eleUtil.waitForVisibilityOfElement(filterValue, 30);
@@ -482,7 +469,7 @@ public class commonActionsPage {
 		System.out.println("After tap to open button: " + valueAfterTaptoopenBtn);
 		assertTrue(valueAfterTaptoopenBtn.contains(caseNumber),
 				"Case is not same after clicking on tap to open button");
-		clickonSaveAndCloseBtn();
+		clickOnSaveNCloseBtn();
 	}
 
 	public void closeCurrentTabAndSwitchBack() {
@@ -589,7 +576,7 @@ public class commonActionsPage {
 		clickOnRefreshBtnOnHome();
 	}
 
-	public void navigatingToTabInProject(String tabName) throws InterruptedException {
+	public void navigatingToTabInEntity(String tabName) throws InterruptedException {
 		Thread.sleep(3000);
 		By loc = By.xpath("//li[contains(@aria-label,'" + tabName + "') and @role='tab']");
 		eleUtil.waitForVisibilityOfElement(loc, 30);
@@ -619,6 +606,20 @@ public class commonActionsPage {
 	public void newCaseButton() {
 		eleUtil.doElementClickable(newCase, 30);
 		eleUtil.doClickLog(newCase, "Clicked on new Case button");
+	}
+
+	public void filterViewForTextValueType(String checkListName) throws InterruptedException {
+		eleUtil.isPageLoaded(90);
+		eleUtil.waitForVisibilityOfElement(filterBy, 50);
+		Thread.sleep(3000);
+		eleUtil.doClickLog(filterBy, "click on Filter By");
+		Thread.sleep(2000);
+		eleUtil.doClickLog(filterInputBox, "click on filter selection");
+		eleUtil.doSendKeysWithWaitEnter(filterInputBox, checkListName, 30);
+		Thread.sleep(2000);
+		eleUtil.waitForVisibilityOfElement(applyButton, 50);
+		eleUtil.doClickLog(applyButton, "Click on Apply button");
+		Thread.sleep(2000);
 	}
 
 }

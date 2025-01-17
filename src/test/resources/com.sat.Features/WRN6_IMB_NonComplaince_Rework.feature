@@ -3,7 +3,10 @@ Feature: Testing WRN6 IMB - Noncomplaince - Rework
 
   Background: Test CRM Login with valid credentials
     Given User navigates to CRM login page
-    When Login to app with "AO_userid" and "AO_pwd"
+    #SIT 1
+    #When Login to app with "AO_userid" and "AO_pwd"
+    #SIT 3
+    When Login to app with "sit3_AO_userid2" and "sit3_AO_pwd2"
     And user selects App "IMB Case Management"
 
   Scenario Outline: Inspecting Pumping main constrcution sites Noncomplaince - Rework
@@ -11,7 +14,10 @@ Feature: Testing WRN6 IMB - Noncomplaince - Rework
     And create a manual project where Entity Type as "Construction sites" and Account Sub Type as "Pumping Main Construction Site"
     Then go to "Summary" tab and enable the "Affected by Pumping Mains?" field
     And logout from the application
-    When Login to app with "FIO_userid" and "FIO_pwd"
+    #SIT 1
+    #When Login to app with "FIO_userid" and "FIO_pwd"
+    #SIT 3
+    When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
     And user selects App "IMB Case Management"
     And user selects entity as "Construction Sites"  
     And go to "POWS Submissions" tab and create a new POWS submission request by giving "<Diameter>", "<DC_Status>"
@@ -32,7 +38,10 @@ Feature: Testing WRN6 IMB - Noncomplaince - Rework
     And logout from the application
     
     #Reject the WO by SO user
-    When Login to app with "SO_userid" and "SO_pwd"
+    #SIT 1
+    #When Login to app with "SO_userid" and "SO_pwd"
+    #SIT 3
+    When Login to app with "sit3_SO_userid2" and "sit3_SO_pwd2"
     And user selects App "IMB Case Management"
     And search for the case to open it
     Then open "Completed" WO and able to provide the rework comments
@@ -40,7 +49,10 @@ Feature: Testing WRN6 IMB - Noncomplaince - Rework
     And logout from the application
     
     # After SO Reject complete the new booking and make it as non-complaince, All work completed - No
-    When Login to app with "FIO_userid" and "FIO_pwd"
+    #SIT 1
+    #When Login to app with "FIO_userid" and "FIO_pwd"
+    #SIT 3
+    When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
     And user selects App "IMB Case Management"
     And search for the case to open it
     And go to "Work Orders" tab   
@@ -56,7 +68,10 @@ Feature: Testing WRN6 IMB - Noncomplaince - Rework
     And logout from the application
     
     # Login to SO and move it to AO Review
-    When Login to app with "SO_userid" and "SO_pwd"
+    #SIT 1
+    #When Login to app with "SO_userid" and "SO_pwd"
+    #SIT 3
+    When Login to app with "sit3_SO_userid2" and "sit3_SO_pwd2"
     And user selects App "IMB Case Management"
     And search for the case to open it
     And verify SO/AO get notified by alert for approval

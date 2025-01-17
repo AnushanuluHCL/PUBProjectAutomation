@@ -120,7 +120,6 @@ public class WRN2_AdHocaFactoryNonComplainceStepDefs {
     @Then("verify case is {string} and in read only mode")
     public void verifyCaseIsAndInReadOnlyMode(String status) throws InterruptedException {
         factoryPage.verifyCaseStatus(status);
-        loginpage.signoutApp();
     }
 
 }
