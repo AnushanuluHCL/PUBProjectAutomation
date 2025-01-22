@@ -46,6 +46,10 @@ public class projectPage extends commonActionsPage {
     // BPU Submission and verification
     private By bpuSubmissionGridRefresh = By.xpath("//ul[@aria-label='1BPU Submission Commands'] //button[@aria-label='Refresh']");
 
+    // Create Premise
+    private By premiseType = By.cssSelector("input[aria-label='Premise Type, Lookup']");
+    private By category = By.cssSelector("select[aria-label='Category']");
+
     public By getMoreCommandButton() {
         return moreCommandButton;
     }
@@ -214,5 +218,23 @@ public class projectPage extends commonActionsPage {
     public void checkWorkOrderCreated() throws InterruptedException {
         factory.workOrderVerification();
     }
+
+    public void createManualPremises(String entityType) throws InterruptedException {
+        clickonNewBtn();
+        factory.selectEntityType(entityType);
+        factory.enterEntityName("Premises");
+        factory.selectCatchment();
+        eleUtil.waitForVisibilityOfElement(premiseType, 30);
+        eleUtil.doClearUsingKeysLog(premiseType, "Clear the Premise Type field");
+        eleUtil.doSendKeysWithWaitEnter(premiseType, "Animal Holdings", 30);
+
+        pumpingSystem.enterHouseBlkNumber();
+        pumpingSystem.enterPostalCode();
+        eleUtil.waitTillElementIsDisplayed(category, 30);
+        eleUtil.selectDropDownValue(category, "selectByVisibleText", "Tier1",
+                "select entity type as Tier 1");
+        clickOnSaveBtn();
+    }
+
 
 }

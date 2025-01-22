@@ -27,7 +27,7 @@ public class factoryCreationPage extends commonActionsPage {
 		clickonNewBtn();
 		factory.selectEntityType("Factory");
 		factory.selectCatchment();
-		factory.enterEntityName();
+		factory.enterEntityName("Factory");
 		clickOnSaveBtn();
 	}
 
@@ -84,7 +84,8 @@ public class factoryCreationPage extends commonActionsPage {
 	}
 
 	public void uploadWQReport() throws InterruptedException {
-		factory.uploadReportInPubLab();
+		String WQPath ="\\src\\test\\resources\\testdata\\SIT_WQ 2 3 1 2.xlsx";
+		factory.uploadReportInPubLab(WQPath);
 	}
 
 	public void checkPubReport() throws InterruptedException {
@@ -122,7 +123,7 @@ public class factoryCreationPage extends commonActionsPage {
 	}
 
 	public void verifyCaseStatus(String status) throws InterruptedException {
-		factory.clickOnSavingInProgressOkButton();
+		crmActions.clickOnSavingInProgressOkButton();
 		cases.checkCaseStatus(status);
 	}
 

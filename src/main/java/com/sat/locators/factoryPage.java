@@ -29,6 +29,7 @@ public class factoryPage extends commonActionsPage {
 	// Service Tab verification
 	private By checkCaseCreated = By
 			.xpath("//div[contains(@data-id,'pcf_grid_control_container')]//span[text()='No data available']");
+	private By checkCaseCreatedWhen2GridPresent = By.xpath("//div[contains(@data-id,'2-pcf_grid_control_container')]//span[text()='No data available']");
 	private By checkCaseCreatedInEntity = By
 			.xpath("//div[@data-id='Subgrid_new_3-pcf_grid_control_container'] //span[text()='No data available']");
 	private static By caseNumberVerify = By.xpath("//div[@col-id='title']//a");
@@ -106,8 +107,6 @@ public class factoryPage extends commonActionsPage {
 	private By approveButton = By.cssSelector("button[aria-label='Approve Factory']");
 
 	private By accountNumber = By.cssSelector("input[aria-label='Account Number']");
-	private By savingInProgressOkButton = By.xpath("//span[contains(@id,'okButtonText')]");
-	private By savingInProgressPopUp = By.xpath("//div[contains(@id,'modalDialogContentContainer')]");
 
 	private By caseStatus = By.xpath("//div[contains(text(),'Completed')]");
 
@@ -124,7 +123,7 @@ public class factoryPage extends commonActionsPage {
 	String todayDate = eleUtil.todayDate("MM/dd/yyyy");
 	String tefFilePath = "\\src\\test\\resources\\testdata\\WQ_Sample_NC.xlsx";
 	String filePath = System.getProperty("user.dir");
-	String factoryName = "Factory" + todayDateTime;
+	String factoryName = todayDateTime;
 
 	public void selectEntityType(String selectEntityType) {
 		eleUtil.waitTillElementIsDisplayed(entityType, 30);
@@ -146,10 +145,6 @@ public class factoryPage extends commonActionsPage {
 
 	public static By getCaseNumberVerify() {
 		return caseNumberVerify;
-	}
-
-	public By getSavingInProgressPopUp() {
-		return savingInProgressPopUp;
 	}
 
 	public By getSearchResults() {
@@ -188,11 +183,11 @@ public class factoryPage extends commonActionsPage {
 		return oilInterceptorCheck;
 	}
 
-	public void enterEntityName() {
+	public void enterEntityName(String entityNo) {
 		eleUtil.waitTillElementIsDisplayed(entityName, 30);
 		eleUtil.doClickLog(entityName, "Clicked on Entity Name field");
 		eleUtil.doClearUsingKeysLog(entityName, "Clear the Entity Name field");
-		eleUtil.doSendKeysLog(entityName, factoryName, "Entity Name is :");
+		eleUtil.doSendKeysLog(entityName,entityNo+"_"+factoryName, "Entity Name is :");
 	}
 
 	public void selectCatchment() {
@@ -222,7 +217,7 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.doClickLog(caseGridRefresh, "Clicked on case grid refresh button");
 		long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
 		while (System.currentTimeMillis() < endTime) {
-			if (eleUtil.elementIsDisplayed(getCheckCaseCreated(), "No data available")) {
+			if (eleUtil.elementIsDisplayed(getCheckCaseCreated(), "No data available") && eleUtil.elementIsDisplayed(checkCaseCreatedWhen2GridPresent, "No data available")) {
 				Thread.sleep(3000);
 				eleUtil.doClickLog(caseGridRefresh, "Case is not created, click on case grid refresh button");
 			} else {
@@ -345,7 +340,7 @@ public class factoryPage extends commonActionsPage {
 			selectChecklistForWRN2Report();
 			crmActions.saveChecklist();
 		}
-		crmActions.resetFirstRunFlag();
+		//crmActions.resetFirstRunFlag();
 	}
 
 	public void sampleLabForAnalysis() throws InterruptedException {
@@ -429,7 +424,7 @@ public class factoryPage extends commonActionsPage {
 		eleUtil.doClickLog(attachButtonOnPubLab, "click on Attach Button on Pub Lab");
 	}
 
-	public void uploadReportInPubLab() throws InterruptedException {
+	public void uploadReportInPubLab(String WQPath) throws InterruptedException {
 		Thread.sleep(2000);
 		eleUtil.switchToFrame(switchToUploadLabReport);
 		eleUtil.waitForVisibilityOfElement(browserButton, 30);
@@ -550,31 +545,6 @@ public class factoryPage extends commonActionsPage {
 		// CommonActionsPage.casenumber= getCaseNumber();
 		eleUtil.isPageLoaded(60);
 		crmActions.notificationForTabToOpen(commonActionsPage.childCaseNumber, "Inspection Case Information");
-	}
-
-	public void clickOnSavingInProgressOkButton() throws InterruptedException { // remove this code once issue is
-																				// resolved
-		eleUtil.isPageLoaded(100);
-		if (eleUtil.elementIsDisplayed(getSavingInProgressPopUp(), "Saving in Progress Pop Up")) {
-			eleUtil.waitForVisibilityOfElement(savingInProgressOkButton, 30);
-			while (true) {
-				List<WebElement> okButtons = driver.findElements(savingInProgressOkButton);
-				if (okButtons.isEmpty()) {
-					break;
-				}
-				for (WebElement button : okButtons) {
-					try {
-						button.click();
-						// Refresh the list of elements after each click
-						okButtons = driver.findElements(savingInProgressOkButton);
-					} catch (Exception e) {
-						Log.error("Error clicking on Ok button: {}" + e.getMessage());
-					}
-				}
-			}
-		} else {
-			eleUtil.doClickLog(crmActions.getRefreshBtn(), "Click on Refresh button");
-		}
 	}
 
 	public void WAStatusVal(String WAStatus) {

@@ -420,7 +420,6 @@ public class commonActionsPage {
 	}
 
 	public void filterViewForStatus(String value) throws InterruptedException {
-		eleUtil.isPageLoaded(90);
 		eleUtil.waitForVisibilityOfElement(filterBy, 50);
 		Thread.sleep(3000);
 		eleUtil.doClickLog(filterBy, "click on Filter By");
@@ -622,4 +621,20 @@ public class commonActionsPage {
 		Thread.sleep(2000);
 	}
 
+	public void filterViewForCheckbox(String value) throws InterruptedException {
+		eleUtil.waitForVisibilityOfElement(filterBy, 50);
+		Thread.sleep(3000);
+		eleUtil.doClickLog(filterBy, "click on Filter By");
+		Thread.sleep(2000);
+		eleUtil.doClickLog(filterInputBox, "click on filter selection");
+		By filterValue = By.xpath("//div[@title='" + value + "']");
+		Log.info("filter value " + filterValue);
+		eleUtil.waitForVisibilityOfElement(filterValue, 30);
+		eleUtil.doClickLog(filterValue, "Select filter value " + value);
+		Thread.sleep(2000);
+		eleUtil.doClickLog(filterInputBox, "Click on filter selection to hide the box");
+		eleUtil.waitForVisibilityOfElement(applyButton, 50);
+		eleUtil.doClickLog(applyButton, "Click on Apply button");
+		Thread.sleep(2000);
+	}
 }

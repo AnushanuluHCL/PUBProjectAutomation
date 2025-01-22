@@ -20,4 +20,14 @@ public class CWD4_AdHocCase {
     public void openWOFillTheChecklistForRawWaterMainPipelineInspectionForAndVerifyWOStatusAs(String status, String checkListName, String checkListType, String completeStatus) throws InterruptedException {
         checkListPage.fillChecklistForRawWaterMainPipelineChecklistCWD4(status, checkListName, checkListType, completeStatus);
     }
+
+    @Then("verify Rectification Email Sent is marked as {string} and Rectification Required is marked as {string}")
+    public void verifyRectificationEmailSentIsMarkedAsAndRectificationRequiredIsMarkedAs(String rectificationEmailSent, String rectificationRequired) {
+        casesPage.checkRectificationDetailsCWD4(rectificationEmailSent, rectificationRequired);
+    }
+
+    @And("create a new Form SG with details")
+    public void createANewFormSGWithDetails() {
+        casesPage.createNewFormSGWithCase();
+    }
 }

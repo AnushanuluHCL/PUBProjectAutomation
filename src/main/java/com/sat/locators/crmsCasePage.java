@@ -10,15 +10,17 @@ import org.testng.Assert;
 
 import java.io.IOException;
 
+import static org.testng.Assert.assertEquals;
+
 public class crmsCasePage extends commonActionsPage {
 
     casePage cases = new casePage(driver);
-    factoryPage factory = new factoryPage(driver);
     commonCRMActions crmAction = new commonCRMActions(driver);
 
     String cwd1CRMSCaseCreationFile = "\\src\\test\\resources\\testdata\\CWD1_CRMSCasesCreation.xlsx";
-    String siesCaseID = "SIES-CWD1" + eleUtil.todayDate("yyyy") + eleUtil.randomNumber();
-    String crmsCaseNumber = "CRMS-CWD1" + eleUtil.todayDate("yyyy") + eleUtil.randomNumber();
+    String cwd3N6CRMSCaseCreationFile = "\\src\\test\\resources\\testdata\\CWD3N6_CRMSCasesCreation.xlsx";
+    String siesCaseID = "SIES-CWD" + eleUtil.todayDate("yyyy") + eleUtil.randomNumber();
+    private static String crmsCaseNumber = "CRMS-CWD" + eleUtil.todayDate("yyyy") + eleUtil.randomNumber();
 
     public crmsCasePage(WebDriver driver) {
         super(driver);
@@ -40,6 +42,11 @@ public class crmsCasePage extends commonActionsPage {
     private By instructionActionParty = By.cssSelector("textarea[aria-label='Instruction for Action Party']");
     private By replyCustomer = By.cssSelector("textarea[aria-label='Reply to Customer']");
     private By crmsCaseAcceptPopup = By.cssSelector("h1[aria-label='CRMS Case']");
+    private By deviationRemarks = By.cssSelector("input[aria-label='Deviation Remarks']");
+
+    // Lab Report
+    private By attachButtonOnEnforceableParameter = By.xpath("//div[@id='DataSetHostContainer_dataSetRoot_pub_labreports']//button[@title='Attach']");
+    private By systemAssessmentOnLabReport = By.xpath("//div[@aria-label='Lab Report Result']//select[@aria-label='System Assessment']");
 
     public void updateExcelCRMSCaseCWD1() throws IOException {
         excelUtil = new ExcelUtil(cases.filePath + cwd1CRMSCaseCreationFile);
@@ -160,7 +167,7 @@ public class crmsCasePage extends commonActionsPage {
         eleUtil.doSendKeysWithWaitEnter(secondaryFioLookup, secondaryFioUser, 30);
     }
 
-    public void selectComplianceInformation(String userAssessment) throws InterruptedException {
+    public void selectComplianceInformationOnWO(String userAssessment) throws InterruptedException {
         long endTime = System.currentTimeMillis() + 5 * 60 * 1000;
         while (System.currentTimeMillis() < endTime) {
             if (!eleUtil.elementIsDisplayed(cases.getApproveWOBtn(), "Check Approve Button")) {
@@ -200,5 +207,40 @@ public class crmsCasePage extends commonActionsPage {
             Thread.sleep(5000);
         }
         clickOnSaveNCloseBtn();
+    }
+
+    public void updateExcelCRMSCaseCWD3N6() throws IOException {
+        excelUtil = new ExcelUtil(cases.filePath + cwd3N6CRMSCaseCreationFile);
+        excelUtil.setSheet("CRMSCases"); // Ensure this is the correct sheet name
+        excelUtil.setCellValue(1, 3, siesCaseID);
+        excelUtil.setCellValue(1, 4, crmsCaseNumber);
+        excelUtil.saveAndClose();
+    }
+
+    public void importCWD3N6ExcelData() throws InterruptedException {
+        importExcel(cwd3N6CRMSCaseCreationFile);
+    }
+
+    public void selectComplianceInformationOnCase(String userAssessment) {
+        eleUtil.waitForVisibilityOfElement(crmAction.getUserAssessment(), 30);
+        eleUtil.selectDropDownValue(crmAction.getUserAssessment(), "selectByVisibleText", userAssessment, "Select " + userAssessment);
+    }
+
+    public void enterDeviationRemarks() {
+        eleUtil.waitForVisibilityOfElement(deviationRemarks, 30);
+        eleUtil.doSendKeysLog(deviationRemarks, "Deviation Remarks", "Enter value in Deviation Remarks");
+        clickOnSaveBtn();
+    }
+
+    public void openLabReportPopUpForCWD3N6() {
+        eleUtil.waitForVisibilityOfElement(attachButtonOnEnforceableParameter, 30);
+        eleUtil.doClickLog(attachButtonOnEnforceableParameter, "click on Attach Button on Pub Lab");
+    }
+
+    public void verifySystemAssessment(String systemAssessment) {
+        eleUtil.waitForVisibilityOfElement(systemAssessmentOnLabReport, 30);
+        String systemAssessmentValue = eleUtil.doGetElementAttributeLog(systemAssessmentOnLabReport, "title", "System Assessment in Lab Report Result value is : ");
+        assertEquals(systemAssessment, systemAssessmentValue, "System Assessment in Lab Report Result is not same");
+
     }
 }

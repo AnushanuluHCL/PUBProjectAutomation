@@ -544,7 +544,7 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.waitForVisibilityOfElement(searchbox, 20);
 		Thread.sleep(2000);
 		eleUtil.doSendKeysLog(searchbox, commonActionsPage.casenumber, commonActionsPage.casenumber);
-		//eleUtil.doSendKeysLog(searchbox, "IFA/PE/I/2025/531", "IFA/PE/I/2025/531");
+		//eleUtil.doSendKeysLog(searchbox, "CWQ/CM/I/2025/935", "CWQ/CM/I/2025/935");
 		eleUtil.isPageLoaded(50);
 		Thread.sleep(2000);
 		driver.findElement(searchbox).sendKeys(Keys.ENTER);
@@ -1653,7 +1653,7 @@ public class caseCreationPage extends commonActionsPage {
 		} catch (InterruptedException e) {
 			System.out.println("An error occured while executin the loop");
 		}
-		factory.clickOnSavingInProgressOkButton();
+		crmActions.clickOnSavingInProgressOkButton();
 
 	}
 

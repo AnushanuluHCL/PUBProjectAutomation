@@ -127,6 +127,7 @@ public class casePage extends commonCRMActions {
     private By rectificationConfirmation = By.cssSelector("h1[aria-label='Rectification Confirmation']");
     private By okBtn = By.xpath("//button[@aria-label='OK']");
     private By newFormSG = By.cssSelector("button[aria-label='New Form SG. Add New Form SG']");
+    private By caseId = By.cssSelector("input[aria-label='Case ID, Lookup']");
     private By rectificationSubmissionStatus = By.xpath("//div[@col-id='pub_rectificationstatus' and @role='gridcell']//div[@role='none']");
     private By rectificationRequiredAfterSubmission = By.xpath("//button[contains(@aria-label,'Rectification Required')]/following-sibling::label[contains(@for,'Toggle')]");
     private By rectificationDocumentVerified = By.cssSelector("select[aria-label='Rectification Documents Verified']");
@@ -135,6 +136,8 @@ public class casePage extends commonCRMActions {
     private By sendEmailButton = By.cssSelector("button[aria-label='Send Email']");
     private By rectificationDueDateValidation = By.xpath("//span[text()='Rectification Due Date: Required fields must be filled in.']");
     private By rectificationValidationOkButton = By.cssSelector("button[data-id='okButton']");
+    private By rectificationRequiredCWD4 = By.xpath("//select[@aria-label='Rectification Required']/ancestor::div[2]");
+    private By rectificationEmailSent = By.xpath("//button[contains(@aria-label,'Rectification Email Sent')]/following-sibling::label[contains(@for,'Toggle')]");
 
     // WRN6IMB Locators
     private By typeOfWO = By.xpath("//div[@aria-rowindex='2']//div[@col-id='pub_workordertype']//label");
@@ -511,7 +514,7 @@ public class casePage extends commonCRMActions {
             }
             crmActions.saveChecklist();
         }
-        crmActions.resetFirstRunFlag();
+        //crmActions.resetFirstRunFlag();
     }
 
     public void selectChecklistForMHWRPReport(String abnormalityValue) {
@@ -778,7 +781,7 @@ public class casePage extends commonCRMActions {
     public void reInspectionForWRN11() throws InterruptedException {
         navigatingToStage("Inspection");
         clickOnNextStageBtn();
-        factory.clickOnSavingInProgressOkButton();
+        crmActions.clickOnSavingInProgressOkButton();
         eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
     }
 
@@ -1024,7 +1027,7 @@ public class casePage extends commonCRMActions {
     public void soReviewForWRN10IMBAbandonmentCase() throws InterruptedException {
         navigatingToStage("SO Review");
         clickOnNextStageBtn();
-        factory.clickOnSavingInProgressOkButton();
+        crmActions.clickOnSavingInProgressOkButton();
         eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
     }
 
@@ -1167,7 +1170,8 @@ public class casePage extends commonCRMActions {
         return status;
     }
 
-    public void verifyRectificationSubmissionStatus(String rectificationStatus) {
+    public void verifyRectificationSubmissionStatus(String rectificationStatus) throws InterruptedException {
+        crmActions.formSGStatusFilter(rectificationStatus);
         Assert.assertEquals(getRectificationSubmissionStatus(), rectificationStatus, "Status not matched");
     }
 
@@ -1243,4 +1247,42 @@ public class casePage extends commonCRMActions {
         eleUtil.selectDropDownValue(getCaseType(), "selectByVisibleText", caseType, "select Case sub type " + caseSubType);
     }
 
+    public String getRectificationEmailSent() {
+        eleUtil.waitForVisibilityOfElement(rectificationEmailSent, 30);
+        String value = eleUtil.doElementGetText(rectificationEmailSent);
+        return value;
+    }
+
+    public void verifyRectificationDetailsCWD4(String rectificationEmailSent, String rectificationRequired) {
+        eleUtil.textVerificationFormAttribute(rectificationRequiredCWD4, "title", rectificationRequired);
+        Assert.assertEquals(getRectificationEmailSent(), rectificationEmailSent, "Rectification Email Sent not matched");
+    }
+
+    public void newFormSGWithCase() {
+        eleUtil.waitForVisibilityOfElement(newFormSG, 50);
+        eleUtil.doClickLog(newFormSG, "Click on New Form SG button");
+        eleUtil.waitForVisibilityOfElement(caseId, 30);
+        eleUtil.doClearUsingKeysLog(caseId, "clear Entity Values");
+        eleUtil.doSendKeysLog(caseId, commonActionsPage.casenumber, "Enter Entity value " + commonActionsPage.casenumber);
+        //eleUtil.doSendKeysLog(caseId, "IFA/PE/I/2025/538", "Enter Entity value " + "IFA/PE/I/2025/538");
+        eleUtil.waitTillElementIsDisplayed(factory.setLookUp(), 50);
+        eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
+        clickOnSaveBtn();
+        waitForRecordFormPageToSaved();
+        eleUtil.waitForVisibilityOfElement(rectificationTab, 40);
+        eleUtil.doClickLog(rectificationTab, "click on Rectification tab");
+        eleUtil.waitForVisibilityOfElement(commentOnSIES, 40);
+        eleUtil.doSendKeysLog(commentOnSIES, "Rectification test", "Enter value in SIES");
+        clickOnSaveBtn();
+        waitForRecordFormPageToSaved();
+    }
+
+    public void soReviewForCWD3N6() {
+        navigatingToStage("SO Review");
+        eleUtil.selectDropDownValue(approveAndResolveCase, "selectByVisibleText", "Yes", "Select Yes in Approve and Resolve Case");
+        eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
+        navigatingToStage("SO Review");
+        eleUtil.doElementClickable(getNextStageBtn(), 10);
+        eleUtil.doClickLog(getNextStageBtn(), "Click on Next Stage button");
+    }
 }

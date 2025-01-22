@@ -58,7 +58,7 @@ Feature: Testing CWD1- CRMS Case Accept Inspection Case Accept.
 	And go to "Work Orders" tab
 	And open "Scheduled" WO and fill the Booking details and select "In Progress" status
 	And open "In Progress" WO fill the checklist for Surveillance Checklist "Surveillance Checklist for Illegal Fishing" for "Compliance" and verify WO status as "Completed"
-	And open work order and go to Bookings tab
+	And open work order and go to "Bookings" tab
 	And click on "Approve" button on Work Order
 	Then go to "Documents" and verify the Document for "Inspection_Report"
 	Then go to "All Activities" and verify the email for "has been submitted for review"

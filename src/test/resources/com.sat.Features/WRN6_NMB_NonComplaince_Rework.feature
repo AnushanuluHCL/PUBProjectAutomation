@@ -24,7 +24,7 @@ Feature: Testing WRN6 IMB - Noncomplaince - Rework
 	And Verify that created case starts with "NMB/RG/I" with status "Scheduled"
 	And go to "Work Orders" tab
 	And validate the schedule workorder notification
-	And open work order and go to Bookings tab
+	And open work order and go to "Bookings" tab
 	# 2 bookings should be created
 	Then verify 1 bookings are created
 	And go to "All Activities" and verify the email for "System assigns WOs to FIO"

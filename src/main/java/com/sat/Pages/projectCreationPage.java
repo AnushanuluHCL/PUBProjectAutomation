@@ -44,4 +44,7 @@ public class projectCreationPage extends commonCRMActions{
         project.checkWorkOrderCreated();
     }
 
+    public void createManualPremisesForNonIndustrialPremises(String entityType) throws InterruptedException {
+        project.createManualPremises(entityType);
+    }
 }
