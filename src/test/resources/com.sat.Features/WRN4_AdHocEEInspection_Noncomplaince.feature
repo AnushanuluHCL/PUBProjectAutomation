@@ -10,7 +10,7 @@ Feature: Testing WRN4-Noncomplaince functionality
     When user change the changearea to "Eating Establishment"
     And user selects entity as "Eating Establishment"
     And create a manual project where Entity Type as "Eating Establishment" with "<Number_of_Gts>"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "Cases"
     And user selects "Active Cases" list view, search and open the case
     And go to "Work Orders" tab

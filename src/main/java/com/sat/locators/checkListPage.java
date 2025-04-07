@@ -234,8 +234,30 @@ public class checkListPage extends commonCRMActions {
     private By remarksQ3 = By.xpath("//textarea[contains(@aria-label,'3.a. Remark')]");
     private By anySignsOfLeaks = By.xpath("//input[contains(@name,'Question20_')] [@aria-label='No']");
     private By rectificationNotRequired = By.xpath("//input[contains(@name,'Question1_')] [@aria-label='No']");
+    private By rectificationRequired = By.xpath("//input[contains(@name,'Question1_')] [@aria-label='Yes']");
     private By remark = By.xpath("//textarea[@aria-label='Remarks']");
     private By rawWatermainsQ15 = By.cssSelector("input[aria-label='Prism']");
+
+    //Locator for CWD3&6
+    private By temperature = By.xpath("//select[contains(@aria-label,'Temperature')]");
+    private By incidentLocation = By.cssSelector("input[aria-label='Incident Location']");
+    private By anyAbnormalityObserved = By.xpath("//select[contains(@aria-label,'Any abnormality observed')]");
+    private By sampleTaken = By.xpath("//input[contains(@name,'Question8_')] [@aria-label='Yes']");
+    private By pubWONumber = By.cssSelector("input[aria-label='PUB WO Number']");
+    private By programmeName = By.cssSelector("input[aria-label='Programme Name']");
+    private By sourceDischargeIdentified = By.xpath("//select[contains(@aria-label,'Source of Discharge identified')]");
+    private By inspectionCompleted = By.xpath("//select[contains(@aria-label,'Inspection Completed')]");
+    private By premiseSubType = By.cssSelector("input[aria-label='Premise SubType']");
+    private By sampleTakenForPremisesInspection = By.xpath("//input[contains(@name,'Question141_')] [@aria-label='Yes']");
+    private By nextButton = By.cssSelector("input[value='Next']");
+    private By generalHousekeepingPremises = By.xpath("//input[contains(@name,'Question33_')] [@aria-label='No']");
+    private By remarksQ1 = By.xpath("//div[@name='Question1']//input[@aria-label='Remarks']");
+
+    //Locators for WRN10NMB
+    private By beingInspection = By.cssSelector("select[aria-label='Begin Inspection']");
+    private By otherComments = By.cssSelector("textarea[aria-label='Other Comments']");
+    private By isAbandonmentRequired = By.xpath("//input[@aria-label='Abandonment with replacement (involved sewer diversion work)']");
+    private By surfaceProfile = By.xpath("//input[@aria-label='Vehicular load is expected']");
 
 
     public By getSamplingConducted(String val) {
@@ -535,28 +557,22 @@ public class checkListPage extends commonCRMActions {
     public void sampleLabForAnalysisForWRN4() throws InterruptedException {
         eleUtil.waitTillElementIsDisplayed(factory.clickOnNewSampleLab(), 30);
         eleUtil.doClickLog(factory.clickOnNewSampleLab(), "Click on New Sample For Lab Analysis button");
-
         eleUtil.waitTillElementIsDisplayed(factory.selectDateAndTime(), 30);
         eleUtil.doSendKeysWithWaitEnter(factory.selectDateAndTime(), todayDate, 100);
-
         eleUtil.doClickLog(factory.clickOnParametersAnalysed(), "Enter 1st value as Oil & Grease (Hydrocarbon)");
         eleUtil.doClearUsingKeysWithWait(factory.clickOnParametersAnalysed(), 30);
         eleUtil.doSendKeysWithWaitEnter(factory.clickOnParametersAnalysed(), "Oil & Grease (Hydrocarbon)", 30);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
-
         eleUtil.doClickLog(factory.clickOnParametersAnalysed(), "Enter 2nd value as Oil & Grease (Non-Hydrocarbon)");
         eleUtil.doSendKeysWithWaitEnter(factory.clickOnParametersAnalysed(), "Oil & Grease (Non-Hydrocarbon)", 50);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
-
         eleUtil.doClickLog(factory.clickOnParametersAnalysed(), "Enter 3rd value as Oil & Grease (Total)");
         eleUtil.doSendKeysWithWaitEnter(factory.clickOnParametersAnalysed(), "Oil & Grease (Total)", 50);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
-
         eleUtil.doClickLog(factory.clickOnLab(), "Enter 1st value as PUB Laboratory 1");
         eleUtil.doClearUsingKeysWithWait(factory.clickOnLab(), 30);
         eleUtil.doSendKeysWithWaitEnter(factory.clickOnLab(), "PUB Laboratory 1", 30);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
-
         eleUtil.waitTillElementIsDisplayed(factory.getSaveAndClose(), 30);
         eleUtil.doClickLog(factory.getSaveAndClose(), "Click on Save and Close button");
     }
@@ -1367,7 +1383,7 @@ public class checkListPage extends commonCRMActions {
             if (checkListType.equals("Rework")) {
                 checkListType="Compliance";
             }
-            crmsCasePage.selectComplianceInformation(checkListType);
+            crmsCasePage.selectComplianceInformationOnWO(checkListType);
             clickOnSaveBtn();
             clickOnSaveNCloseBtn();
         }
@@ -1456,6 +1472,10 @@ public class checkListPage extends commonCRMActions {
             cwd4RawWaterMainPipelineChecklist(checkListType);
             Thread.sleep(2000);
             crmActions.saveAndMarkCompleteChecklist();
+            //For CRMS Case Manually need to select the Compliance Information
+            if (checkListType.equals("ReInspection")) {
+                checkListType="Non-Compliance";
+            }
             crmActions.checkWOSystemAndUserDetails(completeStatus, checkListType);
             clickOnSaveNCloseBtn();
         }
@@ -1466,9 +1486,7 @@ public class checkListPage extends commonCRMActions {
         Log.info("final path to upload " + path);
         eleUtil.waitForVisibilityOfElement(contractorName, 30);
         if ("Compliance".equals(checkListType)) {
-            eleUtil.selectDropDownValue(contractorName, "selectByVisibleText", "Completed", "Select Completed");
-            uploadFile(photo1, path);
-        } else {
+        } else if (("Non-Compliance".equals(checkListType))){
             eleUtil.waitForVisibilityOfElement(inspectionType, 30);
             eleUtil.doClickLog(inspectionType, "Select Manual");
             eleUtil.doSendKeysLog(contractorName, "CWD4 Contractor" ,"Enter Contractor Name");
@@ -1486,7 +1504,203 @@ public class checkListPage extends commonCRMActions {
             eleUtil.doSendKeysLog(remark, "Enter Remarks for CWD4", "Enter Remark");
             uploadFile(photo1, path);
             eleUtil.doClickLog(rawWatermainsQ15, "Select Prime");
-
+        } else {
+            eleUtil.waitForVisibilityOfElement(inspectionType, 30);
+            eleUtil.doClickLog(inspectionType, "Select Manual");
+            eleUtil.doSendKeysLog(contractorName, "CWD4 Contractor" ,"Enter Contractor Name");
+            eleUtil.doSendKeysLog(size, "100" ,"Enter Size");
+            eleUtil.doClickLog(approvedWorksPOWSNonCompliance, "Select No");
+            eleUtil.doSendKeysLog(remarksQ3, "Remarks for Question 3A", "Enter Remark in Question 3A");
+            eleUtil.doClickLog(anySignsOfLeaks, "Select No");
+            eleUtil.doClickLog(rectificationRequired, "Select Yes");
+            int[] dropDownQuestions = {3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 17, 31, 19, 6, 7, 8, 24, 25, 26, 27, 16, 28, 29};
+            for (int question : dropDownQuestions) {
+                By selectRadioButton = By.xpath("//input[contains(@name,'Question" + question + "_')] [@aria-label='Yes']");
+                eleUtil.waitForVisibilityOfElement(selectRadioButton, 30);
+                eleUtil.doClickLog(selectRadioButton, "Select Yes");
+            }
+            eleUtil.doSendKeysLog(remark, "Enter Remarks for CWD4", "Enter Remark");
+            uploadFile(photo1, path);
+            eleUtil.doClickLog(rawWatermainsQ15, "Select Prime");
         }
     }
+
+    public void checkListForDischargeIntoWaterwaysChecklistCWD3N6(String status, String checkListName, String checkListType, String completeStatus)
+            throws InterruptedException {
+        crmActions.workOrderStatusFilter(status);
+        Thread.sleep(2000);
+        List<String> woNum = new ArrayList<>();
+        crmActions.fetchWorkOrderNumbers(woNum);
+        for (int i = 0; i < woNum.size(); i++) {
+            Thread.sleep(2000);
+            crmActions.openCheckList(woNum.get(i), checkListName, status);
+            cwd3N6DischargeIntoWaterways(checkListType);
+            Thread.sleep(2000);
+            crmActions.saveAndMarkCompleteChecklist();
+            crmActions.checkWOSystemAndUserDetails(completeStatus, checkListType);
+            clickOnSaveNCloseBtn();
+        }
+    }
+
+    public void sampleLabForAnalysisForCWD3N6(String date) throws InterruptedException {
+        eleUtil.waitTillElementIsDisplayed(factory.clickOnNewSampleLab(), 30);
+        eleUtil.doClickLog(factory.clickOnNewSampleLab(), "Click on New Sample For Lab Analysis button");
+        eleUtil.waitTillElementIsDisplayed(factory.selectDateAndTime(), 30);
+        eleUtil.doSendKeysWithWaitEnter(factory.selectDateAndTime(), date, 100);
+        eleUtil.doClearUsingKeysWithWait(factory.clickOnParametersAnalysed(), 30);
+        eleUtil.doSendKeysWithWaitEnter(factory.clickOnParametersAnalysed(), "Oil & Grease (Hydrocarbon)", 30);
+        eleUtil.doClickLog(factory.clickOnLab(), "Enter 1st value as PUB Laboratory 1");
+        eleUtil.doClearUsingKeysWithWait(factory.clickOnLab(), 30);
+        eleUtil.doSendKeysWithWaitEnter(factory.clickOnLab(), "PUB Laboratory 1", 30);
+        eleUtil.selectDropDownValue(temperature, "selectByVisibleText", "Fridge", "Select Fridge");
+        eleUtil.waitTillElementIsDisplayed(factory.getSaveAndClose(), 30);
+        eleUtil.doClickLog(factory.getSaveAndClose(), "Click on Save and Close button");
+    }
+
+    public void cwd3N6DischargeIntoWaterways(String checkListType) throws InterruptedException {
+        String path = filePath + pngFilePath;
+        Log.info("final path to upload " + path);
+        eleUtil.waitForVisibilityOfElement(incidentLocation, 30);
+        sampleLabForAnalysisForCWD3N6(todayDate);
+        if ("Compliance".equals(checkListType)) {
+        }  else {
+            eleUtil.doSendKeysLog(incidentLocation, "Enter Incident Location for CWD3&6", "Enter Incident Location");
+            eleUtil.selectDropDownValue(anyAbnormalityObserved, "selectByVisibleText", "Yes", "Select Yes");
+            eleUtil.doSendKeysLog(remark1, "Enter Remarks for CWD3&6", "Enter Remarks");
+            uploadFile(photo1, path);
+            eleUtil.doClickLog(sampleTaken, "Select Yes");
+            eleUtil.doSendKeysLog(pubWONumber, "Enter PUB WO Number", "Enter PUB WO Number");
+            eleUtil.doSendKeysLog(programmeName, "Enter Programme Name", "Enter Programme");
+            eleUtil.selectDropDownValue(sourceDischargeIdentified, "selectByVisibleText", "No", "Select No");
+            eleUtil.selectDropDownValue(inspectionCompleted, "selectByVisibleText", "Yes", "Select Yes");
+        }
+    }
+
+    public void checklistForPremisesInspectionChecklistCWD3N6(String status, String checkListName, String checkListType, String completeStatus)
+            throws InterruptedException {
+        crmActions.workOrderStatusFilter(status);
+        Thread.sleep(2000);
+        List<String> woNum = new ArrayList<>();
+        crmActions.fetchWorkOrderNumbers(woNum);
+        for (int i = 0; i < woNum.size(); i++) {
+            Thread.sleep(2000);
+            crmActions.openCheckList(woNum.get(i), checkListName, status);
+            cwd3N6PremisesInspection(checkListType);
+            Thread.sleep(2000);
+            markCompleteChecklistForCWD3N6();
+            crmActions.checkWOSystemAndUserDetails(completeStatus, checkListType);
+            clickOnSaveNCloseBtn();
+        }
+    }
+
+    public void cwd3N6PremisesInspection(String checkListType) throws InterruptedException {
+        String path = filePath + pngFilePath;
+        Log.info("final path to upload " + path);
+        eleUtil.waitForVisibilityOfElement(premiseSubType, 30);
+        sampleLabForAnalysisForCWD3N6(eleUtil.todayDatePlusDays("dd/MMM/yyyy", 0));
+        if ("Compliance".equals(checkListType)) {
+        } else {
+            eleUtil.waitForVisibilityOfElement(premiseSubType, 30);
+            eleUtil.doSendKeysLog(premiseSubType, "Animal Holdings", "Enter Premise SubType");
+            eleUtil.waitForVisibilityOfElement(sampleTakenForPremisesInspection, 30);
+            eleUtil.doClickLog(sampleTakenForPremisesInspection, "Select Yes");
+            eleUtil.doSendKeysLog(pubWONumber, "Enter PUB WO Number", "Enter PUB WO Number");
+            eleUtil.doSendKeysLog(programmeName, "Enter Programme Name", "Enter Programme");
+            saveNContinueAndNextButton();
+            eleUtil.waitForVisibilityOfElement(generalHousekeepingPremises, 30);
+            eleUtil.doClickLog(generalHousekeepingPremises, "Select No");
+            uploadFile(photo1, path);
+            eleUtil.doSendKeysLog(remarksQ1, "Enter Remarks for CWD3&6", "Enter Remarks");
+            int[][] dropDownQuestions = {
+                    {32, 31, 29, 28, 27, 34},
+                    {14, 15, 20, 19, 18, 17, 21},
+                    {64, 66, 65, 67},
+                    {76, 84, 83, 82, 81, 80,  144, 145},
+                    {94, 95, 96, 97},
+                    {7, 11}
+            };
+            for (int i = 0; i < dropDownQuestions.length; i++) {
+                processQuestions(dropDownQuestions[i]);
+                if (i < dropDownQuestions.length - 1) {
+                    saveNContinueAndNextButton();
+                } else {
+                    // Save the checklist without clicking "Next" for the last set of questions
+                    eleUtil.doClickLog(getSaveBtnInChklist(), "click on Save Checklist button");
+                    clickSaveNContinueBtn();
+                    waitForChecklistPageToSaved();
+                }
+            }
+        }
+    }
+
+    private void processQuestions(int[] questions) throws InterruptedException {
+        for (int question : questions) {
+            By selectRadioButton = By.xpath("//input[contains(@name,'Question" + question + "_')] [@aria-label='Yes']");
+            eleUtil.waitForVisibilityOfElement(selectRadioButton, 30);
+            eleUtil.doClickLog(selectRadioButton, "Select Yes");
+        }
+    }
+
+    private void saveNContinueAndNextButton() throws InterruptedException {
+        eleUtil.doClickLog(getSaveBtnInChklist(), "click on Save Checklist button");
+        clickSaveNContinueBtn();
+        waitForChecklistPageToSaved();
+        eleUtil.doClickLog(nextButton, "Click on Next button");
+    }
+
+    public void markCompleteChecklistForCWD3N6() throws InterruptedException {
+        eleUtil.doElementClickable(getMarkCompleteBtn(), 50);
+        attemptsDifferentClicks(getMarkCompleteBtn());
+        if (eleUtil.elementIsDisplayed(getDiscardChangesBtn(), "Discard Changes button is displayed")) {
+            clickDiscardChanges();
+            eleUtil.waitForInVisibilityOfElement(getDiscardChangesBtn(), 30);
+            Thread.sleep(3000);
+        }
+        eleUtil.waitForVisibilityOfElement(getChecklistRefreshButton(), 30);
+        eleUtil.doClickLog(getChecklistRefreshButton(), "Click on Checklist Refresh button");
+        if (eleUtil.elementIsDisplayed(getMarkCompleteBtn(), "Mark Complete button is displayed")) {
+            attemptsDifferentClicks(getMarkCompleteBtn());
+            clickSaveNContinueBtn();
+            Thread.sleep(3000);
+        }
+        eleUtil.staleElementRefExecClickCRM(getSaveNCloseBtnInChklist());
+        Thread.sleep(2000);
+        eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
+    }
+
+    public void checkListForBeforeDLPSewerInspectionWRN10IMB(String status, String checkListName, String checkListType, String completeStatus)
+            throws InterruptedException {
+        crmActions.workOrderStatusFilter(status);
+        Thread.sleep(2000);
+        List<String> woNum = new ArrayList<>();
+        crmActions.fetchWorkOrderNumbers(woNum);
+        for (int i = 0; i < woNum.size(); i++) {
+            Thread.sleep(2000);
+            crmActions.openCheckList(woNum.get(i), checkListName, status);
+            wrn10NMBBeforeDLPSewerInspectionChecklist(checkListType);
+            Thread.sleep(2000);
+            crmActions.saveAndMarkCompleteChecklist();
+            crmActions.checkWOSystemAndUserDetails(completeStatus, checkListType);
+            clickOnSaveNCloseBtn();
+        }
+    }
+
+    public void wrn10NMBBeforeDLPSewerInspectionChecklist(String checkListType) throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(beingInspection, 30);
+        if ("In Order".equals(checkListType)) {
+            eleUtil.selectDropDownValue(beingInspection, "selectByVisibleText", "Yes", "Select Yes");
+            int[] dropDownQuestions = {17, 18, 19, 20, 22, 24, 26, 29, 31, 35, 37, 39, 41, 43, 45, 47, 49, 51, 61, 55, 57, 59, 63, 65, 67, 69, 71, 73, 1,
+                76, 78};
+            for (int question : dropDownQuestions) {
+                By wrn10NMBQuestionDLP = By.xpath("//div[@name='Question" + question + "']//select");
+                eleUtil.waitForVisibilityOfElement(wrn10NMBQuestionDLP, 30);
+                eleUtil.selectDropDownValue(wrn10NMBQuestionDLP, "selectByVisibleText", "Yes", "select Yes");
+            }
+            eleUtil.doSendKeysLog(otherComments, "Before DLP Sewer Inspection Checklist", "Enter Other Comments as Before DLP Sewer Inspection Checklist");
+            eleUtil.doClickLog(isAbandonmentRequired, "Select Abandonment with replacement (involved sewer diversion work)");
+            eleUtil.doClickLog(surfaceProfile, "Select Vehicular load is expected");
+        }
+    }
+
+
 }

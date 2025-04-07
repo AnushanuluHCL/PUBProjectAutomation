@@ -4,7 +4,6 @@ import com.sat.locators.ConstructionLocatorsPage;
 import com.sat.locators.eatingEstablishmentLocatorsPage;
 import com.sat.locators.factoryPage;
 import com.sat.locators.pumpingSystemPage;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 public class pumpingSystemCreationPage extends commonActionsPage {
@@ -27,6 +26,7 @@ public class pumpingSystemCreationPage extends commonActionsPage {
         pumpingSystem.enterPostalCode();
         pumpingSystem.enterRoadName();
         pumpingSystem.enterContractor();
+        commonActionsPage.pumpingMain=eleUtil.doGetElementAttributeLog(pumpingSystem.getProjectReferenceNumber(), "title", "Displayed value is : ");
         clickOnSaveBtn();
     }
 
@@ -68,6 +68,7 @@ public class pumpingSystemCreationPage extends commonActionsPage {
         pumpingSystem.enterHouseBlkNumber();
         pumpingSystem.enterPostalCode();
         pumpingSystem.enterRoadName();
+        commonActionsPage.pumpingMain=eleUtil.doGetElementAttributeLog(pumpingSystem.getProjectReferenceNumber(), "title", "Displayed value is : ");
         clickOnSaveBtn();
     }
 

@@ -7,7 +7,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	And user selects App "DQB Case Management"
 
   Scenario: Manual Case Creation for WRP Alert
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And create a manual case for WRP catchment as "Ulu Pandan" and alert source as "WRP – VOC"
 	Then verify catchment as "Ulu Pandan" and entity as "WRP – VOC", factory list and Manhole list is auto-populated
@@ -19,7 +19,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	#SIT3
 	When Login to app with "sit3_SO_userid" and "sit3_SO_pwdd"
 	And user selects App "DQB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And go to "Child Cases" tab
@@ -93,7 +93,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 
 	# Verify Scenario 2
   Scenario: When inspection case for a factory is open under WRN2 but factory is not inspected yet.
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And create a manual case for WRP catchment as "Kranji Ph3" and alert source as "WRP – VOC"
 	Then verify catchment as "Kranji Ph3" and entity as "WRP – VOC", factory list and Manhole list is auto-populated
@@ -107,7 +107,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	#SIT3
 	When Login to app with "sit3_SO_userid" and "sit3_SO_pwdd"
 	And user selects App "DQB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And go to "Child Cases" tab
@@ -118,7 +118,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 
 	# Verify Scenario 3
   Scenario: When inspection case for a factory is open under WRN2 but factory has been inspected.
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And create a manual case for WRP catchment as "Kranji Ph3" and alert source as "WRP – VOC"
 	Then verify catchment as "Kranji Ph3" and entity as "WRP – VOC", factory list and Manhole list is auto-populated
@@ -131,7 +131,7 @@ Feature: Testing WRN3- Manhole inspection for WRP Alert.Child Case creation and 
 	#SIT3
 	When Login to app with "sit3_SO_userid" and "sit3_SO_pwdd"
 	And user selects App "DQB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And go to "Child Cases" tab

@@ -149,7 +149,6 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.error("Values are not updated in the excel");
-
 		}
 	}
 
@@ -479,14 +478,12 @@ public class ConstructionLocatorsPage extends commonActionsPage {
 		eleUtil.waitForVisibilityOfElement(getArchitect(), 30);
 		eleUtil.doClearUsingKeysLog(getArchitect(), "Clear the Architect field");
 		eleUtil.doSendKeysWithWaitEnter(getArchitect(), "Architect", 30);
-		eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
 	}
 
-	public void enterProfEngg() throws InterruptedException {
+	public void enterProfEngg() {
 		eleUtil.waitForVisibilityOfElement(getProfEngg(), 30);
 		eleUtil.doClearUsingKeysLog(getProfEngg(), "Clear the Professional Engineer field");
-		eleUtil.doSendKeysWithWaitEnter(getProfEngg(), "Pro", 30);
-		eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
+		eleUtil.doSendKeysWithWait(getProfEngg(), "Profengg", 30);
 	}
 
 	public void affectedByPumpingMainToggle(String value) {

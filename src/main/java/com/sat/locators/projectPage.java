@@ -5,6 +5,7 @@ import com.sat.Pages.commonCRMActions;
 import com.sat.testUtil.ExcelUtil;
 import com.sat.testUtil.Log;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -23,6 +24,8 @@ public class projectPage extends commonActionsPage {
     commonCRMActions crmAction = new commonCRMActions(driver);
     factoryPage factory = new factoryPage(driver);
     pumpingSystemPage pumpingSystem = new pumpingSystemPage(driver);
+    ConstructionLocatorsPage constructionPage = new ConstructionLocatorsPage(driver);
+    dtssPage dtss = new dtssPage(driver);
 
     String projectPath = "\\src\\main\\resources\\documents\\WRN11NMBProjectsTemplate.xlsx";
     String bpuSubmissionPath = "\\src\\main\\resources\\documents\\WRN11NMB1BPUSubmissionTemplates.xlsx";
@@ -45,6 +48,10 @@ public class projectPage extends commonActionsPage {
 
     // BPU Submission and verification
     private By bpuSubmissionGridRefresh = By.xpath("//ul[@aria-label='1BPU Submission Commands'] //button[@aria-label='Refresh']");
+
+    // Create Premise
+    private By premiseType = By.cssSelector("input[aria-label='Premise Type, Lookup']");
+    private By category = By.cssSelector("select[aria-label='Category']");
 
     public By getMoreCommandButton() {
         return moreCommandButton;
@@ -213,6 +220,50 @@ public class projectPage extends commonActionsPage {
 
     public void checkWorkOrderCreated() throws InterruptedException {
         factory.workOrderVerification();
+    }
+
+    public void createManualPremises(String entityType) throws InterruptedException {
+        clickonNewBtn();
+        factory.selectEntityType(entityType);
+        factory.enterEntityName("Premises");
+        factory.selectCatchment();
+        eleUtil.waitForVisibilityOfElement(premiseType, 30);
+        eleUtil.doClearUsingKeysLog(premiseType, "Clear the Premise Type field");
+        eleUtil.doSendKeysWithWaitEnter(premiseType, "Animal Holdings", 30);
+
+        pumpingSystem.enterHouseBlkNumber();
+        pumpingSystem.enterPostalCode();
+        eleUtil.waitTillElementIsDisplayed(category, 30);
+        eleUtil.selectDropDownValue(category, "selectByVisibleText", "Tier1",
+                "select entity type as Tier 1");
+        clickOnSaveBtn();
+    }
+
+    public void createManualPublicSewer(String entityType) throws InterruptedException {
+        clickonNewBtn();
+        factory.selectEntityType(entityType);
+        pumpingSystem.enterProjectReferenceNumber();
+        pumpingSystem.enterProjectTitle();
+        constructionPage.enterArchitect();
+        constructionPage.enterProfEngg();
+        factory.selectCatchment();
+        pumpingSystem.enterHouseBlkNumber();
+        pumpingSystem.enterPostalCode();
+        pumpingSystem.enterRoadName();
+        commonActionsPage.publicSewer=eleUtil.doGetElementAttributeLog(pumpingSystem.getProjectReferenceNumber(), "title", "Displayed value is : ");
+        clickOnSaveBtn();
+    }
+
+    public void searchAPublicSewer() throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(dtss.getSearchBoxForEntity(), 20);
+        Thread.sleep(2000);
+        eleUtil.doSendKeys(dtss.getSearchBoxForEntity(), commonActionsPage.publicSewer);
+        eleUtil.isPageLoaded(50);
+        Thread.sleep(2000);
+        driver.findElement(dtss.getSearchBoxForEntity()).sendKeys(Keys.ENTER);
+        Thread.sleep(3000);
+        selectFirstRecord();
+        getFirstRecord();
     }
 
 }

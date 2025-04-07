@@ -114,7 +114,7 @@ public class originalCaseCreationPage extends commonActionsPage {
 
 	public void wrn9AOReviewStage(String recurrence, String frequency) throws InterruptedException {
 		cases.completeWRN9AOReviewStage(recurrence, frequency);
-		factory.clickOnSavingInProgressOkButton();
+		crmActions.clickOnSavingInProgressOkButton();
 	}
 
 	public void verifyNextBookingDate(int days) throws InterruptedException {
@@ -183,7 +183,7 @@ public class originalCaseCreationPage extends commonActionsPage {
 
 	public void completeSOReviewForWRN7NMB(String soValue) throws InterruptedException {
 		cases.soReviewForWRN7NMB(soValue);
-		factory.clickOnSavingInProgressOkButton();
+		crmActions.clickOnSavingInProgressOkButton();
 	}
 
 	public void verifyRecurringWOCreation() {
@@ -300,7 +300,7 @@ public class originalCaseCreationPage extends commonActionsPage {
 		cases.formSGApproveAndReject(buttonName);
 	}
 
-	public void checkRectificationSubmissionStatus(String rectificationStatus) {
+	public void checkRectificationSubmissionStatus(String rectificationStatus) throws InterruptedException {
 		cases.verifyRectificationSubmissionStatus(rectificationStatus);
 	}
 
@@ -337,5 +337,41 @@ public class originalCaseCreationPage extends commonActionsPage {
 
 	public void getNStoreCaseNumber() {
 		cases.waitForCaseFormToSaveNGetCaseNumber();
+	}
+
+	public void checkRectificationDetailsCWD4(String rectificationEmailSent, String rectificationRequired) {
+		cases.verifyRectificationDetailsCWD4(rectificationEmailSent, rectificationRequired);
+	}
+
+	public void createNewFormSGWithCase() {
+		cases.newFormSGWithCase();
+	}
+
+	public void completeSOReviewForCWD3N6() {
+		cases.soReviewForCWD3N6();
+	}
+
+	public void completeInspectionStageWithSOReview() {
+		cases.completedInspectionWithSOReview();
+	}
+
+	public void completeGenerateEmailStageWithMnCLetter() {
+		cases.completedGenerateEmailWithMnCLetter();
+	}
+
+	public void clickGenerateIONIOLetter() {
+		cases.generateIONIOLetter();
+	}
+
+	public void clickGenerateIONIOLetterPopUpOkayButton() {
+		cases.clickOnGenerateIONIOLetterOkayButton();
+	}
+
+	public void commissioningLetterIssuedDate() {
+		cases.selectCommissioningLetterIssuedDate();
+	}
+
+	public void clickOKButton() {
+		cases.clickOnOkButton();
 	}
 }

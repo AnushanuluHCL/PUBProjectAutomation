@@ -46,6 +46,8 @@ public class commonCRMActions extends commonActionsPage {
     private By userAssessment = By.cssSelector("select[aria-label='User Assessment']");
     private By systemAssessment = By
             .xpath("//div[@data-id='pub_systemassessment'] //select[@aria-label='System Assessment']");
+    private By formSGStatusGridHeader = By.cssSelector("div[data-testid='pub_rectificationstatus']");
+    private By moreButtonOnFormSG = By.cssSelector("button[aria-label='More commands for Form SG']");
 
     // Locators on Bookings home page
     private By checkListNameField = By.xpath("//div[@col-id='msdyn_name']/descendant::a");
@@ -112,11 +114,23 @@ public class commonCRMActions extends commonActionsPage {
     // Locators on checklist page
     private By clearResponseBtn = By.xpath("//button[@aria-label='Clear Responses']");
     private By okBtn = By.xpath("//span[text()='OK']");
+    private By checklistRefreshButton = By.xpath("//ul[@aria-label='Commands']//button[@aria-label='Refresh' and contains(@id,'workorderservicetask')]");
 
     //This code can be removed after Booking Issue is fixed
     private By bookingDuration = By.cssSelector("input[aria-label='Duration']");
     private By recordFormPageToSaved = By.cssSelector("span[aria-label='Save status - Saved']");
     private By checklistPageToSaved = By.cssSelector("//span[text()='Work Order Service Task']/ancestor::div[contains(@class, 'flexbox')]//span[@aria-label='Save status - Saved']");
+    private By woStatusFilterSelected = By.xpath("//div[@aria-label='WO Status filtered by eq undefined']//i[@data-icon-name='FilterSolid']");
+    private By savingInProgressPopUp = By.xpath("//div[contains(@id,'modalDialogContentContainer')]");
+    private By savingInProgressOkButton = By.xpath("//span[contains(@id,'okButtonText')]");
+
+    public By getWOStatusFilterSelected() {
+        return woStatusFilterSelected;
+    }
+
+    public By getDiscardChangesBtn() {
+        return discardChangesBtn;
+    }
 
     public By getUserAssessment() {
         return userAssessment;
@@ -214,9 +228,13 @@ public class commonCRMActions extends commonActionsPage {
         return saveAndCloseWOAcknowledgePopup;
     }
 
-    public void resetFirstRunFlag() {
-        isFirstRun.set(Boolean.TRUE);
+    public By getSavingInProgressPopUp() {
+        return savingInProgressPopUp;
     }
+
+    /*public void resetFirstRunFlag() {
+        isFirstRun.set(Boolean.TRUE);
+    }*/
 
     public By getSelectTodayDateAndTime() {
         return selectTodayDateAndTime;
@@ -228,6 +246,10 @@ public class commonCRMActions extends commonActionsPage {
 
     public By getBookingRefreshButton() {
         return bookingRefreshButton;
+    }
+
+    public By getChecklistRefreshButton() {
+        return checklistRefreshButton;
     }
 
     public void clickOnSaveButton() {
@@ -344,11 +366,14 @@ public class commonCRMActions extends commonActionsPage {
     }
 
     public void processWorkOrder(String woNumber, String status) throws InterruptedException {
-        if (!isFirstRun.get()) {
+        if (!eleUtil.elementIsDisplayed(getWOStatusFilterSelected(), "No data available")) {
+            workOrderStatusFilter(status);
+        }
+        /*if (!isFirstRun.get()) {
             workOrderStatusFilter(status);
         } else {
             isFirstRun.set(Boolean.FALSE); // Set the flag to false after the first run
-        }
+        }*/
         By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + woNumber + "']");
         eleUtil.waitForVisibilityOfElement(woele, 50);
         eleUtil.doActionsClick(woele);
@@ -435,7 +460,7 @@ public class commonCRMActions extends commonActionsPage {
                         eleUtil.waitForVisibilityOfElement(saveNContinueBtn, 30);
                         while (true) {
                             List<WebElement> saveNContinueButtons = driver.findElements(saveNContinueBtn);
-                            if (saveNContinueButtons .isEmpty()) {
+                            if (saveNContinueButtons.isEmpty()) {
                                 break;
                             }
                             for (WebElement button : saveNContinueButtons) {
@@ -462,7 +487,7 @@ public class commonCRMActions extends commonActionsPage {
             eleUtil.waitForVisibilityOfElement(workOrderForm, 40);
             clickOnSaveNCloseBtn();
         }
-        resetFirstRunFlag();
+        //resetFirstRunFlag();
     }
 
     public void multipleBookingFilling(String status, String selectBookingStatus) throws InterruptedException {
@@ -551,7 +576,7 @@ public class commonCRMActions extends commonActionsPage {
             }
             clickOnSaveNCloseBtn();
         }
-        resetFirstRunFlag();
+        //resetFirstRunFlag();
     }
 
     public void openCheckList(String woNumber, String checkListName, String status) throws InterruptedException {
@@ -746,7 +771,7 @@ public class commonCRMActions extends commonActionsPage {
                 }
             }
         }
-        resetFirstRunFlag();
+        //resetFirstRunFlag();
     }
 
     public void verifyBookingStatus(String WOstatus) {
@@ -888,7 +913,6 @@ public class commonCRMActions extends commonActionsPage {
     }
 
     public void clearResponseInChecklist() {
-
         eleUtil.waitForVisibilityOfElement(clearResponseBtn, 10);
         eleUtil.doClickLog(clearResponseBtn, "Click on Clear Response button");
         eleUtil.waitForVisibilityOfElement(okBtn, 10);
@@ -939,25 +963,27 @@ public class commonCRMActions extends commonActionsPage {
         // Process all collected WOs
         for (int i = 0; i < woNum.size(); i++) {
             Thread.sleep(2000);
-            if (!isFirstRun.get()) {
+            workOrderTypeFilter(WOType);
+            /*if (!isFirstRun.get()) {
                 workOrderTypeFilter(WOType);
             } else {
                 isFirstRun.set(Boolean.FALSE); // Set the flag to false after the first run
-            }
+            }*/
             By woele = By.xpath("//div[@col-id='msdyn_name']//descendant::a[@aria-label='" + woNum.get(i) + "']");
             eleUtil.waitForVisibilityOfElement(woele, 50);
             eleUtil.doActionsClick(woele);
 
         }
-        resetFirstRunFlag();
+        //resetFirstRunFlag();
     }
 
-    public void openWOGoToBookings() {
+    public void openWOGoToBookings(String tabName) {
+        By workOrderTabs = By.xpath("//li[text()='" + tabName + "']");
         selectFirstRecord();
         getFirstRecord();
-        eleUtil.waitForVisibilityOfElement(getBookingTab(), 30);
-        eleUtil.staleElementRefExecClickCRM(getBookingTab());
-        eleUtil.doClick(getBookingTab());
+        eleUtil.waitForVisibilityOfElement(workOrderTabs, 30);
+        eleUtil.staleElementRefExecClickCRM(workOrderTabs);
+        eleUtil.doClick(workOrderTabs);
     }
 
     // This method can be removed once Booking issue is resolved
@@ -1004,11 +1030,20 @@ public class commonCRMActions extends commonActionsPage {
     }
 
     public void saveAndMarkCompleteChecklist() throws InterruptedException {
-        eleUtil.doClick(getSaveBtnInChklist());
-        Thread.sleep(3000);
+        eleUtil.doClickLog(getSaveBtnInChklist(), "click on Save Checklist button");
         waitForChecklistPageToSaved();
+        if (eleUtil.elementIsDisplayed(saveNContinueBtn, "Save and Continue button is displayed")) {
+            eleUtil.doClickLog(saveNContinueBtn, "click on Save and Continue button");
+            eleUtil.waitForInVisibilityOfElement(saveNContinueBtn, 30);
+            Thread.sleep(3000);
+        }
         eleUtil.doElementClickable(getMarkCompleteBtn(), 50);
         attemptsDifferentClicks(getMarkCompleteBtn());
+        if (eleUtil.elementIsDisplayed(saveNContinueBtn, "Save and Continue button is displayed")) {
+            eleUtil.doClickLog(saveNContinueBtn, "click on Save and Continue button");
+            eleUtil.waitForInVisibilityOfElement(saveNContinueBtn, 30);
+            Thread.sleep(3000);
+        }
         eleUtil.staleElementRefExecClickCRM(getSaveNCloseBtnInChklist());
         Thread.sleep(2000);
         eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
@@ -1032,7 +1067,7 @@ public class commonCRMActions extends commonActionsPage {
         Thread.sleep(2000);
     }
 
-    public void clickSaveNContinueBtn() {
+    public void clickSaveNContinueBtn() throws InterruptedException {
         try {
             eleUtil.waitForVisibilityOfElement(saveNContinueBtn, 90);
             eleUtil.doClick(saveNContinueBtn);
@@ -1040,12 +1075,14 @@ public class commonCRMActions extends commonActionsPage {
             // Handle the exception, for example, log the error or take some other action
             Log.error("Element not found: " + e.getMessage());
         }
+        // Comment the below code this is a fix of a bug
+        clickOnSavingInProgressOkButton();
     }
 
     public void clickDiscardChanges() {
         try {
-            eleUtil.waitForVisibilityOfElement(discardChangesBtn, 90);
-            eleUtil.doClick(discardChangesBtn);
+            eleUtil.waitForVisibilityOfElement(getDiscardChangesBtn(), 90);
+            eleUtil.doClick(getDiscardChangesBtn());
         } catch (org.openqa.selenium.NoSuchElementException e) {
             // Handle the exception, for example, log the error or take some other action
             Log.error("Element not found: " + e.getMessage());
@@ -1099,4 +1136,43 @@ public class commonCRMActions extends commonActionsPage {
         eleUtil.doClickLog(getSaveAndCloseWOAcknowledgePopup(), "click on save and close button on Manual Booking");
         Thread.sleep(2000);
     }
+
+    public void formSGStatusFilter(String rectificationStatus) throws InterruptedException {
+        eleUtil.isPageLoaded(50);
+        eleUtil.waitForVisibilityOfElement(formSGStatusGridHeader, 100);
+        Thread.sleep(3000);
+        attemptsDifferentClicks(formSGStatusGridHeader);
+        filterViewForCheckbox(rectificationStatus);
+        eleUtil.doClickLog(moreButtonOnFormSG, "Clicked on Form SG grid refresh button");
+        eleUtil.doClickLog(getWorkOrderGridRefresh(), "Form SG not created click on Form SG grid refresh button");
+        eleUtil.isPageLoaded(30);
+        Thread.sleep(2000);
+    }
+
+    public void clickOnSavingInProgressOkButton() throws InterruptedException { // remove this code once issue is
+        // resolved
+        eleUtil.isPageLoaded(100);
+        if (eleUtil.elementIsDisplayed(getSavingInProgressPopUp(), "Saving in Progress Pop Up")) {
+            eleUtil.waitForVisibilityOfElement(savingInProgressOkButton, 30);
+            while (true) {
+                List<WebElement> okButtons = driver.findElements(savingInProgressOkButton);
+                if (okButtons.isEmpty()) {
+                    break;
+                }
+                for (WebElement button : okButtons) {
+                    try {
+                        button.click();
+                        // Refresh the list of elements after each click
+                        okButtons = driver.findElements(savingInProgressOkButton);
+                    } catch (Exception e) {
+                        Log.error("Error clicking on Ok button: {}" + e.getMessage());
+                    }
+                }
+            }
+        } else {
+            eleUtil.doClickLog(getRefreshBtn(), "Click on Refresh button");
+        }
+    }
+
+
 }

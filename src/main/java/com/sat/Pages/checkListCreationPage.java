@@ -78,4 +78,17 @@ public class checkListCreationPage extends commonActionsPage {
     public void fillChecklistForRawWaterMainPipelineChecklistCWD4(String status, String checkListName, String checkListType, String completeStatus) throws InterruptedException {
         checkList.checkListForRawWaterMainPipelineChecklistCWD4(status, checkListName, checkListType, completeStatus);
     }
+
+    public void fillChecklistForDischargeIntoWaterwaysChecklistCWD3N6(String status, String checkListName, String checkListType, String completeStatus) throws InterruptedException {
+        checkList.checkListForDischargeIntoWaterwaysChecklistCWD3N6(status, checkListName, checkListType, completeStatus);
+    }
+
+    public void fillChecklistForPremisesInspectionChecklistCWD3N6(String status, String checkListName, String checkListType, String completeStatus) throws InterruptedException {
+        checkList.checklistForPremisesInspectionChecklistCWD3N6(status, checkListName, checkListType, completeStatus);
+    }
+
+    public void fillChecklistForBeforeDLPSewerInspectionWRN10IMB(String status, String checkListName, String checkListType, String completeStatus) throws InterruptedException {
+        checkList.checkListForBeforeDLPSewerInspectionWRN10IMB(status, checkListName, checkListType, completeStatus);
+    }
+
 }

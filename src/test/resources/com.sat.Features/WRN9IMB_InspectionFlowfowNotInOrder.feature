@@ -10,7 +10,7 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 	And user selects App "IMB Case Management"
 
   Scenario: Create Project for Pumping System Inspection flow for Not-In-Order Recurring WO
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Pumping Systems"
 	And create a manual Pumping System where Entity Type as "Pumping Systems"
 	And navigate to "Pumping System Submissions" tab
@@ -48,7 +48,7 @@ Feature: Testing WRN9IMB- Inspection Flow for Not-In-Order.
 	Then verify "Recurrence required still marked as yes. Please set to no before closing the case" this message
 
   Scenario: Create Project for Pumping System Inspection flow for Not-In-Order
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Pumping Systems"
 	And create a manual Pumping System where Entity Type as "Pumping Systems"
 	And navigate to "Pumping System Submissions" tab

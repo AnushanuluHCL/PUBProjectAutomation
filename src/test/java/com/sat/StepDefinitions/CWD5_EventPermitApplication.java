@@ -92,7 +92,7 @@ public class CWD5_EventPermitApplication {
     }
 
     @Then("verify Rectification Submission status is marked as {string}")
-    public void verifyRectificationSubmissionStatusIsMarkedAs(String rectificationStatus) {
+    public void verifyRectificationSubmissionStatusIsMarkedAs(String rectificationStatus) throws InterruptedException {
         casesPage.checkRectificationSubmissionStatus(rectificationStatus);
     }
 

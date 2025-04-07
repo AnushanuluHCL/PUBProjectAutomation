@@ -2,7 +2,6 @@ package com.sat.Pages;
 
 import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -29,8 +28,6 @@ import com.sat.testUtil.ExcelUtil;
 import com.sat.testUtil.JavaScriptUtil;
 import com.sat.testbase.TestBase;
 
-import static org.testng.Assert.assertTrue;
-
 public class commonActionsPage {
 
 	protected static WebDriver driver;
@@ -45,7 +42,7 @@ public class commonActionsPage {
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
 			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO, oldSealNumber, newSealNumber,
 			resealReason, WRN1_factoryname, WRN8NMB_Projname, childCaseNumber, projectRefNumber, WRN7NMB_Projname, dtssNumber, WRN6NMB_Enttiyval, WRN4_GTscount,
-			pumpingMain, applicationNumber, CWD2_ConstructionSide;
+			pumpingMain, applicationNumber, CWD2_ConstructionSide, publicSewer;
 	private static Map<String, String> sharedValues = new HashMap<>();
 	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
 	protected static Map<Integer, String> tankerNumber = new HashMap<>();
@@ -420,7 +417,6 @@ public class commonActionsPage {
 	}
 
 	public void filterViewForStatus(String value) throws InterruptedException {
-		eleUtil.isPageLoaded(90);
 		eleUtil.waitForVisibilityOfElement(filterBy, 50);
 		Thread.sleep(3000);
 		eleUtil.doClickLog(filterBy, "click on Filter By");
@@ -622,4 +618,20 @@ public class commonActionsPage {
 		Thread.sleep(2000);
 	}
 
+	public void filterViewForCheckbox(String value) throws InterruptedException {
+		eleUtil.waitForVisibilityOfElement(filterBy, 50);
+		Thread.sleep(3000);
+		eleUtil.doClickLog(filterBy, "click on Filter By");
+		Thread.sleep(2000);
+		eleUtil.doClickLog(filterInputBox, "click on filter selection");
+		By filterValue = By.xpath("//div[@title='" + value + "']");
+		Log.info("filter value " + filterValue);
+		eleUtil.waitForVisibilityOfElement(filterValue, 30);
+		eleUtil.doClickLog(filterValue, "Select filter value " + value);
+		Thread.sleep(2000);
+		eleUtil.doClickLog(filterInputBox, "Click on filter selection to hide the box");
+		eleUtil.waitForVisibilityOfElement(applyButton, 50);
+		eleUtil.doClickLog(applyButton, "Click on Apply button");
+		Thread.sleep(2000);
+	}
 }

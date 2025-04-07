@@ -221,6 +221,7 @@ public class WRN1CasePage extends commonActionsPage {
 	public void verifyCaseFormat(String startsWithName) {
 		wrn1case.caseNamevalue(startsWithName);
 	}
+
 	public void caseNotification() throws InterruptedException {
 		  crmActions.notificationForTabToOpen(commonActionsPage.casenumber, "Inspection Case Information");
 	}

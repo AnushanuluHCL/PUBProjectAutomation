@@ -1,4 +1,4 @@
-@WRN11NMB_AuditInspectionForNonCompliance
+@WRN10IMB_EndDLP
 Feature: Testing WRN10IMB- EndDLP
 
   Background: Test CRM Login with valid credentials
@@ -10,7 +10,7 @@ Feature: Testing WRN10IMB- EndDLP
 	And user selects App "IMB Case Management"
 
   Scenario: Create Project for Audit Inspection flow for non-compliance when Account Sub Type as Minor Works Inspection
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Pumping Mains"
 	And create a manual Pumping Mains where Entity Type as "Pumping Main"
 	And open "Inspection Cases" tab in "Entity"
@@ -29,7 +29,7 @@ Feature: Testing WRN10IMB- EndDLP
 	# SIT3
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "IMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
@@ -41,7 +41,7 @@ Feature: Testing WRN10IMB- EndDLP
 	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "IMB Case Management"
 	And user selects entity as "Pumping Mains"
-	Then search and open the Pumping Main
+	When search and open the Pumping Main
 	And open "Inspection Cases" tab in "Entity"
 	And create a manual case of Case sub type as "Pumping Main Abandonment"
 	And go to "Work Orders" tab
@@ -54,14 +54,14 @@ Feature: Testing WRN10IMB- EndDLP
 	# SIT3
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "IMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
 	And navigate to SO Review stage and click on Next Stage button
 	And navigate to Close stage and set Resolve Case as "Yes"
 	And user selects entity as "Pumping Mains"
-	Then search and open the Pumping Main
+	When search and open the Pumping Main
 	And open "Inspection Cases" tab in "Entity"
 	And select "SO Review" Case and open the case
 	And navigate to SO Review stage and click on Next Stage button
@@ -70,7 +70,7 @@ Feature: Testing WRN10IMB- EndDLP
 	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "IMB Case Management"
 	And user selects entity as "Pumping Mains"
-	Then search and open the Pumping Main
+	When search and open the Pumping Main
 	And open "Inspection Cases" tab in "Entity"
 	And create a manual case of Case sub type as "End-DLP Pumping Mains Inspection"
 	And go to "Work Orders" tab
@@ -83,7 +83,7 @@ Feature: Testing WRN10IMB- EndDLP
 	# SIT3
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "IMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case

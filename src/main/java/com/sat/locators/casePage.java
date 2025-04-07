@@ -87,6 +87,10 @@ public class casePage extends commonCRMActions {
     private By nextStageBtn = By.xpath("//div[contains(@id,'nextButton')]");
     private By resolveCaseOption = By.cssSelector("select[aria-label='Resolve Case']");
     private By finishBtn = By.cssSelector("button[@aria-label='Finish']");
+    private By submitSOReviewBtn = By.xpath("//select[contains(@id,'header') and @aria-label='Submit for SO Review']");
+    private By inspectionCompletedOption = By.xpath("//select[@aria-label='Inspection Completed?']");
+    private By emailSentToCustomer = By.cssSelector("label[aria-label='Email Sent to Customer?']");
+    private By sendMnCLetter = By.cssSelector("label[aria-label='Send M&C Letter']");
 
     private By warningRecurrence = By.cssSelector("h1[aria-label='Warning']");
     private By recurrenceMessageLocator = By.cssSelector("span[data-id='dialogMessageText']");
@@ -127,6 +131,7 @@ public class casePage extends commonCRMActions {
     private By rectificationConfirmation = By.cssSelector("h1[aria-label='Rectification Confirmation']");
     private By okBtn = By.xpath("//button[@aria-label='OK']");
     private By newFormSG = By.cssSelector("button[aria-label='New Form SG. Add New Form SG']");
+    private By caseId = By.cssSelector("input[aria-label='Case ID, Lookup']");
     private By rectificationSubmissionStatus = By.xpath("//div[@col-id='pub_rectificationstatus' and @role='gridcell']//div[@role='none']");
     private By rectificationRequiredAfterSubmission = By.xpath("//button[contains(@aria-label,'Rectification Required')]/following-sibling::label[contains(@for,'Toggle')]");
     private By rectificationDocumentVerified = By.cssSelector("select[aria-label='Rectification Documents Verified']");
@@ -135,6 +140,8 @@ public class casePage extends commonCRMActions {
     private By sendEmailButton = By.cssSelector("button[aria-label='Send Email']");
     private By rectificationDueDateValidation = By.xpath("//span[text()='Rectification Due Date: Required fields must be filled in.']");
     private By rectificationValidationOkButton = By.cssSelector("button[data-id='okButton']");
+    private By rectificationRequiredCWD4 = By.xpath("//select[@aria-label='Rectification Required']/ancestor::div[2]");
+    private By rectificationEmailSent = By.xpath("//button[contains(@aria-label,'Rectification Email Sent')]/following-sibling::label[contains(@for,'Toggle')]");
 
     // WRN6IMB Locators
     private By typeOfWO = By.xpath("//div[@aria-rowindex='2']//div[@col-id='pub_workordertype']//label");
@@ -165,6 +172,12 @@ public class casePage extends commonCRMActions {
     private By resultDialog = By.cssSelector("h1[aria-label='Result Dialog']");
     private By okButton = By.cssSelector("button[aria-label='OK']");
     private By confirmDialog = By.cssSelector("h1[aria-label='Confirm']");
+
+    // WRN10-NMB Locators
+    private By generateIONIOLetter = By.cssSelector("button[aria-label='Generate IO/NIO Letter']");
+    private By generateIONIOLetterPopUp = By.cssSelector("h1[aria-label='Generate IO/NIO Letter']");
+    private By okayButton = By.cssSelector("button[aria-label='Okay']");
+    private By commissioningLetterDate = By.xpath("//input[@aria-label='Date of Commissioning Letter issued date']/following-sibling::i[@data-icon-name='Calendar']");
 
     public By getOkBtn() {
         return okBtn;
@@ -341,6 +354,14 @@ public class casePage extends commonCRMActions {
     public By getCaseRemarksField() {
         return caseRemarksField;
     }
+
+    public By getSubmitSOReviewBtn() {
+        return submitSOReviewBtn;
+    }
+
+    public By getInspectionCompletedOption() {
+        return inspectionCompletedOption;
+    }
     // This method can be removed once this issue is fixed
     /*public void enableWRPSubType() {
         eleUtil.waitForVisibilityOfElement(getCaseType(), 30);
@@ -511,7 +532,7 @@ public class casePage extends commonCRMActions {
             }
             crmActions.saveChecklist();
         }
-        crmActions.resetFirstRunFlag();
+        //crmActions.resetFirstRunFlag();
     }
 
     public void selectChecklistForMHWRPReport(String abnormalityValue) {
@@ -747,7 +768,7 @@ public class casePage extends commonCRMActions {
         eleUtil.waitForVisibilityOfElement(clickMoreCommandButton(), 10);
         eleUtil.doClickLog(clickMoreCommandButton(), "Click on More Command button on Cases");
         eleUtil.waitForVisibilityOfElement(clickGenerateLetter(), 10);
-        eleUtil.doClickLog(clickGenerateLetter(), "Click on More Command button on Cases");
+        eleUtil.doClickLog(clickGenerateLetter(), "Click on Generate Letter on Cases");
         clickOnRefreshBtn();
     }
 
@@ -763,7 +784,8 @@ public class casePage extends commonCRMActions {
     public void manualWOCreation(String workOrderType) {
         eleUtil.waitForVisibilityOfElement(getNewWorkOrder(), 10);
         eleUtil.doClickLog(getNewWorkOrder(), "Click on New Work Order button");
-        eleUtil.selectDropDownValue(getWOType(), "selectByVisibleText", workOrderType, "Select Re-Inspection in WO Type");
+        eleUtil.waitForVisibilityOfElement(getWOType(), 30);
+        eleUtil.selectDropDownValue(getWOType(), "selectByVisibleText", workOrderType, "Select "  + workOrderType + " in WO Type");
         eleUtil.waitTillElementIsDisplayed(factory.getSaveAndClose(), 30);
         eleUtil.doClickLog(factory.getSaveAndClose(), "Click on Save and Close button");
         clickOnRefreshBtn();
@@ -778,7 +800,7 @@ public class casePage extends commonCRMActions {
     public void reInspectionForWRN11() throws InterruptedException {
         navigatingToStage("Inspection");
         clickOnNextStageBtn();
-        factory.clickOnSavingInProgressOkButton();
+        crmActions.clickOnSavingInProgressOkButton();
         eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
     }
 
@@ -1024,7 +1046,7 @@ public class casePage extends commonCRMActions {
     public void soReviewForWRN10IMBAbandonmentCase() throws InterruptedException {
         navigatingToStage("SO Review");
         clickOnNextStageBtn();
-        factory.clickOnSavingInProgressOkButton();
+        crmActions.clickOnSavingInProgressOkButton();
         eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
     }
 
@@ -1167,7 +1189,8 @@ public class casePage extends commonCRMActions {
         return status;
     }
 
-    public void verifyRectificationSubmissionStatus(String rectificationStatus) {
+    public void verifyRectificationSubmissionStatus(String rectificationStatus) throws InterruptedException {
+        crmActions.formSGStatusFilter(rectificationStatus);
         Assert.assertEquals(getRectificationSubmissionStatus(), rectificationStatus, "Status not matched");
     }
 
@@ -1243,4 +1266,94 @@ public class casePage extends commonCRMActions {
         eleUtil.selectDropDownValue(getCaseType(), "selectByVisibleText", caseType, "select Case sub type " + caseSubType);
     }
 
+    public String getRectificationEmailSent() {
+        eleUtil.waitForVisibilityOfElement(rectificationEmailSent, 30);
+        String value = eleUtil.doElementGetText(rectificationEmailSent);
+        return value;
+    }
+
+    public void verifyRectificationDetailsCWD4(String rectificationEmailSent, String rectificationRequired) {
+        eleUtil.textVerificationFormAttribute(rectificationRequiredCWD4, "title", rectificationRequired);
+        Assert.assertEquals(getRectificationEmailSent(), rectificationEmailSent, "Rectification Email Sent not matched");
+    }
+
+    public void newFormSGWithCase() {
+        eleUtil.waitForVisibilityOfElement(newFormSG, 50);
+        eleUtil.doClickLog(newFormSG, "Click on New Form SG button");
+        eleUtil.waitForVisibilityOfElement(caseId, 30);
+        eleUtil.doClearUsingKeysLog(caseId, "clear Entity Values");
+        eleUtil.doSendKeysLog(caseId, commonActionsPage.casenumber, "Enter Entity value " + commonActionsPage.casenumber);
+        //eleUtil.doSendKeysLog(caseId, "IFA/PE/I/2025/538", "Enter Entity value " + "IFA/PE/I/2025/538");
+        eleUtil.waitTillElementIsDisplayed(factory.setLookUp(), 50);
+        eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
+        clickOnSaveBtn();
+        waitForRecordFormPageToSaved();
+        eleUtil.waitForVisibilityOfElement(rectificationTab, 40);
+        eleUtil.doClickLog(rectificationTab, "click on Rectification tab");
+        eleUtil.waitForVisibilityOfElement(commentOnSIES, 40);
+        eleUtil.doSendKeysLog(commentOnSIES, "Rectification test", "Enter value in SIES");
+        clickOnSaveBtn();
+        waitForRecordFormPageToSaved();
+    }
+
+    public void soReviewForCWD3N6() {
+        navigatingToStage("SO Review");
+        eleUtil.selectDropDownValue(approveAndResolveCase, "selectByVisibleText", "Yes", "Select Yes in Approve and Resolve Case");
+        eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
+        navigatingToStage("SO Review");
+        clickOnNextStageBtn();
+    }
+
+    public void completedInspectionWithSOReview() {
+        navigatingToStage("Inspection");
+        eleUtil.waitForVisibilityOfElement(getInspectionCompletedOption(), 10);
+        eleUtil.createSelect(getInspectionCompletedOption());
+        eleUtil.doSelectDropDownByVisibleText(getInspectionCompletedOption(), "Yes");
+        eleUtil.waitForVisibilityOfElement(getSubmitSOReviewBtn(), 10);
+        eleUtil.createSelect(getSubmitSOReviewBtn());
+        eleUtil.doSelectDropDownByVisibleText(getSubmitSOReviewBtn(), "Yes");
+        eleUtil.doClickLog(crmActions.getSaveBtn(), "Click on Save button");
+        eleUtil.isPageLoaded(10);
+        navigatingToStage("Inspection");
+        clickOnNextStageBtn();
+    }
+
+    public void completedGenerateEmailWithMnCLetter() {
+        navigatingToStage("Generate Email");
+        eleUtil.waitForVisibilityOfElement(emailSentToCustomer, 10);
+        if (eleUtil.doElementGetText(emailSentToCustomer).equals("No")) {
+            eleUtil.doClickLog(emailSentToCustomer, "Toggle as Yes");
+        } else {
+            Log.info("already value selected as Yes");
+        }
+        if (eleUtil.doElementGetText(sendMnCLetter).equals("No")) {
+            eleUtil.doClickLog(sendMnCLetter, "Toggle as Yes");
+        } else {
+            Log.info("This field is not available in this BPF");
+        }
+        clickOnSaveBtn();
+        clickOnRefreshBtnOnHome();
+        navigatingToStage("Generate Email");
+        clickOnNextStageBtn();
+    }
+
+    public void generateIONIOLetter() {
+        eleUtil.waitForVisibilityOfElement(generateIONIOLetter, 10);
+        eleUtil.doClickLog(generateIONIOLetter, "Click on Generate IO/NIO Letter");
+    }
+
+    public void clickOnGenerateIONIOLetterOkayButton() {
+        eleUtil.isPageLoaded(100);
+        eleUtil.waitForVisibilityOfElement(generateIONIOLetterPopUp, 50);
+        eleUtil.waitForVisibilityOfElement(okayButton, 40);
+        eleUtil.doClickLog(okayButton, "Click on Okay button");
+    }
+
+    public void selectCommissioningLetterIssuedDate() {
+        eleUtil.waitForVisibilityOfElement(commissioningLetterDate, 40);
+        eleUtil.doClickLog(commissioningLetterDate, "Click on Calendar Icon");
+        eleUtil.waitForVisibilityOfElement(crmActions.getSelectTodayDateAndTime(), 30);
+        eleUtil.doClickLog(crmActions.getSelectTodayDateAndTime(), "Select today's date");
+    }
 }
+

@@ -4,9 +4,9 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
     #SIT3- Use FIO_userid
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	#When Login to app with "FIO_userid" and "FIO_pwd"
     #SIT1 - Admin
-	#When Login to app with "Admin_userid" and "Admin_pwd"
+	When Login to app with "Admin_userid" and "Admin_pwd"
 	And user selects App "DQB Case Management"
 
   Scenario Outline: Performing TEF Scheme Assesment
@@ -46,7 +46,7 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
 	#And logout from the application
 	#When Login to app with "FIO_userid" and "FIO_pwd"
 	#And user selects App "DQB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And navigate to Processing stage and fill all the details and navigate to next stage
@@ -73,7 +73,7 @@ Feature: Testing WRN1-TEF Scheme Assesment functionality
 	And navigate to Close stage and fill the respective details and navigate to next stage
 	When user change the changearea to "Factories"
 	And verify the factory is fulfilled with the details as "Food-related","FPE","TER"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	Then create a manual case with case subtype as "TEF Scheme assessment"
 	Then Verify that case is created starts with "DQB/TF/I" created with status "Scheduled" and verify Case notification

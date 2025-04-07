@@ -24,10 +24,10 @@ public class CWD1_CRMSInspectionCase {
 
     @And("import CRMS Case")
     public void importCRMSCase() throws InterruptedException {
-        crmsCase.importIMBExcel();
+        crmsCase.importIMBExcelForCWD1();
     }
 
-    @And("verify CRMS Case is created in the system and open it")
+    @Then("verify CRMS Case is created in the system and open it")
     public void verifyCRMSCaseIsCreatedInTheSystemAndOpenIt() throws InterruptedException {
         crmsCase.verifyCRMSCaseCreated();
     }
@@ -53,7 +53,7 @@ public class CWD1_CRMSInspectionCase {
     }
 
     @And("click on Save and continue button on unsaved changes popup")
-    public void clickOnSaveAndContinueButtonOnUnsavedChangesPopup() {
+    public void clickOnSaveAndContinueButtonOnUnsavedChangesPopup() throws InterruptedException {
         crmActions.clickSaveNContinueBtn();
     }
 

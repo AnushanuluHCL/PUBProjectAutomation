@@ -36,9 +36,9 @@ public class WRN6NMB_Noncomplaince_Rework {
         constructPage.createAPOWSReqForWRN6NMB(tabName, diameterValue, DCvalue);
     }
 
-    @And("open work order and go to Bookings tab")
-    public void openWorkOrderAndGoToBookingsTab() {
-        crmActions.openWOGoToBookings();
+    @And("open work order and go to {string} tab")
+    public void openWorkOrderAndGoToTab(String tabName) {
+        crmActions.openWOGoToBookings(tabName);
     }
 
     @Then("verify {int} bookings are created")

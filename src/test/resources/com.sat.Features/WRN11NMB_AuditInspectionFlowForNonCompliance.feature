@@ -7,7 +7,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And user selects App "NMB Case Management"
 
   Scenario: Create Project for Audit Inspection flow for non-compliance when Account Sub Type as Minor Works Inspection
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Projects"
 	And create a Project with Account Sub Type as "Minor Works Inspection"
 	Then verify Project is created and open the Project
@@ -27,7 +27,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	#SIT 3
 	When Login to app with "FIO_userid" and "FIO_pwd"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab
@@ -49,7 +49,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
@@ -58,7 +58,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 
   Scenario: Create Project for Audit Inspection flow for non-compliance when Account Sub Type as New Development Inspection
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Projects"
 	And create a Project with Account Sub Type as "New Development Inspection"
 	Then verify Project is created and open the Project
@@ -77,7 +77,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	#When Login to app with "FIO_userDev2" and "FIO_pwdDev2"
 	When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab
@@ -99,7 +99,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
@@ -109,7 +109,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 
 	# Re Inspection Test Cases
   Scenario: Audit Inspection flow for non-compliance. Verify Re inspection Work Order creation when Account Sub Type as New Development Inspection
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Projects"
 	And create a Project with Account Sub Type as "New Development Inspection"
 	Then verify Project is created and open the Project
@@ -128,7 +128,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	#When Login to app with "FIO_userDev2" and "FIO_pwdDev2"
 	When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And select Yes for Hydro Test & Low Pressure Air Test Submitted in Case
@@ -151,7 +151,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
@@ -160,7 +160,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 	When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab
@@ -183,7 +183,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 
 	# Re Inspection Test Cases
   Scenario: Audit Inspection flow for non-compliance. Verify Re inspection Work Order creation when Account Sub Type as Minor Works Inspection
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Projects"
 	And create a Project with Account Sub Type as "Minor Works Inspection"
 	Then verify Project is created and open the Project
@@ -201,7 +201,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 	When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab
@@ -223,7 +223,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
@@ -232,7 +232,7 @@ Feature: Testing WRN11NMB- Audit Inspection flow for Non-Compliance.
 	And logout from the application
 	When Login to app with "FIO_useridNMB" and "FIO_pwdNMB"
 	And user selects App "NMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab

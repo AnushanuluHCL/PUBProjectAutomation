@@ -8,7 +8,7 @@ Feature: Testing CWD5- Vessel Inspection for Rework.
 	And user selects App "CWD Case Management"
 
   Scenario: Vessel Inspection for Non-Compliance Rework flow
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And create a manual case of Case Sub Type as "Vessel Inspection" and Entity "Bedok"
 	Then go to "All Activities" and verify the email for "Inspection Case Assigned for FIO Review"
@@ -35,7 +35,7 @@ Feature: Testing CWD5- Vessel Inspection for Rework.
 	# SIT3 SO User
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And navigate to SO Review stage select SO Response as "Reject"
@@ -44,7 +44,7 @@ Feature: Testing CWD5- Vessel Inspection for Rework.
 	# SIT3 FIO User
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab

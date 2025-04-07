@@ -8,7 +8,7 @@ Feature: Testing CWD2- AdHoc Case for Non-Compliance.
 	And user selects App "CWD Case Management"
 
   Scenario: AdHoc Case for Non-Compliance flow
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	When user selects entity as "Construction Sites"
 	And create a manual Construction Sites where Entity Type as "Construction sites", Account Sub Type as "DTSS/Trunk Sewer BCA Projects Inspection" and Project Title as "development"
 	And click on save button
@@ -20,7 +20,7 @@ Feature: Testing CWD2- AdHoc Case for Non-Compliance.
 	# SIT3 FIO User
 	When Login to app with "sit3_FIO_userid2" and "sit3_FIO_pwd2"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Work Orders" tab
@@ -41,7 +41,7 @@ Feature: Testing CWD2- AdHoc Case for Non-Compliance.
 	# SIT3 SO User
 	When Login to app with "sit3_SO_userid2" and "sit3_SO_pwd2"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	Then verify Case notification in "Inspection Case Information" tab
@@ -53,7 +53,7 @@ Feature: Testing CWD2- AdHoc Case for Non-Compliance.
 	And logout from the application
 	When Login to app with "Admin_userid" and "Admin_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	#Comment the till here
@@ -63,7 +63,7 @@ Feature: Testing CWD2- AdHoc Case for Non-Compliance.
 	# SIT3 AO User
 	When Login to app with "sit3_AO_userid2" and "sit3_AO_pwd2"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	Then verify Case notification in "Inspection Case Information" tab
