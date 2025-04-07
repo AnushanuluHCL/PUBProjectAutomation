@@ -253,6 +253,13 @@ public class checkListPage extends commonCRMActions {
     private By generalHousekeepingPremises = By.xpath("//input[contains(@name,'Question33_')] [@aria-label='No']");
     private By remarksQ1 = By.xpath("//div[@name='Question1']//input[@aria-label='Remarks']");
 
+    //Locators for WRN10NMB
+    private By beingInspection = By.cssSelector("select[aria-label='Begin Inspection']");
+    private By otherComments = By.cssSelector("textarea[aria-label='Other Comments']");
+    private By isAbandonmentRequired = By.xpath("//input[@aria-label='Abandonment with replacement (involved sewer diversion work)']");
+    private By surfaceProfile = By.xpath("//input[@aria-label='Vehicular load is expected']");
+
+
     public By getSamplingConducted(String val) {
         return samplingConducted;
     }
@@ -1660,4 +1667,40 @@ public class checkListPage extends commonCRMActions {
         Thread.sleep(2000);
         eleUtil.doClickWithWait(getSaveNCloseBtnInChklist(), 150);
     }
+
+    public void checkListForBeforeDLPSewerInspectionWRN10IMB(String status, String checkListName, String checkListType, String completeStatus)
+            throws InterruptedException {
+        crmActions.workOrderStatusFilter(status);
+        Thread.sleep(2000);
+        List<String> woNum = new ArrayList<>();
+        crmActions.fetchWorkOrderNumbers(woNum);
+        for (int i = 0; i < woNum.size(); i++) {
+            Thread.sleep(2000);
+            crmActions.openCheckList(woNum.get(i), checkListName, status);
+            wrn10NMBBeforeDLPSewerInspectionChecklist(checkListType);
+            Thread.sleep(2000);
+            crmActions.saveAndMarkCompleteChecklist();
+            crmActions.checkWOSystemAndUserDetails(completeStatus, checkListType);
+            clickOnSaveNCloseBtn();
+        }
+    }
+
+    public void wrn10NMBBeforeDLPSewerInspectionChecklist(String checkListType) throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(beingInspection, 30);
+        if ("In Order".equals(checkListType)) {
+            eleUtil.selectDropDownValue(beingInspection, "selectByVisibleText", "Yes", "Select Yes");
+            int[] dropDownQuestions = {17, 18, 19, 20, 22, 24, 26, 29, 31, 35, 37, 39, 41, 43, 45, 47, 49, 51, 61, 55, 57, 59, 63, 65, 67, 69, 71, 73, 1,
+                76, 78};
+            for (int question : dropDownQuestions) {
+                By wrn10NMBQuestionDLP = By.xpath("//div[@name='Question" + question + "']//select");
+                eleUtil.waitForVisibilityOfElement(wrn10NMBQuestionDLP, 30);
+                eleUtil.selectDropDownValue(wrn10NMBQuestionDLP, "selectByVisibleText", "Yes", "select Yes");
+            }
+            eleUtil.doSendKeysLog(otherComments, "Before DLP Sewer Inspection Checklist", "Enter Other Comments as Before DLP Sewer Inspection Checklist");
+            eleUtil.doClickLog(isAbandonmentRequired, "Select Abandonment with replacement (involved sewer diversion work)");
+            eleUtil.doClickLog(surfaceProfile, "Select Vehicular load is expected");
+        }
+    }
+
+
 }

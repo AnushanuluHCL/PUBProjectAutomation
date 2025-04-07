@@ -8,7 +8,7 @@ Feature: Testing CWD3&6- Non Industrial Premises  for Non-Compliance.
 	And user selects App "CWD Case Management"
 
   Scenario: Non Industrial Premises  for Non-Compliance flow
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Premises"
 	And create an manual Premises where Entity Type as "Non-industrial Premises"
 	And open "Inspection Cases" tab in "Entity"
@@ -46,7 +46,7 @@ Feature: Testing CWD3&6- Non Industrial Premises  for Non-Compliance.
 	# SIT3 SO User
 	When Login to app with "sit3_SO_userid" and "sit3_SO_pwdd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	Then go to "Documents" and verify the Document for "Warning Letter"
@@ -57,7 +57,7 @@ Feature: Testing CWD3&6- Non Industrial Premises  for Non-Compliance.
 	# SIT3 AO User
 	When Login to app with "sit3_AO_userid2" and "sit3_AO_pwd2"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	Then verify Case notification in "Inspection Case Information" tab

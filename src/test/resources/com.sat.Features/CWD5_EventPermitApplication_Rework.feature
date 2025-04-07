@@ -7,7 +7,7 @@ Feature: Testing CWD5- Event Permit Application for Rework.
 	And user selects App "CWD Case Management"
 
   Scenario: Event Permit Application for Non-Compliance Rework flow
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Application"
 	#And click on new button
 	And create an Application from Javascript
@@ -20,7 +20,7 @@ Feature: Testing CWD5- Event Permit Application for Rework.
 	# SIT3 FIO User
 	#When Login to app with "AO_userid" and "AO_pwd"
 	#And user selects App "CWD Case Management"
-	#Then user change the changearea to "Inspection"
+	#When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And click on Processing Stage and fill the respective details for Event Permit Application Case
@@ -35,7 +35,7 @@ Feature: Testing CWD5- Event Permit Application for Rework.
 	# SIT3 SO User
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	# Notification is not triggered
@@ -48,7 +48,7 @@ Feature: Testing CWD5- Event Permit Application for Rework.
 	# SIT3 FIO User
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the child case
 	Then Verify FIO receives alert notification for child case
@@ -68,7 +68,7 @@ Feature: Testing CWD5- Event Permit Application for Rework.
 	And logout from the application
 	When Login to app with "sit3_SO_userid3" and "sit3_SO_pwd3"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the child case
 	And navigate to SO Review stage select SO Response as "Reject"
@@ -76,7 +76,7 @@ Feature: Testing CWD5- Event Permit Application for Rework.
 	# SIT3 FIO User
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the child case
 	And go to "Work Orders" tab

@@ -7,16 +7,16 @@ Feature: Testing CWD1- CRMS Case Reject.
 	And user selects App "CWD Case Management"
 
   Scenario: CRMS Case Reject
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "CRMS Cases"
 	And create a CRMS Case using excel
 	And import CRMS Case
-	And verify CRMS Case is created in the system and open it
+	Then verify CRMS Case is created in the system and open it
 	And logout from the application
 	# SIT3 SO User
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "CRMS Cases"
 	And user selects "Pending CRMS Cases" list view, search and open the CRMS case
 	And "Reject" the CRMS Case

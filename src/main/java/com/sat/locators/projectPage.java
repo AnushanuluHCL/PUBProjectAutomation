@@ -5,6 +5,7 @@ import com.sat.Pages.commonCRMActions;
 import com.sat.testUtil.ExcelUtil;
 import com.sat.testUtil.Log;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -23,6 +24,8 @@ public class projectPage extends commonActionsPage {
     commonCRMActions crmAction = new commonCRMActions(driver);
     factoryPage factory = new factoryPage(driver);
     pumpingSystemPage pumpingSystem = new pumpingSystemPage(driver);
+    ConstructionLocatorsPage constructionPage = new ConstructionLocatorsPage(driver);
+    dtssPage dtss = new dtssPage(driver);
 
     String projectPath = "\\src\\main\\resources\\documents\\WRN11NMBProjectsTemplate.xlsx";
     String bpuSubmissionPath = "\\src\\main\\resources\\documents\\WRN11NMB1BPUSubmissionTemplates.xlsx";
@@ -236,5 +239,31 @@ public class projectPage extends commonActionsPage {
         clickOnSaveBtn();
     }
 
+    public void createManualPublicSewer(String entityType) throws InterruptedException {
+        clickonNewBtn();
+        factory.selectEntityType(entityType);
+        pumpingSystem.enterProjectReferenceNumber();
+        pumpingSystem.enterProjectTitle();
+        constructionPage.enterArchitect();
+        constructionPage.enterProfEngg();
+        factory.selectCatchment();
+        pumpingSystem.enterHouseBlkNumber();
+        pumpingSystem.enterPostalCode();
+        pumpingSystem.enterRoadName();
+        commonActionsPage.publicSewer=eleUtil.doGetElementAttributeLog(pumpingSystem.getProjectReferenceNumber(), "title", "Displayed value is : ");
+        clickOnSaveBtn();
+    }
+
+    public void searchAPublicSewer() throws InterruptedException {
+        eleUtil.waitForVisibilityOfElement(dtss.getSearchBoxForEntity(), 20);
+        Thread.sleep(2000);
+        eleUtil.doSendKeys(dtss.getSearchBoxForEntity(), commonActionsPage.publicSewer);
+        eleUtil.isPageLoaded(50);
+        Thread.sleep(2000);
+        driver.findElement(dtss.getSearchBoxForEntity()).sendKeys(Keys.ENTER);
+        Thread.sleep(3000);
+        selectFirstRecord();
+        getFirstRecord();
+    }
 
 }

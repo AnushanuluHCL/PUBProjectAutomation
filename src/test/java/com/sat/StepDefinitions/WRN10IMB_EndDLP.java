@@ -42,7 +42,7 @@ public class WRN10IMB_EndDLP {
         casePage.completeSOReviewForWRN10IMBDLPPumping(soValue);
     }
 
-    @Then("search and open the Pumping Main")
+    @When("search and open the Pumping Main")
     public void searchAndOpenThePumpingMain() throws InterruptedException {
         pumpingSystem.searchPumpingMain();
     }

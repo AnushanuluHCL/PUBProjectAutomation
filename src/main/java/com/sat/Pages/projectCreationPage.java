@@ -47,4 +47,12 @@ public class projectCreationPage extends commonCRMActions{
     public void createManualPremisesForNonIndustrialPremises(String entityType) throws InterruptedException {
         project.createManualPremises(entityType);
     }
+
+    public void createManualPublicSewer(String entityType) throws InterruptedException {
+        project.createManualPublicSewer(entityType);
+    }
+
+    public void searchPublicSewer() throws InterruptedException {
+        project.searchAPublicSewer();
+    }
 }

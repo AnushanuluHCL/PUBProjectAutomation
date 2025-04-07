@@ -913,7 +913,6 @@ public class commonCRMActions extends commonActionsPage {
     }
 
     public void clearResponseInChecklist() {
-
         eleUtil.waitForVisibilityOfElement(clearResponseBtn, 10);
         eleUtil.doClickLog(clearResponseBtn, "Click on Clear Response button");
         eleUtil.waitForVisibilityOfElement(okBtn, 10);

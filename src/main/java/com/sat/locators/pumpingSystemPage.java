@@ -113,7 +113,6 @@ public class pumpingSystemPage extends commonActionsPage {
         eleUtil.doClickLog(getProjectReferenceNumber(), "Clicked on Project Reference Number field");
         eleUtil.doClearUsingKeysLog(getProjectReferenceNumber(), "Clear the Project Reference Number field");
         eleUtil.doSendKeysLog(getProjectReferenceNumber(),"A" +eleUtil.currentDateTime("ddMMyyyy"), " Project Reference Number is : A" +eleUtil.currentDateTime("ddMMyyyy"));
-        commonCRMActions.pumpingMain = crmActions.setPageTitle();
     }
 
     public void enterProjectTitle() {
@@ -126,7 +125,7 @@ public class pumpingSystemPage extends commonActionsPage {
     public void enterContractor() throws InterruptedException {
         eleUtil.waitForVisibilityOfElement(getContractor(), 30);
         eleUtil.doClearUsingKeysLog(getContractor(), "Clear the Contractor field");
-        eleUtil.doSendKeysWithWaitEnter(getContractor(), "QP Contractor" , 30);
+        eleUtil.doSendKeysWithWaitEnter(getContractor(), "contractor" , 30);
         eleUtil.doClickLog(factory.setLookUp(), "Select Look-up value");
     }
 

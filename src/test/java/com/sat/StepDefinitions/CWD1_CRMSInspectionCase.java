@@ -27,7 +27,7 @@ public class CWD1_CRMSInspectionCase {
         crmsCase.importIMBExcelForCWD1();
     }
 
-    @And("verify CRMS Case is created in the system and open it")
+    @Then("verify CRMS Case is created in the system and open it")
     public void verifyCRMSCaseIsCreatedInTheSystemAndOpenIt() throws InterruptedException {
         crmsCase.verifyCRMSCaseCreated();
     }

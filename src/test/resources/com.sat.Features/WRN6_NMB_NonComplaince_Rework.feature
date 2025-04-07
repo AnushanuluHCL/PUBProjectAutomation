@@ -1,18 +1,20 @@
 @WRN6_NMB_Non-Complaince
-Feature: Testing WRN6 IMB - Noncomplaince - Rework
+Feature: Testing WRN6 NMB - Noncomplaince
 
   Background: Test CRM Login with valid credentials
 	Given User navigates to CRM login page
-	When Login to app with "FIO_userid" and "FIO_pwd"
+	# SIT1
+	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "NMB Case Management"
 
   Scenario Outline: Inspecting Pumping main constrcution sites Noncomplaince - Rework
 	When user selects entity as "Construction Sites"
 	And create a manual project where Entity Type as "Construction sites" and Account Sub Type as "DTSS/Trunk Sewer Construction Site Inspection"
-	#And logout from the application
+	# Not working in SIT2
+   	#And logout from the application
 	#When Login to app with "FIO_userid" and "FIO_pwd"
 	#And user selects App "NMB Case Management"
-	And user selects entity as "Construction Sites"
+	#And user selects entity as "Construction Sites"
 	And go to "POWS Submissions" tab and create a new POWS submission request by giving "<Diameter>", "<DC_Status>" for NMB
 	And go to "POWS Submissions" tab and open POWS Submission record
 	And go to "POWS Submission Corridor Details" tab and create a new POWS submission Corridor with "Water pipe Corridor.", "30"

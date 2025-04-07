@@ -225,10 +225,11 @@ public class constructionsPage extends commonActionsPage {
 	}
 
 	public void createAPOWSReqForWRN6NMB(String tabName, String diameterValue, String DCvalue) throws InterruptedException {
-		constructionpage.entitySelectionInCaseView();
-		filterView(commonActionsPage.WRN6NMB_Enttiyval);
-		selectFirstRecord();
-		getFirstRecord();
+		// Not working in SIT2
+		//constructionpage.entitySelectionInCaseView();
+		//filterView(commonActionsPage.WRN6NMB_Enttiyval);
+		//selectFirstRecord();
+		//getFirstRecord();
 		commonCRM.navigatingToTabInEntity(tabName);
 		constructionpage.newPOWSSubBtn();
 		pumpingSystem.enterSubmissionNo();

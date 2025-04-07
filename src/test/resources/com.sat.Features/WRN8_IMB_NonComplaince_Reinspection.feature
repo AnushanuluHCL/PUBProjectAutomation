@@ -25,7 +25,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	#SIT3
 	When Login to app with "sit3_FIO_userid" and "sit3_FIO_pwd"
 	And user selects App "IMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And save the Case
@@ -47,7 +47,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	#SIT3
 	When Login to app with "sit3_SO_userid" and "sit3_SO_pwd"
 	And user selects App "IMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case
@@ -57,7 +57,7 @@ Feature: Testing WRN8 IMB-Noncompliance
 	#SIT3
 	When Login to app with "sit3_AO_userid" and "sit3_AO_pwd"
 	And user selects App "IMB Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case

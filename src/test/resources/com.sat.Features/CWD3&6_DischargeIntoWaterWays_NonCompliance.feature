@@ -7,7 +7,7 @@ Feature: Testing CWD3&6- Discharge into Water Ways  for Non-Compliance.
 	And user selects App "CWD Case Management"
 
   Scenario: Discharge into Water Ways for Non-Compliance flow
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "CRMS Cases"
 	And create a CRMS Case for C&W-Drainage Ops- Pollution in waterways algae in waterways using excel
 	And import CRMS Case for C&W-Drainage Ops
@@ -16,7 +16,7 @@ Feature: Testing CWD3&6- Discharge into Water Ways  for Non-Compliance.
 	#SIT3 SO User
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "CRMS Cases"
 	And user selects "Pending CWD3&6 CRMS Cases" list view, search and open the CRMS case
 	And "Accept" the CRMS Case
@@ -33,7 +33,7 @@ Feature: Testing CWD3&6- Discharge into Water Ways  for Non-Compliance.
 	#SIT3 FIO User
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And go to "Inspection Case Information" tab
@@ -70,7 +70,7 @@ Feature: Testing CWD3&6- Discharge into Water Ways  for Non-Compliance.
 	# SIT3 SO User
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And Validate that AO or SO get notified by Case

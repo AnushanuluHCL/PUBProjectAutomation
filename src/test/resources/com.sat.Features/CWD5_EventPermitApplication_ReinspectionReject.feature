@@ -7,7 +7,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	And user selects App "CWD Case Management"
 
   Scenario: Event Permit Application for Non-Compliance ReInspection Reject flow
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Application"
 	#And click on new button
 	And create an Application from Javascript
@@ -20,7 +20,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	# SIT3 FIO User
 	#When Login to app with "AO_userid" and "AO_pwd"
 	#And user selects App "CWD Case Management"
-	#Then user change the changearea to "Inspection"
+	#When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And click on Processing Stage and fill the respective details for Event Permit Application Case
@@ -35,7 +35,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	# SIT3 SO User
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	# Notification is not triggered
@@ -48,7 +48,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	# SIT3 FIO User
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the child case
 	Then Verify FIO receives alert notification for child case
@@ -69,7 +69,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	#Re inspection process
 	When Login to app with "Admin_userid" and "Admin_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the child case
 	And go to "FormSG Submission" tab
@@ -83,7 +83,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	# SIT3 FIO User
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the child case
 	And click on Refresh button
@@ -109,7 +109,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	# SIT3 SO User
 	When Login to app with "SO_userid" and "SO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the child case
 	#And Validate that AO or SO get notified by Child Case
@@ -122,7 +122,7 @@ Feature: Testing CWD5- Event Permit Application for Compliance.
 	# SIT3 FO User
 	When Login to app with "AO_userid" and "AO_pwd"
 	And user selects App "CWD Case Management"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "All Cases" list view, search and open the case
 	And navigate to Close stage and set Resolve Case as "Yes"

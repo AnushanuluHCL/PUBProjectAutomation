@@ -110,7 +110,7 @@ public class GWComplaintStepdefs{
 
     @And("navigate to Inspection stage and select the Inspection completed value as yes")
     public void navigate_to_Inspection_stage_and_select_the_Inspection_completed_value_as_yes() {
-        casepage.completeInspection();
+        casepage.completeInspectionNGenerateReport();
     }
 
     @And("verify permit is generated for the tanker")

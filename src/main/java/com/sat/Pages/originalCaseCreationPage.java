@@ -350,4 +350,28 @@ public class originalCaseCreationPage extends commonActionsPage {
 	public void completeSOReviewForCWD3N6() {
 		cases.soReviewForCWD3N6();
 	}
+
+	public void completeInspectionStageWithSOReview() {
+		cases.completedInspectionWithSOReview();
+	}
+
+	public void completeGenerateEmailStageWithMnCLetter() {
+		cases.completedGenerateEmailWithMnCLetter();
+	}
+
+	public void clickGenerateIONIOLetter() {
+		cases.generateIONIOLetter();
+	}
+
+	public void clickGenerateIONIOLetterPopUpOkayButton() {
+		cases.clickOnGenerateIONIOLetterOkayButton();
+	}
+
+	public void commissioningLetterIssuedDate() {
+		cases.selectCommissioningLetterIssuedDate();
+	}
+
+	public void clickOKButton() {
+		cases.clickOnOkButton();
+	}
 }

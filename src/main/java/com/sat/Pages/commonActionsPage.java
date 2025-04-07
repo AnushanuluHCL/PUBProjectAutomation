@@ -2,7 +2,6 @@ package com.sat.Pages;
 
 import java.time.Duration;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -29,8 +28,6 @@ import com.sat.testUtil.ExcelUtil;
 import com.sat.testUtil.JavaScriptUtil;
 import com.sat.testbase.TestBase;
 
-import static org.testng.Assert.assertTrue;
-
 public class commonActionsPage {
 
 	protected static WebDriver driver;
@@ -45,7 +42,7 @@ public class commonActionsPage {
 	public static String TankerName, TankerCapacity, casenumber, Tankercompanyname, starttimeval, startdateval,
 			permitnum, permitExpiryDate, GWCReferenceNum, case_FIO, case_SO, case_AO, oldSealNumber, newSealNumber,
 			resealReason, WRN1_factoryname, WRN8NMB_Projname, childCaseNumber, projectRefNumber, WRN7NMB_Projname, dtssNumber, WRN6NMB_Enttiyval, WRN4_GTscount,
-			pumpingMain, applicationNumber, CWD2_ConstructionSide;
+			pumpingMain, applicationNumber, CWD2_ConstructionSide, publicSewer;
 	private static Map<String, String> sharedValues = new HashMap<>();
 	private static Map<String, List<String>> sharedValuesList = new HashMap<>();
 	protected static Map<Integer, String> tankerNumber = new HashMap<>();

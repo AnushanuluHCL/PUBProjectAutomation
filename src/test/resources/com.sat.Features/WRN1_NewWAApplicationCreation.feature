@@ -40,7 +40,7 @@ Feature: Testing WRN1-New WA Application creation functionality
       ]
       """
     # And fill the details in the WA application form using data from "data.csv"
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And user selects "Active Cases" list view, search and open the case
 	And verify the case form fields validation with "Scheduled" status

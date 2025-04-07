@@ -10,7 +10,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And user selects App "NMB Case Management"
 
   Scenario: Validate 6 Inspection cases are created and map is working for tunnel and shaft.
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And create a DTSS with entity type "DTSS"
     And go to "DTSS Shafts" tab and create a DTSS Shafts with type "Shaft"
@@ -18,7 +18,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And Run the automatic cloudflow job for "SIES/WRN7/NMB/CreateCaseWOBooking"
     Given User navigates to CRM login page
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And search and open the DTSS
     And navigate to "Inspection Cases" tab
@@ -29,7 +29,7 @@ Feature: Testing WRN7 NMB Noncompliance
     ## Closing Case 1
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And search and open the DTSS
     And navigate to "Inspection Cases" tab
@@ -50,7 +50,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "Cases"
     And user selects "All Cases" list view, search and open the case
     And Validate that AO or SO get notified by Case
@@ -62,7 +62,7 @@ Feature: Testing WRN7 NMB Noncompliance
     ## Closing Case 2
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And search and open the DTSS
     And navigate to "Inspection Cases" tab
@@ -83,7 +83,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "Cases"
     And user selects "All Cases" list view, search and open the case
     And Validate that AO or SO get notified by Case
@@ -95,7 +95,7 @@ Feature: Testing WRN7 NMB Noncompliance
     ## Closing Case 3
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And search and open the DTSS
     And navigate to "Inspection Cases" tab
@@ -115,7 +115,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "Cases"
     And user selects "All Cases" list view, search and open the case
     And Validate that AO or SO get notified by Case
@@ -127,7 +127,7 @@ Feature: Testing WRN7 NMB Noncompliance
     ## Closing Case 4
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And search and open the DTSS
     And navigate to "Inspection Cases" tab
@@ -147,7 +147,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "Cases"
     And user selects "All Cases" list view, search and open the case
     And Validate that AO or SO get notified by Case
@@ -159,7 +159,7 @@ Feature: Testing WRN7 NMB Noncompliance
     ## Closing Case 5
     When Login to app with "FIO_userid" and "FIO_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And search and open the DTSS
     And navigate to "Inspection Cases" tab
@@ -177,7 +177,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "Cases"
     And user selects "All Cases" list view, search and open the case
     And Validate that AO or SO get notified by Case
@@ -189,7 +189,7 @@ Feature: Testing WRN7 NMB Noncompliance
     ## Closing Case 6
     When Login to app with "FIO_userid" and "FIO_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "DTSS"
     And search and open the DTSS
     And navigate to "Inspection Cases" tab
@@ -207,7 +207,7 @@ Feature: Testing WRN7 NMB Noncompliance
     And logout from the application
     When Login to app with "PAsit2_userid" and "PAsit2_pwd"
     And user selects App "NMB Case Management"
-    Then user change the changearea to "Inspection"
+    When user change the changearea to "Inspection"
     And user selects entity as "Cases"
     And user selects "All Cases" list view, search and open the case
     And Validate that AO or SO get notified by Case

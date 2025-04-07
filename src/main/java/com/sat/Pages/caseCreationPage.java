@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.sat.locators.casePage;
 import org.openqa.selenium.By;
@@ -116,12 +115,10 @@ public class caseCreationPage extends commonActionsPage {
 	// text
 	// Yes/No
 	private By InspectionStage = By.xpath("//div[@title='Inspection']");
-	private By inspectionCompletedOption = By.xpath("//select[@aria-label='Inspection Completed?']"); // visible text
 	// Yes/No
 	private By generateInspectionReportOption = By.xpath("//select[@aria-label='Generate Inspection Report']"); // visible
 	// text
 	private By closeBtnOnBPF = By.xpath("//button[@title='Close']"); // Yes/No
-	private By submitSOreviewBtn = By.xpath("//select[contains(@id,'header') and @aria-label='Submit for SO Review']");
 	private By SOreviewStage = By.xpath("//div[@title='SO Review']");
 	private By systemassesmentOption = By.xpath("//select[@aria-label='System Assessment']"); // visible text Yes/No
 	private By userassesmentOption = By.xpath("//select[@aria-label='User Assessment']"); // visible text Yes/No
@@ -928,11 +925,11 @@ public class caseCreationPage extends commonActionsPage {
 		eleUtil.doActionsClick(saveBtn);
 	}
 
-	public void completeInspection() {
+	public void completeInspectionNGenerateReport() {
 		navigatingToStage("Inspection");
-		eleUtil.waitForVisibilityOfElement(inspectionCompletedOption, 10);
-		eleUtil.createSelect(inspectionCompletedOption);
-		eleUtil.doSelectDropDownByVisibleText(inspectionCompletedOption, "Yes");
+		eleUtil.waitForVisibilityOfElement(cases.getInspectionCompletedOption(), 10);
+		eleUtil.createSelect(cases.getInspectionCompletedOption());
+		eleUtil.doSelectDropDownByVisibleText(cases.getInspectionCompletedOption(), "Yes");
 		eleUtil.doClick(saveBtn);
 		navigatingToStage("Inspection");
 		eleUtil.waitForVisibilityOfElement(generateInspectionReportOption, 50);
@@ -1082,9 +1079,9 @@ public class caseCreationPage extends commonActionsPage {
 
 	public void completeInspectionStage() {
 		navigatingToStage("Inspection");
-		eleUtil.waitForVisibilityOfElement(submitSOreviewBtn, 10);
-		eleUtil.createSelect(submitSOreviewBtn);
-		eleUtil.doSelectDropDownByVisibleText(submitSOreviewBtn, "Yes");
+		eleUtil.waitForVisibilityOfElement(cases.getSubmitSOReviewBtn(), 10);
+		eleUtil.createSelect(cases.getSubmitSOReviewBtn());
+		eleUtil.doSelectDropDownByVisibleText(cases.getSubmitSOReviewBtn(), "Yes");
 		eleUtil.doClick(saveBtn);
 		// eleUtil.doClick(closeBtnOnBPF);
 		eleUtil.isPageLoaded(10);
@@ -1659,14 +1656,13 @@ public class caseCreationPage extends commonActionsPage {
 
 	public void completeGenerateEmailStage() {
 		navigatingToStage("Generate Email");
-
 		eleUtil.waitForVisibilityOfElement(generateemailOption, 10);
 		eleUtil.createSelect(generateemailOption);
 		eleUtil.isPageLoaded(40);
 		if (eleUtil.doElementGetText(selectedGeneratedEmailValue).equals("No")) {
 			eleUtil.doSelectDropDownByVisibleText(generateemailOption, "Yes");
 		} else {
-			Log.info("alredy value selecetd as Yes");
+			Log.info("already value selected as Yes");
 		}
 		if (driver.findElement(emailtocustomerOption).isDisplayed()) {
 			eleUtil.waitForVisibilityOfElement(emailtocustomerOption, 10);

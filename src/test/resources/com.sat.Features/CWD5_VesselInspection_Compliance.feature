@@ -8,7 +8,7 @@ Feature: Testing CWD5- Vessel Inspection for Compliance.
 	And user selects App "CWD Case Management"
 
   Scenario: Vessel Inspection for Compliance flow
-	Then user change the changearea to "Inspection"
+	When user change the changearea to "Inspection"
 	And user selects entity as "Cases"
 	And create a manual case of Case Sub Type as "Vessel Inspection" and Entity "Bedok"
 	Then go to "All Activities" and verify the email for "Inspection Case Assigned for FIO Review"
